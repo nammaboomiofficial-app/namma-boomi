@@ -41,6 +41,15 @@ export default function Home() {
   // 10. A to Z மொத்த விற்பனை மாடியூல் ஸ்டேட்கள்
   const [wholesaleCategory, setWholesaleCategory] = useState('all');
   const [wholesaleSearch, setWholesaleSearch] = useState('');
+  // 11. கருத்து & ஃபீட்பேக் மாடல் ஸ்டேட்கள்
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [feedbackData, setFeedbackData] = useState({
+    name: '',
+    phone: '',
+    targetModule: 'அனைத்து தொகுதிகள்',
+    rating: '5',
+    comments: ''
+  });
   // ஜோதிட இன்புட் ஸ்டேட்ஸ்
   const [birthDetails, setBirthDetails] = useState({
     name: 'சுந்தரம்',
@@ -4481,6 +4490,141 @@ export default function Home() {
             </div>
           </div>
         )}
+        {/* மிதக்கும் கருத்துப் பட்டன் (Floating Feedback Button) */}
+      <div className="fixed bottom-5 right-5 z-40">
+        <button
+          onClick={() => setShowFeedbackModal(true)}
+          className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-4 py-3 rounded-full shadow-2xl transition transform hover:scale-105 border border-emerald-400/40 text-xs font-bold"
+        >
+          <span className="text-base">💬</span>
+          <span>கருத்து & ஆலோசனை</span>
+        </button>
+      </div>
+
+      {/* கருத்துப் பதிவு மாடல் (Feedback Modal) */}
+      {showFeedbackModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-emerald-500/40 rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <span>💬</span>
+                <span>உங்கள் மேலான கருத்துகள்</span>
+              </h3>
+              <button
+                onClick={() => setShowFeedbackModal(false)}
+                className="text-slate-400 hover:text-white text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-300">
+              "நம்ம பூமி 360" தளத்தை மேலும் மேம்படுத்த உங்கள் அனுபவத்தையும் ஆலோசனைகளையும் பகிர்ந்துகொள்ளுங்கள்.
+            </p>
+
+            <form
+  onSubmit={(e) => {
+    e.preventDefault();
+    const textMsg = `*நம்ம பூமி 360 - பயனர் கருத்து*%0A%0A👤 *பெயர்:* ${feedbackData.name || 'குறிப்பிடப்படவில்லை'}%0A📞 *எண்:* ${feedbackData.phone || 'குறிப்பிடப்படவில்லை'}%0A📂 *பிரிவு:* ${feedbackData.targetModule}%0A⭐ *மதிப்பீடு:* ${feedbackData.rating}/5 நட்சத்திரங்கள்%0A💬 *கருத்து:* ${feedbackData.comments}`;
+    window.open('https://wa.me/919962369131?text=' + textMsg, '_blank');
+    setShowFeedbackModal(false);
+    setFeedbackData({ name: '', phone: '', targetModule: 'அனைத்து தொகுதிகள்', rating: '5', comments: '' });
+    alert('உங்கள் கருத்துகளுக்கு மனமார்ந்த நன்றிகள்!');
+  }}
+  className="space-y-3">
+
+            
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">உங்கள் பெயர்</label>
+                <input
+                  type="text"
+                  required
+                  value={feedbackData.name}
+                  onChange={(e) => setFeedbackData({ ...feedbackData, name: e.target.value })}
+                  placeholder="உதாரணம்: ரமேஷ்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">தொடர்பு எண் (விருப்பப்பட்டால்)</label>
+                <input
+                  type="tel"
+                  value={feedbackData.phone}
+                  onChange={(e) => setFeedbackData({ ...feedbackData, phone: e.target.value })}
+                  placeholder="10 இலக்க மொபைல் எண்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">எந்தத் தொகுதி பற்றிய கருத்து?</label>
+                <select
+                  value={feedbackData.targetModule}
+                  onChange={(e) => setFeedbackData({ ...feedbackData, targetModule: e.target.value })}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                >
+                  <option value="அனைத்து தொகுதிகள்">அனைத்து தொகுதிகள் (ஒட்டுமொத்த தளம்)</option>
+                  <option value="பூமி & நிலம்">பூமி & நிலம்</option>
+                  <option value="AI ஜோதிடம் & பரிகாரம்">AI ஜோதிடம் & பரிகாரம்</option>
+                  <option value="விவசாயம் (Agri 360)">விவசாயம் (Agri 360)</option>
+                  <option value="நிதி & கடன்கள்">நிதி & கடன்கள்</option>
+                  <option value="காப்பீடு (Insurance)">காப்பீடு (Insurance)</option>
+                  <option value="கல்வி & படிப்பு">கல்வி & படிப்பு</option>
+                  <option value="வேலைவாய்ப்பு">வேலைவாய்ப்பு</option>
+                  <option value="தொழில் & MSME">தொழில் & MSME</option>
+                  <option value="ஆன்மிகம் & சுற்றுலா">ஆன்மிகம் & சுற்றுலா</option>
+                  <option value="A-Z மொத்த விற்பனை">A-Z மொத்த விற்பனை</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">செயலியின் தரம் (Rating)</label>
+                <select
+                  value={feedbackData.rating}
+                  onChange={(e) => setFeedbackData({ ...feedbackData, rating: e.target.value })}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-amber-400 font-bold focus:outline-none focus:border-emerald-500"
+                >
+                  <option value="5">⭐⭐⭐⭐⭐ 5/5 - மிகச் சிறப்பு</option>
+                  <option value="4">⭐⭐⭐⭐ 4/5 - நன்று</option>
+                  <option value="3">⭐⭐⭐ 3/5 - திருப்திகரம்</option>
+                  <option value="2">⭐⭐ 2/5 - இன்னும் மேம்படுத்தலாம்</option>
+                  <option value="1">⭐ 1/5 - திருப்தியில்லை</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs text-slate-400 mb-1">உங்கள் கருத்து / ஆலோசனைகள்</label>
+                <textarea
+                  rows="3"
+                  required
+                  value={feedbackData.comments}
+                  onChange={(e) => setFeedbackData({ ...feedbackData, comments: e.target.value })}
+                  placeholder="செயலியைப் பற்றிய உங்கள் கருத்து அல்லது புதிய அம்சங்கள்..."
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                ></textarea>
+              </div>
+
+              <div className="pt-2 flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowFeedbackModal(false)}
+                  className="w-1/2 py-2.5 bg-slate-800 text-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-700"
+                >
+                  ரத்து செய்க
+                </button>
+                <button
+                  type="submit"
+                  className="w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition shadow-lg flex items-center justify-center gap-1.5"
+                >
+                  <span>அனுப்புக</span>
+                  <span>↗</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       </main>
     </div>
   );
