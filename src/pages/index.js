@@ -25,6 +25,9 @@ export default function Home() {
   const [loanDecision, setLoanDecision] = useState(null);
   // காப்பீடு மாடியூல் ஸ்டேட்
   const [insuranceSubTab, setInsuranceSubTab] = useState('all');
+  // கல்வி & படிப்பு மாடியூல் ஸ்டேட்கள்
+  const [educationSubTab, setEducationSubTab] = useState('pathway');
+  const [selectedCareer, setSelectedCareer] = useState('agri_officer');
   // ஜோதிட இன்புட் ஸ்டேட்ஸ்
   const [birthDetails, setBirthDetails] = useState({
     name: 'சுந்தரம்',
@@ -2255,8 +2258,460 @@ export default function Home() {
               </div>
             </div>
           )}
+          {/* 6. கல்வி & படிப்பு (Education Hub) */}
+      {currentModule === 'education' && (
+        <div className="space-y-6">
+          {/* தலைப்பு & அரசு நலத்திட்ட பேனர் */}
+          <div className="bg-gradient-to-r from-blue-950/80 via-slate-900 to-indigo-950/80 border border-blue-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <span className="inline-block px-3 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-full mb-2 border border-blue-500/40">
+                  🎓 கல்வி & எதிர்கால வழிகாட்டி மையம்
+                </span>
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <span>நம்ம பூமி கல்வி 360</span>
+                </h2>
+                <p className="text-sm text-slate-300 mt-1">
+                  "என்ன படித்தால் என்ன ஆகலாம்?" வழிகாட்டி • அரசு & தனியார் உதவித்தொகைகள் • இலவச விடுதிகள் & கல்விக் கடன்
+                </p>
+              </div>
+
+              {/* சப்-டேப் பட்டன்கள் */}
+              <div className="flex flex-wrap gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-700">
+                <button
+                  onClick={() => setEducationSubTab('pathway')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    educationSubTab === 'pathway' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🎯 என்ன படித்தால் என்ன ஆகலாம்?
+                </button>
+                <button
+                  onClick={() => setEducationSubTab('scholarships')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    educationSubTab === 'scholarships' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  💰 உதவித்தொகைகள் (Scholarships)
+                </button>
+                <button
+                  onClick={() => setEducationSubTab('welfare')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    educationSubTab === 'welfare' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🏢 மாணவர் விடுதிகள் & கல்விக் கடன்
+                </button>
+              </div>
+            </div>
+
+            {/* முக்கிய அரசு சலுகைகள் அறிவிப்பு ஸ்ட்ரிப் */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4 pt-4 border-t border-slate-800 text-xs">
+              <div className="bg-slate-900/60 p-2.5 rounded-lg border border-blue-500/20 flex items-center gap-2">
+                <span className="text-pink-400 font-bold">👩 புதுமைப் பெண்:</span>
+                <span className="text-slate-300">கல்லூரி மாணவிகளுக்கு மாதம் ₹1,000</span>
+              </div>
+              <div className="bg-slate-900/60 p-2.5 rounded-lg border border-blue-500/20 flex items-center gap-2">
+                <span className="text-blue-400 font-bold">👨 தமிழ்ப் புதல்வன்:</span>
+                <span className="text-slate-300">கல்லூரி மாணவர்களுக்கு மாதம் ₹1,000</span>
+              </div>
+              <div className="bg-slate-900/60 p-2.5 rounded-lg border border-blue-500/20 flex items-center gap-2">
+                <span className="text-emerald-400 font-bold">🏛️ 7.5% இடஒதுக்கீடு:</span>
+                <span className="text-slate-300">அரசுப் பள்ளி மாணவர்களுக்கு முழுக் கட்டண விலக்கு</span>
+              </div>
+            </div>
+          </div>
+
+          {/* சப்-டேப் 1: என்ன படித்தால் என்ன ஆகலாம்? (Career Pathway) */}
+          {educationSubTab === 'pathway' && (
+            <div className="space-y-4">
+              <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4">
+                <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                  <span>🎯 உங்கள் எதிர்காலக் கனவைத் தேர்ந்தெடுங்கள் (Select Career Goal):</span>
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                  {[
+                    { id: 'agri_officer', title: 'வேளாண் அலுவலர்', icon: '🌾' },
+                    { id: 'bank_officer', title: 'வங்கி மேனேஜர்', icon: '🏦' },
+                    { id: 'tech_ai', title: 'மென்பொருள் / AI', icon: '💻' },
+                    { id: 'civil_service', title: 'IAS / IPS / DSP', icon: '🏛️' },
+                    { id: 'doctor_nurse', title: 'மருத்துவர் / செவிலியர்', icon: '🏥' },
+                    { id: 'entrepreneur', title: 'நவீன பண்ணைத் தொழில்', icon: '🚜' }
+                  ].map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setSelectedCareer(item.id)}
+                      className={`p-2.5 rounded-xl text-center border transition flex flex-col items-center gap-1 ${
+                        selectedCareer === item.id
+                          ? 'bg-blue-600/30 border-blue-500 text-blue-200'
+                          : 'bg-slate-800/60 border-slate-700 text-slate-300 hover:bg-slate-800'
+                      }`}
+                    >
+                      <span className="text-2xl">{item.icon}</span>
+                      <span className="text-xs font-semibold">{item.title}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* தேர்ந்தெடுக்கப்பட்ட பணிக்கான வரைபடம் (Roadmap Card) */}
+              {selectedCareer === 'agri_officer' && (
+                <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h4 className="text-lg font-bold text-emerald-400 flex items-center gap-2">
+                      🌾 வேளாண் அலுவலர் (Agricultural Officer / Bank AFO) ஆவதற்கான பாதை
+                    </h4>
+                    <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-semibold rounded-md border border-emerald-500/30">
+                      ஆரம்ப ஊதியம்: ₹40,000 - ₹65,000/மாதம்
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                      <p className="text-slate-300 leading-relaxed">பயாலஜி-மேக்ஸ் அல்லது தூய அறிவியல் (Pure Science) அல்லது வேளாண் தொழிற்கல்வி பிரிவு.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                      <p className="text-slate-300 leading-relaxed">B.Sc (Hons) Agriculture / Horticulture / Agricultural Engineering (TNAU & அங்கீகரிக்கப்பட்ட கல்லூரிகள்).</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">3. எழுத வேண்டிய தேர்வுகள்</p>
+                      <p className="text-slate-300 leading-relaxed">TNPSC Agricultural Officer தேர்வு, வங்கி IBPS SO (Agriculture Field Officer) தேர்வு, அல்லது ICAR JRF.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">4. பணி வாய்ப்புகள்</p>
+                      <p className="text-slate-300 leading-relaxed">தமிழக வேளாண் விரிவாக்கத் துறை, தேசியமயமாக்கப்பட்ட வங்கிகள், விதை & உரம் உற்பத்தி நிறுவனங்கள்.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => alert("TNAU அதிகாரப்பூர்வ இணையதளம்: tnau.ac.in \nவிண்ணப்ப விவரங்கள் மற்றும் கட்-ஆப் மதிப்பெண்களை அங்கே சரிபார்க்கலாம்.")}
+                    className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-xl text-xs font-semibold transition"
+                  >
+                    TNAU வேளாண் சேர்க்கை வழிகாட்டல் பார்க்க ↗
+                  </button>
+                </div>
+              )}
+
+              {selectedCareer === 'bank_officer' && (
+                <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h4 className="text-lg font-bold text-blue-400 flex items-center gap-2">
+                      🏦 வங்கி மேனேஜர் (Bank PO / Manager) ஆவதற்கான பாதை
+                    </h4>
+                    <span className="px-2.5 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-md border border-blue-500/30">
+                      ஆரம்ப ஊதியம்: ₹50,000 - ₹75,000/மாதம்
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                      <p className="text-slate-300 leading-relaxed">வணிகவியல் (Commerce), கணக்கியல், கணிதம் அல்லது ஏதேனும் ஒரு விருப்பப் பாடம்.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                      <p className="text-slate-300 leading-relaxed">B.Com, BBA, B.Sc, B.E அல்லது ஏதேனும் ஒரு பட்டப்படிப்பு (Any Degree with 50-60% marks).</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">3. எழுத வேண்டிய தேர்வுகள்</p>
+                      <p className="text-slate-300 leading-relaxed">IBPS PO, SBI PO, RBI Grade B, கூட்டுறவு வங்கி உதவியாளர் தேர்வுகள்.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">4. பணி வாய்ப்புகள்</p>
+                      <p className="text-slate-300 leading-relaxed">SBI, இந்தியன் வங்கி, கனரா வங்கி, கிராமப்புற வங்கிகள் மற்றும் முன்னணி தனியார் வங்கிகள்.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => alert("IBPS அதிகாரப்பூர்வ போர்டல்: ibps.in \nஆண்டுதோறும் ஆகஸ்ட்-அக்டோபர் மாதங்களில் PO மற்றும் Clerk தேர்வுகள் நடத்தப்படும்.")}
+                    className="w-full py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-200 rounded-xl text-xs font-semibold transition"
+                  >
+                    IBPS வங்கித் தேர்வு அறிவிப்புகளைப் பார்க்க ↗
+                  </button>
+                </div>
+              )}
+
+              {selectedCareer === 'tech_ai' && (
+                <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h4 className="text-lg font-bold text-cyan-400 flex items-center gap-2">
+                      💻 மென்பொருள் & செயற்கை நுண்ணறிவு (Software / AI Engineer)
+                    </h4>
+                    <span className="px-2.5 py-1 bg-cyan-500/20 text-cyan-300 text-xs font-semibold rounded-md border border-cyan-500/30">
+                      ஆரம்ப ஊதியம்: ₹35,000 - ₹1,00,000/மாதம்
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                      <p className="text-slate-300 leading-relaxed">கணிதம் மற்றும் கணினி அறிவியல் அல்லது அறிவியல் பிரிவு (Maths mandatory).</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                      <p className="text-slate-300 leading-relaxed">B.E/B.Tech (CSE, IT, AI & Data Science) அல்லது BCA, B.Sc Computer Science.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">3. அவசியமான திறன்கள்</p>
+                      <p className="text-slate-300 leading-relaxed">Python, SQL, Web Full Stack, AI & Cloud அடிப்படைகள் மற்றும் புராஜெக்ட் போர்ட்ஃபோலியோ.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">4. பணி வாய்ப்புகள்</p>
+                      <p className="text-slate-300 leading-relaxed">சர்வதேச IT நிறுவனங்கள், ஸ்டார்ட்-அப்கள் மற்றும் வீட்டிலிருந்தே பணிபுரியும் தொலைதூர வேலைகள்.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => alert("நான் முதல்வன் போர்டல்: naanmudhalvan.tn.gov.in \nகல்லூரி மாணவர்களுக்கான இலவச மென்பொருள் மற்றும் AI பயிற்சி வகுப்புகள்.")}
+                    className="w-full py-2 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/50 text-cyan-200 rounded-xl text-xs font-semibold transition"
+                  >
+                    நான் முதல்வன் இலவச தொழில்நுட்பப் பயிற்சிகள் ↗
+                  </button>
+                </div>
+              )}
+
+              {selectedCareer === 'civil_service' && (
+                <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h4 className="text-lg font-bold text-amber-400 flex items-center gap-2">
+                      🏛️ மாவட்ட ஆட்சியர் / டி.எஸ்.பி (IAS, IPS, TNPSC Group 1)
+                    </h4>
+                    <span className="px-2.5 py-1 bg-amber-500/20 text-amber-300 text-xs font-semibold rounded-md border border-amber-500/30">
+                      அரசு குரூப் 1 நிலை அதிகாரி
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                      <p className="text-slate-300 leading-relaxed">ஏதேனும் ஒரு பிரிவு (வரலாறு, தமிழ், வணிகவியல் அல்லது அறிவியல்).</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                      <p className="text-slate-300 leading-relaxed">அங்கீகரிக்கப்பட்ட ஏதேனும் ஒரு பட்டப்படிப்பு (Any UG Degree - B.A, B.Sc, B.Com, B.E).</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">3. எழுத வேண்டிய தேர்வுகள்</p>
+                      <p className="text-slate-300 leading-relaxed">UPSC Civil Services (IAS/IPS) அல்லது TNPSC Group 1 (துணை ஆட்சியர், DSP) தேர்வுகள்.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">4. தயாரிப்பு முறை</p>
+                      <p className="text-slate-300 leading-relaxed">NCERT & சமச்சீர் கல்வி புத்தகங்கள், தினசரி நாளிதழ் வாசிப்பு, பொது அறிவு மற்றும் நடப்பு நிகழ்வுகள்.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => alert("TNPSC அதிகாரப்பூர்வ தளம்: tnpsc.gov.in \nகுரூப் 1, 2, மற்றும் 4 தேர்வு அறிவிப்புகளுக்கு இதில் விண்ணப்பிக்கலாம்.")}
+                    className="w-full py-2 bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/50 text-amber-200 rounded-xl text-xs font-semibold transition"
+                  >
+                    TNPSC அதிகாரப்பூர்வ தேர்வு போர்டல் ↗
+                  </button>
+                </div>
+              )}
+
+              {selectedCareer === 'doctor_nurse' && (
+                <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h4 className="text-lg font-bold text-rose-400 flex items-center gap-2">
+                      🏥 மருத்துவம் & துணை மருத்துவம் (MBBS, BDS, Nursing, Allied Health)
+                    </h4>
+                    <span className="px-2.5 py-1 bg-rose-500/20 text-rose-300 text-xs font-semibold rounded-md border border-rose-500/30">
+                      மக்களுக்கான மருத்துவச் சேவை
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                      <p className="text-slate-300 leading-relaxed">இயற்பியல், வேதியியல், உயிரியல் (Biology / Maths mandatory).</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                      <p className="text-slate-300 leading-relaxed">MBBS, BDS, B.Sc Nursing, B.Pharm, கார்டியாக் டெக்னாலஜி, ரேடியாலஜி.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">3. நுழைவுத் தேர்வுகள்</p>
+                      <p className="text-slate-300 leading-relaxed">மருத்துவத்திற்கு NEET UG கட்டாயம்; நர்சிங் மற்றும் பாராமெடிக்கலுக்கு 12-ஆம் வகுப்பு கட்-ஆப் மதிப்பெண்.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">4. சிறப்புச் சலுகை</p>
+                      <p className="text-slate-300 leading-relaxed">தமிழக அரசுப் பள்ளி மாணவர்களுக்கு 7.5% மருத்துவ உள்ஒதுக்கீடு மற்றும் முழு கட்டணச் சலுகை உண்டு.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => alert("மருத்துவக் கலந்தாய்வு தேர்வுக் குழு போர்டல்: tnmedicalselection.net \nNEET மற்றும் பாராமெடிக்கல் சேர்க்கை விவரங்களை இங்கே பெறலாம்.")}
+                    className="w-full py-2 bg-rose-600/30 hover:bg-rose-600/50 border border-rose-500/50 text-rose-200 rounded-xl text-xs font-semibold transition"
+                  >
+                    TN மருத்துவக் கல்வி சேர்க்கை வழிகாட்டல் ↗
+                  </button>
+                </div>
+              )}
+
+              {selectedCareer === 'entrepreneur' && (
+                <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h4 className="text-lg font-bold text-lime-400 flex items-center gap-2">
+                      🚜 நவீன பண்ணை & வேளாண் மதிப்புக்கூட்டு தொழில்முனைவோர்
+                    </h4>
+                    <span className="px-2.5 py-1 bg-lime-500/20 text-lime-300 text-xs font-semibold rounded-md border border-lime-500/30">
+                      சுயதொழில் & வேலை தருபவர்
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">1. கல்வித் தகுதி</p>
+                      <p className="text-slate-300 leading-relaxed">10th, 12th, ITI, அக்ரி டிப்ளமோ அல்லது ஏதேனும் ஒரு பட்டப்படிப்பு போதுமானது.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">2. தொழில் வாய்ப்புகள்</p>
+                      <p className="text-slate-300 leading-relaxed">நாட்டுக்கோழி பண்ணை, பால் பண்ணை, சொட்டுநீர் பாசனம், இயற்கை உரம், உணவு பதப்படுத்துதல்.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">3. அரசு மானியங்கள்</p>
+                      <p className="text-slate-300 leading-relaxed">PMEGP திட்டம் (35% வரை மானியம்), அக்ரி கிளினிக் (ACABC) திட்டம், மற்றும் NEEDS திட்டம்.</p>
+                    </div>
+                    <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                      <p className="text-blue-400 font-bold mb-1">4. பயிற்சி மையங்கள்</p>
+                      <p className="text-slate-300 leading-relaxed">மாவட்ட வேளாண்மை அறிவியல் மையம் (KVK) மற்றும் நபார்டு (NABARD) பயிற்சி மையங்கள்.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => alert("KVK மாவட்ட மையங்கள் மற்றும் MSME வழிகாட்டலுக்கு மாவட்ட தொழில் மையம் (DIC)-ஐ அணுகலாம்.")}
+                    className="w-full py-2 bg-lime-600/30 hover:bg-lime-600/50 border border-lime-500/50 text-lime-200 rounded-xl text-xs font-semibold transition"
+                  >
+                    வேளாண் தொழில் முனைவோர் மானியங்கள் பார்க்க ↗
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* சப்-டேப் 2: உதவித்தொகைகள் & அறக்கட்டளைகள் (Scholarships) */}
+          {educationSubTab === 'scholarships' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  title: 'அகரம் பவுண்டேஷன் (Agaram Foundation)',
+                  badge: 'முழு கல்விக் கட்டணம் + தங்குமிடம்',
+                  desc: 'கிராமப்புற மற்றும் ஏழை எளிய குடும்பங்களைச் சேர்ந்த முதல் தலைமுறை மாணவர்களுக்கான முழு கல்விக் கட்டணம்.',
+                  target: '12-ஆம் வகுப்பில் சிறந்த மதிப்பெண் பெற்ற ஏழை மாணவர்கள்',
+                  action: () => alert("அகரம் பவுண்டேஷன் தொடர்பு எண்: 8448448948 \nஇணையதளம்: agaram.in \nவிண்ணப்பப் படிவங்களை இணையவழியாகப் பெறலாம்.")
+                },
+                {
+                  title: 'புதுமைப் பெண் & தமிழ்ப் புதல்வன் திட்டம்',
+                  badge: 'மாதம் ₹1,000 நேரடி வங்கி வரவு',
+                  desc: 'அரசுப் பள்ளிகளில் 6 முதல் 12 வரை படித்து கல்லூரியில் சேரும் அனைத்து மாணவிகளுக்கும் மாணவர்களுக்கும் மாதம் ₹1,000.',
+                  target: 'அரசுப் பள்ளி மாணவர்கள் (UG படிப்பு முடியும் வரை)',
+                  action: () => alert("விண்ணப்பிக்கும் முறை: நீங்கள் படிக்கும் கல்லூரி அலுவலகம் மூலமாக UMIS போர்ட்டலில் சான்றிதழ் சமர்ப்பிக்க வேண்டும்.")
+                },
+                {
+                  title: 'முதல் தலைமுறை பட்டதாரி சலுகை',
+                  badge: 'முழு கல்விக் கட்டண விலக்கு',
+                  desc: 'குடும்பத்தில் முதல் பட்டதாரியாக பொறியியல் மற்றும் மருத்துவக் கலந்தாய்வில் சேரும் மாணவர்களுக்கான கல்விக் கட்டண விலக்கு.',
+                  target: 'குடும்பத்தில் வேறு பட்டதாரிகள் இல்லாத மாணவர்கள்',
+                  action: () => alert("சான்றிதழ் பெறும் முறை: இ-சேவை மையம் மூலம் 'முதல் தலைமுறை பட்டதாரி சான்றிதழ்' (First Graduate Certificate) பெற்று சமர்ப்பிக்கவும்.")
+                },
+                {
+                  title: 'வித்யாசாரதி போர்டல் (Vidyasaarathi NSDL)',
+                  badge: 'ஆண்டுக்கு ₹20,000 முதல் ₹50,000',
+                  desc: 'டாடா, ஏசிசி, அப்பல்லோ போன்ற 50-க்கும் மேற்பட்ட கார்ப்பரேட் நிறுவனங்களின் CSR கல்வி உதவித்தொகை ஒரே தளத்தில்.',
+                  target: 'ITI, பாலிடெக்னிக், மற்றும் டிகிரி மாணவர்கள்',
+                  action: () => alert("வித்யாசாரதி இணையதளம்: vidyasaarathi.co.in \nதளத்தில் பதிவு செய்து நிறுவனங்களின் ஸ்காலர்ஷிப்களுக்கு நேரடியாக விண்ணப்பிக்கலாம்.")
+                },
+                {
+                  title: 'ரிலையன்ஸ் பவுண்டேஷன் உதவித்தொகை',
+                  badge: 'ஆண்டுக்கு ₹2,00,000 வரை',
+                  desc: 'இளங்கலை மற்றும் முதுகலை பயிலும் பொருளாதாரத்தில் பின்தங்கிய திறமை வாய்ந்த மாணவர்களுக்கான கல்வி உதவி நிதி.',
+                  target: 'குடும்ப ஆண்டு வருமானம் ₹15 லட்சத்திற்குள் உள்ள மாணவர்கள்',
+                  action: () => alert("ரிலையன்ஸ் பவுண்டேஷன் போர்டல்: scholarships.reliancefoundation.org \nஆண்டுதோறும் நுழைவுத் தேர்வு அடிப்படையில் தேர்வு செய்யப்படும்.")
+                },
+                {
+                  title: 'HDFC பரிவர்த்தன் கல்வி நிதி (ECSS)',
+                  badge: 'ஆண்டுக்கு ₹30,000 முதல் ₹75,000',
+                  desc: 'குடும்பத்தில் எதிர்பாராத நிதி நெருக்கடி அல்லது பெற்றோர் இழப்பு ஏற்பட்ட பள்ளி, கல்லூரி மாணவர்களின் தொடர் கல்விக்கான உதவி.',
+                  target: '1 முதல் 12 வகுப்பு, டிப்ளமோ, டிகிரி & PG மாணவர்கள்',
+                  action: () => alert("HDFC போர்டல்: buddy4study.com/page/hdfc-bank-parivartan-ecss-programme \nவிண்ணப்ப விவரங்களை போர்ட்டலில் காணலாம்.")
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-blue-500/50 transition">
+                  <div>
+                    <div className="flex justify-between items-start gap-2 mb-2">
+                      <h4 className="text-sm font-bold text-white leading-tight">{item.title}</h4>
+                      <span className="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded border border-blue-500/30 whitespace-nowrap">
+                        {item.badge}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed mb-3">{item.desc}</p>
+                    <div className="bg-slate-800/60 p-2 rounded-lg text-[11px] text-slate-400 mb-4 border border-slate-700/60">
+                      <strong className="text-slate-300">தகுதி: </strong>{item.target}
+                    </div>
+                  </div>
+                  <button
+                    onClick={item.action}
+                    className="w-full py-2 bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition border border-slate-700 hover:border-blue-500"
+                  >
+                    விவரம் & தொடர்பு எண்கள் ↗
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* சப்-டேப் 3: மாணவர் விடுதிகள் & கல்விக் கடன் (Student Welfare) */}
+          {educationSubTab === 'welfare' && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                <span className="text-2xl">🏢</span>
+                <h4 className="text-base font-bold text-white">இலவச அரசு மாணவர் விடுதிகள்</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  பிற்படுத்தப்பட்டோர் (BC/MBC) மற்றும் ஆதிதிராவிடர் நலத்துறை மூலமாக அனைத்து மாவட்டத் தலைநகரங்களிலும் இலவச உணவு மற்றும் தங்குமிட விடுதிகள் இயங்குகின்றன.
+                </p>
+                <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                  <p>✔ முற்றிலும் இலவச உணவு & தங்குமிடம்</p>
+                  <p>✔ கல்லூரி படிக்கும் வரை தங்கலாம்</p>
+                </div>
+                <button
+                  onClick={() => alert("விண்ணப்பிக்கும் தளம்: tnbchostels.in மற்றும் adwhostels.tn.gov.in \nமாவட்ட கலெக்டர் அலுவலக நலத்துறை மூலமும் விண்ணப்பிக்கலாம்.")}
+                  className="w-full py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-200 rounded-lg text-xs font-semibold transition"
+                >
+                  அரசு விடுதி போர்ட்டலில் விண்ணப்பிக்க ↗
+                </button>
+              </div>
+
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                <span className="text-2xl">💳</span>
+                <h4 className="text-base font-bold text-white">CSIS வட்டியில்லாக் கல்விக் கடன்</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  மத்திய அரசின் CSIS திட்டத்தின் கீழ், குடும்ப ஆண்டு வருமானம் ₹4.5 லட்சத்திற்குள் உள்ள மாணவர்களுக்கு கல்லூரி படிக்கும் காலம் வரை முழுக் கடன் வட்டியை அரசே ஏற்கும்.
+                </p>
+                <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                  <p>✔ படிக்கும் போது வட்டி கட்ட வேண்டாம்</p>
+                  <p>✔ வேலை கிடைத்த 1 ஆண்டுக்கு பின் திருப்பிச் செலுத்தலாம்</p>
+                </div>
+                <button
+                  onClick={() => alert("வித்யா லக்ஷ்மி அதிகாரப்பூர்வ போர்டல்: vidyalakshmi.co.in \nஅனைத்து வங்கிகளின் கல்விக் கடன்களுக்கும் இந்த ஒரே தளத்தில் விண்ணப்பிக்கலாம்.")}
+                  className="w-full py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-200 rounded-lg text-xs font-semibold transition"
+                >
+                  வித்யா லக்ஷ்மி கல்விக் கடன் போர்டல் ↗
+                </button>
+              </div>
+
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                <span className="text-2xl">💼</span>
+                <h4 className="text-base font-bold text-white">NATS படிக்கும்போதே உதவித்தொகை வேலை</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  மத்திய அரசின் தேசிய அப்ரண்டிஸ்ஷிப் (NATS) மூலம் டிப்ளமோ மற்றும் டிகிரி முடித்த/படிக்கும் மாணவர்களுக்கு முன்னணி நிறுவனங்களில் ஊக்கத்தொகையுடன் தொழிற்பயிற்சி.
+                </p>
+                <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                  <p>✔ மாதம் ₹9,000 முதல் ₹15,000 ஊக்கத்தொகை</p>
+                  <p>✔ அரசு அங்கீகரிக்கப்பட்ட பணி அனுபவ சான்றிதழ்</p>
+                </div>
+                <button
+                  onClick={() => alert("NATS அதிகாரப்பூர்வ போர்டல்: nats.education.gov.in \nபதிவு செய்து தொழிற்சாலைப் பயிற்சிக்கு நேரடியாக விண்ணப்பிக்கலாம்.")}
+                  className="w-full py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-200 rounded-lg text-xs font-semibold transition"
+                >
+                  NATS போர்ட்டலில் பதிவு செய்ய ↗
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
         {/* பிற தொகுதிகள் */}
-        {[  'education', 'jobs', 'business', 'spiritual'].includes(currentModule) && (
+        {[   'jobs', 'business', 'spiritual'].includes(currentModule) && (
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center space-y-4 max-w-xl mx-auto shadow-2xl">
             <span className="text-5xl block">
               {navigationModules.find((m) => m.id === currentModule)?.icon}
