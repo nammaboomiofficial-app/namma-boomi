@@ -30,6 +30,11 @@ export default function Home() {
   const [selectedCareer, setSelectedCareer] = useState('agri_officer');
   // வேலைவாய்ப்பு மாடியூல் ஸ்டேட்கள்
   const [jobsSubTab, setJobsSubTab] = useState('govt');
+  // தொழில் & MSME மாடியூல் ஸ்டேட்கள்
+  const [businessSubTab, setBusinessSubTab] = useState('schemes');
+  const [bizProjectCost, setBizProjectCost] = useState(500000);
+  const [bizCategory, setBizCategory] = useState('special');
+  const [bizLocation, setBizLocation] = useState('rural');
   // ஜோதிட இன்புட் ஸ்டேட்ஸ்
   const [birthDetails, setBirthDetails] = useState({
     name: 'சுந்தரம்',
@@ -3030,8 +3035,482 @@ export default function Home() {
           )}
         </div>
       )}
+      {/* 8. தொழில் & MSME (Business Hub) */}
+      {currentModule === 'business' && (
+        <div className="space-y-6">
+          {/* தலைப்பு & உத்யம் இலவச பதிவு பேனர் */}
+          <div className="bg-gradient-to-r from-amber-950/80 via-slate-900 to-orange-950/80 border border-amber-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <span className="inline-block px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-semibold rounded-full mb-2 border border-amber-500/40">
+                  🏭 குறு, சிறு & நடுத்தர தொழில் வழிகாட்டி
+                </span>
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <span>நம்ம பூமி தொழில் & MSME 360</span>
+                </h2>
+                <p className="text-sm text-slate-300 mt-1">
+                  அரசு மானியங்கள் (PMEGP, NEEDS) • பிணையில்லாக் கடன்கள் • PM விஸ்வகர்மா • உத்யம் & FSSAI வழிகாட்டல்
+                </p>
+              </div>
+
+              {/* சப்-டேப் பட்டன்கள் */}
+              <div className="flex flex-wrap gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-700">
+                <button
+                  onClick={() => setBusinessSubTab('schemes')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    businessSubTab === 'schemes' ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🏛️ அரசு மானியங்கள் & கால்குலேட்டர்
+                </button>
+                <button
+                  onClick={() => setBusinessSubTab('vishwakarma')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    businessSubTab === 'vishwakarma' ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🔨 விஸ்வகர்மா & உணவுப் பதப்படுத்துதல்
+                </button>
+                <button
+                  onClick={() => setBusinessSubTab('women')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    businessSubTab === 'women' ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  👩‍💼 மகளிர் & சுயஉதவிக் குழுக்கள்
+                </button>
+                <button
+                  onClick={() => setBusinessSubTab('compliance')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    businessSubTab === 'compliance' ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  📋 உரிமங்கள் & DPR வழிகாட்டி
+                </button>
+              </div>
+            </div>
+
+            {/* குறுந்தகவல் அறிவிப்பு */}
+            <div className="mt-4 pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-emerald-400 bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-500/30">
+                <span className="text-base">💡</span>
+                <span><strong>முக்கியத் தகவல்:</strong> மத்திய அரசின் உத்யம் (Udyam) பதிவு முற்றிலும் இலவசம்; தனியார் ஏஜென்ட்களுக்குப் பணம் தர வேண்டாம்!</span>
+              </div>
+              <div className="text-slate-400">
+                மாவட்ட தொழில் மையம் (DIC): <strong className="text-amber-400">ஒவ்வொரு மாவட்ட ஆட்சியர் அலுவலகத்திலும் உள்ளது</strong>
+              </div>
+            </div>
+          </div>
+
+          {/* சப்-டேப் 1: அரசு மானியங்கள் & கால்குலேட்டர் */}
+          {businessSubTab === 'schemes' && (
+            <div className="space-y-6">
+              {/* இன்டராக்டிவ் PMEGP தொழில் மானியம் கணக்கீட்டுக் கருவி */}
+              <div className="bg-slate-900 border border-amber-500/40 rounded-2xl p-5 shadow-xl space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                  <div>
+                    <h3 className="text-base font-bold text-white flex items-center gap-2">
+                      <span>🧮 PMEGP தொழில் மானியம் கணக்கீட்டுக் கருவி (Subsidy Calculator)</span>
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-0.5">உங்கள் திட்ட மதிப்பீட்டிற்கு அரசு தரும் நேரடி மானியத்தைக் கணக்கிடுங்கள்</p>
+                  </div>
+                  <span className="px-2.5 py-1 bg-amber-500/20 text-amber-300 text-xs font-semibold rounded-md border border-amber-500/30 self-start sm:self-auto">
+                    35% வரை மானியம்
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* திட்ட மதிப்பீடு */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs text-slate-300 font-semibold">திட்ட மொத்த மதிப்பீடு (Project Cost):</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="range"
+                        min="100000"
+                        max="5000000"
+                        step="50000"
+                        value={bizProjectCost}
+                        onChange={(e) => setBizProjectCost(Number(e.target.value))}
+                        className="w-full accent-amber-500"
+                      />
+                    </div>
+                    <div className="text-amber-400 font-bold text-sm bg-slate-800/80 p-2 rounded-lg text-center border border-slate-700">
+                      ₹{bizProjectCost.toLocaleString('en-IN')}
+                    </div>
+                  </div>
+
+                  {/* சமூகப் பிரிவு */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs text-slate-300 font-semibold">விண்ணப்பதாரர் பிரிவு:</label>
+                    <select
+                      value={bizCategory}
+                      onChange={(e) => setBizCategory(e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-amber-500"
+                    >
+                      <option value="special">சிறப்புப் பிரிவு (பெண்கள் / SC / ST / BC / MBC / சிறுபான்மையினர்)</option>
+                      <option value="general">பொதுப் பிரிவு (General Category)</option>
+                    </select>
+                    <p className="text-[11px] text-slate-400">சிறப்புப் பிரிவினருக்கு கூடுதல் மானியம் & குறைந்த முதலீடு</p>
+                  </div>
+
+                  {/* பகுதி தேர்வு */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs text-slate-300 font-semibold">தொழில் அமையுமிடம்:</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setBizLocation('rural')}
+                        className={`py-2 px-3 rounded-lg text-xs font-semibold transition border ${
+                          bizLocation === 'rural' ? 'bg-amber-600 text-white border-amber-500' : 'bg-slate-800 text-slate-300 border-slate-700'
+                        }`}
+                      >
+                        🌾 கிராமப்புறம்
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setBizLocation('urban')}
+                        className={`py-2 px-3 rounded-lg text-xs font-semibold transition border ${
+                          bizLocation === 'urban' ? 'bg-amber-600 text-white border-amber-500' : 'bg-slate-800 text-slate-300 border-slate-700'
+                        }`}
+                      >
+                        🏙️ நகர்ப்புறம்
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-slate-400">கிராமப்புறத் தொழில்களுக்கு 10% கூடுதல் மானியம்</p>
+                  </div>
+                </div>
+
+                {/* கால்குலேட்டர் முடிவுகள் */}
+                {(() => {
+                  const ownPct = bizCategory === 'special' ? 5 : 10;
+                  const subsidyPct = bizCategory === 'special'
+                    ? (bizLocation === 'rural' ? 35 : 25)
+                    : (bizLocation === 'rural' ? 25 : 15);
+                  const bankLoanPct = 100 - ownPct - subsidyPct;
+
+                  const ownAmt = Math.round((bizProjectCost * ownPct) / 100);
+                  const subsidyAmt = Math.round((bizProjectCost * subsidyPct) / 100);
+                  const bankLoanAmt = Math.round((bizProjectCost * bankLoanPct) / 100);
+
+                  return (
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-800 text-center">
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                        <p className="text-[11px] text-slate-400">உங்கள் சொந்த முதலீடு ({ownPct}%):</p>
+                        <p className="text-base font-bold text-white mt-1">₹{ownAmt.toLocaleString('en-IN')}</p>
+                      </div>
+                      <div className="bg-emerald-950/40 p-3 rounded-xl border border-emerald-500/40">
+                        <p className="text-[11px] text-emerald-300 font-semibold">அரசு வழங்கும் நேரடி மானியம் ({subsidyPct}%):</p>
+                        <p className="text-lg font-bold text-emerald-400 mt-1">₹{subsidyAmt.toLocaleString('en-IN')}</p>
+                        <span className="text-[10px] text-emerald-300">திருப்பிச் செலுத்தத் தேவையில்லை</span>
+                      </div>
+                      <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                        <p className="text-[11px] text-slate-400">வங்கி வழங்கும் கடன் ({bankLoanPct}%):</p>
+                        <p className="text-base font-bold text-amber-300 mt-1">₹{bankLoanAmt.toLocaleString('en-IN')}</p>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* முன்னணி அரசு மானியத் திட்டங்கள் */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  {
+                    title: 'PMEGP பிரதமரின் வேலைவாய்ப்பு உருவாக்கும் திட்டம்',
+                    badge: '35% வரை மானியம்',
+                    cap: 'உற்பத்தி: ₹50 லட்சம் வரை | சேவை: ₹20 லட்சம் வரை',
+                    desc: 'மத்திய அரசின் மிகப்பெரிய தொழில் மானியத் திட்டம். KVIC மற்றும் வங்கிகள் மூலம் நேரடி நிதி உதவி.',
+                    eligibility: '8-ஆம் வகுப்பு தேர்ச்சி பெற்ற 18 வயது நிரம்பிய எவரும்',
+                    action: () => alert("PMEGP ஆன்லைன் போர்டல்: kviconline.gov.in \nஆன்லைனிலேயே திட்ட அறிக்கை (DPR) பதிவேற்றி விண்ணப்பிக்கலாம்.")
+                  },
+                  {
+                    title: 'NEEDS திட்டம் (புதிய தொழில்முனைவோர் திட்டம்)',
+                    badge: '25% தமிழக அரசு மானியம்',
+                    cap: 'திட்ட மதிப்பு: ₹10 லட்சம் முதல் ₹5 கோடி வரை',
+                    desc: 'பட்டதாரிகள் மற்றும் டிப்ளமோ முடித்த முதல் தலைமுறை தொழில்முனைவோருக்கு அதிகபட்சமாக ₹75 லட்சம் வரை மானியம்.',
+                    eligibility: 'பட்டப்படிப்பு அல்லது தொழிற்கல்வி முடித்த 21-35 வயதுடையோர்',
+                    action: () => alert("NEEDS இணையதளம்: msmeonline.tn.gov.in \nமாவட்ட தொழில் மையம் (DIC) மூலமாக விண்ணப்பிக்கலாம்.")
+                  },
+                  {
+                    title: 'UYEGP படித்த வேலைவாய்ப்பற்ற இளைஞர் திட்டம்',
+                    badge: '25% நேரடி மானியம்',
+                    cap: 'உற்பத்தி: ₹15 லட்சம் | சேவை: ₹5 லட்சம் | வியாபாரம்: ₹5 லட்சம்',
+                    desc: 'குறைந்த கல்வித்தகுதி உடைய இளைஞர்கள் உள்ளூரிலேயே மளிகை, ஜெராக்ஸ், வாடகை வாகனம் அல்லது சிறு பட்டறை தொடங்க உதவி.',
+                    eligibility: '8-ஆம் வகுப்பு தேர்ச்சி (18 முதல் 45 வயது வரை)',
+                    action: () => alert("UYEGP விண்ணப்ப போர்டல்: msmeonline.tn.gov.in \nமாவட்ட தொழில் மையத்தை (DIC) நேரில் அணுகலாம்.")
+                  },
+                  {
+                    title: 'பிரதமர் முத்ரா கடன் திட்டம் (PMMY)',
+                    badge: 'பிணையில்லாக் கடன் (No Collateral)',
+                    cap: 'சிசு: ₹50,000 | கிஷோர்: ₹5 லட்சம் | தருண்: ₹10 லட்சம்',
+                    desc: 'சொத்து அடமானம் ஏதுமின்றி சிறு வியாபாரிகள், தள்ளுவண்டி, தையல், காய்கறி மற்றும் சிறு கடைகளுக்கு வங்கிகள் தரும் கடன்.',
+                    eligibility: 'ஏற்கனவே தொழில் செய்வோர் அல்லது புதிய வியாபாரம் தொடங்குவோர்',
+                    action: () => alert("முத்ரா போர்டல்: mudra.org.in \nஉங்கள் அருகிலுள்ள தேசியமயமாக்கப்பட்ட வங்கிக் கிளையை அணுகவும்.")
+                  },
+                  {
+                    title: 'CGTMSE பிணையில்லா கடன் உத்தரவாத திட்டம்',
+                    badge: '₹5 கோடி வரை கடன்',
+                    cap: 'அடமானச் சொத்து தேவையில்லை (Govt Guarantee)',
+                    desc: 'சொத்து ஜாமீன் இல்லாத காரணத்தால் வங்கிகள் கடன் மறுப்பதைத் தடுக்க மத்திய அரசு வழங்கும் 85% வரை கடன் உத்தரவாதம்.',
+                    eligibility: 'உற்பத்தி மற்றும் சேவை சார்ந்த பதிவுசெய்யப்பட்ட MSME நிறுவனங்கள்',
+                    action: () => alert("CGTMSE போர்டல்: cgtmse.in \nவங்கியாளரிடம் CGTMSE கீழ் கடன் வழங்குமாறு கோரலாம்.")
+                  },
+                  {
+                    title: 'அண்ணல் அம்பேத்கர் வணிக சாம்பியன் திட்டம்',
+                    badge: '35% மானியம் + 6% வட்டி மானியம்',
+                    cap: 'திட்ட மதிப்பு வரம்பின்றி நேரடி உதவி',
+                    desc: 'SC / ST சமூகத்தைச் சேர்ந்த புதிய மற்றும் வளர்ந்து வரும் தொழில்முனைவோருக்குத் தமிழ்நாடு அரசின் வரலாற்றுச் சிறப்புமிக்க திட்டம்.',
+                    eligibility: 'SC / ST தொழில்முனைவோர் (கல்வித் தகுதி கட்டாயமில்லை)',
+                    action: () => alert("விண்ணப்பிக்கும் தளம்: msmeonline.tn.gov.in \nமாவட்ட தொழில் மையம் (DIC) சிறப்பு முகாம்கள்.")
+                  }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-amber-500/50 transition">
+                    <div>
+                      <div className="flex justify-between items-start gap-2 mb-2">
+                        <h4 className="text-sm font-bold text-white leading-tight">{item.title}</h4>
+                        <span className="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30 whitespace-nowrap">
+                          {item.badge}
+                        </span>
+                      </div>
+                      <p className="text-xs text-amber-400 font-semibold mb-2">{item.cap}</p>
+                      <p className="text-xs text-slate-300 leading-relaxed mb-3">{item.desc}</p>
+                      <div className="bg-slate-800/60 p-2 rounded-lg text-[11px] text-slate-400 mb-4 border border-slate-700/60">
+                        <strong className="text-slate-300">தகுதி: </strong>{item.eligibility}
+                      </div>
+                    </div>
+                    <button
+                      onClick={item.action}
+                      className="w-full py-2 bg-slate-800 hover:bg-amber-600 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition border border-slate-700 hover:border-amber-500"
+                    >
+                      விண்ணப்பிக்கும் முறை & போர்டல் ↗
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* சப்-டேப் 2: பாரம்பரிய & உணவுப் பதப்படுத்துதல் */}
+          {businessSubTab === 'vishwakarma' && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* PM விஸ்வகர்மா திட்டம் */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-3xl">🔨</span>
+                    <span className="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-md border border-amber-500/30 font-semibold">
+                      ₹15,000 இலவச டூல்கிட்
+                    </span>
+                  </div>
+                  <h4 className="text-base font-bold text-white">பிரதமர் விஸ்வகர்மா திட்டம் (PM Vishwakarma)</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    பாரம்பரிய கைவினைஞர்கள் மற்றும் தொழிலாளர்களுக்கு நவீன கருவிகள் வாங்க ₹15,000 மானியம், இலவசப் பயிற்சி மற்றும் வெறும் 5% வட்டியில் ₹3 லட்சம் வரை பிணையில்லாக் கடன்.
+                  </p>
+                  <div className="bg-slate-800/60 p-3 rounded-lg text-xs text-slate-300 space-y-1.5 border border-slate-700">
+                    <p className="text-amber-400 font-bold">சேர்க்கப்பட்டுள்ள 18 பாரம்பரிய தொழில்கள்:</p>
+                    <p className="leading-relaxed text-slate-300 text-[11px]">
+                      தச்சர், பொற்கொல்லர், கொல்லர், கொத்தனார், தையல் கலைஞர், சிற்பி, குயவர், காலணி தைப்பவர், படகு கட்டுபவர், கூடை முடைபவர், மாலை கட்டுவோர், முடிதிருத்துவோர், சலவைத் தொழிலாளி, பூட்டு தயாரிப்பாளர் மற்றும் பொம்மை செய்பவர்கள்.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => alert("PM விஸ்வகர்மா போர்டல்: pmvishwakarma.gov.in \nஉங்கள் அருகிலுள்ள பொது சேவை மையம் (CSC) மூலம் இலவசமாகப் பதிவு செய்யலாம்.")}
+                    className="w-full py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-semibold transition shadow-md"
+                  >
+                    CSC மையத்தில் விஸ்வகர்மா பதிவு செய்ய ↗
+                  </button>
+                </div>
+
+                {/* PMFME உணவு பதப்படுத்துதல் திட்டம் */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-3xl">🌾</span>
+                    <span className="text-xs bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-md border border-emerald-500/30 font-semibold">
+                      35% நேரடி மானியம் (அதிகபட்சம் ₹10 லட்சம்)
+                    </span>
+                  </div>
+                  <h4 className="text-base font-bold text-white">பிரதமரின் உணவுப் பதப்படுத்தும் திட்டம் (PMFME)</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    கிராமப்புறங்களில் விவசாய விளைபொருட்களை மதிப்புக்கூட்டி விற்பனை செய்யும் மைக்ரோ உணவு பதப்படுத்தும் நிறுவனங்களுக்கு 35% மூலதன மானியம்.
+                  </p>
+                  <div className="bg-slate-800/60 p-3 rounded-lg text-xs text-slate-300 space-y-1.5 border border-slate-700">
+                    <p className="text-emerald-400 font-bold">பொருந்தக்கூடிய உணவுத் தொழில்கள்:</p>
+                    <ul className="list-disc list-inside space-y-1 text-slate-300 text-[11px]">
+                      <li>மரச்செக்கு எண்ணெய் & தேங்காய் எண்ணெய் ஆலை</li>
+                      <li>சிறு தானிய பிஸ்கட், மாவு மில் & அவல் தயாரிப்பு</li>
+                      <li>மசாலா பொடி, ஊறுகாய், வத்தல் & அப்பளம் தயாரிப்பு</li>
+                      <li>பால் பண்ணை சார்ந்த நெய், பன்னீர் மற்றும் பழச்சாறு பேக்கிங்</li>
+                    </ul>
+                  </div>
+                  <button
+                    onClick={() => alert("PMFME அதிகாரப்பூர்வ போர்டல்: pmfme.mofpi.gov.in \nமாவட்ட வள மையங்கள் (DPR தயாரிப்புக்கு இலவச உதவி) மூலம் விண்ணப்பிக்கலாம்.")}
+                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition shadow-md"
+                  >
+                    PMFME உணவு மானிய போர்டல் ↗
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* சப்-டேப் 3: மகளிர் & சுயஉதவிக் குழுக்கள் */}
+          {businessSubTab === 'women' && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                <span className="text-2xl">👩‍🌾</span>
+                <h4 className="text-base font-bold text-white">வாழ்ந்து காட்டுவோம் திட்டம் (TN-RTP)</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  உலக வங்கி நிதியுதவியுடன் கிராமப்புற மகளிர் மற்றும் உற்பத்தியாளர் குழுக்களுக்கு (Producer Groups) நேரடி தொழில் மானியங்கள் மற்றும் இயந்திர உதவி.
+                </p>
+                <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-amber-300 space-y-1">
+                  <p>✔ தனிநபர் தொழிலுக்கு 30% மானியம்</p>
+                  <p>✔ உற்பத்தியாளர் குழுக்களுக்கு ₹1.5 லட்சம் வரை இணை நிதி</p>
+                </div>
+                <button
+                  onClick={() => alert("வாழ்ந்து காட்டுவோம் திட்ட போர்டல்: vazhndhukaattuvom.tn.gov.in \nவட்டார அளவிலான திட்ட அலுவலகத்தை அணுகவும்.")}
+                  className="w-full py-2 bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/50 text-amber-200 rounded-lg text-xs font-semibold transition"
+                >
+                  TN-RTP மகளிர் மானிய விவரம் ↗
+                </button>
+              </div>
+
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                <span className="text-2xl">💼</span>
+                <h4 className="text-base font-bold text-white">ஸ்டாண்ட்-அப் இந்தியா (Stand-Up India)</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  ஒவ்வொரு வங்கிக் கிளையும் குறைந்தபட்சம் ஒரு பெண் தொழில்முனைவோருக்கு புதிய உற்பத்தி அல்லது சேவைத் தொழில் தொடங்க கடன் வழங்கும் கட்டாயத் திட்டம்.
+                </p>
+                <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                  <p>✔ கடன் தொகை: ₹10 லட்சம் முதல் ₹1 கோடி வரை</p>
+                  <p>✔ பசுமை திட்டங்களுக்கு (Greenfield) முன்னுரிமை</p>
+                </div>
+                <button
+                  onClick={() => alert("ஸ்டாண்ட்-அப் இந்தியா போர்டல்: standupmitra.in \nஆன்லைன் மூலம் விண்ணப்பித்து அருகிலுள்ள வங்கியைத் தேர்வு செய்யலாம்.")}
+                  className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-xs font-semibold transition"
+                >
+                  ஸ்டாண்ட்-அப் மித்ரா போர்டல் ↗
+                </button>
+              </div>
+
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                <span className="text-2xl">🤝</span>
+                <h4 className="text-base font-bold text-white">சுயஉதவிக் குழுக்கள் வங்கிக் கடன் இணைப்பு</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  தமிழ்நாடு மகளிர் மேம்பாட்டு நிறுவனம் (TNSRLM) மூலமாக சுயஉதவிக் குழுக்களுக்கு 7% சலுகை வட்டியில் வங்கிக் கடன் மற்றும் சமுதாய முதலீட்டு நிதி.
+                </p>
+                <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-amber-300 space-y-1">
+                  <p>✔ குழுவிற்கு ₹10 லட்சம் முதல் ₹20 லட்சம் வரை கடன்</p>
+                  <p>✔ ஒழுங்காகத் திரும்பச் செலுத்தினால் வட்டி மானியம்</p>
+                </div>
+                <button
+                  onClick={() => alert("தொடர்புக்கு: உங்கள் கிராம ஊராட்சி அளவிலான கூட்டமைப்பு (PLF) அல்லது மகளிர் திட்ட அலுவலர்.")}
+                  className="w-full py-2 bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/50 text-amber-200 rounded-lg text-xs font-semibold transition"
+                >
+                  மகளிர் திட்ட வழிகாட்டல் ↗
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* சப்-டேப் 4: உரிமங்கள் & DPR வழிகாட்டி */}
+          {businessSubTab === 'compliance' && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* உத்யம் பதிவு */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">📜</span>
+                  <h4 className="text-base font-bold text-white">உத்யம் MSME பதிவு (இலவசம்)</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    அரசு மானியங்கள், வங்கி முன்னுரிமைக் கடன்கள் மற்றும் டெண்டர்களில் பங்கேற்க மத்திய அரசின் உத்யம் சான்றிதழ் அவசியம்.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                    <p>✔ தேவையானவை: ஆதார் எண், பான் கார்டு, வங்கி கணக்கு</p>
+                    <p>✔ கட்டணம் ஏதுமில்லை; 5 நிமிடங்களில் பதிவிறக்கம்</p>
+                  </div>
+                  <button
+                    onClick={() => alert("அதிகாரப்பூர்வ தளம்: udyamregistration.gov.in \n(குறிப்பு: .gov.in முடிவடையும் அரசு தளத்தில் மட்டுமே பதிவு செய்யவும்; போலி தளங்களை நம்ப வேண்டாம்).")}
+                    className="w-full py-2 bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/50 text-amber-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    உத்யம் அரசு தளத்தில் பதிவு செய்ய ↗
+                  </button>
+                </div>
+
+                {/* FSSAI உணவு உரிமம் */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">🥗</span>
+                  <h4 className="text-base font-bold text-white">FSSAI உணவுப் பாதுகாப்பு உரிமம்</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    உணவு, பேக்கிங், பேக்கரி, மளிகை, தேநீர் கடை மற்றும் கேட்டரிங் செய்பவர்களுக்கு ஆண்டுக்கு வெறும் ₹100 கட்டணத்தில் Basic Registration.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                    <p>✔ விற்றுமுதல் ₹12 லட்சத்திற்குள் இருந்தால் Basic பதிவு போதும்</p>
+                    <p>✔ ஆன்லைனிலேயே விண்ணப்பித்து சான்றிதழ் பெறலாம்</p>
+                  </div>
+                  <button
+                    onClick={() => alert("FSSAI அதிகாரப்பூர்வ போர்டல்: foscos.fssai.gov.in \nபாஸ்போர்ட் சைஸ் போட்டோ மற்றும் ஆதார் அட்டை போதுமானது.")}
+                    className="w-full py-2 bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/50 text-amber-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    FSSAI உணவு உரிம போர்டல் ↗
+                  </button>
+                </div>
+
+                {/* அரசு GeM போர்டல் */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">🛒</span>
+                  <h4 className="text-base font-bold text-white">GeM போர்ட்டலில் அரசுக்கு விற்பனை</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    அரசுத் துறைகள், பள்ளிகள், மற்றும் அலுவலகங்களுக்கு உங்கள் பொருட்கள் அல்லது சேவைகளை இடைத்தரகர்கள் இன்றி நேரடியாக விற்கலாம்.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                    <p>✔ MSME நிறுவனங்களுக்கு 25% அரசு கொள்முதல் முன்னுரிமை</p>
+                    <p>✔ நியாயமான விலையில் உடனடி அரசு ஆர்டர்கள்</p>
+                  </div>
+                  <button
+                    onClick={() => alert("GeM அதிகாரப்பூர்வ போர்டல்: gem.gov.in \nவிற்பனையாளராகப் (Seller) பதிவு செய்து பொருட்களைப் பட்டியலிடலாம்.")}
+                    className="w-full py-2 bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/50 text-amber-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    GeM அரசு சந்தை போர்டல் ↗
+                  </button>
+                </div>
+              </div>
+
+              {/* திட்ட அறிக்கை (DPR) செக்லிஸ்ட் அட்டை */}
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                <h4 className="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
+                  <span>📄 வங்கி தொழில் கடன் பெற தேவையான 6 முக்கிய ஆவணங்கள் (DPR Checklist):</span>
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                  <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                    <p className="text-white font-semibold mb-1">1. திட்ட அறிக்கை (DPR)</p>
+                    <p className="text-slate-400">தொழில் விளக்கம், இயந்திரங்களின் விலைப்பட்டியல் (Quotation), மற்றும் 3 ஆண்டு லாப-நஷ்ட உத்தேச கணக்கு.</p>
+                  </div>
+                  <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                    <p className="text-white font-semibold mb-1">2. தொழில் இட ஆவணம்</p>
+                    <p className="text-slate-400">சொந்த இடமாக இருந்தால் பட்டா/பத்திர நகல்; வாடகை இடமாக இருந்தால் பதிவு செய்யப்பட்ட வாடகை ஒப்பந்தம் (Rental Agreement).</p>
+                  </div>
+                  <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                    <p className="text-white font-semibold mb-1">3. KYC & அடையாள ஆவணங்கள்</p>
+                    <p className="text-slate-400">விண்ணப்பதாரரின் ஆதார் அட்டை, பான் கார்டு, சாதிச் சான்றிதழ் மற்றும் 3 பாஸ்போர்ட் சைஸ் புகைப்படங்கள்.</p>
+                  </div>
+                  <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                    <p className="text-white font-semibold mb-1">4. கல்வி & பயிற்சி சான்றிதழ்</p>
+                    <p className="text-slate-400">பள்ளி/கல்லூரி மார்க்ஷீட், EDP தொழில்முனைவோர் பயிற்சி சான்றிதழ் அல்லது KVK தொழிற்பயிற்சி நகல்.</p>
+                  </div>
+                  <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                    <p className="text-white font-semibold mb-1">5. வங்கி கணக்கு புத்தகம்</p>
+                    <p className="text-slate-400">விண்ணப்பதாரரின் கடந்த 6 மாத வங்கி கணக்கு அறிக்கை (Bank Statement) மற்றும் CIBIL அறிக்கை.</p>
+                  </div>
+                  <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                    <p className="text-white font-semibold mb-1">6. அரசு பதிவு சான்றிதழ்</p>
+                    <p className="text-slate-400">உத்யம் (Udyam) பதிவு நகல் மற்றும் பொருந்தினால் FSSAI உணவு உரிமம் அல்லது உள்ளாட்சி தொழில் உரிமம்.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
         {/* பிற தொகுதிகள் */}
-        {[    'business', 'spiritual'].includes(currentModule) && (
+        {[     'spiritual'].includes(currentModule) && (
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center space-y-4 max-w-xl mx-auto shadow-2xl">
             <span className="text-5xl block">
               {navigationModules.find((m) => m.id === currentModule)?.icon}
