@@ -28,6 +28,8 @@ export default function Home() {
   // கல்வி & படிப்பு மாடியூல் ஸ்டேட்கள்
   const [educationSubTab, setEducationSubTab] = useState('pathway');
   const [selectedCareer, setSelectedCareer] = useState('agri_officer');
+  // வேலைவாய்ப்பு மாடியூல் ஸ்டேட்கள்
+  const [jobsSubTab, setJobsSubTab] = useState('govt');
   // ஜோதிட இன்புட் ஸ்டேட்ஸ்
   const [birthDetails, setBirthDetails] = useState({
     name: 'சுந்தரம்',
@@ -2710,8 +2712,326 @@ export default function Home() {
           )}
         </div>
       )}
+      {/* 7. வேலைவாய்ப்பு & வழிகாட்டல் (Jobs Hub) */}
+      {currentModule === 'jobs' && (
+        <div className="space-y-6">
+          {/* தலைப்பு & போலி வேலை மோசடி தடுப்பு விழிப்புணர்வு பேனர் */}
+          <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-teal-950/80 border border-emerald-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <span className="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-semibold rounded-full mb-2 border border-emerald-500/40">
+                  💼 வேலைவாய்ப்பு & திறன் வழிகாட்டி
+                </span>
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <span>நம்ம பூமி வேலைவாய்ப்பு 360</span>
+                </h2>
+                <p className="text-sm text-slate-300 mt-1">
+                  நேரடி அரசு & தனியார் பணிகள் • மாவட்ட முகாம்கள் • வெளிநாட்டு வேலைகள் (OMCL) • WFH வாய்ப்புகள்
+                </p>
+              </div>
+
+              {/* சப்-டேப் பட்டன்கள் */}
+              <div className="flex flex-wrap gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-700">
+                <button
+                  onClick={() => setJobsSubTab('govt')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    jobsSubTab === 'govt' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🏛️ அரசுப் பணிகள்
+                </button>
+                <button
+                  onClick={() => setJobsSubTab('private')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    jobsSubTab === 'private' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🏢 தனியார் & தொழிற்துறை
+                </button>
+                <button
+                  onClick={() => setJobsSubTab('wfh')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    jobsSubTab === 'wfh' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🏠 வீட்டிலிருந்தே வேலை / Gig
+                </button>
+                <button
+                  onClick={() => setJobsSubTab('safety')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    jobsSubTab === 'safety' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🛡️ வெளிநாட்டு வேலை & பாதுகாப்பு
+                </button>
+              </div>
+            </div>
+
+            {/* வேலை தேடுவோர் பாதுகாப்பு எச்சரிக்கை ஸ்ட்ரிப் */}
+            <div className="mt-4 pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-amber-300 bg-amber-950/40 px-3 py-1.5 rounded-lg border border-amber-500/30">
+                <span className="text-base">⚠️</span>
+                <span><strong>பொன்விதி:</strong> நேர்மையான எந்தவொரு நிறுவனமும் வேலைக்காக முன்பணம் கேட்பதில்லை!</span>
+              </div>
+              <div className="text-slate-400">
+                அரசு உதவி மையம்: <strong className="text-emerald-400">155255</strong> (சைபர் கிரைம் உதவி)
+              </div>
+            </div>
+          </div>
+
+          {/* சப்-டேப் 1: அரசுப் பணிகள் (Govt Jobs) */}
+          {jobsSubTab === 'govt' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  title: 'TNPSC அரசுப் பணிகள் (Group 4, 2, 1)',
+                  badge: '10th / Any Degree',
+                  dept: 'தமிழக அரசுப் பணியாளர் தேர்வாணையம்',
+                  roles: 'VAO, இளநிலை உதவியாளர், தட்டச்சர், சப்-கலெக்டர்',
+                  action: () => alert("TNPSC போர்டல்: tnpsc.gov.in \nஒருமுறை பதிவு (OTR) செய்து விண்ணப்பிக்கலாம்.")
+                },
+                {
+                  title: 'TNUSRB சீருடைப் பணியாளர் தேர்வு',
+                  badge: '10th Pass / Degree',
+                  dept: 'தமிழ்நாடு சீருடைப் பணியாளர் தேர்வு வாரியம்',
+                  roles: 'இரண்டாம் நிலை காவலர், தீயணைப்பாளர், சப்-இன்ஸ்பெக்டர் (SI)',
+                  action: () => alert("TNUSRB போர்டல்: tnusrb.tn.gov.in \nஉடற்தகுதி மற்றும் எழுத்துத்தேர்வு வழிகாட்டல் தளத்தில் உள்ளது.")
+                },
+                {
+                  title: 'ரயில்வே பணியாளர் வாரியம் (RRB)',
+                  badge: '10th / ITI / Degree',
+                  dept: 'இந்திய ரயில்வே (தெற்கு ரயில்வே)',
+                  roles: 'குரூப் D, அசிஸ்டென்ட் லோகோ பைலட் (ALP), NTPC கிளார்க்',
+                  action: () => alert("RRB சென்னை இணையதளம்: rrbchennai.gov.in \nஅனைத்து தேர்வுகளும் தமிழ் மொழியிலும் எழுதலாம்.")
+                },
+                {
+                  title: 'அஞ்சல் துறை நேரடி வேலைகள் (India Post)',
+                  badge: '10-ஆம் வகுப்பு மதிப்பெண் போதும்',
+                  dept: 'இந்திய அஞ்சல் துறை (GDS)',
+                  roles: 'கிராமின் டாக் சேவக் (GDS), கிளை போஸ்ட்மாஸ்டர்',
+                  action: () => alert("India Post GDS போர்டல்: indiapostgdsonline.gov.in \nஎழுத்துத்தேர்வு கிடையாது; 10th மதிப்பெண் அடிப்படையில் நேரடித் தேர்வு.")
+                },
+                {
+                  title: 'வங்கிப் பணிகள் (IBPS & SBI)',
+                  badge: 'ஏதேனும் ஒரு பட்டப்படிப்பு',
+                  dept: 'தேசியமயமாக்கப்பட்ட வங்கிகள்',
+                  roles: 'கிளார்க் (Clerk), புரொபேஷனரி ஆபிசர் (PO), அக்ரி ஆபிசர்',
+                  action: () => alert("IBPS போர்டல்: ibps.in \nவருடாந்திரத் தேர்வு அட்டவணையை தளத்தில் சரிபார்க்கவும்.")
+                },
+                {
+                  title: 'தமிழ்நாடு மாவட்ட வேலைவாய்ப்பு மையம்',
+                  badge: 'அனைத்து கல்வித் தகுதியும்',
+                  dept: 'வேலைவாய்ப்பு & பயிற்சித் துறை',
+                  roles: 'அரசுப் பணி பதிவு மற்றும் மூப்பு நிலை (Seniority Renewal)',
+                  action: () => alert("வேலைவாய்ப்பு போர்டல்: tnvelaivaaippu.gov.in \nபள்ளி/கல்லூரி சான்றிதழ்களைப் பதிவு செய்து 3 ஆண்டுகளுக்கு ஒருமுறை புதுப்பிக்கவும்.")
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-500/50 transition">
+                  <div>
+                    <div className="flex justify-between items-start gap-2 mb-2">
+                      <h4 className="text-sm font-bold text-white leading-tight">{item.title}</h4>
+                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30 whitespace-nowrap">
+                        {item.badge}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 mb-2">துறை: {item.dept}</p>
+                    <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-slate-300 mb-4 border border-slate-700/60">
+                      <strong className="text-emerald-400">முக்கியப் பதவிகள்: </strong>{item.roles}
+                    </div>
+                  </div>
+                  <button
+                    onClick={item.action}
+                    className="w-full py-2 bg-slate-800 hover:bg-emerald-600 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition border border-slate-700 hover:border-emerald-500"
+                  >
+                    அதிகாரப்பூர்வ தளம் செல்ல ↗
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* சப்-டேப் 2: தனியார் & தொழிற்துறை (Private Jobs) */}
+          {jobsSubTab === 'private' && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">🏭</span>
+                  <h4 className="text-base font-bold text-white">உற்பத்தி & ஆட்டோமொபைல் தொழிற்துறை</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    சென்னை, ஓசூர், கோவை மற்றும் ஸ்ரீபெரும்புதூர் தொழிற்பேட்டைகளில் ITI, டிப்ளமோ மற்றும் பொறியியல் முடித்தவர்களுக்கான வேலைகள்.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-slate-300 space-y-1">
+                    <p>• CNC ஆபரேட்டர், அசெம்பிளி லைன் டெக்னீசியன்</p>
+                    <p>• சம்பளம்: ₹15,000 - ₹28,000 + உணவு & தங்குமிடம்</p>
+                  </div>
+                  <button
+                    onClick={() => alert("தேசிய தொழில் சேவை போர்டல்: ncs.gov.in \nமத்திய அரசின் இலவச வேலைவாய்ப்பு போர்டல்.")}
+                    className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    NCS போர்ட்டலில் பதிவு செய்ய ↗
+                  </button>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">💻</span>
+                  <h4 className="text-base font-bold text-white">IT & மென்பொருள் நிறுவனங்கள்</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    B.E, B.Tech, BCA, B.Sc முடித்த பிரஷ்ஷர்களுக்கான ஜூனியர் டெவலப்பர், டெஸ்டிங், டேட்டா என்ட்ரி மற்றும் சப்போர்ட் ரோல்கள்.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-slate-300 space-y-1">
+                    <p>• தேவையானவை: Python/Java, SQL, ஆங்கிலத் தொடர்பு</p>
+                    <p>• தொடக்க ஊதியம்: ₹25,000 - ₹45,000/மாதம்</p>
+                  </div>
+                  <button
+                    onClick={() => alert("LinkedIn & Naukri தளங்களில் உங்கள் ரெஸ்யூமை இலவசமாகப் பதிவேற்றி நிறுவனங்களை அணுகலாம்.")}
+                    className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    முன்னணி IT போர்ட்டல்கள் பார்க்க ↗
+                  </button>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">🎪</span>
+                  <h4 className="text-base font-bold text-white">மாவட்ட மாபெரும் தனியார் வேலைவாய்ப்பு முகாம்கள்</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    தமிழக அரசால் மாதம் தோறும் அனைத்து மாவட்டத் தலைநகரங்களிலும் இலவசமாக நடத்தப்படும் நேரடி கேம்பஸ் இன்டர்வியூ முகாம்கள்.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-slate-300 space-y-1">
+                    <p>• 8th பாஸ் முதல் டிகிரி வரை அனைவருக்கும் வேலை</p>
+                    <p>• ஒரே நாளில் 50+ நிறுவனங்களின் நேரடித் தேர்வு</p>
+                  </div>
+                  <button
+                    onClick={() => alert("தனியார் வேலைவாய்ப்பு முகாம் போர்டல்: tnprivatejobs.tn.gov.in \nமாவட்ட வாரியான முகாம் தேதிகளை இதில் அறியலாம்.")}
+                    className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    அடுத்த முகாம் தேதி அறிய ↗
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* சப்-டேப் 3: வீட்டிலிருந்தே வேலை & பகுதிநேரம் (WFH & Gig) */}
+          {jobsSubTab === 'wfh' && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                <span className="text-2xl">👩‍💻</span>
+                <h4 className="text-base font-bold text-white">பெண்கள் & மாணவர்களுக்கான WFH</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  வீட்டிலிருந்தே லேப்டாப் அல்லது மொபைல் மூலம் செய்யக்கூடிய வாடிக்கையாளர் சேவை (Tele-calling), டேட்டா என்ட்ரி மற்றும் தமிழ்/ஆங்கில தட்டச்சு பணிகள்.
+                </p>
+                <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                  <p>✔ விருப்பமான நேரத் தேர்வு (Flexible hours)</p>
+                  <p>✔ சம்பாத்தியம்: ₹10,000 - ₹22,000/மாதம்</p>
+                </div>
+                <button
+                  onClick={() => alert("முக்கிய நிறுவன போர்ட்டல்கள்: Amazon Virtual Customer Care, Flipkart Customer Support. அதிகாரப்பூர்வ தளங்கள் மூலம் மட்டுமே விண்ணப்பிக்கவும்.")}
+                  className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-xs font-semibold transition"
+                >
+                  நம்பகமான WFH நிறுவனங்கள் ↗
+                </button>
+              </div>
+
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                <span className="text-2xl">🛵</span>
+                <h4 className="text-base font-bold text-white">உள்ளூர் டெலிவரி & ஜிக் பணிகள் (Gig Economy)</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  பைக் மற்றும் ஸ்மார்ட்போன் உள்ள இளைஞர்கள் உள்ளூரிலேயே பகுதிநேரமாகவோ முழுநேரமாகவோ தினசரி வருமானம் ஈட்டும் வாய்ப்பு.
+                </p>
+                <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                  <p>✔ Swiggy, Zomato, Porter, Amazon Flex</p>
+                  <p>✔ வாராந்திர நேரடி வங்கி வரவு (Weekly Payout)</p>
+                </div>
+                <button
+                  onClick={() => alert("தேவையான ஆவணங்கள்: ஆதார் அட்டை, டிரைவிங் லைசென்ஸ், RC புக் மற்றும் வங்கி கணக்கு புத்தகம்.")}
+                  className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-xs font-semibold transition"
+                >
+                  டெலிவரி பார்ட்னர் இணைவு விவரம் ↗
+                </button>
+              </div>
+
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                <span className="text-2xl">✍️</span>
+                <h4 className="text-base font-bold text-white">ஃப்ரீலான்சிங் & டிஜிட்டல் கிரியேட்டர்</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  போட்டோஷாப், வீடியோ எடிட்டிங், இணையதள வடிவமைப்பு, மொழிபெயர்ப்பு (Translation) பணிகளைத் தனிப்பட்ட முறையில் செய்து சம்பாதிக்கும் முறை.
+                </p>
+                <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                  <p>✔ Upwork, Fiverr போன்ற உலகளாவிய தளங்கள்</p>
+                  <p>✔ திறமைக்கேற்ப வரம்பற்ற வருவாய் வாய்ப்பு</p>
+                </div>
+                <button
+                  onClick={() => alert("Fiverr & Upwork தளங்களில் கணக்கு தொடங்கி உங்கள் முந்தைய மாதிரி பணிகளை (Portfolio) இணைத்து ஆர்டர்களைப் பெறலாம்.")}
+                  className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-xs font-semibold transition"
+                >
+                  ஃப்ரீலான்சிங் வழிகாட்டல் ↗
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* சப்-டேப் 4: வெளிநாட்டு வேலை & பாதுகாப்பு (Overseas & Safety) */}
+          {jobsSubTab === 'safety' && (
+            <div className="space-y-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                <h3 className="text-base font-bold text-white mb-2 flex items-center gap-2">
+                  <span>✈️ தமிழ்நாடு அரசு வெளிநாட்டு வேலைவாய்ப்பு நிறுவனம் (OMCL)</span>
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed mb-4">
+                  துபாய், சிங்கப்பூர், மலேசியா, இங்கிலாந்து, சவுதி அரேபியா உள்ளிட்ட நாடுகளுக்கு செவிலியர்கள், டெக்னீசியன்கள், மற்றும் தொழிற்பணியாளர்களை அரசு மூலமாகப் பாதுகாப்பாக அனுப்பும் ஒரே நிறுவனம் OMCL.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs mb-4">
+                  <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                    <p className="font-bold text-emerald-400 mb-1">100% அரசு உத்தரவாதம்</p>
+                    <p className="text-slate-300">போலி விசா மற்றும் பாஸ்போர்ட் பறிமுதல் அபாயம் இல்லை.</p>
+                  </div>
+                  <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                    <p className="font-bold text-emerald-400 mb-1">குறைந்தபட்ச அரசு கட்டணம்</p>
+                    <p className="text-slate-300">தனியார் ஏஜென்ட்கள் கேட்கும் லட்சக்கணக்கான கட்டணம் தேவையில்லை.</p>
+                  </div>
+                  <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700">
+                    <p className="font-bold text-emerald-400 mb-1">உரிய விசா & ஒப்பந்தம்</p>
+                    <p className="text-slate-300">சட்டப்பூர்வ வேலை விசா மற்றும் பணிப் பாதுகாப்பு.</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => alert("OMCL அதிகாரப்பூர்வ தளம்: omcmanpower.tn.gov.in \nதொலைபேசி எண்: 044-22505886 / 22502267 \nகிண்டி, சென்னை முகவரியிலும் அணுகலாம்.")}
+                  className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition shadow-lg"
+                >
+                  OMCL அரசு போர்ட்டலில் வெளிநாட்டு வேலைக்கு விண்ணப்பிக்க ↗
+                </button>
+              </div>
+
+              {/* போலி வேலை மோசடிகளை அடையாளம் காணும் 4 விதிகள் */}
+              <div className="bg-red-950/20 border border-red-500/30 rounded-xl p-5">
+                <h4 className="text-sm font-bold text-red-400 mb-3 flex items-center gap-2">
+                  <span>🚫 போலி வேலை மோசடிகளில் இருந்து தப்பிக்க 4 அவசியமான விதிகள்:</span>
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                  <div className="flex items-start gap-2 bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                    <span className="text-red-400 font-bold">1.</span>
+                    <p className="text-slate-300"><strong>முன்பணம் கட்டச் சொன்னால் உடனே நிராகரியுங்கள்:</strong> ரெஜிஸ்ட்ரேஷன் கட்டணம், யூனிஃபார்ம் கட்டணம் என ஒரு ரூபாய் கூட கட்ட வேண்டாம்.</p>
+                  </div>
+                  <div className="flex items-start gap-2 bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                    <span className="text-red-400 font-bold">2.</span>
+                    <p className="text-slate-300"><strong>டெலிகிராம் & வாட்ஸ்அப் வேலை அறிவிப்புகள்:</strong> அரசுத் துறை மற்றும் அஞ்சல் துறை ஆணை வாட்ஸ்அப்பில் வராது; அஞ்சல் அல்லது அதிகாரப்பூர்வ தளம் மூலம் மட்டுமே வரும்.</p>
+                  </div>
+                  <div className="flex items-start gap-2 bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                    <span className="text-red-400 font-bold">3.</span>
+                    <p className="text-slate-300"><strong>ஏஜென்ட் உரிமம் சரிபார்க்கவும்:</strong> வெளிநாட்டு வேலைக்கு அனுப்பும் ஏஜென்சியிடம் மத்திய வெளியுறவு அமைச்சகத்தின் (MEA) பதிவு எண் உள்ளதா எனப் பாருங்கள்.</p>
+                  </div>
+                  <div className="flex items-start gap-2 bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                    <span className="text-red-400 font-bold">4.</span>
+                    <p className="text-slate-300"><strong>மோசடி நடந்தால் உடனே புகார்:</strong> பணத்தை இழந்தால் முதல் 2 மணி நேரத்திற்குள் <strong>1930</strong> அல்லது <strong>cybercrime.gov.in</strong> தளத்தில் புகார் அளியுங்கள்.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
         {/* பிற தொகுதிகள் */}
-        {[   'jobs', 'business', 'spiritual'].includes(currentModule) && (
+        {[    'business', 'spiritual'].includes(currentModule) && (
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center space-y-4 max-w-xl mx-auto shadow-2xl">
             <span className="text-5xl block">
               {navigationModules.find((m) => m.id === currentModule)?.icon}
