@@ -35,6 +35,9 @@ export default function Home() {
   const [bizProjectCost, setBizProjectCost] = useState(500000);
   const [bizCategory, setBizCategory] = useState('special');
   const [bizLocation, setBizLocation] = useState('rural');
+  // ஆன்மிகம் & பாரம்பரிய சுற்றுலா மாடியூல் ஸ்டேட்கள்
+  const [spiritualSubTab, setSpiritualSubTab] = useState('circuits');
+  const [selectedCircuit, setSelectedCircuit] = useState('navagraha');
   // ஜோதிட இன்புட் ஸ்டேட்ஸ்
   const [birthDetails, setBirthDetails] = useState({
     name: 'சுந்தரம்',
@@ -3509,26 +3512,421 @@ export default function Home() {
           )}
         </div>
       )}
-        {/* பிற தொகுதிகள் */}
-        {[     'spiritual'].includes(currentModule) && (
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center space-y-4 max-w-xl mx-auto shadow-2xl">
-            <span className="text-5xl block">
-              {navigationModules.find((m) => m.id === currentModule)?.icon}
-            </span>
-            <h3 className="text-xl font-black text-white">
-              {navigationModules.find((m) => m.id === currentModule)?.label}
-            </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              நம்ம பூமி 360 பெருந்திட்டத்தின்படி இப்பிரிவின் சேவைகள் அடுத்த கட்டமாக இணைக்கப்பட்டு வருகின்றன.
-            </p>
-            <button
-              onClick={() => setCurrentModule('land')}
-              className="bg-emerald-500 text-slate-950 px-5 py-2.5 rounded-xl text-xs font-bold cursor-pointer"
-            >
-              மீண்டும் பூமி & நிலம் செல்ல ↩
-            </button>
+        {/* 9. ஆன்மிகம் & சுற்றுலா (Spiritual & Heritage Hub) */}
+      {currentModule === 'spiritual' && (
+        <div className="space-y-6">
+          {/* தலைப்பு & ஆன்மிக வழிகாட்டி பேனர் */}
+          <div className="bg-gradient-to-r from-amber-950/80 via-slate-900 to-orange-950/80 border border-orange-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <span className="inline-block px-3 py-1 bg-orange-500/20 text-orange-300 text-xs font-semibold rounded-full mb-2 border border-orange-500/40">
+                  🛕 ஆன்மிகம் & பாரம்பரிய சுற்றுலா
+                </span>
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <span>நம்ம பூமி ஆன்மிகம் & சுற்றுலா 360</span>
+                </h2>
+                <p className="text-sm text-slate-300 mt-1">
+                  நவக்கிரக & அறுபடை சுற்றுப்பாதைகள் • பரிகாரத் தலங்கள் • HR&CE அரசு நேரடி சேவைகள் • கிராம பூசாரிகள் நலன்
+                </p>
+              </div>
+
+              {/* சப்-டேப் பட்டன்கள் */}
+              <div className="flex flex-wrap gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-700">
+                <button
+                  onClick={() => setSpiritualSubTab('circuits')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    spiritualSubTab === 'circuits' ? 'bg-orange-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🗺️ சுற்றுப்பாதை வழிகாட்டி
+                </button>
+                <button
+                  onClick={() => setSpiritualSubTab('pariharam')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    spiritualSubTab === 'pariharam' ? 'bg-orange-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🙏 பரிகாரத் தலங்கள்
+                </button>
+                <button
+                  onClick={() => setSpiritualSubTab('hrce')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    spiritualSubTab === 'hrce' ? 'bg-orange-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🏛️ HR&CE அரசு சேவைகள்
+                </button>
+                <button
+                  onClick={() => setSpiritualSubTab('priests')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    spiritualSubTab === 'priests' ? 'bg-orange-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  🔔 கிராம பூசாரிகள் நலன்
+                </button>
+              </div>
+            </div>
+
+            {/* குறுந்தகவல் எச்சரிக்கை ஸ்ட்ரிப் */}
+            <div className="mt-4 pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-amber-300 bg-amber-950/40 px-3 py-1.5 rounded-lg border border-amber-500/30">
+                <span className="text-base">ℹ️</span>
+                <span><strong>நேரடி அரசு தரிசனம்:</strong> இடைத்தரகர்களை நம்பாமல் திருக்கோவில் போர்ட்டலில் மட்டுமே தரிசன டிக்கெட் பதிவு செய்யுங்கள்.</span>
+              </div>
+              <div className="text-slate-400">
+                அறநிலையத்துறை உதவி மையம்: <strong className="text-orange-400">044-28334811</strong>
+              </div>
+            </div>
           </div>
-        )}
+
+          {/* சப்-டேப் 1: ஆன்மிகச் சுற்றுப்பாதை வழிகாட்டி */}
+          {spiritualSubTab === 'circuits' && (
+            <div className="space-y-6">
+              <div className="flex flex-wrap gap-2 bg-slate-900 border border-slate-800 p-2 rounded-xl">
+                <button
+                  onClick={() => setSelectedCircuit('navagraha')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition ${
+                    selectedCircuit === 'navagraha' ? 'bg-orange-600 text-white shadow' : 'text-slate-300 hover:bg-slate-800'
+                  }`}
+                >
+                  🪐 நவக்கிரகத் தலங்கள் (கும்பகோணம் பகுதி)
+                </button>
+                <button
+                  onClick={() => setSelectedCircuit('arupadai')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition ${
+                    selectedCircuit === 'arupadai' ? 'bg-orange-600 text-white shadow' : 'text-slate-300 hover:bg-slate-800'
+                  }`}
+                >
+                  🦚 அறுபடை வீடுகள் (முருகன் தலங்கள்)
+                </button>
+                <button
+                  onClick={() => setSelectedCircuit('panchabhoota')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition ${
+                    selectedCircuit === 'panchabhoota' ? 'bg-orange-600 text-white shadow' : 'text-slate-300 hover:bg-slate-800'
+                  }`}
+                >
+                  🔥 பஞ்சபூதத் தலங்கள் (சிவன் தலங்கள்)
+                </button>
+              </div>
+
+              {/* நவக்கிரகத் தலங்கள் வழித்தடம் */}
+              {selectedCircuit === 'navagraha' && (
+                <div className="space-y-4">
+                  <div className="bg-slate-900/80 border border-orange-500/30 rounded-xl p-4 text-xs text-slate-300 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <p>
+                      💡 <strong className="text-orange-400">எளிய பயண வழிகாட்டி:</strong> கும்பகோணத்தை மையமாக வைத்து 2 நாட்களில் சுற்றி முடிக்க ஏதுவான நேரடி வழித்தட வரிசை.
+                    </p>
+                    <span className="bg-orange-950/60 text-orange-300 border border-orange-500/40 px-3 py-1 rounded-md font-semibold whitespace-nowrap">
+                      மொத்த தூரம்: ~220 கி.மீ
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[
+                      { planet: 'சூரியன்', temple: 'சூரியனார் கோவில்', deity: 'சூரிய நாராயணர்', loc: 'ஆடுதுறை அருகில்', tip: 'ஞாயிறு காலை தரிசனம் சிறப்பு' },
+                      { planet: 'சந்திரன்', temple: 'கைலாசநாதர் கோவில்', deity: 'சந்திர பகவான்', loc: 'திங்களூர்', tip: 'திங்கட்கிழமை வெள்ளைத் துணி சாற்றி வழிபாடு' },
+                      { planet: 'செவ்வாய் (அங்காரகன்)', temple: 'வைத்தியநாதர் கோவில்', deity: 'முத்துக்குமார சுவாமி', loc: 'வைத்தீஸ்வரன் கோவில்', tip: 'செவ்வாய்க்கிழமை ரத்தக் காவேரி தரிசனம்' },
+                      { planet: 'புதன்', temple: 'சுவேதாரண்யேஸ்வரர் கோவில்', deity: 'புதன் பகவான்', loc: 'திருவெண்காடு', tip: 'புதன்கிழமை பச்சை வஸ்திரம் & பாசிப்பருப்பு' },
+                      { planet: 'குரு (வியாழன்)', temple: 'ஆபத்சகாயேஸ்வரர் கோவில்', deity: 'குரு பகவான்', loc: 'ஆலங்குடி', tip: 'வியாழக்கிழமை மஞ்சள் கொண்டைக்கடலை மாலை' },
+                      { planet: 'சுக்கிரன்', temple: 'அக்னீஸ்வரர் கோவில்', deity: 'சுக்கிர பகவான்', loc: 'கஞ்சனூர்', tip: 'வெள்ளிக்கிழமை மொச்சை சாற்றி நெய்தீபம்' },
+                      { planet: 'சனி', temple: 'தர்பாரண்யேஸ்வரர் கோவில்', deity: 'சனீஸ்வர பகவான்', loc: 'திருநள்ளாறு', tip: 'நள தீர்த்தத்தில் நீராடி எள்தீபம் ஏற்றல்' },
+                      { planet: 'ராகு', temple: 'நாகநாதசுவாமி கோவில்', deity: 'ராகு பகவான்', loc: 'திருநாகேஸ்வரம்', tip: 'ராகுகாலப் பாலாபிஷேகம் நீல நிறமாக மாறும் அற்புதம்' },
+                      { planet: 'கேது', temple: 'நாகநாதர் கோவில்', deity: 'கேது பகவான்', loc: 'கீழப்பெரும்பள்ளம்', tip: 'கொள்ளுப் பொடி நிவேதனம் & பலவண்ண வஸ்திரம்' }
+                    ].map((item, idx) => (
+                      <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-orange-500/40 transition">
+                        <div>
+                          <div className="flex justify-between items-start gap-2 mb-2">
+                            <span className="text-xs bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded font-bold border border-orange-500/30">
+                              {idx + 1}. {item.planet} தலம்
+                            </span>
+                            <span className="text-[11px] text-slate-400">{item.loc}</span>
+                          </div>
+                          <h4 className="text-sm font-bold text-white mb-1">{item.temple}</h4>
+                          <p className="text-xs text-orange-400 mb-2">மூலவர் / கிரகம்: {item.deity}</p>
+                          <div className="bg-slate-800/60 p-2 rounded-lg text-[11px] text-slate-300 border border-slate-700/60">
+                            {item.tip}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => alert(`${item.temple} (${item.loc}): \nமூலவர்: ${item.deity} \nபரிகாரம்: ${item.tip} \nகும்பகோணத்திலிருந்து பேருந்து மற்றும் வாடகை வாகன வசதிகள் உண்டு.`)}
+                          className="w-full mt-3 py-1.5 bg-slate-800 hover:bg-orange-600 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition border border-slate-700 hover:border-orange-500"
+                        >
+                          கோவில் விவரம் ↗
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* முருகனின் அறுபடை வீடுகள் */}
+              {selectedCircuit === 'arupadai' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[
+                    { no: '1-ஆம் படை வீடு', name: 'திருப்பரங்குன்றம்', deity: 'சுப்பிரமணிய சுவாமி', loc: 'மதுரை', desc: 'தெய்வானை திருமணத் தலம்; குடவறை கோவில் அமைப்பு; திருமணத் தடை நீக்கும் திருத்தலம்.' },
+                    { no: '2-ஆம் படை வீடு', name: 'திருச்செந்தூர்', deity: 'செந்தில் ஆண்டவர்', loc: 'தூத்துக்குடி (கடற்கரை)', desc: 'சூரபத்மனை ஆட்கொண்ட தலம்; கடற்கரையில் அமைந்த ஒரே படை வீடு; சத்ரு சம்ஹார பூஜை சிறப்பு.' },
+                    { no: '3-ஆம் படை வீடு', name: 'பழனி (திருவாவினன்குடி)', deity: 'தண்டாயுதபாணி சுவாமி', loc: 'திண்டுக்கல்', desc: 'போகர் சித்தர் வடித்த நவபாஷாண சிலை; ஞானப்பழம் தலம்; தைப்பூசம் மற்றும் பங்குனி உத்திரம் சிறப்பு.' },
+                    { no: '4-ஆம் படை வீடு', name: 'சுவாமிமலை', deity: 'சுவாமிநாத சுவாமி', loc: 'கும்பகோணம் அருகில்', desc: 'தந்தைக்கு உபதேசம் செய்த தகப்பன்சுவாமி தலம்; 60 தமிழ் வருடங்களைக் குறிக்கும் 60 படிகள்.' },
+                    { no: '5-ஆம் படை வீடு', name: 'திருத்தணி', deity: 'தணிகைவேலன்', loc: 'திருவள்ளூர்', desc: 'வள்ளி திருமணத் தலம்; கோபம் தணிந்த அமைதித் தலம்; 365 படிகள்; திருப்புகழ் பாராயணம் சிறப்பு.' },
+                    { no: '6-ஆம் படை வீடு', name: 'பழமுதிர்சோலை', deity: 'சோலைமலை முருகன்', loc: 'மதுரை அழகர்கோவில் மலை', desc: 'அவ்வையாருக்கு சுட்ட பழம் வேண்டுமா என வினவிய சோலை தலம்; இயற்கை எழில்சூழ்ந்த அழகிய மலைக்கோவில்.' }
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-orange-500/40 transition">
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-xs bg-orange-500/20 text-orange-300 px-2.5 py-0.5 rounded font-bold border border-orange-500/30">
+                            {item.no}
+                          </span>
+                          <span className="text-xs text-slate-400">📍 {item.loc}</span>
+                        </div>
+                        <h4 className="text-base font-bold text-white mb-1">{item.name}</h4>
+                        <p className="text-xs text-orange-400 mb-2">சுவாமி திருநாமம்: {item.deity}</p>
+                        <p className="text-xs text-slate-300 leading-relaxed mb-4 bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/60">
+                          {item.desc}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => alert(`${item.name} (${item.no}): \nமாவட்டம்: ${item.loc} \n${item.desc} \nஅரசு இணையதளத்தில் சிறப்பு தரிசனம் புக் செய்யலாம்.`)}
+                        className="w-full py-2 bg-slate-800 hover:bg-orange-600 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition border border-slate-700 hover:border-orange-500"
+                      >
+                        தரிசன முன்பதிவு வழிகாட்டல் ↗
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* பஞ்சபூதத் தலங்கள் */}
+              {selectedCircuit === 'panchabhoota' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[
+                    { elem: 'நிலம் (Earth)', temple: 'ஏகாம்பரேஸ்வரர் கோவில்', loc: 'காஞ்சிபுரம்', lingam: 'பிருத்வி லிங்கம் (மண்ணால் ஆனது)', note: 'பார்வதி தேவி ஆற்று மணலால் லிங்கம் செய்து வழிபட்ட தலம்.' },
+                    { elem: 'நீர் (Water)', temple: 'ஜம்புகேஸ்வரர் கோவில்', loc: 'திருவானைக்காவல் (திருச்சி)', lingam: 'அப்பு லிங்கம் (எப்போதும் நீரூற்று)', note: 'கருவறையில் லிங்கத்தின் கீழ் எப்போதும் நீர் ஊறிக் கொண்டிருக்கும் அற்புதம்.' },
+                    { elem: 'நெருப்பு (Fire)', temple: 'அருணாசலேஸ்வரர் கோவில்', loc: 'திருவண்ணாமலை', lingam: 'தேயு லிங்கம் (ஜோதி வடிவம்)', note: 'கிரிவலம் மற்றும் கார்த்திகை மகா தீபத் தலம்; நினைத்தாலே முக்தி தரும் தலம்.' },
+                    { elem: 'காற்று (Air)', temple: 'காளஹஸ்தீஸ்வரர் கோவில்', loc: 'திருக்காளஹஸ்தி (ஆந்திரா எல்லை)', lingam: 'வாயு லிங்கம் (காற்று அசைவு)', note: 'மூடிய கருவறையிலும் விளக்குச்சுடர் எப்போதும் அசைந்தாடும் வாயு தலம்.' },
+                    { elem: 'ஆகாயம் (Space)', temple: 'நடராஜர் திருக்கோவில்', loc: 'சிதம்பரம்', lingam: 'ஆகாய லிங்கம் (சிதம்பர ரகசியம்)', note: 'உருவமற்ற வெட்டவெளியையே இறைவனாக வழிபடும் மாபெரும் பஞ்சபூத தலம்.' }
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-orange-500/40 transition">
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-xs bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded font-bold border border-orange-500/30">
+                            {item.elem}
+                          </span>
+                          <span className="text-xs text-slate-400">📍 {item.loc}</span>
+                        </div>
+                        <h4 className="text-base font-bold text-white mb-1">{item.temple}</h4>
+                        <p className="text-xs text-amber-400 font-semibold mb-2">லிங்க வடிவம்: {item.lingam}</p>
+                        <p className="text-xs text-slate-300 leading-relaxed bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/60">
+                          {item.note}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => alert(`${item.temple} (${item.elem}): \nஅமைவிடம்: ${item.loc} \n${item.lingam} \n${item.note}`)}
+                        className="w-full mt-4 py-2 bg-slate-800 hover:bg-orange-600 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition border border-slate-700 hover:border-orange-500"
+                      >
+                        திருக்கோவில் விவரம் ↗
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* சப்-டேப் 2: பரிகாரத் தலங்கள் */}
+          {spiritualSubTab === 'pariharam' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  problem: '💍 திருமணத் தடை நீங்க',
+                  temple: 'திருமணஞ்சேரி அருள்மிகு உத்வாகநாதசுவாமி',
+                  loc: 'மயிலாடுதுறை மாவட்டம்',
+                  ritual: 'மாலையும் மாலையுமாக அர்ச்சனை செய்து அந்த மாலையை வீட்டிற்கு எடுத்துவந்து வைக்க விரைவில் திருமணம் கைகூடும்.',
+                  time: 'வெள்ளிக்கிழமை மற்றும் ஞாயிறு உச்சி வேளை சிறப்பு'
+                },
+                {
+                  problem: '👶 குழந்தை பாக்கியம் பெற',
+                  temple: 'திருக்கருகாவூர் அருள்மிகு கர்ப்பரட்சாம்பிகை',
+                  loc: 'பாபநாசம், தஞ்சாவூர்',
+                  ritual: 'அம்மன் திருப்பாதத்தில் வைத்து மந்திரித்துக் கொடுக்கப்படும் நெய் (பிரசாதம்) 48 நாட்கள் உட்கொள்ள குழந்தை வரம் கிட்டும்.',
+                  time: 'பௌர்ணமி மற்றும் செவ்வாய்க்கிழமைகள் சிறப்பு'
+                },
+                {
+                  problem: '💰 கடன் & தொழில் நஷ்டம் தீர',
+                  temple: 'திருச்சேறை சாரபரமேஸ்வரர் (கடன் நிவர்த்தீஸ்வரர்)',
+                  loc: 'கும்பகோணம் அருகில்',
+                  ritual: 'தொடர்ந்து 3 திங்கட்கிழமைகள் பைரவர் மற்றும் கடன் நிவர்த்தீஸ்வரருக்கு சிறப்பு அர்ச்சனை செய்ய கடன் சுமை குறையும்.',
+                  time: 'திங்கட்கிழமை ராகுகால வேளை'
+                },
+                {
+                  problem: '📚 கல்வி & ஞான மேன்மைக்கு',
+                  temple: 'கூத்தனூர் அருள்மிகு மகா சரஸ்வதி கோவில்',
+                  loc: 'பூந்தோட்டம், திருவாரூர்',
+                  ritual: 'சரஸ்வதி அம்மன் பாதத்தில் நோட்டுப் புத்தகம், பேனா வைத்து அர்ச்சனை செய்து குழந்தைகளுக்கு எழுத்தறிவித்தல் (வித்யாரம்பம்).',
+                  time: 'புதன்கிழமை மற்றும் நவராத்திரி விஜயதசமி'
+                },
+                {
+                  problem: '🩺 தீராத நோய் & ஆரோக்கியம்',
+                  temple: 'வைத்தீஸ்வரன் கோவில் வைத்தியநாத சுவாமி',
+                  loc: 'மயிலாடுதுறை அருகில்',
+                  ritual: 'சித்தாமிர்த தீர்த்தத்தில் நீராடி, திருச்சாந்து உருண்டை உட்கொள்ள கடுமையான தோல் நோய் மற்றும் உடல் உபாதைகள் தீரும்.',
+                  time: 'செவ்வாய்க்கிழமை மற்றும் கிருத்திகை நாள்'
+                },
+                {
+                  problem: '⚖️ வழக்கு & எதிரிகள் தொல்லை நீங்க',
+                  temple: 'திருப்பட்டூர் பிரம்மபுரீஸ்வரர் திருக்கோவில்',
+                  loc: 'சிறுகனூர் அருகில், திருச்சி',
+                  ritual: 'மனிதனின் தலையெழுத்தையே மாற்றி அமைக்கும் பிரம்மன் தலம்; குரு ஓரையில் 36 நெய்தீபம் ஏற்றி வழிபட வளம் பெருகும்.',
+                  time: 'திங்கள் மற்றும் வியாழக்கிழமைகள் மிகச் சிறப்பு'
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-orange-500/40 transition">
+                  <div>
+                    <span className="text-xs bg-orange-500/20 text-orange-300 px-2.5 py-1 rounded-md font-bold border border-orange-500/30 inline-block mb-2">
+                      {item.problem}
+                    </span>
+                    <h4 className="text-sm font-bold text-white mb-1">{item.temple}</h4>
+                    <p className="text-xs text-slate-400 mb-3">📍 {item.loc}</p>
+                    <div className="bg-slate-800/60 p-3 rounded-lg text-xs text-slate-300 space-y-1.5 border border-slate-700/60 mb-3">
+                      <p><strong className="text-amber-400">பரிகார முறை: </strong>{item.ritual}</p>
+                      <p><strong className="text-orange-400">உகந்த நேரம்: </strong>{item.time}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => alert(`${item.temple}: \n\nபரிகாரம்: ${item.ritual} \n\nஉகந்த காலம்: ${item.time}`)}
+                    className="w-full py-2 bg-slate-800 hover:bg-orange-600 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition border border-slate-700 hover:border-orange-500"
+                  >
+                    பரிகார வழிகாட்டல் அறிய ↗
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* சப்-டேப் 3: HR&CE அரசு ஆன்லைன் சேவைகள் */}
+          {spiritualSubTab === 'hrce' && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-3xl">🎫</span>
+                  <h4 className="text-base font-bold text-white">தரிசனம் & அர்ச்சனை முன்பதிவு</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    பழனி, திருச்செந்தூர், மதுரை மீனாட்சி உள்ளிட்ட 50+ முதன்மைக் கோவில்களில் இடைத்தரகர்கள் இன்றி ஆன்லைனில் டிக்கெட் முன்பதிவு.
+                  </p>
+                  <button
+                    onClick={() => alert("அறநிலையத்துறை போர்டல்: hrce.tn.gov.in \nதரிசன டிக்கெட்டுகள், சிறப்பு பிரசாதம் மற்றும் சேவைகளை இதில் புக் செய்யலாம்.")}
+                    className="w-full py-2 bg-orange-600/30 hover:bg-orange-600/50 border border-orange-500/50 text-orange-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    HR&CE தரிசன போர்டல் ↗
+                  </button>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-3xl">🍲</span>
+                  <h4 className="text-base font-bold text-white">நாள்தோறும் அன்னதான நன்கொடை</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    உங்கள் பிறந்தநாள் அல்லது நினைவு நாளில் திருக்கோவில் அன்னதானத்திற்கு ஆன்லைனில் பணம் செலுத்தலாம் (80G வரி விலக்கு உண்டு).
+                  </p>
+                  <button
+                    onClick={() => alert("அன்னதான நன்கொடை போர்டல்: hrce.tn.gov.in \nநன்கொடை செலுத்தியதும் அதிகாரப்பூர்வ மின்-ரசீது பதிவிறக்கம் செய்துகொள்ளலாம்.")}
+                    className="w-full py-2 bg-orange-600/30 hover:bg-orange-600/50 border border-orange-500/50 text-orange-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    அன்னதான நன்கொடை செலுத்த ↗
+                  </button>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-3xl">✨</span>
+                  <h4 className="text-base font-bold text-white">தங்கத்தேர் & உற்சவ முன்பதிவு</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    விசேஷ வைபவங்கள், தங்கத்தேர் மற்றும் வெள்ளித்தேர் உலா நேர்த்திக்கடன்களுக்கு இணையவழியில் அதிகாரப்பூர்வ ரசீது பெறும் முறை.
+                  </p>
+                  <button
+                    onClick={() => alert("தங்கத்தேர் உலா விவரங்கள் மற்றும் கட்டணங்களை hrce.tn.gov.in தளத்தில் கோவில் வாரியாகச் சரிபார்க்கலாம்.")}
+                    className="w-full py-2 bg-orange-600/30 hover:bg-orange-600/50 border border-orange-500/50 text-orange-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    தேரோட்டம் முன்பதிவு விவரம் ↗
+                  </button>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-3xl">🎪</span>
+                  <h4 className="text-base font-bold text-white">திருக்கோவில் திருமண மண்டபங்கள்</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    அறநிலையத்துறைக்குச் சொந்தமான திருமண மண்டபங்களை எளிய வாடகையில் முன்பதிவு செய்வதற்கான வழிகாட்டல்.
+                  </p>
+                  <button
+                    onClick={() => alert("திருமண மண்டபங்கள் முன்பதிவுக்கு அந்தந்த கோவில் நிர்வாக அலுவலகத்தையோ அல்லது இணையதளத்தையோ அணுகலாம்.")}
+                    className="w-full py-2 bg-orange-600/30 hover:bg-orange-600/50 border border-orange-500/50 text-orange-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    மண்டப விவரங்கள் அறிய ↗
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* சப்-டேப் 4: கிராம பூசாரிகள் நலன் & திட்டங்கள் */}
+          {spiritualSubTab === 'priests' && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">🪔</span>
+                  <h4 className="text-base font-bold text-white">ஒரு கால பூஜை திட்டம்</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    வருமானமின்றி இருக்கும் கிராமப்புற திருக்கோவில்களில் தினசரி ஒரு கால பூஜையாவது தொடர்ந்து நடைபெற அரசு வழங்கும் நிரந்தர வைப்பு நிதி.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-amber-300 space-y-1">
+                    <p>✔ கோவிலுக்கு ₹10,000 அரசு வைப்பு நிதி</p>
+                    <p>✔ வட்டி மூலம் மாதாந்திர பூஜை பொருட்கள் உதவி</p>
+                  </div>
+                  <button
+                    onClick={() => alert("விண்ணப்பிக்க: கிராம ஊராட்சி நிர்வாகச் சான்றுடன் மாவட்ட அறநிலையத்துறை இணை ஆணையர் அலுவலகத்தை அணுகவும்.")}
+                    className="w-full py-2 bg-orange-600/30 hover:bg-orange-600/50 border border-orange-500/50 text-orange-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    ஒரு கால பூஜை வழிகாட்டல் ↗
+                  </button>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">👴</span>
+                  <h4 className="text-base font-bold text-white">கிராமக் கோவில் பூசாரிகள் ஓய்வூதியம்</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    கிராமப்புறக் கோவில்களில் 20 ஆண்டுகளுக்கும் மேலாகப் பணியாற்றி 60 வயது பூர்த்தியடைந்த முதிய பூசாரிகளுக்குத் தமிழக அரசின் மாதாந்திர ஓய்வூதியம்.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                    <p>✔ மாதாந்திர நேரடி வங்கி வரவு</p>
+                    <p>✔ ஆயுள் முழுவதும் உதவித்தொகை</p>
+                  </div>
+                  <button
+                    onClick={() => alert("தகுதி: 60 வயது நிறைவு மற்றும் 20 ஆண்டுகள் பூசாரி பணி சான்றிதழ். மாவட்ட ஆட்சியர் அல்லது HR&CE இணை ஆணையரிடம் விண்ணப்பிக்கலாம்.")}
+                    className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    ஓய்வூதிய விண்ணப்ப முறை ↗
+                  </button>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">🪪</span>
+                  <h4 className="text-base font-bold text-white">பூசாரிகள் நலவாரிய அட்டை</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    அமைப்புசாரா பூசாரிகள் நலவாரியத்தில் பதிவு செய்தவர்களுக்கு விபத்து காப்பீடு, இயற்கை மரண உதவித்தொகை மற்றும் குழந்தைகளின் கல்வி நிதி.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-amber-300 space-y-1">
+                    <p>✔ திருமண உதவித்தொகை & கல்வி உதவி</p>
+                    <p>✔ இலவச வேஷ்டி, புடவை மற்றும் காப்பீடு</p>
+                  </div>
+                  <button
+                    onClick={() => alert("நலவாரியப் பதிவு: தொழிலாளர் நலத்துறை அல்லது மாவட்ட அறநிலையத்துறை அலுவலகம் மூலம் இலவசமாகப் பதிவு செய்யலாம்.")}
+                    className="w-full py-2 bg-orange-600/30 hover:bg-orange-600/50 border border-orange-500/50 text-orange-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    நலவாரியப் பதிவு விவரம் ↗
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
         {/* லோன் டெஸ்க் மாடல் */}
         {activeLoanLand && (
