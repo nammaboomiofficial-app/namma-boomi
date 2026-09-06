@@ -38,6 +38,9 @@ export default function Home() {
   // ஆன்மிகம் & பாரம்பரிய சுற்றுலா மாடியூல் ஸ்டேட்கள்
   const [spiritualSubTab, setSpiritualSubTab] = useState('circuits');
   const [selectedCircuit, setSelectedCircuit] = useState('navagraha');
+  // 10. A to Z மொத்த விற்பனை மாடியூல் ஸ்டேட்கள்
+  const [wholesaleCategory, setWholesaleCategory] = useState('all');
+  const [wholesaleSearch, setWholesaleSearch] = useState('');
   // ஜோதிட இன்புட் ஸ்டேட்ஸ்
   const [birthDetails, setBirthDetails] = useState({
     name: 'சுந்தரம்',
@@ -94,7 +97,8 @@ export default function Home() {
     { id: 'education', label: 'கல்வி & படிப்பு', icon: '🎓' },
     { id: 'jobs', label: 'வேலைவாய்ப்பு', icon: '💼' },
     { id: 'business', label: 'தொழில் & MSME', icon: '🏭' },
-    { id: 'spiritual', label: 'ஆன்மிகம் & சுற்றுலா', icon: '🛕' }
+    { id: 'spiritual', label: 'ஆன்மிகம் & சுற்றுலா', icon: '🛕' },
+    { id: 'wholesale', label: 'A-Z மொத்த விற்பனை', icon: '📦' },
   ];
 
   const locationData = {
@@ -3927,7 +3931,315 @@ export default function Home() {
           )}
         </div>
       )}
+{/* 10. A-Z மொத்த விற்பனை மையம் (Wholesale B2B Hub 360) */}
+      {currentModule === 'wholesale' && (
+        <div className="space-y-6">
+          {/* தலைப்பு & பேனர் */}
+          <div className="bg-gradient-to-r from-blue-950/90 via-slate-900 to-indigo-950/90 border border-blue-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <span className="inline-block px-3 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-full mb-2 border border-blue-500/40">
+                  📦 B2B நேரடி மொத்தக் கொள்முதல் சந்தை
+                </span>
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <span>A-Z மொத்த விற்பனை மையங்கள் 360</span>
+                </h2>
+                <p className="text-sm text-slate-300 mt-1">
+                  இடைத்தரகர்கள் இன்றி உற்பத்தியாளர்கள் & பாரம்பரிய மொத்த மண்டியிலிருந்து நேரடிக் கொள்முதல் வழிகாட்டி
+                </p>
+              </div>
 
+              {/* தேடல் பட்டை */}
+              <div className="w-full md:w-72">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={wholesaleSearch}
+                    onChange={(e) => setWholesaleSearch(e.target.value)}
+                    placeholder="பொருள் அல்லது சந்தை தேடுக..."
+                    className="w-full bg-slate-900/90 border border-slate-700 text-white rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-blue-500 placeholder-slate-500"
+                  />
+                  {wholesaleSearch && (
+                    <button
+                      onClick={() => setWholesaleSearch('')}
+                      className="absolute right-3 top-2.5 text-slate-400 hover:text-white text-xs"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* வழிகாட்டல் ஸ்ட்ரிப் */}
+            <div className="mt-4 pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-cyan-300 bg-cyan-950/40 px-3 py-1.5 rounded-lg border border-cyan-500/30">
+                <span className="text-base">🛡️</span>
+                <span><strong>நேரடி கொள்முதல் விதி:</strong> போலி ஆன்லைன் ஏஜென்ட்களுக்கு முன்பணம் அனுப்பாதீர்கள். சந்தைக்கு நேரில் சென்று சரக்கை ஆய்வு செய்து லாரி பார்சல் புக் செய்யுங்கள்.</span>
+              </div>
+              <div className="text-slate-400">
+                போக்குவரத்து உதவி: <strong className="text-blue-400">ABT / VRL / ARC பார்சல் சர்வீஸ்</strong>
+              </div>
+            </div>
+          </div>
+
+          {/* துறை வாரியான ஃபில்டர்கள் */}
+          <div className="flex flex-wrap gap-2 bg-slate-900 border border-slate-800 p-2 rounded-xl">
+            {[
+              { id: 'all', label: 'அனைத்து சந்தைகள்' },
+              { id: 'textile', label: '👕 ஜவுளி & ஆடைகள்' },
+              { id: 'electronics', label: '🔌 எலக்ட்ரானிக்ஸ் & மொபைல்' },
+              { id: 'grocery', label: '🌾 மளிகை & நவதானியங்கள்' },
+              { id: 'packaging', label: '📦 பேக்கிங், அச்சு & அட்டை' },
+              { id: 'household', label: '🍽️ பாத்திரங்கள் & பிளாஸ்டிக்' },
+              { id: 'leather', label: '👞 தோல் & காலணிகள்' }
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setWholesaleCategory(cat.id)}
+                className={`py-2 px-3 rounded-lg text-xs font-semibold transition ${
+                  wholesaleCategory === cat.id
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* சந்தைகள் கட்டமைப்பு கார்டுகள் */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                id: 1,
+                category: 'textile',
+                name: 'ஈரோடு கனி மார்க்கெட் & டெக்ஸ்வேலி',
+                location: 'ஈரோடு (மத்திய பேருந்து நிலையம் & NH-544)',
+                specialty: 'காட்டன் சேலைகள், நைட்டி, லுங்கி, துண்டுகள், பெட்ஷீட்',
+                marketDays: 'திங்கள் இரவு முதல் செவ்வாய் மதியம் வரை மாபெரும் வாரச்சந்தை',
+                moq: '1 பண்டல் (50 முதல் 100 பீஸ்கள்)',
+                address: 'கனி மார்க்கெட், மணிக்கூண்டு அருகில், ஈரோடு / Texvalley, சித்தார்',
+                tips: 'நெசவாளர் கூட்டுறவு சங்கங்கள் மற்றும் நேரடி ஆலை விற்பனை நிலையங்கள் இங்குள்ளன.'
+              },
+              {
+                id: 2,
+                category: 'textile',
+                name: 'திருப்பூர் காதர்பேட்டை & பின்னலாடை சந்தை',
+                location: 'திருப்பூர் (ரயில் நிலையம் எதிரில்)',
+                specialty: 'பனியன், காட்டன் டி-சர்ட், டிராக் பேண்ட், குழந்தைகள் ஆடைகள்',
+                marketDays: 'தினசரி காலை 9 மணி முதல் இரவு 9 மணி வரை (ஞாயிறு மிகச் சிறப்பு)',
+                moq: 'குறைந்தபட்சம் 12 அல்லது 24 பீஸ்கள் (டஜன் கணக்கில்)',
+                address: 'காதர்பேட்டை மெயின் ரோடு, பழைய பேருந்து நிலையம் அருகில், திருப்பூர்',
+                tips: 'ஏற்றுமதி உபரி ஆடைகள் (Export Surplus) மிகக் குறைந்த விலையில் கிடைக்கும்.'
+              },
+              {
+                id: 3,
+                category: 'textile',
+                name: 'சேலம் இளம்பிள்ளை & செவ்வாய்ப்பேட்டை',
+                location: 'சேலம் & இளம்பிள்ளை',
+                specialty: 'இளம்பிள்ளை பட்டுப்புடவைகள், சாஃப்ட் சில்க், சிந்தடிக் & காட்டன் சேலைகள்',
+                marketDays: 'அனைத்து வேலை நாட்களும் (வியாழன் மற்றும் வெள்ளி புதிய ரகங்கள் வரத்து)',
+                moq: '10 சேலைகள் முதல் மொத்தக் கொள்முதல்',
+                address: 'நெசவாளர் காலனி மெயின் ரோடு, இளம்பிள்ளை & செவ்வாய்ப்பேட்டை, சேலம்',
+                tips: 'வீட்டுப் பெண்கள் மற்றும் சிறு ஜவுளிக்கடை தொடங்குவோருக்கு உகந்த நேரடி நெசவு மையம்.'
+              },
+              {
+                id: 4,
+                category: 'electronics',
+                name: 'சென்னை ரிச்சி ஸ்ட்ரீட் (Richie Street)',
+                location: 'மவுண்ட் ரோடு, சென்னை (அண்ணாசாலை)',
+                specialty: 'கம்ப்யூட்டர் உதிரிபாகங்கள், சிசிடிவி கேமராக்கள், எல்இடி டிவிகள், கேஜெட்கள்',
+                marketDays: 'திங்கள் முதல் சனி வரை (காலை 10:30 முதல் இரவு 8:30 வரை; ஞாயிறு விடுமுறை)',
+                moq: '5 முதல் 10 பீஸ்கள் (மொத்த பில்லிங் விலையில்)',
+                address: 'நரசிங்கபுரம் தெரு, ரேடியோ மார்க்கெட், மவுண்ட் ரோடு, சென்னை-2',
+                tips: 'ஆசியாவின் 2-வது பெரிய எலக்ட்ரானிக்ஸ் சந்தை; GST பில் கட்டாயம் பெற்றுக்கொள்ளவும்.'
+              },
+              {
+                id: 5,
+                category: 'electronics',
+                name: 'பாரிமுனை ஈவினிங் பஜார் & காசிசெட்டி தெரு',
+                location: 'பாரிமுனை, சென்னை',
+                specialty: 'மொபைல் போன் உதிரிபாகங்கள், டெம்பர்டு கிளாஸ், பேக் கவர், டேட்டா கேபிள்',
+                marketDays: 'திங்கள் முதல் சனி வரை (ஞாயிறு கடைகள் இயங்காது)',
+                moq: '50 முதல் 100 பீஸ்கள் கொண்ட பேக்குகள்',
+                address: 'காசிசெட்டி தெரு & ஈவினிங் பஜார் ரோடு, பாரிஸ் கார்னர், சென்னை-1',
+                tips: 'மொபைல் சர்வீஸ் மற்றும் உதிரிபாகக் கடைகளுக்குத் தமிழ்நாடு முழுவதும் இங்கிருந்தே சரக்கு செல்கிறது.'
+              },
+              {
+                id: 6,
+                category: 'grocery',
+                name: 'விருதுநகர் உணவு தானிய & எண்ணெய் மண்டி',
+                location: 'விருதுநகர் மார்க்கெட் ரோடு',
+                specialty: 'உளுந்து, பாசிப்பருப்பு, குண்டு வத்தல் (மிளகாய்), செக்கு நல்லெண்ணெய்',
+                marketDays: 'திங்கள் முதல் சனி வரை (தினசரி காலை வர்த்தக ஏலம்)',
+                moq: '1 மூட்டை (50 கிலோ / 100 கிலோ பைகள்)',
+                address: 'கடைத்தெரு & மண்டி வளாகம், விருதுநகர்',
+                tips: 'தமிழகத்தின் பருப்பு மற்றும் சமையல் எண்ணெய் சந்தை விலையைத் தீர்மானிக்கும் முதன்மை மண்டி.'
+              },
+              {
+                id: 7,
+                category: 'grocery',
+                name: 'கோயம்பேடு மொத்த உணவு தானிய வளாகம்',
+                location: 'கோயம்பேடு, சென்னை',
+                specialty: 'அரிசி மூட்டைகள், சர்க்கரை, பருப்பு வகைகள், கோதுமை, மளிகைப் பொருட்கள்',
+                marketDays: 'தினசரி அதிகாலை 4:00 மணி முதல் மதியம் வரை',
+                moq: 'குறைந்தபட்சம் 1 மூட்டை அல்லது முழு பெட்டி',
+                address: 'கோயம்பேடு மொத்த தானிய அங்காடி (KWMC), சென்னை',
+                tips: 'வட தமிழ்நாடு மற்றும் சென்னை சுற்றுவட்டார மளிகைக் கடைகளுக்கு மொத்த சப்ளை மையம்.'
+              },
+              {
+                id: 8,
+                category: 'grocery',
+                name: 'ஈரோடு செம்மாம்பாளையம் மஞ்சள் வணிக வளாகம்',
+                location: 'செம்மாம்பாளையம் & பெருந்துறை ரோடு, ஈரோடு',
+                specialty: 'விரலி மஞ்சள், கிழங்கு மஞ்சள், அக்மார்க் தர சான்றிதழ் பெற்ற மஞ்சள் பொடி',
+                marketDays: 'திங்கள் முதல் வெள்ளி வரை ஒழுங்குமுறை விற்பனைக்கூட ஏலம்',
+                moq: 'குறைந்தபட்சம் 1 பை (மஞ்சள் சாக்கு மூட்டை)',
+                address: 'ஈரோடு ஒழுங்குமுறை விற்பனைக் கூடம், பெருந்துறை ரோடு, ஈரோடு',
+                tips: 'மசாலா பொடி மற்றும் ஏற்றுமதி தொழில் செய்வோருக்கான உலகத்தரம் வாய்ந்த சந்தை.'
+              },
+              {
+                id: 9,
+                category: 'packaging',
+                name: 'சிவகாசி அச்சு & அட்டைப் பெட்டி தொழிற்பேட்டை',
+                location: 'சிவகாசி & திருத்தங்கல்',
+                specialty: 'ஸ்வீட் பாக்ஸ், அட்டைப் பெட்டிகள் (Corrugated Boxes), காலண்டர், லேபிள்கள்',
+                marketDays: 'அனைத்து வேலை நாட்களும் (நேரடி ஆலை வர்த்தகம்)',
+                moq: '1000 பாக்ஸ்கள் அல்லது பிரிண்டிங் ஆர்டர்கள்',
+                address: 'பைபாஸ் ரோடு, சிவகாசி தொழிற்பேட்டை வளாகம்',
+                tips: 'சொந்த பிராண்ட் தொடங்குவோர் பெட்டி மற்றும் ஸ்டிக்கர் அடிக்க நேரடியாக அணுகலாம்.'
+              },
+              {
+                id: 10,
+                category: 'packaging',
+                name: 'பாரிமுனை ஆண்டர்சன் & மலையப்பெருமாள் தெரு',
+                location: 'பாரிமுனை, சென்னை',
+                specialty: 'திருமணப் பத்திரிகைகள், ஃபைல்கள், பேப்பர் ரோல்கள், ஸ்டேஷனரி & பைண்டிங்',
+                marketDays: 'திங்கள் முதல் சனி வரை (காலை 10 மணி முதல் இரவு 8 மணி வரை)',
+                moq: '100 பத்திரிகைகள் / மொத்த பேப்பர் ரீம்கள்',
+                address: 'ஆண்டர்சன் தெரு & மலையப்பெருமாள் தெரு, பாரிஸ் கார்னர், சென்னை-1',
+                tips: 'அனைத்து விதமான பேப்பர் வகைகள் மற்றும் இன்விடேஷன் கார்டுகள் மொத்த விலையில் கிடைக்கும்.'
+              },
+              {
+                id: 11,
+                category: 'household',
+                name: 'மதுரை விளக்குத்தூண் & கீழ மாசி வீதி',
+                location: 'விளக்குத்தூண், மதுரை',
+                specialty: 'எவர்சில்வர் பாத்திரங்கள், பித்தளை விளக்குகள், அலுமினிய & வார்ப்பு பாத்திரங்கள்',
+                marketDays: 'தினசரி காலை 9:30 முதல் இரவு 9:00 வரை',
+                moq: 'மொத்த எடை (கிலோ கணக்கில்) அல்லது டஜன் கணக்கில்',
+                address: 'தெற்கு மாசி வீதி & கீழ மாசி வீதி சந்திப்பு, விளக்குத்தூண், மதுரை',
+                tips: 'பாத்திரக்கடை மற்றும் திருமண சீர்வரிசை பொருட்கள் மொத்தக் கொள்முதலுக்கு உகந்தது.'
+              },
+              {
+                id: 12,
+                category: 'household',
+                name: 'சென்னை பந்தர் தெரு (Bunder Street)',
+                location: 'பாரிமுனை, சென்னை',
+                specialty: 'பிளாஸ்டிக் வாளிகள், கன்டெய்னர்கள், பிளாஸ்டிக் பாட்டில்கள், ஹவுஸ்கீப்பிங் பொருட்கள்',
+                marketDays: 'திங்கள் முதல் சனி வரை',
+                moq: '1 பண்டல் அல்லது மொத்த பார்சல் பெட்டி',
+                address: 'பந்தர் தெரு, பாரிஸ் கார்னர், சென்னை-1',
+                tips: 'ரூ.10 - ரூ.50 பிளாஸ்டிக் கடை மற்றும் வீட்டு உபயோக பொருட்கள் மொத்த சந்தை.'
+              },
+              {
+                id: 13,
+                category: 'leather',
+                name: 'ஆம்பூர் & வாணியம்பாடி நேரடி லெதர் ஆலைகள்',
+                location: 'திருப்பத்தூர் மாவட்டம் (NH-48)',
+                specialty: 'லெதர் ஷூக்கள், பெல்ட், பர்ஸ், பாதுகாப்பு காலணிகள் (Safety Shoes)',
+                marketDays: 'அனைத்து வேலை நாட்களும் (ஆலை ஷோரூம்கள் & மொத்த கவுண்ட்டர்கள்)',
+                moq: '20 ஜோடிகள் முதல் மொத்த கொள்முதல்',
+                address: 'சிட்கோ தொழிற்பேட்டை வளாகம், ஆம்பூர்',
+                tips: 'சர்வதேச பிராண்டுகளுக்குத் தயாரிக்கும் அதே தரத்தில் நேரடி ஆலை விலையில் பெறலாம்.'
+              }
+            ]
+              .filter(
+                (item) =>
+                  (wholesaleCategory === 'all' || item.category === wholesaleCategory) &&
+                  (wholesaleSearch === '' ||
+                    item.name.toLowerCase().includes(wholesaleSearch.toLowerCase()) ||
+                    item.specialty.toLowerCase().includes(wholesaleSearch.toLowerCase()) ||
+                    item.location.toLowerCase().includes(wholesaleSearch.toLowerCase()))
+              )
+              .map((market) => (
+                <div
+                  key={market.id}
+                  className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-blue-500/40 transition shadow-lg"
+                >
+                  <div>
+                    <div className="flex justify-between items-start gap-2 mb-2">
+                      <span className="text-xs bg-blue-500/20 text-blue-300 px-2.5 py-1 rounded-md font-bold border border-blue-500/30">
+                        {market.name}
+                      </span>
+                    </div>
+                    <p className="text-xs text-cyan-400 mb-2 font-medium">📍 {market.location}</p>
+                    <div className="bg-slate-800/60 p-3 rounded-lg text-xs text-slate-300 space-y-2 border border-slate-700/60 mb-3">
+                      <p>
+                        <strong className="text-amber-300">பொருட்கள்: </strong>
+                        {market.specialty}
+                      </p>
+                      <p>
+                        <strong className="text-blue-300">சந்தை நேரம்: </strong>
+                        {market.marketDays}
+                      </p>
+                      <p>
+                        <strong className="text-emerald-400">குறைந்தபட்ச அளவு (MOQ): </strong>
+                        {market.moq}
+                      </p>
+                      <p className="text-[11px] text-slate-400 pt-1 border-t border-slate-700/60">
+                        <strong>முகவரி: </strong> {market.address}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-[11px] text-slate-400 italic">💡 {market.tips}</p>
+                    <button
+                      onClick={() =>
+                        alert(
+                          `${market.name}\n\nஅமைவிடம்: ${market.location}\nமுகவரி: ${market.address}\n\nகிடைக்கும் பொருட்கள்: ${market.specialty}\nசந்தை உகந்த நேரம்: ${market.marketDays}\nMOQ: ${market.moq}\n\nகொள்முதல் குறிப்பு: ${market.tips}\n\nசரக்கு போக்குவரத்து: தமிழ்நாட்டின் அனைத்து முக்கிய லாரி பார்சல் சர்வீஸ்கள் (ABT, VRL, KPN, ARC) அருகில் உள்ளன.`
+                        )
+                      }
+                      className="w-full py-2 bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition border border-slate-700 hover:border-blue-500"
+                    >
+                      நேரடி வழிகாட்டல் & பார்சல் விவரம் ↗
+                    </button>
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          {/* கொள்முதல் பாதுகாப்பு & டிரான்ஸ்போர்ட் வழிகாட்டி அட்டை */}
+          <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-5 text-xs text-slate-300 space-y-3">
+            <h4 className="text-sm font-bold text-white flex items-center gap-2">
+              <span>🚚</span>
+              <span>மொத்தக் கொள்முதலாளர்களுக்கான பாதுகாப்பு & பார்சல் நடைமுறைகள்</span>
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+              <div className="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                <p className="font-bold text-cyan-300 mb-1">1. பார்சல் லாரி புக்கிங் (LR Copy)</p>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  சரக்கு வாங்கியதும் கடைக்காரரே உள்ளூர் டிரான்ஸ்போர்ட்டில் போட்டு LR (Lorry Receipt) ரசீதை வழங்குவார். அந்த ரசீதை வைத்து உங்கள் ஊர் குடோனில் சரக்கை டெலிவரி எடுக்கலாம்.
+                </p>
+              </div>
+              <div className="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                <p className="font-bold text-emerald-400 mb-1">2. GST பில் மற்றும் E-Way Bill</p>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  ரூ.50,000-க்கு மேல் மதிப்புள்ள சரக்குகளுக்கு E-Way Bill கட்டாயம் தேவை. இதனால் வழியில் கமர்ஷியல் டாக்ஸ் சோதனைகளில் எந்தச் சிக்கலும் இன்றிச் சரக்கு வந்து சேரும்.
+                </p>
+              </div>
+              <div className="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                <p className="font-bold text-amber-300 mb-1">3. ஆரம்ப மாதிரி (Sample) ஆர்டர்</p>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  புதிய சந்தைக்குச் செல்லும்போது முதல்முறை குறைந்தபட்ச அளவில் (MOQ) சாம்பிள் வாங்கித் தரம், பேக்கிங் மற்றும் உங்கள் ஊரில் அதன் விற்பனை வேகத்தைச் சோதித்த பின் பெருமளவில் முதலீடு செய்யுங்கள்.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
         {/* லோன் டெஸ்க் மாடல் */}
         {activeLoanLand && (
           <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
