@@ -627,7 +627,7 @@ export default function Home() {
           isOpen={isSellModalOpen} 
           onClose={() => setIsSellModalOpen(false)} 
         />
-        <FloatingWhatsApp />
+        
               </div>
             )}
 
@@ -4442,6 +4442,7 @@ export default function Home() {
           </a>
         </div>
       </div>
+      <FloatingWhatsApp />
     </div>
   );
 }

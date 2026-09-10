@@ -10,7 +10,7 @@ export default function FloatingWhatsApp() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center group">
+    <div className="fixed bottom-20 right-4 sm:bottom-8 sm:right-8 z-50 flex items-center group">
       {/* ஹோவர் செய்யும்போது வரும் சிறிய தகவல் */}
       <span className="hidden sm:inline-block mr-2 px-3 py-1.5 bg-slate-900/90 text-slate-200 text-xs font-medium rounded-full border border-emerald-500/30 shadow-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         வாட்ஸ்அப்பில் பேசலாம்
