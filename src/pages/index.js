@@ -4,6 +4,7 @@ import LandCalculator from '../components/LandCalculator';
 import SellLandModal from '../components/SellLandModal';
 import contactConfig from '../data/contactConfig';
 import DocumentAnalysisBureau from '../components/DocumentAnalysisBureau';
+import FloatingWhatsApp from '../components/FloatingWhatsApp';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -626,6 +627,7 @@ export default function Home() {
           isOpen={isSellModalOpen} 
           onClose={() => setIsSellModalOpen(false)} 
         />
+        <FloatingWhatsApp />
               </div>
             )}
 
