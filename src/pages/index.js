@@ -488,6 +488,25 @@ export default function Home() {
             {/* நிலச் சந்தை */}
             {activeMainTab === 'marketplace' && (
               <div className="space-y-6">
+                {/* உலகத் தர விரைவு ஃபில்டர் சிப்ஸ் (Quick Category & Budget Chips) */}
+          <div className="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none -mt-2 mb-1">
+            {[
+              { id: 'all', label: '🌐 அனைத்தும்' },
+              { id: 'agri', label: '🌾 விவசாய பூமி' },
+              { id: 'plots', label: '🏡 DTCP மனைகள்' },
+              { id: 'budget', label: '💰 ₹15 லட்சத்திற்குள்' },
+              { id: 'urgent', label: '⚡ அவசர விற்பனை' },
+              { id: 'road', label: '🛣️ மெயின் ரோடு பேசிங்' }
+            ].map((chip) => (
+              <button
+                key={chip.id}
+                type="button"
+                className="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-slate-900/90 border border-slate-700/80 text-slate-200 hover:border-emerald-500 hover:text-emerald-400 hover:bg-slate-800 transition-all shadow-sm active:scale-95 flex items-center gap-1.5"
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
                 <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-lg">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
                     <span>🔍 மாவட்ட வடிகட்டி:</span>
