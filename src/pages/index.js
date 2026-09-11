@@ -439,6 +439,12 @@ export default function Home() {
       {/* பிரதான பக்கம் */}
       <main className="max-w-6xl mx-auto p-4 md:p-8 space-y-8">
         {/* ============================================================ */}
+        {/* பட்டா & அரசு சேவைகள் பிரிவு */}
+        {currentModule === 'govt' && (
+          <div className="mt-4">
+            <LandGovtServices />
+          </div>
+        )}
         {/* 1. பூமி & நிலம் பிரிவு (REAL ESTATE & AUDIT) */}
         {/* ============================================================ */}
         {currentModule === 'land' && (
