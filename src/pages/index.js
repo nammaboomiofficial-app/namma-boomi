@@ -22,6 +22,9 @@ export default function Home() {
   const [quickFilter, setQuickFilter] = useState('all');
   const [activeMapModalLand, setActiveMapModalLand] = useState(null);
   const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+  const [selectedVisitPassLand, setSelectedVisitPassLand] = useState(null);
+  const [visitorName, setVisitorName] = useState('');
+  const [visitorPhone, setVisitorPhone] = useState('');
 
   // விவசாயம் சப்-டேப்கள்
   const [agriSubTab, setAgriSubTab] = useState('crops');
@@ -653,14 +656,11 @@ export default function Home() {
 
                         <div className="space-y-2 pt-2 border-t border-slate-800/80">
                           <button
-                            onClick={() => {
-  const msg = `வணக்கம் நம்ம பூமி 360, நான் தளத்தில் பார்த்த இந்த நிலத்தைப் பார்வையிட விசிட் பாஸ் (Visit Pass) மற்றும் உரிமையாளர் தொடர்பு எண் பெற விரும்புகிறேன்.\n\n• நில விவரம்: ${land.title || 'விவரம்'}`;
-  window.open(`https://wa.me/919962369131?text=${encodeURIComponent(msg)}`, '_blank');
-}}
-                            className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl text-xs transition shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-1.5 cursor-pointer"
-                          >
-                            <span>🎫</span> விசிட் பாஸ் & எண் பெறுக
-                          </button>
+                onClick={() => setSelectedVisitPassLand(typeof land !== 'undefined' ? land : l)}
+                className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all text-xs sm:text-sm"
+              >
+                <span>🎫</span> விசிட் பாஸ் & எண் பெறுக
+              </button>
 
                           <button
                            onClick={() => {
@@ -4425,7 +4425,87 @@ export default function Home() {
           )}
         </div>
       )}
+{/* VIP விசிட் பாஸ் மாடல் (VIP Site Visit Pass Modal) */}
+        {selectedVisitPassLand && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div className="bg-slate-900 border border-emerald-500/40 w-full max-w-sm rounded-2xl p-5 shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-200">
+              {/* Top Golden Accent */}
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-amber-400 to-emerald-500" />
 
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setSelectedVisitPassLand(null)}
+                className="absolute top-3 right-3 text-slate-400 hover:text-white p-1 rounded-lg bg-slate-800 text-sm"
+              >
+                ✕
+              </button>
+
+              {/* Header */}
+              <div className="text-center mb-4 mt-1">
+                <span className="text-3xl">🎫</span>
+                <h3 className="text-base font-bold text-white mt-1">VIP விசிட் பாஸ் & எண்</h3>
+                <p className="text-xs text-emerald-400">நேரடி உரிமையாளர் எண் & GPS வழிகாட்டல்</p>
+              </div>
+
+              {/* Selected Land Summary */}
+              <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 mb-4 text-xs">
+                <p className="text-slate-400 font-medium">தேர்ந்தெடுக்கப்பட்ட நிலம்:</p>
+                <p className="text-white font-semibold line-clamp-1 mt-0.5">
+                  {selectedVisitPassLand.title || 'பிரீமியம் நிலம்'}
+                </p>
+                <div className="flex justify-between items-center text-slate-300 mt-1 pt-1 border-t border-slate-800/80">
+                  <span>📍 {selectedVisitPassLand.district || 'தமிழ்நாடு'}</span>
+                  <span className="text-emerald-400 font-bold">{selectedVisitPassLand.price || ''}</span>
+                </div>
+              </div>
+
+              {/* Inputs */}
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs text-slate-300 mb-1">உங்கள் பெயர்:</label>
+                  <input
+                    type="text"
+                    placeholder="எ.கா: குமார்"
+                    value={visitorName}
+                    onChange={(e) => setVisitorName(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500 placeholder-slate-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs text-slate-300 mb-1">வாட்ஸ்அப் எண்:</label>
+                  <input
+                    type="tel"
+                    placeholder="10 இலக்க வாட்ஸ்அப் எண்"
+                    value={visitorPhone}
+                    onChange={(e) => setVisitorPhone(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500 placeholder-slate-500"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!visitorPhone) {
+                      alert('தயவுசெய்து உங்கள் வாட்ஸ்அப் எண்ணை உள்ளிடவும்');
+                      return;
+                    }
+                    const msg = `வணக்கம் நம்ம பூமி 360, விஐபி விசிட் பாஸ் பதிவு:\n👤 பெயர்: ${visitorName || 'வாடிக்கையாளர்'}\n📱 எண்: ${visitorPhone}\n🏞️ நிலம்: ${selectedVisitPassLand.title || 'நிலம்'} (${selectedVisitPassLand.district || ''})\n\nஉரிமையாளர் எண் மற்றும் GPS லொகேஷன் அனுப்பவும்.`;
+                    window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
+                    setSelectedVisitPassLand(null);
+                  }}
+                  className="w-full mt-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all text-xs"
+                >
+                  <span>🎟️</span> வாட்ஸ்அப்பில் பாஸ் பெறுக
+                </button>
+                <p className="text-[10px] text-center text-slate-400 mt-1">
+                  🔒 100% பாதுகாப்பானது • நேரடி உரிமையாளர் தொடர்பு
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {/* 📱 மொபைல் பாட்டம் நேவிகேஷன் பார் (Mobile Only App Bar) */}
