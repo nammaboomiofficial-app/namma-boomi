@@ -108,18 +108,26 @@ export default function Home() {
   });
   const [sellSuccessMsg, setSellSuccessMsg] = useState(false);
 
-  const navigationModules = [
+  
+    const navigationModules = [
+    // 1. நிலம் & நிதிப் பிரிவு
     { id: 'land', label: 'பூமி & நிலம்', icon: '🌐' },
-    { id: 'astro', label: 'AI ஜோதிடம் & பரிகாரம்', icon: '🔮' },
-    { id: 'agri', label: 'விவசாயம் (Agri 360)', icon: '🌾' },
     { id: 'finance', label: 'நிதி & கடன்கள்', icon: '🏦' },
-    { id: 'insurance', label: 'காப்பீடு (Insurance)', icon: '🛡️' },
+    { id: 'insurance', label: 'காப்பீடு', icon: '🛡️' },
+    { id: 'agri', label: 'விவசாயம்', icon: '🌾' },
+
+    // 2. கல்வி & வேலை வாய்ப்புப் பிரிவு
     { id: 'education', label: 'கல்வி & படிப்பு', icon: '🎓' },
     { id: 'jobs', label: 'வேலைவாய்ப்பு', icon: '💼' },
     { id: 'business', label: 'தொழில் & MSME', icon: '🏭' },
-    { id: 'spiritual', label: 'ஆன்மிகம் & சுற்றுலா', icon: '🛕' },
-    { id: 'wholesale', label: 'A-Z மொத்த விற்பனை', icon: '📦' },
+    { id: 'wholesale', label: 'மொத்த விற்பனை', icon: '📦' },
+
+    // 3. வாழ்வியல் & கலாச்சாரம்
+    { id: 'spiritual', label: 'ஆன்மிகம்', icon: '🛕' },
+    { id: 'tourism', label: 'சுற்றுலா', icon: '🚗' },
+    { id: 'astro', label: 'AI ஜோதிடம்', icon: '🔮' },
   ];
+  
 
   const locationData = {
     'செங்கல்பட்டு': {
@@ -402,7 +410,7 @@ export default function Home() {
 
         {/* 9 பெருந்தூண்களுக்கான நேவிகேஷன் மெனு பார் */}
         <div className="border-t border-slate-800/80 bg-slate-950/80 overflow-x-auto no-scrollbar">
-          <div className="max-w-7xl mx-auto px-2 sm:px-4 grid grid-cols-3 md:flex md:items-center gap-2 py-2">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 grid grid-cols-4 md:flex md:items-center gap-2 py-2">
             {navigationModules.map((mod) => (
               <button
                 key={mod.id}
