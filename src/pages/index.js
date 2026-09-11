@@ -122,10 +122,11 @@ export default function Home() {
     { id: 'business', label: 'தொழில் & MSME', icon: '🏭' },
     { id: 'wholesale', label: 'மொத்த விற்பனை', icon: '📦' },
 
-    // 3. வாழ்வியல் & கலாச்சாரம்
+    // 3. வாழ்வியல் & அரசுப் பணிகள்
     { id: 'spiritual', label: 'ஆன்மிகம்', icon: '🛕' },
     { id: 'tourism', label: 'சுற்றுலா', icon: '🚗' },
     { id: 'astro', label: 'AI ஜோதிடம்', icon: '🔮' },
+    { id: 'govt', label: 'பட்டா & அரசு', icon: '📜' },
   ];
   
 
