@@ -19,6 +19,7 @@ export default function Home() {
 
   // வடிகட்டி & மேப்
   const [filterDistrict, setFilterDistrict] = useState('அனைத்தும்');
+  const [quickFilter, setQuickFilter] = useState('all');
   const [activeMapModalLand, setActiveMapModalLand] = useState(null);
   const [isSellModalOpen, setIsSellModalOpen] = useState(false);
 
@@ -244,9 +245,24 @@ export default function Home() {
     }
   };
 
-  const filteredLands = filterDistrict === 'அனைத்தும்'
-    ? listedLands
-    : listedLands.filter((l) => l.district === filterDistrict);
+  const filteredLands = listedLands.filter((l) => {
+    // 1. மாவட்ட வடிகட்டி சரிபார்ப்பு
+    const matchesDistrict = filterDistrict === 'அனைத்தும்' || l.district === filterDistrict;
+    if (!matchesDistrict) return false;
+
+    // 2. விரைவு ஃபில்டர் (Quick Category & Budget)
+    if (quickFilter === 'all') return true;
+
+    const landInfo = `${l.title || ''} ${l.type || ''} ${l.category || ''} ${l.description || ''}`.toLowerCase();
+
+    if (quickFilter === 'agri') return landInfo.includes('விவசாய') || landInfo.includes('தோட்டம்') || landInfo.includes('agri');
+    if (quickFilter === 'plots') return landInfo.includes('மனை') || landInfo.includes('plot') || landInfo.includes('dtcp');
+    if (quickFilter === 'budget') return landInfo.includes('15') || landInfo.includes('12') || landInfo.includes('10') || (l.price && Number(String(l.price).replace(/\D/g, '')) <= 1500000);
+    if (quickFilter === 'urgent') return landInfo.includes('அவசர') || landInfo.includes('urgent') || l.urgent;
+    if (quickFilter === 'road') return landInfo.includes('ரோடு') || landInfo.includes('road') || landInfo.includes('சாலை');
+
+    return true;
+  });
 
   const shareOnWhatsApp = (text) => {
     const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
@@ -501,7 +517,12 @@ export default function Home() {
               <button
                 key={chip.id}
                 type="button"
-                className="whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-slate-900/90 border border-slate-700/80 text-slate-200 hover:border-emerald-500 hover:text-emerald-400 hover:bg-slate-800 transition-all shadow-sm active:scale-95 flex items-center gap-1.5"
+                onClick={() => setQuickFilter(chip.id)}
+                className={`whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs transition-all shadow-sm active:scale-95 flex items-center gap-1.5 border ${
+                  quickFilter === chip.id
+                    ? 'bg-emerald-500 text-slate-950 font-bold border-emerald-400 shadow-emerald-500/20'
+                    : 'bg-slate-900/90 border-slate-700/80 text-slate-300 hover:border-slate-500 hover:text-white'
+                }`}
               >
                 {chip.label}
               </button>
