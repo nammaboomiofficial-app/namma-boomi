@@ -25,6 +25,7 @@ export default function Home() {
   const [selectedVisitPassLand, setSelectedVisitPassLand] = useState(null);
   const [visitorName, setVisitorName] = useState('');
   const [visitorPhone, setVisitorPhone] = useState('');
+  const [calcLandValue, setCalcLandValue] = useState(1000000);
 
   // விவசாயம் சப்-டேப்கள்
   const [agriSubTab, setAgriSubTab] = useState('crops');
@@ -460,10 +461,93 @@ export default function Home() {
         {/* ============================================================ */}
         {/* பட்டா & அரசு சேவைகள் பிரிவு */}
         {currentModule === 'govt' && (
-          <div className="mt-4">
-            <LandGovtServices />
+  <div className="mt-4 space-y-4">
+    <LandGovtServices />
+
+    {/* தமிழ்நாடு பத்திரப் பதிவு & முத்திரைத் தாள் கட்டணக் கால்குலேட்டர் */}
+    <div className="bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all rounded-2xl p-5 shadow-xl">
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-2xl">🧮</span>
+        <div>
+          <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+            பத்திரப் பதிவு & முத்திரைத் தாள் கால்குலேட்டர்
+            <span className="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">TN 2026 விதிகள்</span>
+          </h3>
+          <p className="text-xs text-slate-400">வழிகாட்டி மதிப்பு அல்லது விற்பனைத் தொகைக்கான துல்லிய அரசு செலவு</p>
+        </div>
+      </div>
+
+      {/* மதிப்பு உள்ளீட்டுப் பகுதி */}
+      <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3 mb-4">
+        <div className="flex justify-between items-center mb-1.5 text-xs text-slate-300">
+          <span>நிலத்தின் மதிப்பு (வழிகாட்டி அல்லது விற்பனை):</span>
+          <span className="text-emerald-400 font-bold text-sm">₹ {Number(calcLandValue || 0).toLocaleString('en-IN')}</span>
+        </div>
+        <input
+          type="number"
+          value={calcLandValue}
+          onChange={(e) => setCalcLandValue(Number(e.target.value))}
+          placeholder="நிலத்தின் மதிப்பை உள்ளிடவும்"
+          className="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs sm:text-sm font-semibold focus:outline-none focus:border-emerald-500"
+        />
+
+        {/* Quick Value Chips */}
+        <div className="flex gap-2 mt-2.5 overflow-x-auto pb-1 scrollbar-none">
+          {[
+            { label: '₹10 லட்சம்', val: 1000000 },
+            { label: '₹25 லட்சம்', val: 2500000 },
+            { label: '₹50 லட்சம்', val: 5000000 },
+            { label: '₹1 கோடி', val: 10000000 }
+          ].map((chip) => (
+            <button
+              key={chip.val}
+              type="button"
+              onClick={() => setCalcLandValue(chip.val)}
+              className="px-2.5 py-1 rounded-lg text-[11px] bg-slate-800/90 text-slate-300 border border-slate-700 hover:border-emerald-500 hover:text-white whitespace-nowrap active:scale-95 transition-all"
+            >
+              {chip.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* கட்டண பிரேக்டவுன் */}
+      {(() => {
+        const val = Number(calcLandValue || 0);
+        const stampDuty = Math.round(val * 0.07); // 7%
+        const regFee = Math.round(val * 0.02);    // 2%
+        const totalFee = stampDuty + regFee;       // 9%
+
+        return (
+          <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="bg-slate-800/60 p-2.5 rounded-xl border border-slate-800">
+                <p className="text-slate-400">📜 முத்திரைத் தாள் (7%)</p>
+                <p className="text-white font-bold text-sm mt-0.5">₹ {stampDuty.toLocaleString('en-IN')}</p>
+              </div>
+              <div className="bg-slate-800/60 p-2.5 rounded-xl border border-slate-800">
+                <p className="text-slate-400">🏛️ பத்திரப் பதிவு (2%)</p>
+                <p className="text-white font-bold text-sm mt-0.5">₹ {regFee.toLocaleString('en-IN')}</p>
+              </div>
+            </div>
+
+            <div className="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-xl flex justify-between items-center">
+              <div>
+                <p className="text-xs text-emerald-300 font-medium">💰 மொத்த அரசு கட்டணம் (9%)</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">*கணினி கட்டணம் & முத்திரைக் கட்டணம் தவிர்த்து</p>
+              </div>
+              <div className="text-right">
+                <span className="text-base sm:text-lg font-black text-emerald-400">
+                  ₹ {totalFee.toLocaleString('en-IN')}
+                </span>
+              </div>
+            </div>
           </div>
-        )}
+        );
+      })()}
+    </div>
+  </div>
+)}
         {/* 1. பூமி & நிலம் பிரிவு (REAL ESTATE & AUDIT) */}
         {/* ============================================================ */}
         {currentModule === 'land' && (
