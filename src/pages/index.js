@@ -413,15 +413,15 @@ export default function Home() {
     setCurrentModule(mod.id);
   }
 }}
-                className={`flex flex-col sm:flex-row items-center justify-center gap-1 p-2 sm:px-3.5 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-center
-                  currentModule === mod.id
-                    ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-900'
-                }`}
-              >
-                <span>{mod.icon}</span>
-                <span>{mod.label}</span>
-              </button>
+               className={`flex flex-col items-center justify-center p-2 rounded-xl text-center transition-all ${
+  currentModule === mod.id
+    ? 'bg-emerald-600 text-white font-bold shadow-md border border-emerald-400'
+    : 'bg-slate-900 border border-slate-800 text-slate-200 hover:bg-slate-800'
+}`}
+>
+  <span className="text-xl mb-1">{mod.icon}</span>
+  <span className="text-[11px] font-semibold leading-tight text-white">{mod.label}</span>
+</button>
             ))}
           </div>
         </div>
