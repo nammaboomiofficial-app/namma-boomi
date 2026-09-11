@@ -402,7 +402,7 @@ export default function Home() {
 
         {/* 9 பெருந்தூண்களுக்கான நேவிகேஷன் மெனு பார் */}
         <div className="border-t border-slate-800/80 bg-slate-950/80 overflow-x-auto no-scrollbar">
-          <div className="max-w-7xl mx-auto px-4 flex items-center gap-1.5 py-2 min-w-max">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 grid grid-cols-3 md:flex md:items-center gap-2 py-2">
             {navigationModules.map((mod) => (
               <button
                 key={mod.id}
@@ -413,7 +413,7 @@ export default function Home() {
     setCurrentModule(mod.id);
   }
 }}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                className={`flex flex-col sm:flex-row items-center justify-center gap-1 p-2 sm:px-3.5 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold text-center
                   currentModule === mod.id
                     ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
                     : 'text-slate-400 hover:text-white hover:bg-slate-900'
