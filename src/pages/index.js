@@ -980,6 +980,97 @@ export default function Home() {
                     </div>
                   </div>
                 )}
+                {/* 📜 நிலம் வாங்கும் முன் சரிபார்க்க வேண்டிய 7 சட்ட ஆவணங்கள் */}
+            <div className="mt-8 space-y-4">
+              <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-2xl p-4 shadow-xl">
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl">📜</span>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                      நிலம் வாங்கும் முன் சரிபார்க்க வேண்டிய 7 ஆவணங்கள்
+                      <span className="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">A to Z வழிகாட்டி</span>
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-0.5">சட்டச் சிக்கல்கள் மற்றும் போலிப் பத்திரங்களிலிருந்து 100% பாதுகாக்கும் சரிபார்ப்புப் பட்டியல்</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 7 Audit Points Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {[
+                  {
+                    step: '01',
+                    icon: '📑',
+                    title: 'தாய் பத்திரம் (Parent Document)',
+                    desc: 'குறைந்தது கடந்த 30 ஆண்டுகளுக்கான முந்தைய விற்பனைப் பத்திரங்கள் மற்றும் உரிமையாளர் தொடர்ச்சி (Link Documents) சரியாக உள்ளதா எனப் பார்க்க வேண்டும்.'
+                  },
+                  {
+                    step: '02',
+                    icon: '🏛️',
+                    title: 'வில்லங்கச் சான்று (EC - 30 ஆண்டுகள்)',
+                    desc: 'Tnreginet தளத்தில் 30 ஆண்டுகளுக்கான வில்லங்கச் சான்று எடுத்து, நிலத்தின் மீது எந்தவொரு நீதிமன்ற வழக்கோ, வங்கிக் கடனோ அல்லது அடமானமோ இல்லை என்பதை உறுதிசெய்ய வேண்டும்.'
+                  },
+                  {
+                    step: '03',
+                    icon: '🌾',
+                    title: 'பட்டா & சிட்டா உண்மைத் தன்மை',
+                    desc: 'Anywhere Patta தளத்தில் விற்பவரின் பெயர், சர்வே எண், உட்பிரிவு மற்றும் விஸ்தீரணம் அரசு ஆவணத்தில் துல்லியமாக உள்ளதா எனச் சரிபார்க்கவும்.'
+                  },
+                  {
+                    step: '04',
+                    icon: '📐',
+                    title: 'FMB புல வரைபடம் & எல்லை அளவீடு',
+                    desc: 'அரசு நில அளவையர் (Surveyor) மூலம் நிலத்தின் சர்வே எல்லைக் கற்கள் மற்றும் FMB வரைபடத்தின் அளவுகள் களத்தில் சரியாகப் பொருந்துகிறதா என அளக்க வேண்டும்.'
+                  },
+                  {
+                    step: '05',
+                    icon: '🏢',
+                    title: 'அங்கீகாரம் (DTCP / CMDA / RERA)',
+                    desc: 'வீட்டுமனை எனில் DTCP அல்லது CMDA முறையான ஒப்புதல் எண் உள்ளதா, பஞ்சாயத்து அப்ரூவல் மட்டும் கொண்ட முறைகேடான மனை இல்லையா என உறுதி செய்யவும்.'
+                  },
+                  {
+                    step: '06',
+                    icon: '💰',
+                    title: 'வழிகாட்டி மதிப்பு (Guideline Value)',
+                    desc: 'அரசு நிர்ணயித்துள்ள வழிகாட்டி மதிப்பை அறிந்து, அதற்கேற்ப முத்திரைத் தாள் மற்றும் பதிவு கட்டணத்தைத் திட்டமிடுங்கள்.'
+                  },
+                  {
+                    step: '07',
+                    icon: '🛣️',
+                    title: 'அரசு கையகப்படுத்தல் & ரோடு விரிவாக்கம்',
+                    desc: 'நிலம் நெடுஞ்சாலை விரிவாக்கம், உயர் மின்னழுத்த கம்பிப்பாதை அல்லது நீர்நிலைப் புறம்போக்கு எல்லைக்குள் வரவில்லை என்பதைச் சரிபார்க்கவும்.'
+                  }
+                ].map((item) => (
+                  <div key={item.step} className="bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 rounded-xl p-4 transition-all flex gap-3">
+                    <span className="text-emerald-400 font-mono font-black text-lg">{item.step}</span>
+                    <div>
+                      <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
+                        <span>{item.icon}</span> {item.title}
+                      </h4>
+                      <p className="text-xs text-slate-400 mt-1 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Legal Help Call to Action */}
+              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs text-emerald-300 font-bold">சட்ட ஆவணங்களை நிபுணர்களைக் கொண்டு சரிபார்க்க வேண்டுமா?</p>
+                  <p className="text-[11px] text-slate-400">எங்கள் சட்ட ஆலோசகர்கள் மூலம் உங்கள் ஆவணங்களை முழுமையாகத் தணிக்கை செய்து அறிக்கை பெறலாம்.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const msg = 'வணக்கம் நம்ம பூமி 360, எனது நில ஆவணங்களை A to Z தணிக்கை (Legal Audit) செய்ய விரும்புகிறேன். வழிகாட்டவும்.';
+                    window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
+                  }}
+                  className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 whitespace-nowrap active:scale-95 transition-all"
+                >
+                  <span>⚖️</span> சட்ட தணிக்கை உதவி பெறுக
+                </button>
+              </div>
+            </div>
               </div>
             )}
 
