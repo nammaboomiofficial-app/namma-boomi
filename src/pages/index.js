@@ -5,6 +5,7 @@ import SellLandModal from '../components/SellLandModal';
 import contactConfig from '../data/contactConfig';
 import DocumentAnalysisBureau from '../components/DocumentAnalysisBureau';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
+import LegalAuditPromo from '../components/LegalAuditPromo';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -4925,6 +4926,8 @@ export default function Home() {
           </a>
         </div>
       </div>
+      {/* ₹499 லீகல் ஆடிட் முன்பதிவு பிரிவு */}
+            <LegalAuditPromo />
       <FloatingWhatsApp />
     </div>
   );
