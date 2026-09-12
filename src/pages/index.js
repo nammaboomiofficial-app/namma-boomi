@@ -22,6 +22,7 @@ export default function Home() {
   const [quickFilter, setQuickFilter] = useState('all');
   const [activeMapModalLand, setActiveMapModalLand] = useState(null);
   const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+  const [selectedLandDetail, setSelectedLandDetail] = useState(null);
   const [selectedVisitPassLand, setSelectedVisitPassLand] = useState(null);
   const [visitorName, setVisitorName] = useState('');
   const [visitorPhone, setVisitorPhone] = useState('');
@@ -658,9 +659,10 @@ export default function Home() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                   {filteredLands.map((land) => (
                     <div
-                      key={land.id}
-                      className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition-all flex flex-col justify-between shadow-xl"
-                    >
+  key={land.id}
+  onClick={() => setSelectedLandDetail(land)}
+  className="bg-slate-900 border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer shadow-lg group"
+>
                       <div className="relative h-40 w-full overflow-hidden bg-slate-950">
                         <img
                           src={land.image}
@@ -4624,6 +4626,151 @@ export default function Home() {
               </div>
             </div>
           )}
+        </div>
+      )}
+{/* ================= 360° சொத்து முழு விவர மாடல் ================= */}
+      {selectedLandDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+          <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col">
+            
+            {/* மேல் படம் & மூடும் பட்டன் */}
+            <div className="relative h-48 sm:h-56 w-full flex-shrink-0 bg-slate-950">
+              <img
+                src={selectedLandDetail.image}
+                alt={selectedLandDetail.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+              <button
+                type="button"
+                onClick={() => setSelectedLandDetail(null)}
+                className="absolute top-3 right-3 w-9 h-9 rounded-full bg-slate-950/80 text-slate-300 hover:text-white flex items-center justify-center border border-slate-700 text-lg transition-all"
+              >
+                ✕
+              </button>
+              <div className="absolute bottom-3 left-4 right-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                    {selectedLandDetail.type || 'மனை / நிலம்'}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-xs bg-slate-800 text-slate-300">
+                    📍 {selectedLandDetail.location || selectedLandDetail.district}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-white line-clamp-1">{selectedLandDetail.title}</h3>
+              </div>
+            </div>
+
+            {/* மாடல் விவரங்கள் - ஸ்க்ரோல் வசதியுடன் */}
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-4 text-sm text-slate-300">
+              
+              {/* விலை & பரப்பளவு */}
+              <div className="flex items-center justify-between p-3.5 bg-slate-800/60 border border-slate-700/60 rounded-2xl">
+                <div>
+                  <div className="text-[11px] text-slate-400">மதிப்பு / விலை</div>
+                  <div className="text-xl font-extrabold text-emerald-400">
+                    {selectedLandDetail.price || selectedLandDetail.pricePerSqft || selectedLandDetail.totalPrice || '₹1,750 / ச.அடி'}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[11px] text-slate-400">பரப்பளவு</div>
+                  <div className="text-base font-bold text-white">
+                    {selectedLandDetail.area || selectedLandDetail.size || selectedLandDetail.extent || '2.50 ஏக்கர்'}
+                  </div>
+                </div>
+              </div>
+
+              {/* 📐 கள விவரங்கள் (Physical 360) */}
+              <div className="bg-slate-950/50 p-3.5 rounded-2xl border border-slate-800 space-y-2">
+                <div className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                  <span>📐</span> கள விவரங்கள் (Physical 360)
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
+                    <span className="text-slate-400 block text-[10px]">அணுகு சாலை:</span>
+                    <span className="font-semibold text-slate-200">{selectedLandDetail.roadWidth || '30 அடி தார் சாலை'}</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
+                    <span className="text-slate-400 block text-[10px]">மின்சார வசதி:</span>
+                    <span className="font-semibold text-slate-200">{selectedLandDetail.electricity || 'அருகில் EB கம்பம் உள்ளது'}</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
+                    <span className="text-slate-400 block text-[10px]">நிலத்தடி நீர்:</span>
+                    <span className="font-semibold text-slate-200">{selectedLandDetail.waterSource || '120 அடி (குடிநீர் உகந்தது)'}</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
+                    <span className="text-slate-400 block text-[10px]">மண் வகைப்பாடு:</span>
+                    <span className="font-semibold text-slate-200">{selectedLandDetail.soilType || 'செம்மண் / கடின தரை'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* ⚖️ சட்ட தணிக்கை நிலை (Legal 360) */}
+              <div className="bg-slate-950/50 p-3.5 rounded-2xl border border-slate-800 space-y-2">
+                <div className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                  <span>⚖️</span> சட்ட தணிக்கை நிலை (Legal 360)
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
+                    <span className="text-slate-400 block text-[10px]">பட்டா வகை:</span>
+                    <span className="font-semibold text-emerald-400">{selectedLandDetail.pattaStatus || 'ரயத்துவாரி மனை'}</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
+                    <span className="text-slate-400 block text-[10px]">வில்லங்கம் (EC):</span>
+                    <span className="font-semibold text-emerald-400">{selectedLandDetail.ecStatus || '30 ஆண்டுகள் வில்லங்கமற்றது'}</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70 col-span-2">
+                    <span className="text-slate-400 block text-[10px]">அங்கீகாரம்:</span>
+                    <span className="font-semibold text-slate-200">{selectedLandDetail.approval || 'DTCP / உள்ளாட்சி அப்ரூவல் சரிபார்க்கப்பட்டது'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 📍 அருகிலுள்ள வசதிகள் (Proximity 360) */}
+              <div className="bg-slate-950/50 p-3.5 rounded-2xl border border-slate-800 space-y-2">
+                <div className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                  <span>📍</span> அருகிலுள்ள முக்கிய இடங்கள்
+                </div>
+                <div className="grid grid-cols-3 gap-1.5 text-center text-xs">
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
+                    <div className="text-slate-400 text-[10px]">மெயின் ரோடு</div>
+                    <div className="font-bold text-slate-200">500 மீ</div>
+                  </div>
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
+                    <div className="text-slate-400 text-[10px]">பேருந்து நிறுத்தம்</div>
+                    <div className="font-bold text-slate-200">1 கி.மீ</div>
+                  </div>
+                  <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
+                    <div className="text-slate-400 text-[10px]">பள்ளி / கல்லூரி</div>
+                    <div className="font-bold text-slate-200">2.5 கி.மீ</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* நேரடி சைட் விசிட் வாட்ஸ்அப் பட்டன் */}
+            <div className="p-4 bg-slate-950 border-t border-slate-800 mt-auto flex gap-2">
+              <a
+                href={`https://wa.me/919444123456?text=${encodeURIComponent(
+                  `வணக்கம் நம்ம பூமி 360! நான் இந்த நிலத்தை நேரில் பார்க்க (Site Visit) விரும்புகிறேன்:\n\n📍 இடம்: ${selectedLandDetail.title}\n💰 விலை: ${selectedLandDetail.price}\n📐 அளவு: ${selectedLandDetail.area}\n\nமுன்பதிவு செய்ய நேரம் ஒதுக்கவும்.`
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 py-3 px-4 rounded-xl font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-center flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all text-sm"
+              >
+                <span>💬</span> நேரில் பார்க்க முன்பதிவு (Site Visit)
+              </a>
+              <button
+                type="button"
+                onClick={() => setSelectedLandDetail(null)}
+                className="py-3 px-4 rounded-xl font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition-all"
+              >
+                மூடு
+              </button>
+            </div>
+
+          </div>
         </div>
       )}
 {/* VIP விசிட் பாஸ் மாடல் (VIP Site Visit Pass Modal) */}
