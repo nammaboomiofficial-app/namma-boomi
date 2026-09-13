@@ -183,7 +183,7 @@ export default function LegalAuditPromo() {
                 </div>
                 <div>
                   <h3 className="font-extrabold text-slate-900 text-base">நம்ம பூமி 360</h3>
-                  <p className="text-[11px] text-slate-500">டிஜிட்டல் நிலச் சட்ட தணிக்கைப் பிரிவு</p>
+                 <p className="text-[11px] text-emerald-700 font-semibold">டிஜிட்டல் நில ஆவண சரிபார்ப்புப் பிரிவு</p>
                 </div>
               </div>
               <span className="text-[10px] bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-bold border border-amber-300">
@@ -232,7 +232,8 @@ export default function LegalAuditPromo() {
             </div>
 
             {/* கால்-டு-ஆக்ஷன் பட்டன் */}
-            <div className="pt-2 flex gap-3">
+            {/* கால்-டு-ஆக்ஷன் பட்டன் & பொறுப்புத் துறப்பு */}
+            <div className="pt-2 flex flex-col gap-2">
               <button
                 onClick={() => {
                   setShowSample(false);
@@ -240,8 +241,12 @@ export default function LegalAuditPromo() {
                 }}
                 className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md cursor-pointer"
               >
-                எனது நிலத்திற்கும் ஆடிட் செய்க (₹499)
+                எனது நிலத்திற்கும் சரிபார்ப்பு செய்க (₹499)
               </button>
+
+              <p className="text-[9px] text-slate-400 text-center leading-tight">
+                ⚖️ <strong>பொறுப்புத் துறப்பு:</strong> இந்த அறிக்கை தமிழ்நாடு அரசின் Tnreginet மற்றும் e-Services அதிகாரப்பூர்வ பொதுத் தரவுகளின் அடிப்படையில் ஆய்வு செய்து வழங்கப்படும் டிஜிட்டல் சரிபார்ப்பு அறிக்கையாகும்.
+              </p>
             </div>
 
           </div>
