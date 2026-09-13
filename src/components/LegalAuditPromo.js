@@ -206,20 +206,46 @@ export default function LegalAuditPromo() {
                 <div><strong>சான்றிதழ் எண்:</strong> NB-847958</div>
               </div>
 
-              {/* 6 அடுக்கு சோதனை அட்டவணை */}
-              <div className="border border-slate-200 rounded-xl overflow-hidden mt-3">
-                <div className="bg-slate-100 px-3 py-2 font-bold text-slate-900 border-b border-slate-200">
-                  6 அடுக்கு அரசு ஆவணச் சரிபார்ப்பு முடிவுகள்
+             {/* 8 அடுக்கு சோதனை அட்டவணை */}
+            <div className="border border-slate-200 rounded-xl overflow-hidden mt-2">
+              <div className="bg-slate-100 px-3 py-1.5 font-bold text-slate-900 text-xs">
+                8 அடுக்கு விரிவான அரசு ஆவணச் சரிபார்ப்பு முடிவுகள்
+              </div>
+              <div className="divide-y divide-slate-200 text-xs">
+                <div className="p-2 flex justify-between items-center">
+                  <span className="text-slate-600">1. பட்டா & உரிமை நிலை</span>
+                  <span className="font-bold text-emerald-700">பட்டாதாரர்: ராமநாதன் (உறுதியானது)</span>
                 </div>
-                <div className="divide-y divide-slate-200">
-                  <div className="p-2 flex justify-between"><span>1. பட்டா & உரிமை நிலை</span><span className="font-semibold text-emerald-700">பட்டாதாரர்: ராமநாதன் (உறுதியானது)</span></div>
-                  <div className="p-2 flex justify-between"><span>2. நில வகைப்பாடு</span><span className="font-semibold">ரயத்துவாரி புஞ்சை (Ryotwari Punjai)</span></div>
-                  <div className="p-2 flex justify-between"><span>3. வில்லங்க சான்றிதழ் (EC)</span><span className="font-semibold text-emerald-700">முழுமையான வில்லங்கமற்றது (Nil EC - 30 ஆண்டுகள்)</span></div>
-                  <div className="p-2 flex justify-between"><span>4. அரசு வழிகாட்டி மதிப்பு</span><span className="font-semibold">₹1,250 / சதுர அடி</span></div>
-                  <div className="p-2 flex justify-between"><span>5. கள அணுகு சாலை</span><span className="font-semibold text-emerald-700">30 அடி தார் சாலை இணைப்பு உறுதி</span></div>
-                  <div className="p-2 flex justify-between"><span>6. ஆக்கிரமிப்பு / ஆட்சேபணை</span><span className="font-semibold text-emerald-700">எந்தவித அரசு ஆட்சேபணைகளும் இல்லை</span></div>
+                <div className="p-2 flex justify-between items-center">
+                  <span className="text-slate-600">2. நில வகைப்பாடு & மண்டலம்</span>
+                  <span className="font-bold text-slate-800">ரயத்துவாரி புஞ்சை (குடியிருப்பு பகுதி)</span>
+                </div>
+                <div className="p-2 flex justify-between items-center">
+                  <span className="text-slate-600">3. DTCP / CMDA அப்ரூவல் நிலை</span>
+                  <span className="font-bold text-emerald-700">அங்கீகரிக்கப்பட்ட மனை (#124/2018)</span>
+                </div>
+                <div className="p-2 flex justify-between items-center">
+                  <span className="text-slate-600">4. வில்லங்க சான்றிதழ் (30 ஆண்டு EC)</span>
+                  <span className="font-bold text-emerald-700">முழுமையான வில்லங்கமற்றது (Nil EC)</span>
+                </div>
+                <div className="p-2 flex justify-between items-center">
+                  <span className="text-slate-600">5. அரசு வழிகாட்டி மதிப்பு</span>
+                  <span className="font-bold text-amber-700">₹1,250 / சதுர அடி</span>
+                </div>
+                <div className="p-2 flex justify-between items-center">
+                  <span className="text-slate-600">6. உத்தேச பதிவுச் செலவு (~9%)</span>
+                  <span className="font-bold text-slate-800">வழிகாட்டி மதிப்பில் 9% (முத்திரை + பதிவு)</span>
+                </div>
+                <div className="p-2 flex justify-between items-center">
+                  <span className="text-slate-600">7. கள அணுகு பாதை</span>
+                  <span className="font-bold text-slate-800">30 அடி தார் சாலை இணைப்பு உறுதி</span>
+                </div>
+                <div className="p-2 flex justify-between items-center">
+                  <span className="text-slate-600">8. நீர்நிலை / புறம்போக்கு எல்லை</span>
+                  <span className="font-bold text-emerald-700">ஆட்சேபணையற்ற எல்லை (Safe Zone)</span>
                 </div>
               </div>
+            </div>
 
               {/* ஸ்கோர் பேட்ஜ் */}
               <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-xl border border-emerald-200">

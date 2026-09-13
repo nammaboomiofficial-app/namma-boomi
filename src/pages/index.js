@@ -6,6 +6,8 @@ import contactConfig from '../data/contactConfig';
 import DocumentAnalysisBureau from '../components/DocumentAnalysisBureau';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
 import LegalAuditPromo from '../components/LegalAuditPromo';
+import LoanModule360 from '../components/LoanModule360';
+import FinanceAddons from '../components/FinanceAddons';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -2042,6 +2044,7 @@ export default function Home() {
                 அனைத்து வங்கிக் கடன்கள் • உடனடி தகுதி சரிபார்ப்பு • குறைந்த வட்டி வழிகாட்டல்
               </p>
             </div>
+            
 
             {/* கடன் வகை வடிகட்டிகள் (SubTabs) */}
             <div className="flex flex-wrap gap-1.5 bg-[#080e1a] p-1.5 rounded-xl border border-slate-800">
@@ -2593,7 +2596,7 @@ export default function Home() {
               <span>↗</span>
             </a>
           </div>
-
+<FinanceAddons />
           {/* சட்ட மறுப்புரை (Legal Disclaimer) */}
           <div className="p-3.5 rounded-xl border border-slate-800 bg-slate-900/40 text-[11px] text-slate-400 text-center">
             <span className="font-semibold text-slate-300">⚠️ சட்ட மறுப்புரை: </span>
