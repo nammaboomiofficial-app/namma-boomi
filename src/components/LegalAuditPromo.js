@@ -164,8 +164,9 @@ export default function LegalAuditPromo() {
 
       {/* மாதிரி அறிக்கை பாப்-அப் மாடல் (Sample Certificate Modal) */}
       {showSample && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="relative w-full max-w-2xl bg-white text-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 my-8 border border-slate-200">
+        // ✅ புதிய வரிகள் (167 & 168):
+<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+  <div className="relative w-full max-w-xl bg-white text-slate-800 rounded-3xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto">
             
             {/* மாடல் மூடும் பட்டன் */}
             <button
