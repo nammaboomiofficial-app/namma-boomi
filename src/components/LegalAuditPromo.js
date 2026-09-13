@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 export default function LegalAuditPromo() {
+  const [showSample, setShowSample] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -19,8 +20,7 @@ export default function LegalAuditPromo() {
       return;
     }
 
-    // உங்கள் அதிகாரப்பூர்வ வாட்ஸ்அப் எண்ணிற்கு வாடிக்கையாளர் ஆர்டர் செல்லும்
-    const adminWhatsApp = '919962369131'; // உங்கள் வாட்ஸ்அப் எண்ணை இங்கே மாற்றிக்கொள்ளலாம்
+    const adminWhatsApp = '919962369131';
     const message = `வணக்கம் நம்ம பூமி 360! 🛡️\n\nஎனது நிலத்திற்கான *₹499 டிஜிட்டல் லீகல் ஆடிட் (Legal Audit)* அறிக்கையைப் பெற விரும்புகிறேன்.\n\n👤 பெயர்: ${formData.name || 'வழங்கப்படவில்லை'}\n📱 வாட்ஸ்அப்: ${formData.phone}\n📍 இடம் / ஊர்: ${formData.location || 'வழங்கப்படவில்லை'}\n📜 சர்வே எண்: ${formData.surveyNo}\n\nகட்டண விவரம் மற்றும் சரிபார்ப்பு அறிக்கையை அனுப்பி வைக்கவும். நன்றி!`;
 
     window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
@@ -36,7 +36,7 @@ export default function LegalAuditPromo() {
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* இடதுபுறம்: சேவையின் முக்கியத்துவம் */}
+          {/* இடதுபுறம்: சேவையின் விவரங்கள் */}
           <div className="lg:col-span-7 space-y-5">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider">
               <span>🛡️</span> பிரத்யேக சட்டத் தணிக்கைச் சேவை
@@ -69,9 +69,20 @@ export default function LegalAuditPromo() {
                 <span>அதிகாரப்பூர்வ டிஜிட்டல் PDF சான்றிதழ்</span>
               </div>
             </div>
+
+            {/* மாதிரி அறிக்கை பார்க்கும் பட்டன் */}
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => setShowSample(true)}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/40 text-xs sm:text-sm font-bold transition-all shadow-md cursor-pointer"
+              >
+                <span>👁️</span> மாதிரி ஆடிட் அறிக்கையைப் பார்க்க (View Sample Report)
+              </button>
+            </div>
           </div>
 
-          {/* வலதுபுறம்: உடனடி முன்பதிவு படிவம் */}
+          {/* வலதுபுறம்: முன்பதிவு படிவம் */}
           <div className="lg:col-span-5 bg-slate-950/80 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
             <div className="border-b border-slate-800 pb-3 flex justify-between items-center">
               <div>
@@ -150,6 +161,92 @@ export default function LegalAuditPromo() {
 
         </div>
       </div>
+
+      {/* மாதிரி அறிக்கை பாப்-அப் மாடல் (Sample Certificate Modal) */}
+      {showSample && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="relative w-full max-w-2xl bg-white text-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 my-8 border border-slate-200">
+            
+            {/* மாடல் மூடும் பட்டன் */}
+            <button
+              onClick={() => setShowSample(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold bg-slate-100 hover:bg-slate-200 w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer"
+            >
+              ✕
+            </button>
+
+            {/* சான்றிதழ் மாதிரி தலைப்பு */}
+            <div className="flex items-center justify-between border-b pb-4 border-slate-200">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-black text-sm">
+                  360
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-slate-900 text-base">நம்ம பூமி 360</h3>
+                  <p className="text-[11px] text-slate-500">டிஜிட்டல் நிலச் சட்ட தணிக்கைப் பிரிவு</p>
+                </div>
+              </div>
+              <span className="text-[10px] bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-bold border border-amber-300">
+                மாதிரி அறிக்கை / SAMPLE
+              </span>
+            </div>
+
+            {/* வாட்டர்மார்க் உடன் கூடிய சான்றிதழ் விவரங்கள் */}
+            <div className="relative my-4 space-y-3 text-xs text-slate-700">
+              
+              {/* பின்னணி வாட்டர்மார்க் */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5 text-4xl sm:text-6xl font-black rotate-[-25deg] text-slate-900">
+                NAMMABOOMI 360
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <div><strong>வாடிக்கையாளர்:</strong> செல்வகுமார்</div>
+                <div><strong>சரிபார்க்கப்பட்ட நிலம்:</strong> சர்வே எண்: #142/1B</div>
+                <div><strong>மாவட்டம் / தாலுகா:</strong> செங்கல்பட்டு / திருப்போரூர்</div>
+                <div><strong>சான்றிதழ் எண்:</strong> NB-847958</div>
+              </div>
+
+              {/* 6 அடுக்கு சோதனை அட்டவணை */}
+              <div className="border border-slate-200 rounded-xl overflow-hidden mt-3">
+                <div className="bg-slate-100 px-3 py-2 font-bold text-slate-900 border-b border-slate-200">
+                  6 அடுக்கு அரசு ஆவணச் சரிபார்ப்பு முடிவுகள்
+                </div>
+                <div className="divide-y divide-slate-200">
+                  <div className="p-2 flex justify-between"><span>1. பட்டா & உரிமை நிலை</span><span className="font-semibold text-emerald-700">பட்டாதாரர்: ராமநாதன் (உறுதியானது)</span></div>
+                  <div className="p-2 flex justify-between"><span>2. நில வகைப்பாடு</span><span className="font-semibold">ரயத்துவாரி புஞ்சை (Ryotwari Punjai)</span></div>
+                  <div className="p-2 flex justify-between"><span>3. வில்லங்க சான்றிதழ் (EC)</span><span className="font-semibold text-emerald-700">முழுமையான வில்லங்கமற்றது (Nil EC - 30 ஆண்டுகள்)</span></div>
+                  <div className="p-2 flex justify-between"><span>4. அரசு வழிகாட்டி மதிப்பு</span><span className="font-semibold">₹1,250 / சதுர அடி</span></div>
+                  <div className="p-2 flex justify-between"><span>5. கள அணுகு சாலை</span><span className="font-semibold text-emerald-700">30 அடி தார் சாலை இணைப்பு உறுதி</span></div>
+                  <div className="p-2 flex justify-between"><span>6. ஆக்கிரமிப்பு / ஆட்சேபணை</span><span className="font-semibold text-emerald-700">எந்தவித அரசு ஆட்சேபணைகளும் இல்லை</span></div>
+                </div>
+              </div>
+
+              {/* ஸ்கோர் பேட்ஜ் */}
+              <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                <div>
+                  <div className="text-xs font-bold text-emerald-900">பாதுகாப்பு மதிப்பீடு: 98/100 (A+ மிக உயர் பாதுகாப்பு)</div>
+                  <div className="text-[11px] text-emerald-700">பட்டா மற்றும் வில்லங்கம் அரசு பதிவுகளுடன் 100% ஒத்துப் போகிறது.</div>
+                </div>
+                <div className="text-xl font-black text-emerald-600">✓ PASS</div>
+              </div>
+            </div>
+
+            {/* கால்-டு-ஆக்ஷன் பட்டன் */}
+            <div className="pt-2 flex gap-3">
+              <button
+                onClick={() => {
+                  setShowSample(false);
+                  document.getElementById('legal-audit-service')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md cursor-pointer"
+              >
+                எனது நிலத்திற்கும் ஆடிட் செய்க (₹499)
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
     </section>
   );
 }
