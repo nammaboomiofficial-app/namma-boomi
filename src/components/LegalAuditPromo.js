@@ -13,15 +13,35 @@ export default function LegalAuditPromo() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleOrder = (e) => {
+  const handleOrder = async (e) => {
     e.preventDefault();
     if (!formData.phone || !formData.surveyNo) {
-      alert('தயவுசெய்து உங்கள் வாட்ஸ்அப் எண் மற்றும் சர்வே எண்ணை உள்ளிடவும்.');
+      alert('தயவுசெய்து உங்கள் வாட்ஸ்அப் எண் மற்றும் சர்வே எண்ணை உள்ளிடவும்');
       return;
     }
 
+    // 1. கூகுள் ஷீட்டில் தானாக லீட் பதிவு செய்தல்
+    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZBOYKKBWNIKD7CzSh0M0qvfkHhORCw53YMBZXlnKCB1AcSAu/exec";
+
+    try {
+      fetch(GOOGLE_SHEET_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name || "பெயர் குறிப்பிடவில்லை",
+          phone: formData.phone || "",
+          location: formData.location || formData.district || "",
+          surveyNo: formData.surveyNo || "",
+        }),
+      });
+    } catch (err) {
+      console.error("Sheet saving error:", err);
+    }
+
+    // 2. வாட்ஸ்அப் மெசேஜ் அனுப்புதல்
     const adminWhatsApp = '919962369131';
-    const message = `வணக்கம் நம்ம பூமி 360! 🛡️\n\nஎனது நிலத்திற்கான *₹499 டிஜிட்டல் லீகல் ஆடிட் (Legal Audit)* அறிக்கையைப் பெற விரும்புகிறேன்.\n\n👤 பெயர்: ${formData.name || 'வழங்கப்படவில்லை'}\n📱 வாட்ஸ்அப்: ${formData.phone}\n📍 இடம் / ஊர்: ${formData.location || 'வழங்கப்படவில்லை'}\n📜 சர்வே எண்: ${formData.surveyNo}\n\nகட்டண விவரம் மற்றும் சரிபார்ப்பு அறிக்கையை அனுப்பி வைக்கவும். நன்றி!`;
+    const message = `வணக்கம் நம்ம பூமி 360! 🛡️\n\nஎனது நிலத்திற்கான ₹499 டிஜிட்டல் ஆவண தணிக்கை பெற விரும்புகிறேன்:\n\n👤 பெயர்: ${formData.name || ''}\n📱 வாட்ஸ்அப்: ${formData.phone || ''}\n📍 இடம்: ${formData.location || formData.district || ''}\n📜 சர்வே எண்: ${formData.surveyNo || ''}\n\nகட்டண விவரம் மற்றும் சரிபார்ப்பு அறிக்கையை அனுப்பி வைக்கவும். நன்றி!`;
 
     window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
   };
