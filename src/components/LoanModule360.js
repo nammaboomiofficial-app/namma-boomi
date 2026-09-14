@@ -20,8 +20,33 @@ export default function LoanModule360() {
   const totalPayment = emi * tenureYears * 12;
   const totalInterest = totalPayment - loanAmount;
 
-  const handleLoanApply = () => {
-    const message = `வணக்கம் நம்ம பூமி 360! 🏦\n\nஎனக்கு மனை / வீட்டுக் கடன் வழிகாட்டல் தேவைப்படுகிறது.\n\n💰 எதிர்பார்க்கும் கடன்: ₹${loanAmount.toLocaleString('en-IN')}\n📅 காலம்: ${tenureYears} ஆண்டுகள்\n📊 கணக்கிடப்பட்ட EMI: ₹${emi.toLocaleString('en-IN')}/மாதம்\n\nமுன்னணி வங்கிகளில் சிறந்த வட்டி விகிதத்திற்கு உதவவும். நன்றி!`;
+  const handleLoanApply = async () => {
+    // 1. கூகுள் ஷீட்டில் ஆட்டோமேட்டிக்காக லோன் லீட் சேமித்தல்
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZBOYKKBWNIKD7CzSh0M0qvfkHhORCw53YMBZXlnKCB1AcSAu/exec';
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'கடன் விண்ணப்பதாரர்',
+          phone: 'WhatsApp தொடர்பு',
+          place: `கடன்: ₹${loanAmount.toLocaleString('en-IN')}`,
+          surveyNo: `EMI: ₹${emi.toLocaleString('en-IN')} (${tenureYears} வருடங்கள்)`,
+          status: 'லோன் விண்ணப்பம்',
+          leadType: 'வங்கிக் கடன் லீட் (Loan Lead)',
+          feeStatus: 'லோன் விண்ணப்பம்',
+          auditStatus: 'வங்கிக் கடன் லீட் (Loan Lead)'
+        })
+      });
+    } catch (err) {
+      console.error("Sheet saving error:", err);
+    }
+
+    // 2. வாட்ஸ்அப் மெசேஜ் அனுப்புதல்
+    const message = `வணக்கம் நம்ம பூமி 360! 🏢\n\nஎனக்கு மனை / வீட்டுக் கடன் ஆலோசனை தேவைப்படுகிறது.\n\n📊 கடன் விவரம்:\n• கடன் தொகை: ₹${loanAmount.toLocaleString('en-IN')}\n• காலம்: ${tenureYears} ஆண்டுகள்\n• வட்டி விகிதம்: ${interestRate}%\n• மாத EMI: ₹${emi.toLocaleString('en-IN')}\n\nஎன் ஆவணங்களை ஆய்வு செய்து வழிகாட்டவும்.`;
+
     window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
   };
 

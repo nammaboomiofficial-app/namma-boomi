@@ -2239,17 +2239,53 @@ export default function Home() {
                       </div>
                     )}
                   </div>
-                  <a
-                    href={`https://wa.me/${contactConfig.whatsappNumber}?text=${encodeURIComponent(
-                      `வணக்கம் நம்ம பூமி 360, எனது உடனடி கடன் தகுதி முடிவு:\n\nமாத வருமானம்: ₹${loanIncome || '0'}\nதற்போதைய EMI: ₹${loanExistingEmi || '0'}\nதேவைப்படும் கடன்: ₹${loanRequested || '0'}\nகணிக்கப்பட்ட அதிகபட்ச வரம்பு: ₹${(loanDecision.maxAmount || 0).toLocaleString('en-IN')}\nமுடிவு: ${loanDecision.title}\n\nவங்கிக் கடன் ஒப்புதலுக்கு வழிகாட்டவும்.`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold shadow-md transition-all active:scale-95 flex items-center gap-1.5"
-                  >
-                    <span>வாட்ஸ்அப்பில் கடன் ஒப்புதல் பெற</span>
-                    <span>↗</span>
-                  </a>
+                  <div className="flex flex-col gap-2 shrink-0 w-full sm:w-52">
+                    <input
+                      id="loanCustomerPhone"
+                      type="tel"
+                      maxLength={10}
+                      placeholder="வாட்ஸ்அப் எண் (10 இலக்கம்)"
+                      className="px-3 py-2 text-xs bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 w-full sm:w-48 text-center"
+                    />
+                    <a
+                      href={`https://wa.me/${contactConfig.whatsappNumber}?text=${encodeURIComponent(
+                        `வணக்கம் நம்ம பூமி 360, எனது உடனடி கடன் தகுதி முடிவு:\n\nகணிக்கப்பட்ட கடன் வரம்பு: ₹${loanDecision?.maxAmount ? loanDecision.maxAmount.toLocaleString('en-IN') : '25,00,000'}\nமுடிவு: ${loanDecision?.eligible ? 'வாழ்த்துகள்! கடன் ஒப்புதல் உறுதி (Eligible)' : 'ஆலோசனை தேவை'}\n\nவங்கிக் கடன் ஒப்புதலுக்கு வழிகாட்டவும்.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => {
+                        const enteredPhone = typeof document !== 'undefined' ? (document.getElementById('loanCustomerPhone')?.value?.trim() || 'WhatsApp நேரடி') : 'WhatsApp நேரடி';
+                        try {
+                          fetch('https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZBOYKKBWNIKD7CzSh0M0qvfkHhORCw53YMBZXlnKCB1AcSAu/exec', {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              name: 'கடன் வாடிக்கையாளர்',
+                              phone: enteredPhone,
+                              village: 'கடன் வழிகாட்டல்',
+                              taluk: 'கடன் வழிகாட்டல்',
+                              district: 'கடன் வழிகாட்டல்',
+                              location: 'கடன் வழிகாட்டல்',
+                              place: 'கடன் வழிகாட்டல்',
+                              surveyNo: `வரம்பு: ₹${loanDecision?.maxAmount ? (loanDecision.maxAmount / 100000).toFixed(2) + 'L' : 'பரிசீலனை'}`,
+                              status: 'வங்கிக் கடன் லீட்',
+                              leadType: 'வங்கிக் கடன் லீட்',
+                              feeStatus: 'இலவச சேவை',
+                              auditStatus: 'வங்கிக் கடன் லீட்'
+                            })
+                          });
+                        } catch (e) {
+                          console.error(e);
+                        }
+                      }}
+                      className="w-full px-3 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl font-bold text-xs shadow-lg flex items-center justify-center gap-1.5 transition-all active:scale-95 text-center"
+                    >
+                      <span>வாட்ஸ்அப்பில் கடன் ஒப்புதல் பெற</span>
+                      <span>↗</span>
+                    </a>
+                  </div>
+                       
                 </div>
               </div>
             )}
