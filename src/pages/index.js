@@ -8,6 +8,7 @@ import FloatingWhatsApp from '../components/FloatingWhatsApp';
 import LegalAuditPromo from '../components/LegalAuditPromo';
 import LoanModule360 from '../components/LoanModule360';
 import FinanceAddons from '../components/FinanceAddons';
+import EducationModule from '../components/EducationModule';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -3012,6 +3013,7 @@ export default function Home() {
           {/* 6. கல்வி & படிப்பு (Education Hub) */}
       {currentModule === 'education' && (
         <div className="space-y-6">
+          <EducationModule />
           {/* தலைப்பு & அரசு நலத்திட்ட பேனர் */}
           <div className="bg-gradient-to-r from-blue-950/80 via-slate-900 to-indigo-950/80 border border-blue-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
