@@ -26,7 +26,7 @@ export default function EducationModule() {
 
     // கூகுள் ஷீட் சிஆர்எம்-ல் லீட் பதிவு செய்தல்
     try {
-      fetch('https://script.google.com/macros/s/AKfycbz...', { // உங்கள் Apps Script URL
+       fetch('https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZBOYKKBWNIKD7CzSh0M0qvfkHhORCw53YMBZXlnKCB1AcSAu/exec', { // உங்கள் Apps Script URL
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
