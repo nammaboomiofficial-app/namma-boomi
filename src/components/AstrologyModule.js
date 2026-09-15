@@ -134,7 +134,7 @@ export default function AstrologyModule({ setCurrentModule }) {
             <div className="text-xs">
               <span className="text-purple-300 font-bold block">மங்கள டிஜிட்டல் தட்சணை</span>
               <span className="text-emerald-400 font-bold text-sm">₹21 / ₹49 மட்டும்</span>
-              <span className="text-slate-400 text-[10px] block">AstroTalk-ஐ விட 95% குறைவான கட்டணம்</span>
+              <span className="text-slate-400 text-[10px] block">மற்ற முன்னணி செயலிகளை விட 90% குறைந்த கட்டணம்</span>
             </div>
           </div>
         </div>
