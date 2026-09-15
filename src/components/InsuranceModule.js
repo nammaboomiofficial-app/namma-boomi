@@ -22,10 +22,10 @@ export default function InsuranceModule({ setCurrentModule }) {
   
   // டேர்ம் கால்குலேட்டர்
   const [userAge, setUserAge] = useState(30);
-  const [coverAmount, setCoverAmount] = useState('1Cr'); // '50L', '1Cr', '2Cr'
+  const [coverAmount, setCoverAmount] = useState('1Cr');
 
   // மருத்துவக் காப்பீடு
-  const [familyType, setFamilyType] = useState('nuclear'); // 'individual', 'nuclear', 'parents'
+  const [familyType, setFamilyType] = useState('nuclear');
 
   // வாகனக் காப்பீடு
   const [selectedVehicle, setSelectedVehicle] = useState('bike');
@@ -86,7 +86,7 @@ export default function InsuranceModule({ setCurrentModule }) {
       console.log('CRM Syncing...');
     }
 
-    const msg = `வணக்கம் நம்ம பூமி 360! நான் காப்பீட்டு ஆலோசனை மற்றும் பாலிசி ஒப்பீடு கோருகிறேன்.\n\n👤 பெயர்: ${leadForm.name || '-'}\n📱 எண்: ${leadForm.phone}\n📍 மாவட்டம்: ${leadForm.district || '-'}\n🛡️ தேவை: ${leadForm.insuranceNeed}\n🎯 பிரிவு: ${activeTab.toUpperCase()}\n\nகுறைந்த பிரீமியத்தில் சிறந்த கிளைம் செட்டில்மென்ட் (CSR) உள்ள பாலிசி மற்றும் வழிகாட்டலை அனுப்பவும்.`;
+    const msg = `வணக்கம் நம்ம பூமி 360! நான் காப்பீட்டு ஆலோசனை மற்றும் அரசு திட்ட வழிகாட்டல் கோருகிறேன்.\n\n👤 பெயர்: ${leadForm.name || '-'}\n📱 எண்: ${leadForm.phone}\n📍 மாவட்டம்: ${leadForm.district || '-'}\n🛡️ தேவை: ${leadForm.insuranceNeed}\n🎯 பிரிவு: ${activeTab.toUpperCase()}\n\nதகுதியான பாலிசிகள், அரசு மானிய சலுகைகள் மற்றும் கிளைம் வழிகாட்டலை அனுப்பவும்.`;
     const waUrl = `https://wa.me/919962369131?text=${encodeURIComponent(msg)}`;
 
     setTimeout(() => {
@@ -102,25 +102,25 @@ export default function InsuranceModule({ setCurrentModule }) {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
           <div>
             <span className="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 rounded-full">
-              360° குடும்பம், வாகனம், பயிர் & சொத்துப் பாதுகாப்பு மையம்
+              360° குடும்பம், வாகனம், பயிர் & அரசு நலப் பாதுகாப்பு மையம்
             </span>
             <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight mt-2">
-              அதிநவீன காப்பீட்டு மையம் (Insurance 360 Desk)
+              ஸ்மார்ட் காப்பீட்டு வழிகாட்டி (Insurance 360 Desk)
             </h2>
             <p className="text-slate-300 text-xs md:text-sm mt-1 max-w-2xl">
-              ₹1 கோடி டேர்ம் லைஃப், பணமில்லா மருத்துவச் சிகிச்சை, வாகன இன்சூரன்ஸ், ₹20 அரசு விபத்துக் காப்பீடு மற்றும் க்ளைம் உதவி.
+              ₹1 கோடி டேர்ம் லைஃப், பணமில்லா மருத்துவம், தமிழக அரசின் CMCHIS ₹5 லட்சம், ₹20 விபத்துக் காப்பீடு மற்றும் க்ளைம் உதவி.
             </p>
           </div>
           <div className="flex items-center gap-3 bg-slate-950 px-4 py-2.5 rounded-xl border border-cyan-500/30">
             <span className="text-3xl">🛡️</span>
             <div className="text-xs">
-              <span className="text-cyan-400 font-bold block">98.5%+ கிளைம் தீர்வு விகிதம்</span>
-              <span className="text-slate-400 text-[11px]">IRDAI உரிமம் பெற்ற நிறுவனங்கள்</span>
+              <span className="text-cyan-400 font-bold block">மத்திய & மாநில அரசுத் திட்டங்கள்</span>
+              <span className="text-slate-400 text-[11px]">நேரடி வழிகாட்டல் & தகுதி ஆய்வு</span>
             </div>
           </div>
         </div>
 
-        {/* 2. 7 மல்டி-டேப்கள் */}
+        {/* 2. நேவிகேஷன் டேப்கள் */}
         <div className="flex flex-wrap gap-2 mt-6 border-b border-slate-800 pb-4">
           <button
             onClick={() => setActiveTab('term')}
@@ -139,6 +139,14 @@ export default function InsuranceModule({ setCurrentModule }) {
             🏥 பணமில்லா மருத்துவம் (Health)
           </button>
           <button
+            onClick={() => setActiveTab('govt_micro')}
+            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
+              activeTab === 'govt_micro' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+            }`}
+          >
+            🏛️ மத்திய & தமிழக அரசுத் திட்டங்கள்
+          </button>
+          <button
             onClick={() => setActiveTab('vehicle')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
               activeTab === 'vehicle' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
@@ -147,20 +155,12 @@ export default function InsuranceModule({ setCurrentModule }) {
             🛵 பைக் / கார் / டிராக்டர்
           </button>
           <button
-            onClick={() => setActiveTab('govt_micro')}
-            className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'govt_micro' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
-            }`}
-          >
-            🇮🇳 ₹20 & ₹436 அரசு காப்பீடுகள்
-          </button>
-          <button
             onClick={() => setActiveTab('agri_cattle')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
               activeTab === 'agri_cattle' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
             }`}
           >
-            🌾 பயிர் & மாடு காப்பீடு
+            🌾 PMFBY பயிர் & மாடு காப்பீடு
           </button>
           <button
             onClick={() => setActiveTab('shop_asset')}
@@ -180,7 +180,7 @@ export default function InsuranceModule({ setCurrentModule }) {
           </button>
         </div>
 
-        {/* 3. டேப் உள்ளடக்கங்கள் */}
+        {/* 3. டேப் வாரியான உள்ளடக்கங்கள் */}
         <div className="mt-6">
           {/* TAB 1: டேர்ம் இன்சூரன்ஸ் */}
           {activeTab === 'term' && (
@@ -228,7 +228,7 @@ export default function InsuranceModule({ setCurrentModule }) {
                     சுமார் ₹{selectedTermPremium} <span className="text-xs font-normal text-slate-400">/ மாதம் முதல்</span>
                   </h3>
                   <p className="text-xs text-slate-300 mt-1">
-                    {userAge} வயதில் எடுக்கும் போது பாலிசி முடியும் வரை பிரீமியம் உயராது (Zero Price Hike).
+                    {userAge} வயதில் எடுக்கும் போது பாலிசி முடியும் வரை பிரீமியம் மாறாது (Zero Price Hike).
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-xs">
@@ -307,7 +307,83 @@ export default function InsuranceModule({ setCurrentModule }) {
             </div>
           )}
 
-          {/* TAB 3: வாகனக் காப்பீடு (Motor Cover) */}
+          {/* TAB 3: மத்திய & தமிழக அரசு நலத் திட்டங்கள் (State & Central Govt) */}
+          {activeTab === 'govt_micro' && (
+            <div className="space-y-6">
+              {/* தமிழ்நாடு மாநில அரசு திட்டங்கள் */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-base">🏛️</span>
+                  <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                    தமிழ்நாடு மாநில அரசு திட்டங்கள் (TN State Govt Schemes)
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-slate-950 p-4 rounded-xl border border-emerald-500/40 space-y-2">
+                    <div className="flex justify-between items-start">
+                      <span className="text-xs font-bold text-emerald-400">முதலமைச்சரின் விரிவான மருத்துவக் காப்பீடு (CMCHIS)</span>
+                      <span className="px-2 py-0.5 text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/30 rounded">100% இலவசம்</span>
+                    </div>
+                    <div className="text-xl font-black text-white">ஆண்டுக்கு ₹ 5,00,000 வரை</div>
+                    <p className="text-xs text-slate-300">
+                      குடும்ப அட்டை (Ration Card) உள்ள தகுதியான குடும்பங்களுக்கு தமிழகத்தின் முன்னணி தனியார் மற்றும் அரசு மருத்துவமனைகளில் இலவச சிகிச்சை.
+                    </p>
+                    <div className="pt-2 text-[11px] text-slate-400 border-t border-slate-800">
+                      📌 <strong>தகுதி:</strong> குடும்ப ஆண்டு வருமானம் ₹1,20,000-க்குள் இருத்தல் வேண்டும் (ஸ்மார்ட் கார்டு கட்டாயம்).
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-950 p-4 rounded-xl border border-emerald-500/40 space-y-2">
+                    <div className="flex justify-between items-start">
+                      <span className="text-xs font-bold text-emerald-400">முதலமைச்சரின் உழவர் பாதுகாப்புத் திட்டம்</span>
+                      <span className="px-2 py-0.5 text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/30 rounded">உழவர் நல வாரியம்</span>
+                    </div>
+                    <div className="text-xl font-black text-white">₹ 1,00,000 முதல் ₹ 2,00,000 வரை</div>
+                    <p className="text-xs text-slate-300">
+                      விவசாயிகள் மற்றும் விவசாயத் தொழிலாளர்களுக்கு விபத்து மரணம், உடல் உறுப்பு இழப்பு மற்றும் இயற்கை மரணத்திற்கான நேரடி அரசு நிவாரணம்.
+                    </p>
+                    <div className="pt-2 text-[11px] text-slate-400 border-t border-slate-800">
+                      📌 <strong>பலன்கள்:</strong> விபத்து மரண நிவாரணம், கல்வி உதவித்தொகை, திருமண நிதி மற்றும் முதியோர் ஓய்வூதியம்.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* மத்திய அரசு திட்டங்கள் */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-base">🇮🇳</span>
+                  <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                    மத்திய அரசு மக்கள் நலத் திட்டங்கள் (Central Govt Micro-Insurance)
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="bg-slate-950 p-4 rounded-xl border border-blue-500/30 space-y-2">
+                    <span className="text-xs font-bold text-blue-400 block">PMSBY விபத்துக் காப்பீடு</span>
+                    <div className="text-lg font-black text-white">ஆண்டுக்கு ₹20 மட்டும்</div>
+                    <div className="text-xs font-bold text-slate-200">₹ 2,00,000 விபத்து மரண இழப்பீடு</div>
+                    <p className="text-[11px] text-slate-400">18 முதல் 70 வயது வரை உள்ள எவரும் சேமிப்பு வங்கிக் கணக்கு மூலம் நொடியில் செயல்படுத்தலாம்.</p>
+                  </div>
+
+                  <div className="bg-slate-950 p-4 rounded-xl border border-blue-500/30 space-y-2">
+                    <span className="text-xs font-bold text-blue-400 block">PMJJBY ஆயுள் காப்பீடு</span>
+                    <div className="text-lg font-black text-white">ஆண்டுக்கு ₹436 மட்டும்</div>
+                    <div className="text-xs font-bold text-slate-200">₹ 2,00,000 இயற்கை / விபத்து மரணம்</div>
+                    <p className="text-[11px] text-slate-400">18 முதல் 50 வயது வரை உள்ளவர்களுக்கு குடும்ப நிதிப் பாதுகாப்பை உறுதி செய்யும் எளிய திட்டம்.</p>
+                  </div>
+
+                  <div className="bg-slate-950 p-4 rounded-xl border border-amber-500/30 space-y-2">
+                    <span className="text-xs font-bold text-amber-400 block">ஆயுஷ்மான் பாரத் (PM-JAY) & APY</span>
+                    <div className="text-lg font-black text-white">₹5 லட்சம் மருத்துவ அட்டை</div>
+                    <div className="text-xs font-bold text-slate-200">+ மாதம் ₹5,000 ஓய்வூதியம் (APY)</div>
+                    <p className="text-[11px] text-slate-400">தேசிய அளவிலான இலவச மருத்துவ சிகிச்சை அட்டை மற்றும் அமைப்புசாரா தொழிலாளர் ஓய்வூதியம்.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: வாகனக் காப்பீடு */}
           {activeTab === 'vehicle' && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-5 space-y-3">
@@ -348,32 +424,6 @@ export default function InsuranceModule({ setCurrentModule }) {
                   <span className="text-cyan-400 font-bold block">💡 போனஸ் டிப் (NCB தள்ளுபடி):</span>
                   <p className="text-[11px]">முந்தைய ஆண்டில் கிளைம் செய்யவில்லை என்றால் புதிய பாலிசியில் 20% முதல் 50% வரை பிரீமியம் கழிவு பெறலாம்.</p>
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 4: ₹20 & ₹436 மத்திய அரசு திட்டங்கள் */}
-          {activeTab === 'govt_micro' && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-slate-950 p-4 rounded-xl border border-emerald-500/30 space-y-2">
-                <span className="text-xs font-bold text-emerald-400 block">PMSBY விபத்துக் காப்பீடு</span>
-                <div className="text-xl font-black text-white">ஆண்டுக்கு ₹20 மட்டும்</div>
-                <div className="text-xs font-bold text-slate-200">₹ 2,00,000 விபத்து இறப்பு இழப்பீடு</div>
-                <p className="text-[11px] text-slate-400">18 முதல் 70 வயது வரை உள்ள எவரும் தங்கள் வங்கிக் கணக்கு மூலம் நொடியில் செயல்படுத்தலாம்.</p>
-              </div>
-
-              <div className="bg-slate-950 p-4 rounded-xl border border-blue-500/30 space-y-2">
-                <span className="text-xs font-bold text-blue-400 block">PMJJBY ஆயுள் காப்பீடு</span>
-                <div className="text-xl font-black text-white">ஆண்டுக்கு ₹436 மட்டும்</div>
-                <div className="text-xs font-bold text-slate-200">₹ 2,00,000 இயற்கை / விபத்து மரணம்</div>
-                <p className="text-[11px] text-slate-400">18 முதல் 50 வயது வரை உள்ளவர்களுக்குக் குடும்பத்திற்குப் பாதுகாப்பளிக்கும் அரசு திட்டம்.</p>
-              </div>
-
-              <div className="bg-slate-950 p-4 rounded-xl border border-amber-500/30 space-y-2">
-                <span className="text-xs font-bold text-amber-400 block">அடல் பென்ஷன் யோஜனா (APY)</span>
-                <div className="text-xl font-black text-white">மாதாந்திர அரசு ஓய்வூதியம்</div>
-                <div className="text-xs font-bold text-slate-200">மாதம் ₹1,000 முதல் ₹5,000 வரை</div>
-                <p className="text-[11px] text-slate-400">அமைப்புசாரா தொழிலாளர்கள் மற்றும் இளைஞர்களுக்கான வாழ்நாள் உத்திரவாத பென்ஷன் திட்டம்.</p>
               </div>
             </div>
           )}
@@ -426,7 +476,7 @@ export default function InsuranceModule({ setCurrentModule }) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                 <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1">
                   <span className="text-white font-bold block">1. 72 மணிநேரத் தகவல்</span>
-                  <p className="text-slate-400 text-[11px]">மருத்துவமனையில் அனுமதிக்கப்பட்டாலோ அல்லது விபத்து நடந்தாலோ 72 மணி நேரத்திற்குள் இன்சூரன்ஸ் நிறுவனத்திற்குத் தகவல் தெரிவிக்க வேண்டும்.</p>
+                  <p className="text-slate-400 text-[11px]">மருத்துவமனையில் அனுமதிக்கப்பட்டாலோ அல்லது விபத்து நடந்தாலோ 72 மணி நேரத்திற்குள் நிறுவனத்திற்குத் தகவல் தெரிவிக்க வேண்டும்.</p>
                 </div>
                 <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1">
                   <span className="text-white font-bold block">2. நெட்வொர்க் TPA கார்டு</span>
@@ -434,7 +484,7 @@ export default function InsuranceModule({ setCurrentModule }) {
                 </div>
                 <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1">
                   <span className="text-white font-bold block">3. முறையான ஆவணங்கள்</span>
-                  <p className="text-slate-400 text-[11px]">வாகன விபத்திற்கு FIR நகல், மருத்துவ சிகிச்சைக்கு டிஸ்சார்ஜ் சம்மரி மற்றும் ஒரிஜினல் ரசீதுகள் கட்டாயம் வைத்திருக்க வேண்டும்.</p>
+                  <p className="text-slate-400 text-[11px]">வாகன விபத்திற்கு FIR நகல், மருத்துவ சிகிச்சைக்கு டிஸ்சார்ஜ் சம்மரி மற்றும் ஒரிஜினல் பில்கள் கட்டாயம் வைத்திருக்க வேண்டும்.</p>
                 </div>
               </div>
             </div>
@@ -444,7 +494,7 @@ export default function InsuranceModule({ setCurrentModule }) {
         {/* 4. சிஆர்எம் படிவம் */}
         <form onSubmit={handleSubmit} className="mt-6 pt-5 border-t border-slate-800">
           <div className="text-xs font-bold text-slate-200 mb-2 flex items-center gap-2">
-            <span>🛡️</span> சிறந்த பாலிசி ஒப்பீடு மற்றும் உதவிக்கு விண்ணப்பிக்கவும்:
+            <span>🛡️</span> சிறந்த பாலிசி ஒப்பீடு மற்றும் அரசு திட்ட உதவிக்கு விண்ணப்பிக்கவும்:
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
             <input
@@ -465,7 +515,7 @@ export default function InsuranceModule({ setCurrentModule }) {
             />
             <input
               type="text"
-              placeholder="மாவட்டம் / ஊர் (எ.கா: சென்னை)"
+              placeholder="மாவட்டம் / ஊர் (எ.கா: மதுரை)"
               value={leadForm.district}
               onChange={(e) => setLeadForm({ ...leadForm, district: e.target.value })}
               className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500"
@@ -475,10 +525,12 @@ export default function InsuranceModule({ setCurrentModule }) {
               onChange={(e) => setLeadForm({ ...leadForm, insuranceNeed: e.target.value })}
               className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-cyan-500"
             >
+              <option value="தமிழ்நாடு CMCHIS ₹5 லட்சம் இலவச மருத்துவக் காப்பீடு">🏛️ தமிழ்நாடு CMCHIS மருத்துவக் காப்பீடு</option>
+              <option value="முதலமைச்சரின் உழவர் பாதுகாப்புத் திட்டம்">🌾 உழவர் பாதுகாப்புத் திட்ட உதவி</option>
+              <option value="மத்திய அரசு காப்பீடு (₹20 PMSBY / ₹436 PMJJBY)">🇮🇳 ₹20 / ₹436 மத்திய அரசுத் திட்டங்கள்</option>
               <option value="டேர்ம் லைஃப் (₹1 கோடி குடும்பப் பாதுகாப்பு)">👨‍👩‍👧 ₹1 கோடி டேர்ம் லைஃப்</option>
-              <option value="குடும்ப பணமில்லா மருத்துவக் காப்பீடு">🏥 பணமில்லா மருத்துவக் காப்பீடு</option>
+              <option value="குடும்ப பணமில்லா மருத்துவக் காப்பீடு">🏥 பணமில்லா குடும்ப மருத்துவக் காப்பீடு</option>
               <option value="வாகனக் காப்பீடு (பைக் / கார் / டிராக்டர்)">🛵 பைக் / கார் / டிராக்டர் காப்பீடு</option>
-              <option value="₹20 & ₹436 அரசு காப்பீடுகள் (PMJJBY/PMSBY)">🇮🇳 அரசு காப்பீடு (₹20 / ₹436)</option>
               <option value="பயிர் & கால்நடை காப்பீடு (PMFBY)">🌾 பயிர் & மாடு காப்பீடு</option>
               <option value="கடை & குடோன் வணிகப் பாதுகாப்பு">🏢 கடை & குடோன் பாதுகாப்பு</option>
               <option value="க்ளைம் செட்டில்மென்ட் உதவி">📋 க்ளைம் செட்டில்மென்ட் உதவி</option>
@@ -491,7 +543,7 @@ export default function InsuranceModule({ setCurrentModule }) {
               disabled={loading}
               className="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-cyan-950/40 transition-all flex items-center gap-1.5"
             >
-              {loading ? 'தயாராகிறது...' : 'பாலிசி விவரம் பெற (WhatsApp) ↗'}
+              {loading ? 'தயாராகிறது...' : 'பாலிசி & அரசு திட்ட விவரம் பெற (WhatsApp) ↗'}
             </button>
           </div>
         </form>
