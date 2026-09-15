@@ -72,6 +72,30 @@ const ECOSYSTEM_JOBS = [
     badge: 'பிரத்யேக தணிக்கைப் பணி',
     badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
     icon: '📐'
+  },
+  {
+    id: 'machinery_driver',
+    title: 'டிராக்டர், ஹார்வெஸ்டர் & சரக்கு ஓட்டுநர்',
+    category: 'போக்குவரத்து & பண்ணை இயந்திரங்கள்',
+    desc: 'விவசாய நிலங்களில் டிராக்டர் உழவு, அறுவடை இயந்திரம் (Harvester) மற்றும் B2B விளைபொருள் சரக்கு லாரி/பிக்கப் இயக்குதல்.',
+    salary: '₹18,000 - ₹32,000 + தினசரி பேட்டா',
+    locations: 'உங்கள் சொந்த தாலுகா & தமிழக மாவட்டங்கள்',
+    qualification: 'Heavy / Commercial ஓட்டுநர் உரிமம் (டிரைவிங் லைசென்ஸ்)',
+    badge: 'உடனடி தேவை • Daily Bata',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+    icon: '🚜'
+  },
+  {
+    id: 'govt_exam_prep',
+    title: 'TNPSC (குரூப் 4 / VAO) & கூட்டுறவு வங்கி தேர்வுகள்',
+    category: 'அரசுத் தேர்வுகள் & நேரடி வழிகாட்டல்',
+    desc: 'TNPSC குரூப் 4/VAO, தமிழ்நாடு கூட்டுறவு வங்கி உதவியாளர், அஞ்சல் துறை GDS மற்றும் சீருடைப் பணியாளர் (போலீஸ்) தேர்வு நேரடி வழிகாட்டல்.',
+    salary: 'அரசு ஊதிய விகிதம் (Govt Pay Scale)',
+    locations: 'தமிழ்நாடு முழுவதும் (அரசுப் பணிகள்)',
+    qualification: '10th / 12th / ஏதேனும் ஒரு பட்டப்படிப்பு (Any Degree)',
+    badge: 'அரசு வேலை வழிகாட்டி',
+    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+    icon: '🏛️'
   }
 ];
 
