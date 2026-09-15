@@ -59,7 +59,7 @@ const BUSINESS_PRESETS = [
   }
 ];
 
-export default function BusinessModule() {
+export default function BusinessModule({ setCurrentModule }) {
   const [selectedId, setSelectedId] = useState('cold_press_oil');
   const [applicantType, setApplicantType] = useState('rural_special'); // 'rural_special' (35%), 'rural_general' (25%), 'urban' (15%)
   const [customInvestment, setCustomInvestment] = useState(600000);
@@ -341,35 +341,53 @@ export default function BusinessModule() {
         </div>
       </div>
 
-      {/* 3. நம்ம பூமி 360° எகோசிஸ்டம் பாலம் (The 360 Ecosystem Loop) */}
+      {/* 3. நம்ம பூமி 360° எகோசிஸ்டம் பாலம் (Interactive Links) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-        <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 space-y-2">
-          <span className="text-xl">🏡</span>
-          <h4 className="text-sm font-bold text-white">தொழிலுக்கு உகந்த நிலம் வேண்டுமா?</h4>
+        <div 
+          onClick={() => {
+            if (setCurrentModule) setCurrentModule('land');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-blue-500/50 p-4 space-y-2 cursor-pointer transition-all duration-300 hover:scale-[1.02] group shadow-lg"
+        >
+          <span className="text-2xl block group-hover:scale-110 transition-transform">🏡</span>
+          <h4 className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">தொழிலுக்கு உகந்த நிலம் வேண்டுமா?</h4>
           <p className="text-xs text-slate-400">
             குடோன், பண்ணை அல்லது தொழிற்சாலை அமைக்க ₹499 சட்ட தணிக்கை செய்யப்பட்ட பாதுகாப்பான நிலங்கள்.
           </p>
-          <span className="text-[11px] text-blue-400 font-semibold block pt-1">நம்ம பூமி நிலப்பிரிவு இணைப்பு ↗</span>
+          <span className="text-[11px] text-blue-400 font-bold block pt-1 underline">நம்ம பூமி நிலப்பிரிவு செல்ல ↗</span>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 space-y-2">
-          <span className="text-xl">👥</span>
-          <h4 className="text-sm font-bold text-white">தொழிலுக்கு ஊழியர்கள் தேவையா?</h4>
+        <div 
+          onClick={() => {
+            if (setCurrentModule) setCurrentModule('jobs');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-emerald-500/50 p-4 space-y-2 cursor-pointer transition-all duration-300 hover:scale-[1.02] group shadow-lg"
+        >
+          <span className="text-2xl block group-hover:scale-110 transition-transform">👥</span>
+          <h4 className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">தொழிலுக்கு ஊழியர்கள் தேவையா?</h4>
           <p className="text-xs text-slate-400">
             பில்லிங், களப்பணி மற்றும் உற்பத்திப் பணிகளுக்கு உள்ளூர் இளைஞர்களை உடனே தேர்வு செய்யுங்கள்.
           </p>
-          <span className="text-[11px] text-emerald-400 font-semibold block pt-1">நம்ம பூமி Jobs Hub இணைப்பு ↗</span>
+          <span className="text-[11px] text-emerald-400 font-bold block pt-1 underline">நம்ம பூமி Jobs Hub செல்ல ↗</span>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 space-y-2">
-          <span className="text-xl">📑</span>
-          <h4 className="text-sm font-bold text-white">கணக்கு & ஜிஎஸ்டி ஆட்டோமேஷன்</h4>
+        <div 
+          onClick={() => {
+            if (setCurrentModule) setCurrentModule('education');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-amber-500/50 p-4 space-y-2 cursor-pointer transition-all duration-300 hover:scale-[1.02] group shadow-lg"
+        >
+          <span className="text-2xl block group-hover:scale-110 transition-transform">📑</span>
+          <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">கணக்கு & ஜிஎஸ்டி ஆட்டோமேஷன்</h4>
           <p className="text-xs text-slate-400">
             Advanced Excel & Tally தேர்ச்சி பெற்ற சான்றளிக்கப்பட்ட மாணவர்களைப் பணியமர்த்துங்கள்.
           </p>
-          <span className="text-[11px] text-amber-400 font-semibold block pt-1">கல்வி மாடியூல் இணைப்பு ↗</span>
+          <span className="text-[11px] text-amber-400 font-bold block pt-1 underline">கல்வி மாடியூல் செல்ல ↗</span>
         </div>
       </div>
-    </div>
+      </div>
   );
 }

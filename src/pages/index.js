@@ -2871,7 +2871,7 @@ export default function Home() {
       {/* 8. தொழில் & MSME (Business Hub) */}
       {currentModule === 'business' && (
   <div className="space-y-6">
-    <BusinessModule />
+    <BusinessModule setCurrentModule={setCurrentModule} />
   </div>
 )}
         {/* 9. ஆன்மிகம் & சுற்றுலா (Spiritual & Heritage Hub) */}
