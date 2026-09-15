@@ -14,6 +14,7 @@ import JobModule from '../components/JobModule';
 import BusinessModule from '../components/BusinessModule';
 import AgriModule from '../components/AgriModule';
 import InsuranceModule from '../components/InsuranceModule';
+import WholesaleModule from '../components/WholesaleModule';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -446,11 +447,7 @@ export default function Home() {
               <button
                 key={mod.id}
                 onClick={() => {
-  if (mod.id === 'wholesale') {
-    window.location.href = '/wholesale';
-  } else {
-    setCurrentModule(mod.id);
-  }
+  setCurrentModule(mod.id);
 }}
                className={`flex flex-col items-center justify-center p-2 rounded-xl text-center transition-all ${
   currentModule === mod.id
@@ -2085,6 +2082,12 @@ export default function Home() {
       {currentModule === 'business' && (
   <div className="space-y-6">
     <BusinessModule setCurrentModule={setCurrentModule} />
+  </div>
+)}
+{/* 8(b). மொத்த விற்பனை (Wholesale B2B Hub) மாடியூல் */}
+{currentModule === 'wholesale' && (
+  <div className="space-y-6">
+    <WholesaleModule setCurrentModule={setCurrentModule} />
   </div>
 )}
         {/* 9. ஆன்மிகம் & சுற்றுலா (Spiritual & Heritage Hub) */}
