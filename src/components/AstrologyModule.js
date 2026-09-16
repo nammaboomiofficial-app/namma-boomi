@@ -248,7 +248,7 @@ export default function AstrologyModule({ setCurrentModule }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* திட்டம் 1: ₹21 உடனடி ஸ்னாப்ஷாட் */}
             <div
-              onClick={() => setPayPlan({ amount: 21, title: 'விருப்பம் 1: உடனடி ஸ்னாப்ஷாட்', chatLimit: 1 })}
+              onClick={() => { setPayPlan({ amount: 21, title: 'விருப்பம் 1: உடனடி ஸ்னாப்ஷாட்', chatLimit: 1 }); setStep(3); }}
               className={`p-5 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between ${payPlan.amount === 21 ? 'bg-slate-900 border-amber-500 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500' : 'bg-slate-950 border-slate-800 hover:border-slate-700'}`}
             >
               <div>
@@ -271,7 +271,7 @@ export default function AstrologyModule({ setCurrentModule }) {
 
             {/* திட்டம் 2: ₹49 முழுமை 360° அறிக்கை */}
             <div
-              onClick={() => setPayPlan({ amount: 49, title: 'விருப்பம் 2: முழுமை 360° AI வாழ்வியல் அறிக்கை', chatLimit: 5 })}
+              onClick={() => { setPayPlan({ amount: 49, title: 'விருப்பம் 2: முழுமை 360° AI வாழ்வியல் அறிக்கை', chatLimit: 5 }); setStep(3); }}
               className={`p-5 rounded-2xl border cursor-pointer relative transition-all flex flex-col justify-between ${payPlan.amount === 49 ? 'bg-slate-900 border-amber-500 shadow-xl shadow-amber-500/20 ring-2 ring-amber-500' : 'bg-slate-950 border-slate-800 hover:border-slate-700'}`}
             >
               <div className="absolute -top-3 right-4 bg-gradient-to-r from-amber-500 to-emerald-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
@@ -299,7 +299,7 @@ export default function AstrologyModule({ setCurrentModule }) {
 
             {/* திட்டம் 3: ₹99 பாலர் & வாழ்நாள் மாஸ்டர் */}
             <div
-              onClick={() => setPayPlan({ amount: 99, title: 'விருப்பம் 3: பிரீமியம் பாலர் / வாழ்நாள் மாஸ்டர்', chatLimit: 999 })}
+             onClick={() => { setPayPlan({ amount: 99, title: 'விருப்பம் 3: பிரீமியம் பாலர் / வாழ்நாள் மாஸ்டர்', chatLimit: 999 }); setStep(3); }}
               className={`p-5 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between ${payPlan.amount === 99 ? 'bg-slate-900 border-purple-500 shadow-lg shadow-purple-500/10 ring-1 ring-purple-500' : 'bg-slate-950 border-slate-800 hover:border-slate-700'}`}
             >
               <div>
