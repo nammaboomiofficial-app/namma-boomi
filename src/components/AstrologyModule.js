@@ -197,7 +197,7 @@ export default function AstrologyModule({ setCurrentModule }) {
                 <input
                   type="date"
                   value={formData.dob}
-                 onChange={(e) => handleDateOrTimeChange('dob', e.target.value)}
+                 onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
                 />
               </div>
@@ -206,7 +206,7 @@ export default function AstrologyModule({ setCurrentModule }) {
                 <input
                   type="time"
                   value={formData.tob}
-                  onChange={(e) => handleDateOrTimeChange('tob', e.target.value)}
+                 onChange={(e) => setFormData({ ...formData, tob: e.target.value })}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
                 />
               </div>
@@ -360,10 +360,23 @@ export default function AstrologyModule({ setCurrentModule }) {
               </div>
 
               {/* அட்டை 2: பூமி யோகம் & வாஸ்து (நில இணைப்பு) */}
-              <div className="bg-slate-950 p-4 rounded-xl border border-amber-500/30 space-y-2.5">
-                <span className="text-amber-400 font-bold text-sm block">2. பூமி யோகம் & வாஸ்து பார்வை (Bhoomi Shastra)</span>
-                <p className="text-slate-300 leading-relaxed">
-                  4-ஆம் பாவக அதிபதி மற்றும் செவ்வாய் பலம் சாதகமாக உள்ளது. <strong>வடக்கு அல்லது கிழக்கு பார்த்த வீட்டுமனை</strong> வாங்குவது செல்வ விருத்தியை உண்டாக்கும்.
+          <div className={`p-4 rounded-xl border relative overflow-hidden ${payPlan?.amount === 21 ? 'bg-slate-900/40 border-slate-800' : 'bg-slate-950 border-amber-500/30'}`}>
+            <span className="text-amber-400 font-bold text-sm block mb-1">2. பூமி யோகம் & வாஸ்து பார்வை (Bhoomi Shastra)</span>
+            
+            {payPlan?.amount === 21 ? (
+              <div className="py-3 text-center">
+                <p className="text-xs text-slate-400 mb-2">🔒 மனை வாங்கும் யோகம் & வாஸ்து திசை கணிப்புகள் ₹49 முழுமை அறிக்கையில் அடங்கும்.</p>
+                <button 
+                  onClick={() => setPayPlan({ amount: 49, title: 'முழு 7 சாஸ்திர AI வாழ்வியல் அறிக்கை' })}
+                  className="text-[11px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full font-bold hover:bg-amber-500/30"
+                >
+                  ₹28 செலுத்தி முழு அறிக்கை திறக்க ↗
+                </button>
+              </div>
+            ) : (
+              <>
+                <p className="text-slate-300 text-xs leading-relaxed mb-2">
+                  4-ஆம் பாவக அதிபதி மற்றும் செவ்வாய் பலம் சாதகமாக உள்ளது. வடக்கு அல்லது கிழக்கு பார்த்த வீட்டுமனை வாங்குவது செல்வ விருத்தியை உண்டாக்கும்.
                 </p>
                 <div className="flex gap-2 pt-1">
                   <button
@@ -371,29 +384,50 @@ export default function AstrologyModule({ setCurrentModule }) {
                       if (setCurrentModule) setCurrentModule('land');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="px-3 py-1 bg-amber-600/30 text-amber-300 border border-amber-500/40 rounded text-[11px] font-bold hover:bg-amber-600/50"
+                    className="text-xs bg-amber-600 hover:bg-amber-500 text-white font-bold py-1.5 px-3 rounded-lg flex items-center gap-1 shadow"
                   >
-                    🏡 நில சந்தை செல்ல ↗
+                    🏞️ நில சந்தை செல்ல ↗
                   </button>
                 </div>
-              </div>
+              </>
+            )}
+          </div>
+                  
+                    
 
-              {/* அட்டை 3: கே.பி. நேரக் கணிப்பு & தொழில் */}
-              <div className="bg-slate-950 p-4 rounded-xl border border-blue-500/30 space-y-2.5">
-                <span className="text-cyan-400 font-bold text-sm block">3. கே.பி. நேரக் கணிப்பு (KP Sub-Lord Timing)</span>
-                <p className="text-slate-300 leading-relaxed">
-                  10-ஆம் பாவக உப நட்சத்திர அதிபதி சூரியனின் தொடர்பில் உள்ளதால், அரசு சார்ந்த ஒப்பந்தங்கள் அல்லது அரசு கூட்டுறவு வேலைவாய்ப்புகளில் வெற்றி பெற 2026-ஆம் ஆண்டு இரண்டாம் பகுதி மிகச் சிறப்பானது.
-                </p>
-                <button
-                  onClick={() => {
-                    if (setCurrentModule) setCurrentModule('jobs');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="px-3 py-1 bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 rounded text-[11px] font-bold hover:bg-cyan-600/50"
+             {/* அட்டை 3: கே.பி. நேரக் கணிப்பு & தொழில் */}
+          <div className={`p-4 rounded-xl border relative overflow-hidden ${payPlan?.amount === 21 ? 'bg-slate-900/40 border-slate-800' : 'bg-slate-950 border-blue-500/30'}`}>
+            <span className="text-cyan-400 font-bold text-sm block mb-1">3. கே.பி. நேரக் கணிப்பு & தொழில்</span>
+            
+            {payPlan?.amount === 21 ? (
+              <div className="py-3 text-center">
+                <p className="text-xs text-slate-400 mb-2">🔒 வேலை வாய்ப்பு, தொழில் உயர்வு காலக்கணிப்பு ₹49 முழுமை அறிக்கையில் அடங்கும்.</p>
+                <button 
+                  onClick={() => setPayPlan({ amount: 49, title: 'முழு 7 சாஸ்திர AI வாழ்வியல் அறிக்கை' })}
+                  className="text-[11px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full font-bold hover:bg-cyan-500/30"
                 >
-                  💼 வேலைவாய்ப்பு ஹப் செல்ல ↗
+                  முழு அறிக்கை பெறுக ↗
                 </button>
               </div>
+            ) : (
+              <>
+                <p className="text-slate-300 text-xs leading-relaxed mb-2">
+                  10-ஆம் பாவக உப நட்சத்திர அதிபதி சூரியனின் தொடர்பில் உள்ளதால், அரசு சார்ந்த ஒப்பந்தங்கள் அல்லது உயர்பதவி வாய்ப்புகளில் வெற்றி பெற 2026-ஆம் ஆண்டு இரண்டாம் பகுதி மிகச் சிறப்பானது.
+                </p>
+                <div className="flex gap-2 pt-1">
+                  <button
+                    onClick={() => {
+                      if (setCurrentModule) setCurrentModule('jobs');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="text-xs bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-1.5 px-3 rounded-lg flex items-center gap-1 shadow"
+                  >
+                    💼 வேலைவாய்ப்பு ஹப் செல்ல ↗
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
 
               {/* அட்டை 4: தமிழ் நாடி முறை & எளிய இயற்கை பரிகாரம் */}
               <div className="bg-slate-950 p-4 rounded-xl border border-emerald-500/30 space-y-2.5">
