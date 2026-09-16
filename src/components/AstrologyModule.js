@@ -448,7 +448,39 @@ export default function AstrologyModule({ setCurrentModule }) {
                 </button>
               </div>
             </div>
+{/* ₹49 முழுமை திட்டத்தில் மட்டும் தெரியும் கூடுதல் 3 கார்டுகள் */}
+          {payPlan?.amount === 49 && (
+            <>
+              {/* அட்டை 5: பஞ்சபட்சி நேரலை */}
+              <div className="p-4 rounded-xl border bg-slate-950 border-emerald-500/30">
+                <span className="text-emerald-400 font-bold text-sm block mb-1">5. பஞ்சபட்சி நேரலை பலம் (Pancha Pakshi)</span>
+                <p className="text-slate-300 text-xs leading-relaxed mb-2">
+                  உங்கள் நட்சத்திரத்திற்குரிய பஞ்சபட்சி இயக்கம் இன்று சாதகமான அமைப்பில் உள்ளது. பகல் நேர அரசாளும் காலம் புதிய தொடக்கங்களுக்கும் ஒப்பந்தங்களுக்கும் அதீத பலன் தரும்.
+                </p>
+                <span className="inline-block text-[11px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded">
+                  🟢 அரசாளும் நேரம் சாதகமாக உள்ளது
+                </span>
+              </div>
 
+              {/* அட்டை 6: தாம்பூல / தேவ பிரசன்ன பார்வை */}
+              <div className="p-4 rounded-xl border bg-slate-950 border-rose-500/30">
+                <span className="text-rose-400 font-bold text-sm block mb-1">6. உடனடி தேவ பிரசன்ன பார்வை (Prashnam)</span>
+                <p className="text-slate-300 text-xs leading-relaxed">
+                  கேள்வி நேர லக்னப்படி காரிய சித்தி ஸ்தானம் பலமாக அமைகிறது. மனதில் நினைத்த முக்கிய காரியம் அடுத்த 45 முதல் 90 நாட்களுக்குள் சுபமாக நிறைவேறும் அமைப்பு உள்ளது.
+                </p>
+              </div>
+
+              {/* அட்டை 7: எண் கணித & வாஸ்து திசை */}
+              <div className="p-4 rounded-xl border bg-slate-950 border-yellow-500/30">
+                <span className="text-yellow-400 font-bold text-sm block mb-1">7. அதிர்ஷ்ட எண் கணிதம் & வாஸ்து திசை</span>
+                <ul className="text-xs text-slate-300 space-y-1">
+                  <li>• <b>அதிர்ஷ்ட எண்கள்:</b> 5, 6, 8</li>
+                  <li>• <b>வெற்றி தரும் திசை:</b> வடக்கு, வடகிழக்கு</li>
+                  <li>• <b>விருப்பமான நிறம்:</b> பச்சை, வெளிர் நீலம்</li>
+                </ul>
+              </div>
+            </>
+          )}
             {/* வாட்ஸ்அப் முழு ரிப்போர்ட் பகிர்தல் */}
             <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
               <span className="text-xs text-slate-300">இந்த முழு கணிப்பை உங்கள் வாட்ஸ்அப்பில் சேமித்துக்கொள்ள வேண்டுமா?</span>
