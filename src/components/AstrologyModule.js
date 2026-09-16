@@ -46,41 +46,12 @@ export default function AstrologyModule({ setCurrentModule }) {
     dob: '',
     tob: '10:30',
     pob: '',
-    rasi: RASIS[0],
-    nakshatra: NAKSHATRAS[0].name,
+    rasi: 'தெரியாது (பெயர் / பிரசன்ன முறை)',
+    nakshatra: 'தெரியாது (பெயர் / பிரசன்ன முறை)',
     queryType: 'all', // 'bhoomi', 'career', 'marriage', 'finance', 'all'
     consent: true
   });
-// பிறந்த தேதி & நேரத்தை உள்ளிட்டதும் ராசி மற்றும் நட்சத்திரத்தை உடனே தானாகக் கணிக்கும் முறை
-  const handleDateOrTimeChange = (field, value) => {
-    const updated = { ...formData, [field]: value };
-    
-    if (updated.dob) {
-      const parts = updated.dob.split('-');
-      const year = parseInt(parts[0], 10);
-      const month = parseInt(parts[1], 10);
-      const day = parseInt(parts[2], 10);
-      
-      const timeParts = (updated.tob || '12:00').split(':');
-      const hour = parseInt(timeParts[0], 10);
 
-      const dayOfYear = (month - 1) * 30.4 + day;
-      const totalHours = dayOfYear * 24 + hour + (year % 19) * 11;
-      
-      // 27 நட்சத்திரங்கள் சுழற்சி
-      const nakIndex = Math.abs(Math.floor((totalHours / 24.3) % 27));
-      const autoNak = NAKSHATRAS[nakIndex] ? NAKSHATRAS[nakIndex].name : NAKSHATRAS[0].name;
-
-      // 12 ராசிகள் சுழற்சி
-      const rasiIndex = Math.abs(Math.floor((nakIndex * 12) / 27) % 12);
-      const autoRasi = RASIS[rasiIndex];
-
-      updated.nakshatra = autoNak;
-      updated.rasi = autoRasi;
-    }
-
-    setFormData(updated);
-  };
   const [activeSubTab, setActiveSubTab] = useState('input'); // 'input', 'result', 'pakshi', 'prasannam'
   const [payPlan, setPayPlan] = useState(null); // { amount: 21/49, title: '...' }
   const [showPayModal, setShowPayModal] = useState(false);
@@ -256,6 +227,7 @@ export default function AstrologyModule({ setCurrentModule }) {
                   onChange={(e) => setFormData({ ...formData, rasi: e.target.value })}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
                 >
+                  <option value="தெரியாது (பெயர் / பிரசன்ன முறை)">❓ தெரியாது (பெயர் / பிரசன்ன முறை)</option>
                   {RASIS.map((r, i) => (
                     <option key={i} value={r}>{r}</option>
                   ))}
@@ -268,6 +240,7 @@ export default function AstrologyModule({ setCurrentModule }) {
                   onChange={(e) => setFormData({ ...formData, nakshatra: e.target.value })}
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500"
                 >
+                  <option value="தெரியாது (பெயர் / பிரசன்ன முறை)">❓ தெரியாது (பெயர் / பிரசன்ன முறை)</option>
                   {NAKSHATRAS.map((n) => (
                     <option key={n.id} value={n.name}>{n.name} (பட்சி: {n.pakshi})</option>
                   ))}
