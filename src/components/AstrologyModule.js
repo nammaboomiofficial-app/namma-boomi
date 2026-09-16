@@ -130,7 +130,51 @@ export default function AstrologyModule({ setCurrentModule }) {
       setIsTyping(false);
     }, 800);
   };
+// சோழி பிரசன்னத்திற்கான ஸ்டேட் மற்றும் லாஜிக்
+  const [isRolling, setIsRolling] = useState(false);
+  const [prasannamResult, setPrasannamResult] = useState(null);
 
+  const handleRollCowrie = () => {
+    setIsRolling(true);
+    setPrasannamResult(null);
+
+    setTimeout(() => {
+      const results = [
+        {
+          count: '8 சோழிகள் நேர்முகம் (ராஜ யோகம்)',
+          verdict: 'முழுமையான காரிய சித்தி உண்டாகும். நீங்கள் நினைத்த காரியம் சுபமாக நிறைவேறும். தடைகள் விலகும்.',
+          status: 'வெற்றி நிச்சயம் 🌟',
+          color: 'text-emerald-400',
+          border: 'border-emerald-500/40'
+        },
+        {
+          count: '6 சோழிகள் நேர்முகம் (சுப விரயம்)',
+          verdict: 'காரியம் நிறைவேறும்; சிறிது அலைச்சலும் சுபச் செலவுகளும் ஏற்படும். குலதெய்வத்தை வணங்கித் தொடங்கவும்.',
+          status: 'சுப பலன் உண்டு 🟢',
+          color: 'text-teal-400',
+          border: 'border-teal-500/40'
+        },
+        {
+          count: '4 சோழிகள் நேர்முகம் (மந்த நிலை)',
+          verdict: 'தற்போது காரியத்தைத் தொடங்காமல் சிறிது காலம் தள்ளிப்போடுவது நல்லது. இன்னும் 30 நாட்களில் சூழல் மாறும்.',
+          status: 'பொறுமை தேவை ⏳',
+          color: 'text-amber-400',
+          border: 'border-amber-500/40'
+        },
+        {
+          count: '10 சோழிகள் நேர்முகம் (தெய்வ அனுகூலம்)',
+          verdict: 'நினைத்த காரியத்தில் எதிர்பாராத பண வரவும் பெரிய மனிதர்களின் ஆதரவும் கிடைக்கும். மிக உன்னதமான நேரம்.',
+          status: 'மகா பாக்கியம் ✨',
+          color: 'text-purple-400',
+          border: 'border-purple-500/40'
+        }
+      ];
+
+      const randomPick = results[Math.floor(Math.random() * results.length)];
+      setPrasannamResult(randomPick);
+      setIsRolling(false);
+    }, 1000);
+  };
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6 text-slate-100 print:p-0 print:text-black">
       {/* PDF பிரிண்ட் ஸ்டைலிங் */}
@@ -681,17 +725,41 @@ export default function AstrologyModule({ setCurrentModule }) {
       {/* ===================== பிரசன்னம் டேப் ===================== */}
       {activeTab === 'prasannam' && (
         <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4 no-print">
-          <h3 className="text-sm font-bold text-rose-400">🔮 உடனடி சோழி & தேவ பிரசன்ன முடிவு</h3>
-          <p className="text-xs text-slate-300">
-            மனதில் நினைத்த ஒரு முக்கிய காரியத்தை மனதில் வேண்டிக்கொண்டு சோழி உருட்டவும்.
-          </p>
-          <div className="p-4 bg-slate-950 rounded-xl border border-rose-500/30 text-center space-y-3">
-            <button className="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-lg">
-              🎲 சோழி உருட்டி தெய்வீகத் தீர்ப்பு பெறுக
+          <div className="border-b border-slate-800 pb-3">
+            <h3 className="text-base font-bold text-rose-400">🔮 உடனடி சோழி & தேவ பிரசன்ன முடிவு</h3>
+            <p className="text-xs text-slate-300 mt-1">
+              மனதில் ஒரு குறிப்பிட்ட கேள்வியை அல்லது காரியத்தை ஆழமாக நினைத்துக்கொண்டு சோழி உருட்டவும்.
+            </p>
+          </div>
+
+          <div className="p-6 bg-slate-950 rounded-2xl border border-rose-500/30 text-center space-y-4">
+            <div className="text-4xl">
+              🎲 🐚 🐚
+            </div>
+
+            <button
+              onClick={handleRollCowrie}
+              disabled={isRolling}
+              className="px-6 py-3 bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-500 text-white font-bold text-xs rounded-xl shadow-lg transition-all disabled:opacity-50 cursor-pointer"
+            >
+              {isRolling ? 'சோழிகள் சுழல்கின்றன... உருட்டப்படுகிறது...' : '🎲 சோழி உருட்டி தெய்வீகத் தீர்ப்பு பெறுக ➔'}
             </button>
+
+            {prasannamResult && (
+              <div className={`p-4 rounded-xl border bg-slate-900 mt-4 text-left space-y-2 ${prasannamResult.border}`}>
+                <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                  <span className="text-xs font-bold text-white">{prasannamResult.count}</span>
+                  <span className={`text-xs font-extrabold ${prasannamResult.color}`}>{prasannamResult.status}</span>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {prasannamResult.verdict}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}
+       
     </div>
   );
 }
