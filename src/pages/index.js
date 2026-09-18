@@ -24,8 +24,7 @@ export default function Home() {
     window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
   };
   // பிரதான 9 தூண்கள்
-  const [currentModule, setCurrentModule] = useState('land'); // 'land' | 'astro' | 'agri' ...
-  
+  const [currentModule, setCurrentModule] = useState('astro');  
   // பூமி மாட்யூல் சப்-டேப்கள்
   const [activeMainTab, setActiveMainTab] = useState('marketplace'); // 'marketplace' | 'audit' | 'sell'
 
