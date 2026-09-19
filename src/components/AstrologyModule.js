@@ -282,69 +282,247 @@ export default function AstrologyModule({ setCurrentModule }) {
   };
 
   // கேள்வி பகுப்பாய்வு (Multi-Intent Astrological Routing)
-  const getSpecificAstrologyAnswer = (query) => {
-    const text = (query || '').toLowerCase();
-    const { name } = profile;
-    const { lagnam, rasi, nakshatra, padham } = astroData;
-    const currentYear = new Date().getFullYear();
+ // AI ஜோதிட அறிவார்ந்த பதிலளிப்பு பொறிமுறை
+  const getAIResponse = (query) => {
+    const q = query.toLowerCase();
+    const name = profile.name || 'அன்பரே';
+    const lagna = astroData?.Lagnam || 'மகரம்';
+    const rasi = astroData?.rasi || 'கன்னி';
+    const nakshatra = astroData?.nakshatra || 'அஸ்தம்';
+    const activeDasa = astroData?.dasaTimeline?.find(d => d.status === 'நடப்பு')?.lord || 'சனி';
 
-    if (text.includes('பூமி') || text.includes('நிலம்') || text.includes('மனை') || text.includes('வீடு') || text.includes('சொத்து') || text.includes('land') || text.includes('property') || text.includes('plot')) {
-      return `✨ **${name} அவர்களுக்கான பூமி & அசையாச் சொத்து யோக நேரடி அறிக்கை:**\n\n` +
-        `🏠 **4-ஆம் பாவகம் & நில சேர்க்கை:**\n` +
-        `• உங்கள் **${lagnam}** லக்னப்படி 4-ஆம் பாவக பலம் மிகச் சிறப்பாக இருப்பதால், சுய சம்பாத்தியத்தில் சொந்த மனை அல்லது விவசாய நிலம் வாங்கும் யோகம் உறுதியாக உள்ளது.\n` +
-        `• **${currentYear} - ${currentYear + 1}** காலகட்டம் புதிய ஆவணங்கள் பதிவு செய்ய 90% அனுகூலமானது.\n\n` +
-        `🧭 **அதிர்ஷ்ட திசை:** வடக்கு அல்லது கிழக்கு பார்த்த நிலங்கள் அபரிமிதமான வளர்ச்சி தரும்.\n` +
-        `🪔 **பரிகாரம்:** செவ்வாய்க்கிழமைகளில் முருகப்பெருமானுக்கு செவ்வரளி மாலை சாற்றி வழிபட யோகம் விரைவுபடும்.`;
+    let categoryAdvice = "";
+
+   if (q.includes('வேலை') || q.includes('தொழில்') || q.includes('job') || q.includes('career') || q.includes('pathavi') || q.includes('uyarvu') || q.includes('பதவி') || q.includes('promotion') || q.includes('work')) {
+      categoryAdvice = `
+💼 **தொழில் & பதவி உயர்வு வாய்ப்புகள்:**
+* லக்னத்திற்கு 10-ஆம் பாவாதிபதி மற்றும் நடப்பு **${activeDasa} மகா தசை** அமைப்பின்படி, உங்களின் தொடர் உழைப்பிற்கான நற்பலன்களும் பதவி உயர்வுக்கான அனுகூலங்களும் கூடி வருகின்றன.
+* நிர்வாக மட்டத்தில் உங்களின் அனுபவத்திற்குரிய அங்கீகாரம் கிடைக்க வாய்ப்புள்ளது.
+* சனிக்கிழமை நல்லெண்ணெய் தீபம் ஏற்றுவதும், பெருமாள் வழிபாடும் தொழில் தடைகளை நீக்கும்.`;
+    } else if (q.includes('திருமணம்') || q.includes('marriage') || q.includes('family') || q.includes('மனைவி') || q.includes('கணவன்') || q.includes('love')) {
+      categoryAdvice = `
+💍 **திருமணம் & குடும்ப வாழ்க்கை:**
+* உங்கள் 7-ஆம் இடத்து அம்சங்கள் மற்றும் குருவின் கோச்சாரப் பார்வை அடிப்படையில் குடும்பத்தில் சுப காரியங்கள் கைகூடும் வாய்ப்புகள் பிரகாசமாக உள்ளன.
+* நடப்பு தசா நாதரின் பலம் குடும்ப ஒற்றுமையை மேம்படுத்தும். வியாழக்கிழமைகளில் தட்சிணாமூர்த்தி வழிபாடு நற்பலன்களை இரட்டிப்பாக்கும்.`;
+    } else if (q.includes('பணம்') || q.includes('finance') || q.includes('money') || q.includes('கடன்') || q.includes('wealth')) {
+      categoryAdvice = `
+💰 **தன வரவு & நிதி நிலைமை:**
+* 2 மற்றும் 11-ஆம் பாவாதிபதிகள் சுப வலுவுடன் இயங்குவதால் படிப்படியான பொருளாதார உயர்வு உண்டு.
+* தேவையற்ற ஆடம்பரச் செலவுகளைத் தவிர்த்து, நீண்ட காலச் சேமிப்புகளில் முதலீடு செய்வது பாதுகாப்பானது. மகாலட்சுமி அஷ்டகம் படிப்பது தன ஆகர்ஷணத்தைத் தரும்.`;
+    } else if (q.includes('ஆரோக்கியம்') || q.includes('health') || q.includes('உடல்')) {
+      categoryAdvice = `
+🌿 **உடல் நலம் & ஆயுள் பலம்:**
+* லக்னாதிபதி பலத்தின்படி பெரும் பாதிப்புகள் இல்லை. உணவு முறைகளிலும் முறையான நடைப்பயிற்சியிலும் கவனம் செலுத்துவது ரத்த அழுத்தம் மற்றும் சோர்வைத் தடுக்கும்.
+* தினசரி சூரிய நமஸ்காரம் மற்றும் சிவ வழிபாடு உடல் ஆற்றலை அதிகரிக்கும்.`;
+    } else {
+      categoryAdvice = `
+✨ **பொதுவான வழிகாட்டல் & எதிர்காலம்:**
+* உங்கள் ஜாதக அமைப்புப்படி லக்னம்: **${lagna}**, ராசி: **${rasi}** மற்றும் நடப்பு தசா: **${activeDasa} மகா தசை**.
+* கோச்சாரத்தில் முக்கிய கிரகங்கள் சுப ஸ்தானங்களைப் பார்ப்பதால் விடாமுயற்சிக்கு நல்ல பலன்கள் கிடைக்கும் காலம் இது.
+* குலதெய்வ வழிபாடு மற்றும் எளிய தர்ம காரியங்கள் மன அமைதியையும் காரிய சித்தியையும் தரும்.`;
     }
 
-    if (text.includes('தொழில்') || text.includes('வேலை') || text.includes('பதவி') || text.includes('thozhil') || text.includes('job') || text.includes('career') || text.includes('promotion') || text.includes('business')) {
-      return `✨ **${name} அவர்களுக்கான தொழில் & உத்தியோக வளர்ச்சி அறிக்கை:**\n\n` +
-        `💼 **10-ஆம் பாவக பலம் & தலைமைப் பொறுப்பு:**\n` +
-        `• உங்கள் **${lagnam}** லக்னத்தின் 10-ஆம் பாவக அமைப்பினால் நிர்வாகம், அதிகாரம் மற்றும் முக்கிய முடிவெடுக்கும் உயர் பொறுப்புகள் தேடி வரும்.\n` +
-        `• நடப்பு கோச்சார அமைப்பின்படி அடுத்த 6 முதல் 8 மாதங்களுக்குள் பதவி உயர்வு மற்றும் ஊதிய உயர்வுக்கான வாய்ப்பு பிரகாசமாக உள்ளது.\n\n` +
-        `📈 **முன்னேற்ற வழி:** கூட்டுத் தொழில்களை விட தனித்து நின்று நிர்வகிக்கும் துறைகளே நிலையான லாபத்தைத் தரும்.\n` +
-        `🧭 **பரிகாரம்:** சனிக்கிழமைகளில் ஆஞ்சநேயருக்கு நெய் தீபம் ஏற்றி வழிபட பணியிடத் தடைகள் விலகும்.`;
-    }
-
-    if (text.includes('திருமணம்') || text.includes('வரன்') || text.includes('marriage') || text.includes('thirumanam')) {
-      return `✨ **${name} அவர்களுக்கான திருமண & களத்திர யோக அறிக்கை:**\n\n` +
-        `💍 **7-ஆம் பாவக களத்திர பலம்:**\n` +
-        `• உங்கள் **${lagnam}** லக்னத்திற்கு களத்திர ஸ்தானத்தில் சுப கிரகப் பார்வை உள்ளதால், பொறுப்பும் குடும்பப் பற்றும் கொண்ட வாழ்க்கைத்துணை அமைவார்.\n` +
-        `• வரன் அமையும் திசை: தெற்கு அல்லது மேற்கு திசையிலிருந்து வரன் அமைய வாய்ப்புகள் அதிகம்.\n\n` +
-        `🧭 **பரிகாரம்:** வெள்ளிக்கிழமைகளில் மகாலட்சுமிக்கு மல்லிகைப் பூ சாற்றி வழிபட தடைகள் நீங்கி சுபகாரியம் கைகூடும்.`;
-    }
-
-    if (text.includes('முற்பிறவி') || text.includes('கர்மா') || text.includes('தோஷம்') || text.includes('karma') || text.includes('dosham')) {
-      return `✨ **${name} அவர்களுக்கான முற்பிறவி கர்ம வினை & நிவர்த்தி ஆய்வு:**\n\n` +
-        `📜 **9-ஆம் பாவக பூர்வபுண்ணியம்:**\n` +
-        `• உங்கள் **${lagnam}** லக்னப்படி முற்பிறவி நற்செயல்களின் புண்ணியம் உங்களுக்குப் பக்கபலமாக உள்ளது; பெரிய சோதனைகள் வந்தாலும் தக்க சமயத்தில் உதவி கிடைக்கும்.\n\n` +
-        `⚠️ **கவனிக்க வேண்டியது:** பூர்வீகச் சொத்து மற்றும் பண விவகாரங்களில் உறவினர்களிடம் நேர்மையான எல்லைகளைப் பராமரிப்பது அமைதி தரும்.\n` +
-        `🪔 **பரிகாரம்:** அமாவாசை தினங்களில் குலதெய்வ வழிபாடு மற்றும் ஏழைகளுக்கு அன்னதானம் செய்வது கர்ம வினைகளைத் தீர்க்கும்.`;
-    }
-
-    return `✨ **${name} அவர்களே, உங்கள் கேள்விக்கான நேரடி ஜோதிட ஆய்வு:**\n\n` +
-      `• லக்னம்: **${lagnam}** | ராசி: **${rasi}** | நட்சத்திரம்: **${nakshatra}** (${padham}-ஆம் பாதம்)\n` +
-      `• நடப்பு தசா-புக்தி அமைப்புகள் மற்றும் கோச்சார சுப பார்வையின்படி, நீங்கள் கேட்ட இந்த காரியத்திற்கு 85% அனுகூலமான சூழல் உள்ளது.\n` +
-      `• சரியான திட்டமிடலுடன் தொடங்கினால் முழுமையான வெற்றி கிடைக்கும்.`;
+    return `வணக்கம் **${name}** அவர்களே!\n\n${categoryAdvice}\n\n📌 *குறிப்பு: உங்களின் குறிப்பிட்ட கேள்விகளுக்கு ஏற்ப மேலும் பலன்களைத் தொடர்ந்து கேட்கலாம்.*`;
   };
 
-  const handleSendMessage = (e) => {
+ const handleSendMessage = async (e, directText = null) => {
     if (e) e.preventDefault();
-    if (!inputQuery.trim()) return;
-    const userText = inputQuery;
+    
+    const userText = directText || inputQuery;
+    if (!userText || !userText.trim()) return;
+
     setInputQuery('');
     setChatMessages((prev) => [...prev, { sender: 'user', text: userText }]);
-    setTimeout(() => {
-      setChatMessages((prev) => [...prev, { sender: 'ai', text: getSpecificAstrologyAnswer(userText) }]);
-    }, 350);
-  };
 
-  // PDF பதிவிறக்கம் (Print window to PDF)
-  const handlePrintReport = (planName) => {
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: userText,
+          astroProfile: {
+            name: profile.name,
+            lagna: astroData?.Lagnam,
+            rasi: astroData?.rasi,
+            nakshatra: astroData?.nakshatra,
+            activeDasa: astroData?.dasaTimeline?.find(d => d.status === 'நடப்பு')?.lord
+          }
+        })
+      });
+      const data = await res.json();
+      setChatMessages((prev) => [...prev, { sender: 'ai', text: data.reply }]);
+    } catch (err) {
+      setChatMessages((prev) => [...prev, { sender: 'ai', text: 'மன்னிக்கவும், AI சேவையுடன் இணைப்பதில் சிறு பிழை ஏற்பட்டது.' }]);
+    }
+  };
+      
+
+  // தொழில்முறை மங்கல வண்ண PDF அறிக்கை உருவாக்கம்
+  const handlePrintReport = (planName = 'முழு ஜாதக அறிக்கை') => {
     setShowPricingModal(false);
+    if (!astroData) return;
+
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      alert('பாப்-அப் பிளாக் செய்யப்பட்டுள்ளது. தயவுசெய்து Pop-ups அனுமதிக்கவும்.');
+      return;
+    }
+
+    // 12 ராசிகளின் பெயர்கள்
+    const rasiNames = ['மேஷம்', 'ரிஷபம்', 'மிதுனம்', 'கடகம்', 'சிம்மம்', 'கன்னி', 'துலாம்', 'விருச்சிகம்', 'தனுசு', 'மகரம்', 'கும்பம்', 'மீனம்'];
+
+    // தென்னிந்திய சக்கரக் கட்டங்களை HTML-ஆக மாற்றும் உதவி முறை
+    const generateChartHtml = (houseData, chartTitle) => {
+      let cells = '';
+      southIndianOrder.forEach((box, i) => {
+        if (!box) {
+          if (i === 5) {
+            cells += `
+              <div style="grid-column: span 2; grid-row: span 2; border: 2px solid #b91c1c; background: #fffbeb; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4px;">
+                <div style="font-weight: bold; font-size: 14px; color: #991b1b;">${chartTitle}</div>
+                <div style="font-size: 11px; color: #78350f; font-weight: 600; margin-top: 4px;">${profile.name || 'ஜாதகர்'}</div>
+                <div style="font-size: 9px; color: #b45309; margin-top: 2px;">${astroData.birthDetails || ''}</div>
+              </div>`;
+          }
+          return;
+        }
+        const planets = houseData[box.idx] || [];
+        const isLagna = planets.some(p => p.includes('லக்னம்'));
+        const pTags = planets.map(p => {
+          let col = '#1e293b';
+          let fw = '600';
+          if (p.includes('லக்னம்')) { col = '#b91c1c'; fw = 'bold'; }
+          else if (p.includes('சூரியன்') || p.includes('செவ்வாய்')) { col = '#c2410c'; }
+          else if (p.includes('குரு') || p.includes('சுக்கிரன்')) { col = '#047857'; }
+          return `<div style="font-size: 10px; color: ${col}; font-weight: ${fw}; line-height: 1.2;">${p}</div>`;
+        }).join('');
+
+        cells += `
+          <div style="border: 1px solid #dc2626; padding: 3px; min-height: 62px; background: ${isLagna ? '#fef2f2' : '#ffffff'}; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="font-size: 9px; color: #94a3b8; font-weight: 500;">${box.name}</div>
+            <div style="display: flex; flex-direction: column; gap: 1px; margin: auto 0;">${pTags}</div>
+          </div>`;
+      });
+      return `<div style="display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid #b91c1c; width: 310px; height: 310px; background: #fff;">${cells}</div>`;
+    };
+
+    const d1Html = generateChartHtml(astroData.rasiHouses, 'ராசி சக்கரம் (D1)');
+    const d9Html = generateChartHtml(astroData.navamsaHouses, 'நவாம்சம் (D9)');
+
+    // கிரக பாகைகள் வரிசை
+    const planetDegRows = Object.entries(astroData.planetDegrees || {}).map(([p, deg]) => `
+      <tr style="border-bottom: 1px solid #f1f5f9;">
+        <td style="padding: 4px 8px; font-weight: 600; color: #1e293b;">${p}</td>
+        <td style="padding: 4px 8px; color: #475569; text-align: right;">${deg}</td>
+      </tr>
+    `).join('');
+
+    // தசா காலக்கோடு வரிசை (எல்லா விதமான key பெயர்களுக்கும் பாதுகாப்புடன்)
+    const timelineRows = (astroData.dasaTimeline || []).map(t => {
+      const yearText = t.yearsRange || t.range || t.yearsText || t.period || 
+                       (t.start && t.end ? `${t.start} - ${t.end}` : '') ||
+                       (t.startYear && t.endYear ? `${t.startYear} - ${t.endYear}` : '') ||
+                       (t.from && t.to ? `${t.from} - ${t.to}` : '') ||
+                       Object.values(t).find(v => typeof v === 'string' && v.includes('-') && /\d/.test(v)) || '-';
+      return `
+        <tr style="border-bottom: 1px solid #f1f5f9; background: ${t.status === 'நடப்பு' ? '#ecfdf5' : '#fff'};">
+          <td style="padding: 4px 8px; font-weight: 600; color: ${t.status === 'நடப்பு' ? '#047857' : '#334155'};">${t.lord} மகா தசை</td>
+          <td style="padding: 4px 8px; color: #475569; text-align: center; font-weight: 500;">${yearText}</td>
+          <td style="padding: 4px 8px; text-align: right; font-weight: 600; color: ${t.status === 'நடப்பு' ? '#059669' : t.status === 'முடிந்தது' || t.status === 'கடந்த தசை' ? '#94a3b8' : '#3b82f6'};">${t.status}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>ஜாதக அறிக்கை - ${profile.name || 'Kundli'}</title>
+        <meta charset="utf-8" />
+        <style>
+          @page { size: A4 portrait; margin: 12mm; }
+          body { font-family: 'Segoe UI', Arial, sans-serif; background: #ffffff; color: #0f172a; margin: 0; padding: 0; }
+          .page-border { border: 4px double #b91c1c; padding: 16px; border-radius: 6px; position: relative; }
+          .corner-ornament { position: absolute; width: 20px; height: 20px; border: 3px solid #b91c1c; }
+          .tl { top: 4px; left: 4px; border-right: none; border-bottom: none; }
+          .tr { top: 4px; right: 4px; border-left: none; border-bottom: none; }
+          .bl { bottom: 4px; left: 4px; border-right: none; border-top: none; }
+          .br { bottom: 4px; right: 4px; border-left: none; border-top: none; }
+          table { width: 100%; border-collapse: collapse; font-size: 11px; }
+          @media print {
+            body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="page-border">
+          <div class="corner-ornament tl"></div>
+          <div class="corner-ornament tr"></div>
+          <div class="corner-ornament bl"></div>
+          <div class="corner-ornament br"></div>
+
+          <!-- Header -->
+          <div style="text-align: center; border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 12px;">
+            <div style="font-size: 12px; color: #b91c1c; font-weight: bold; letter-spacing: 2px;">|| ஸ்ரீ மகா கணபதி துணை ||</div>
+            <h1 style="margin: 4px 0; font-size: 20px; color: #7f1d1d; letter-spacing: 1px;">தென் இந்திய முழு ஜாதக அறிக்கை</h1>
+            <div style="font-size: 11px; color: #64748b; font-weight: 500;">திரு கணித முறை (Drik Ganitha Panchangam System)</div>
+          </div>
+
+          <!-- Birth Details Grid -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 10px; margin-bottom: 14px; font-size: 11px;">
+            <div><span style="color: #92400e;">பெயர்:</span> <strong style="color: #1e293b;">${profile.name || '-'}</strong></div>
+            <div><span style="color: #92400e;">பிறந்த தேதி:</span> <strong style="color: #1e293b;">${profile.dob || '-'}</strong></div>
+            <div><span style="color: #92400e;">பிறந்த நேரம்:</span> <strong style="color: #1e293b;">${profile.tob || '-'}</strong></div>
+            <div><span style="color: #92400e;">பிறந்த ஊர்:</span> <strong style="color: #1e293b;">${profile.pob || '-'}</strong></div>
+            <div><span style="color: #92400e;">லக்னம்:</span> <strong style="color: #b91c1c;">${astroData.Lagnam || '-'}</strong></div>
+            <div><span style="color: #92400e;">ராசி:</span> <strong style="color: #b91c1c;">${astroData.rasi || '-'}</strong></div>
+            <div><span style="color: #92400e;">நட்சத்திரம் & பாதம்:</span> <strong style="color: #1e293b;">${astroData.nakshatra || ''} ${astroData.padham ? '('+astroData.padham+'-ஆம் பாதம்)' : ''}</strong></div>
+            <div><span style="color: #92400e;">தசா இருப்பு:</span> <strong style="color: #047857;">${astroData.dasaBalanceText || '-'}</strong></div>
+          </div>
+
+          <!-- Charts Side by Side -->
+          <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 16px;">
+            <div>${d1Html}</div>
+            <div>${d9Html}</div>
+          </div>
+
+          <!-- Planetary Degrees & Dasa Timeline Side by Side -->
+          <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 14px; margin-top: 6px;">
+            <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; background: #fafafa;">
+              <div style="font-weight: bold; color: #991b1b; font-size: 12px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-bottom: 6px;">கிரக நிலைகள் & பாகைகள்</div>
+              <table>
+                <thead><tr style="color: #64748b; font-size: 10px; border-bottom: 1px solid #e2e8f0;"><th style="text-align: left; padding: 2px 8px;">கிரகம்</th><th style="text-align: right; padding: 2px 8px;">பாகை</th></tr></thead>
+                <tbody>${planetDegRows}</tbody>
+              </table>
+            </div>
+
+            <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; background: #fafafa;">
+              <div style="font-weight: bold; color: #991b1b; font-size: 12px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-bottom: 6px;">120 வருட விம்சோத்தரி தசா இருப்பு & காலக்கோடு</div>
+              <table>
+                <thead><tr style="color: #64748b; font-size: 10px; border-bottom: 1px solid #e2e8f0;"><th style="text-align: left; padding: 2px 8px;">மகா தசை</th><th style="text-align: center; padding: 2px 8px;">வருடங்கள்</th><th style="text-align: right; padding: 2px 8px;">நிலை</th></tr></thead>
+                <tbody>${timelineRows}</tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Disclaimer / Footer -->
+          <div style="margin-top: 14px; padding-top: 8px; border-top: 1px dashed #cbd5e1; font-size: 9px; color: #64748b; text-align: center; line-height: 1.4;">
+            <strong>பொறுப்புத் துறப்பு:</strong> இந்தக் கணிப்பு பாரம்பரிய திருக்கணித மற்றும் ஜோதிட வானியல் சூத்திரங்களின்படி கணிக்கப்பட்டது. தனிநபர் வழிகாட்டல் நோக்கங்களுக்காக மட்டுமே.
+            <br />நன்றி! நல்வாழ்த்துகள்.
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.open();
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+
     setTimeout(() => {
-      window.print();
-    }, 400);
+      printWindow.focus();
+      printWindow.print();
+    }, 500);
   };
 
   // தென் இந்திய ராசிக் கட்ட வரிசை (4x4 கட்டங்கள்)
@@ -467,52 +645,64 @@ export default function AstrologyModule({ setCurrentModule }) {
               <span className="text-[11px] text-amber-400 font-medium">தென் இந்திய முறை</span>
             </div>
             
-            {/* 4x4 தென் இந்திய கட்ட அமைப்பு */}
-            <div className="grid grid-cols-4 w-full max-w-[440px] aspect-square border-2 border-pink-500/60 rounded-xl overflow-hidden bg-slate-950">
-              {southIndianOrder.map((box, idx) => {
-                if (!box) {
-                  if (idx === 5) {
-                    return (
-                      <div key={idx} className="col-span-2 row-span-2 border border-slate-800 flex flex-col items-center justify-center p-2 text-center bg-slate-900/60">
-                        <span className="text-pink-500 font-bold text-sm">
-                          {activeTab === 'rasi' ? 'ராசி சக்கரம்' : 'நவாம்சம் (D9)'}
-                        </span>
-                        <span className="text-xs text-slate-200 mt-1">{profile.name}</span>
-                        <span className="text-[11px] text-amber-400 mt-0.5">{astroData.nakshatra} ({astroData.padham})</span>
-                      </div>
-                    );
-                  }
-                  return null;
-                }
-
-                const currentHouseList = activeTab === 'rasi' ? astroData.rasiHouses : astroData.navamsaHouses;
-                const planetsInHouse = currentHouseList[box.idx] || [];
-                const isLagna = planetsInHouse.some(p => p.includes('லக்னம்'));
-
+           {/* 4x4 தென் இந்திய கட்ட அமைப்பு */}
+        <div className="grid grid-cols-4 w-full max-w-[420px] sm:max-w-[460px] aspect-square mx-auto border-2 border-slate-700 rounded-xl overflow-hidden shadow-2xl bg-slate-900/60">
+          {southIndianOrder.map((box, idx) => {
+            if (!box) {
+              if (idx === 5) {
                 return (
-                  <div
-                    key={idx}
-                    className={`border border-slate-800 p-1.5 flex flex-col justify-between min-h-[80px] transition ${
-                      isLagna ? 'bg-pink-950/40' : 'hover:bg-slate-800/30'
-                    }`}
-                  >
-                    <span className="text-[10px] text-slate-500 font-semibold">{box.name}</span>
-                    <div className="flex flex-col gap-0.5">
-                      {planetsInHouse.map((p, pIdx) => (
-                        <span
-                          key={pIdx}
-                          className={`text-[10px] font-bold ${
-                            p.includes('லக்னம்') ? 'text-pink-400' : (p === 'சந்திரன்' ? 'text-cyan-300' : 'text-amber-300')
-                          }`}
-                        >
-                          {p}
-                        </span>
-                      ))}
-                    </div>
+                  <div key={idx} className="col-span-2 row-span-2 border border-slate-700 flex flex-col items-center justify-center p-2 text-center bg-slate-900/90">
+                    <span className="text-pink-400 font-bold text-xs sm:text-sm tracking-wide">
+                      {activeTab === 'rasi' ? 'ராசி சக்கரம்' : 'நவாம்சம்'}
+                    </span>
+                    <span className="text-[11px] sm:text-xs text-slate-200 mt-1 font-medium truncate max-w-[120px] sm:max-w-none">
+                      {profile.name}
+                    </span>
+                    <span className="text-[9px] sm:text-[11px] text-amber-400/90 mt-0.5 font-sans">
+                      {astroData.birthDetails}
+                    </span>
                   </div>
                 );
-              })}
-            </div>
+              }
+              return null;
+            }
+
+            const currentHouseList = activeTab === 'rasi' ? astroData.rasiHouses : astroData.navamsaHouses;
+            const planetsInHouse = currentHouseList[box.idx] || [];
+            const isLagna = planetsInHouse.some(p => p.includes('லக்னம்'));
+
+            return (
+              <div
+                key={idx}
+                className={`border border-slate-800 p-1 sm:p-1.5 flex flex-col justify-between transition-colors min-h-0 ${
+                  isLagna ? 'bg-pink-950/40 border-pink-500/50' : 'hover:bg-slate-800/40 bg-slate-900/40'
+                }`}
+              >
+                <span className="text-[8px] sm:text-[10px] text-slate-400 font-medium leading-none">
+                  {box.name}
+                </span>
+                <div className="flex flex-col gap-0.5 my-auto overflow-hidden">
+                  {planetsInHouse.map((p, pIdx) => (
+                    <span
+                      key={pIdx}
+                      className={`text-[9px] sm:text-[11px] font-semibold leading-tight truncate ${
+                        p.includes('லக்னம்')
+                          ? 'text-pink-400 font-bold'
+                          : p.includes('சூரியன்') || p.includes('செவ்வாய்')
+                          ? 'text-amber-400'
+                          : p.includes('சந்திரன்') || p.includes('சுக்கிரன்')
+                          ? 'text-emerald-300'
+                          : 'text-slate-200'
+                      }`}
+                    >
+                      {p}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
             {/* கிரக பாகைகள் (Planet Degrees) */}
             <div className="w-full grid grid-cols-5 gap-2 mt-4 text-[10px] text-slate-400 border-t border-slate-800 pt-3">
@@ -600,14 +790,14 @@ export default function AstrologyModule({ setCurrentModule }) {
           <div className="flex flex-wrap gap-2 mb-4 pb-3 border-b border-slate-800">
             <span className="text-xs text-slate-400 self-center mr-2">விரைவுக் கேள்விகள்:</span>
             {[
-              { label: '🏡 பூமி / மனை யோகம்', q: 'பூமி யோகம்' },
-              { label: '💼 தொழில் & வேலை வாய்ப்பு', q: 'தொழில்' },
-              { label: '💍 திருமண வரன் அமைப்பு', q: 'திருமணம்' },
-              { label: '🪔 முற்பிறவி கர்மா & தோஷம்', q: 'முற்பிறவி கர்மா' }
+              { label: '🏡 பூமி / மனை யோகம்', q: 'எனக்கு பூமி அல்லது மனை வாங்கும் யோகம் எப்போது கைகூடும்?' },
+      { label: '💼 தொழில் & வேலை வாய்ப்பு', q: 'எனக்கு தொழில் முன்னேற்றம் மற்றும் புதிய வேலை வாய்ப்பு எப்போது அமையும்?' },
+      { label: '💍 திருமண வரன் அமைப்பு', q: 'எனக்கு திருமண வரன் அமைப்பு மற்றும் குடும்ப வாழ்க்கை எவ்வாறு அமையும்?' },
+      { label: '🪔 முற்பிறவி கர்மா & தோஷம்', q: 'எனது ஜாதகத்தில் முற்பிறவி கர்மா அல்லது ஏதேனும் தோஷங்கள் உள்ளதா, அதற்கான எளிய பரிகாரம் என்ன?' },
             ].map((btn, idx) => (
               <button
                 key={idx}
-                onClick={() => setInputQuery(btn.q)}
+                onClick={() => handleSendMessage(null, btn.q)}
                 className="text-xs bg-slate-800 hover:bg-pink-600/30 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition"
               >
                 {btn.label}
@@ -618,17 +808,17 @@ export default function AstrologyModule({ setCurrentModule }) {
 
         <div className="overflow-y-auto max-h-[300px] flex flex-col gap-4 pr-2 mb-4">
           {chatMessages.map((msg, index) => (
-            <div
-              key={index}
-              className={`max-w-[85%] p-4 rounded-2xl whitespace-pre-line text-sm leading-relaxed ${
-                msg.sender === 'user'
-                  ? 'self-end bg-pink-600 text-white'
-                  : 'self-start bg-slate-800 border border-slate-700 text-slate-200'
-              }`}
-            >
-              {msg.text}
-            </div>
-          ))}
+  <div 
+    key={index} 
+    className={`p-4 rounded-xl text-sm md:text-base leading-relaxed whitespace-pre-wrap break-words ${
+      msg.sender === 'user' 
+        ? 'bg-pink-600 text-white ml-auto max-w-[85%]' 
+        : 'bg-[#132347] text-blue-100 border border-blue-500/40 mr-auto max-w-[95%] shadow-lg'
+    }`}
+  >
+    {msg.text}
+  </div>
+))}
         </div>
 
         <form onSubmit={handleSendMessage} className="flex gap-3">
@@ -670,50 +860,63 @@ export default function AstrologyModule({ setCurrentModule }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* பிளான் 1: ₹149 */}
-              <div className="border border-slate-700 bg-slate-800/60 rounded-xl p-5 flex flex-col justify-between hover:border-pink-500/50 transition">
+              <div className="border border-slate-700 bg-slate-800/60 rounded-xl p-4 flex flex-col justify-between hover:border-pink-500/50 transition-all">
                 <div>
-                  <span className="text-xs text-amber-400 font-bold">ஸ்மார்ட் எக்ஸ்பிரஸ்</span>
+                  <span className="text-xs text-amber-400 font-bold tracking-wider uppercase">அடிப்படைத் திட்டம்</span>
                   <div className="text-2xl font-black text-white mt-1 mb-3">
-                    ₹149 <span className="text-xs text-slate-400 line-through">₹299</span>
+                    ₹149 <span className="text-xs text-slate-400 line-through font-normal">₹499</span>
                   </div>
                   <ul className="text-xs text-slate-300 flex flex-col gap-2 mb-4">
-                    <li>✓ தென் இந்திய ராசி & நவாம்சக் கட்டம்</li>
-                    <li>✓ நடப்பு தசா-புக்தி பலன் காலக்கோடு</li>
-                    <li>✓ பூமி யோகம் & தொழில் வழிகாட்டல்</li>
-                    <li>✓ 5 பக்க வண்ண PDF அறிக்கை</li>
+                    <li className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> தென் இந்திய ராசி & நவாம்சக் கட்டம் (D1/D9)</li>
+                    <li className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> கிரக நிலைகள் & துல்லிய பாகைகள்</li>
+                    <li className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> 120 வருட தசா காலக்கோடு விவரங்கள்</li>
+                    <li className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> மங்கல வண்ண PDF அறிக்கை பதிவிறக்கம்</li>
                   </ul>
                 </div>
                 <button
-                  onClick={() => handlePrintReport('Smart Express (₹149)')}
-                  className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg text-xs transition"
+                  onClick={() => {
+                    const upiId = "sampleastrology@upi"; // உங்கள் UPI ஐடி மாற்றிக்கொள்ளலாம்
+                    const payUrl = `upi://pay?pa=${upiId}&pn=NammaBoomiAstrology&am=149&cu=INR&tn=BasicAstrologyReport`;
+                    if (/Android|iPhone/i.test(navigator.userAgent)) {
+                      window.location.href = payUrl;
+                    }
+                    setTimeout(() => handlePrintReport('Basic Express (₹149)'), 600);
+                  }}
+                  className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2.5 rounded-lg text-xs transition-colors shadow-lg shadow-pink-600/30 active:scale-95"
                 >
-                  உடனடி PDF பதிவிறக்கு
+                  ₹149 செலுத்தி PDF பெறுக (GPay / PhonePe)
                 </button>
               </div>
 
-              {/* பிளான் 2: ₹299 */}
-              <div className="border-2 border-pink-500 bg-gradient-to-b from-pink-950/30 to-slate-800 rounded-xl p-5 flex flex-col justify-between relative shadow-xl">
-                <span className="absolute -top-3 right-4 bg-pink-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+              {/* பிளான் 2: ₹299 (Most Popular) */}
+              <div className="relative border-2 border-pink-500 bg-gradient-to-b from-slate-800 to-slate-900 rounded-xl p-4 flex flex-col justify-between shadow-xl shadow-pink-950/50">
+                <span className="absolute -top-3 right-4 bg-pink-600 text-[10px] font-bold text-white px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                   MOST POPULAR
                 </span>
                 <div>
-                  <span className="text-xs text-amber-400 font-bold">முழுமையான மாஸ்டர் ஜாதகம்</span>
+                  <span className="text-xs text-amber-400 font-bold tracking-wider uppercase">ஆயுள் பலன் + AI ஜோதிடர்</span>
                   <div className="text-2xl font-black text-white mt-1 mb-3">
-                    ₹299 <span className="text-xs text-slate-400 line-through">₹599</span>
+                    ₹299 <span className="text-xs text-slate-400 line-through font-normal">₹999</span>
                   </div>
                   <ul className="text-xs text-slate-300 flex flex-col gap-2 mb-4">
-                    <li>✓ 12 பாவக முழுமையான பலன்கள்</li>
-                    <li>✓ 120 வருட விம்சோத்தரி தசா-புக்தி அட்டவணை</li>
-                    <li>✓ கே.பி. உப-அதிபதி & நவாம்ச பலன்கள்</li>
-                    <li>✓ தமிழக திருத்தலப் பரிகாரங்கள்</li>
-                    <li>✓ 15 பக்க பிரத்யேக PDF புத்தகம்</li>
+                    <li className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> 12 பாவ முழுமையான ஆயுள் பலன்கள்</li>
+                    <li className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> 120 வருட தசா-புக்தி பலன் அட்டவணை</li>
+                    <li className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> AI ஜோதிடரிடம் வரம்பற்ற கேள்வி-பதில் சாட்</li>
+                    <li className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> அதிர்ஷ்டக் கல், எண்கள் & பரிகார வழிகாட்டல்</li>
                   </ul>
                 </div>
                 <button
-                  onClick={() => handlePrintReport('Master Kundli (₹299)')}
-                  className="w-full bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 text-white font-bold py-2 rounded-lg text-xs transition shadow-lg"
+                  onClick={() => {
+                    const upiId = "sampleastrology@upi"; // உங்கள் UPI ஐடி மாற்றிக்கொள்ளலாம்
+                    const payUrl = `upi://pay?pa=${upiId}&pn=NammaBoomiAstrology&am=299&cu=INR&tn=MasterKundliReport`;
+                    if (/Android|iPhone/i.test(navigator.userAgent)) {
+                      window.location.href = payUrl;
+                    }
+                    setTimeout(() => handlePrintReport('Master Kundli (₹299)'), 600);
+                  }}
+                  className="w-full bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 text-white font-bold py-2.5 rounded-lg text-xs transition-all shadow-lg shadow-pink-600/30 active:scale-95"
                 >
-                  முழு PDF பதிவிறக்கு
+                  ₹299 செலுத்தி AI & PDF அன்லாக் செய்க
                 </button>
               </div>
             </div>
