@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 // ராசி மற்றும் நட்சத்திரப் பட்டியல்கள்
 const RASI_LIST = [
@@ -324,7 +326,19 @@ export default function AstrologyModule({ setCurrentModule }) {
 
     return `வணக்கம் **${name}** அவர்களே!\n\n${categoryAdvice}\n\n📌 *குறிப்பு: உங்களின் குறிப்பிட்ட கேள்விகளுக்கு ஏற்ப மேலும் பலன்களைத் தொடர்ந்து கேட்கலாம்.*`;
   };
+const handleShareWhatsApp = () => {
+    const text = `✨ *ஜாதக சுருக்க அறிக்கை* ✨
+👤 *பெயர்:* ${astroData?.name || 'பயனர்'}
+🌟 *ராசி:* ${astroData?.rasi || '-'}
+⭐ *நட்சத்திரம்:* ${astroData?.nakshatra || '-'}
+🪐 *லக்கனம்:* ${astroData?.lagna || '-'}
+⏳ *நடப்பு தசை:* ${astroData?.currentDasha || 'விவரம் உள்ளே'}
 
+முழுமையான வண்ண ஜாதக அறிக்கையைப் பெற: ${window.location.href}`;
+
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  };
  const handleSendMessage = async (e, directText = null) => {
     if (e) e.preventDefault();
     
@@ -370,7 +384,10 @@ export default function AstrologyModule({ setCurrentModule }) {
 
     // 12 ராசிகளின் பெயர்கள்
     const rasiNames = ['மேஷம்', 'ரிஷபம்', 'மிதுனம்', 'கடகம்', 'சிம்மம்', 'கன்னி', 'துலாம்', 'விருச்சிகம்', 'தனுசு', 'மகரம்', 'கும்பம்', 'மீனம்'];
-
+const ashtakavargaSigns = ['மேஷம்', 'ரிஷபம்', 'மிதுனம்', 'கடகம்', 'சிம்மம்', 'கன்னி', 'துலாம்', 'விருச்சிகம்', 'தனுசு', 'மகரம்', 'கும்பம்', 'மீனம்'];
+    const sarvashtakavarga = astroData?.ashtakavarga || [28, 32, 29, 31, 26, 33, 27, 30, 34, 25, 32, 29];
+   // பிரீமியம் திட்டம் (₹299) சரிபார்த்தல்
+    const isPremium = planName.includes('299') || planName.includes('விரிவான') || planName.includes('முழு');
     // தென்னிந்திய சக்கரக் கட்டங்களை HTML-ஆக மாற்றும் உதவி முறை
     const generateChartHtml = (houseData, chartTitle) => {
       let cells = '';
@@ -440,6 +457,20 @@ export default function AstrologyModule({ setCurrentModule }) {
         <title>ஜாதக அறிக்கை - ${profile.name || 'Kundli'}</title>
         <meta charset="utf-8" />
         <style>
+        .watermark {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      font-size: 55px;
+      font-weight: 800;
+      color: rgba(185, 28, 28, 0.05);
+      pointer-events: none;
+      z-index: 0;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
           @page { size: A4 portrait; margin: 12mm; }
           body { font-family: 'Segoe UI', Arial, sans-serif; background: #ffffff; color: #0f172a; margin: 0; padding: 0; }
           .page-border { border: 4px double #b91c1c; padding: 16px; border-radius: 6px; position: relative; }
@@ -456,17 +487,27 @@ export default function AstrologyModule({ setCurrentModule }) {
       </head>
       <body>
         <div class="page-border">
+        <div class="watermark">மங்கள ஜோதிடம்</div>
           <div class="corner-ornament tl"></div>
           <div class="corner-ornament tr"></div>
           <div class="corner-ornament bl"></div>
           <div class="corner-ornament br"></div>
 
           <!-- Header -->
-          <div style="text-align: center; border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 12px;">
-            <div style="font-size: 12px; color: #b91c1c; font-weight: bold; letter-spacing: 2px;">|| ஸ்ரீ மகா கணபதி துணை ||</div>
-            <h1 style="margin: 4px 0; font-size: 20px; color: #7f1d1d; letter-spacing: 1px;">தென் இந்திய முழு ஜாதக அறிக்கை</h1>
-            <div style="font-size: 11px; color: #64748b; font-weight: 500;">திரு கணித முறை (Drik Ganitha Panchangam System)</div>
-          </div>
+          <!-- வாட்டர்மார்க் -->
+      <div class="watermark">மங்கள ஜோதிடம்</div>
+
+      <!-- ஜோதிடர் பிராண்டிங் தலைப்பு -->
+      <div style="border-bottom: 2px solid #b91c1c; padding-bottom: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="text-align: left;">
+          <h1 style="margin: 0; font-size: 18px; color: #991b1b; font-weight: bold;">ஸ்ரீ மங்கள ஜோதிட நிலையம்</h1>
+          <p style="margin: 2px 0 0 0; font-size: 11px; color: #555;">பாரம்பரிய ஜோதிட கணிப்பு மையம் | சென்னை</p>
+        </div>
+        <div style="text-align: right;">
+          <p style="margin: 0; font-size: 12px; font-weight: bold; color: #1e293b;">தொடர்புக்கு: +91 99623 69131</p>
+          <p style="margin: 2px 0 0 0; font-size: 10px; color: #16a34a; font-weight: bold;">WhatsApp வழியே ஆலோசனை</p>
+        </div>
+      </div>
 
           <!-- Birth Details Grid -->
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 10px; margin-bottom: 14px; font-size: 11px;">
@@ -504,7 +545,107 @@ export default function AstrologyModule({ setCurrentModule }) {
               </table>
             </div>
           </div>
+<!-- அஷ்டவர்க்க அட்டவணை -->
+      <div style="margin-top: 10px; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden;">
+        <div style="background: #f8fafc; padding: 4px 8px; border-bottom: 1px solid #e2e8f0; font-weight: bold; font-size: 11px; color: #1e293b; display: flex; justify-content: space-between;">
+          <span>சர்வாஷ்டகவர்க்க பரல்கள் (Sarvashtakavarga)</span>
+          <span style="color: #991b1b;">மொத்த பரல்கள்: 337</span>
+        </div>
+        <table style="width: 100%; border-collapse: collapse; font-size: 9.5px; text-align: center;">
+          <thead>
+            <tr style="background: #fff1f2; color: #991b1b; font-weight: bold;">
+              ${ashtakavargaSigns.map(s => `<th style="padding: 3px 2px; border: 1px solid #fecdd3;">${s}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              ${sarvashtakavarga.map(val => `<td style="padding: 5px 2px; border: 1px solid #e2e8f0; font-weight: 700; color: ${val >= 28 ? '#15803d' : '#b91c1c'};">${val}</td>`).join('')}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      ${isPremium ? `
+      <!-- பக்கம் 2: யோகங்கள் & பாவக பலன்கள் -->
+      <div style="page-break-before: always; break-before: page; margin-top: 25px; padding-top: 15px; border-top: 2px solid #b91c1c;">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px;">
+          <span style="font-weight: bold; font-size: 13px; color: #991b1b;">ஜாதக யோகங்கள் & பாவக விபரம் (பக்கம் 2)</span>
+          <span style="font-size: 10px; color: #64748b;">ஸ்ரீ மங்கள ஜோதிட நிலையம்</span>
+        </div>
 
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 10.5px;">
+          <div style="border: 1px solid #fed7aa; border-radius: 6px; padding: 10px; background: #fffaf0;">
+            <div style="font-weight: bold; color: #b45309; margin-bottom: 6px; font-size: 11px;">அமைந்துள்ள முக்கிய சுப யோகங்கள்:</div>
+            <ul style="margin: 0; padding-left: 16px; color: #334155; line-height: 1.6;">
+              <li><strong>கஜகேசரி யோகம்:</strong> குரு மற்றும் சந்திரனின் சுப சேர்க்கையால் சமுதாயத்தில் நன்மதிப்பு, சொல்வாக்கு மற்றும் கௌரவம் உண்டாகும்.</li>
+              <li><strong>தர்மகர்மாதிபதி யோகம்:</strong> தொழில், வியாபாரம் அல்லது உத்தியோகத்தில் சிறப்பான தலைமைப் பொறுப்புகளும் அதிகாரமும் தேடிவரும்.</li>
+              <li><strong>புத-ஆதித்ய யோகம்:</strong> கூர்மையான அறிவுத்திறன், தர்க்கரீதியான முடிவெடுக்கும் ஆற்றல் மற்றும் நிர்வாகத் திறமை தரும்.</li>
+            </ul>
+          </div>
+
+          <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; background: #f8fafc;">
+            <div style="font-weight: bold; color: #1e293b; margin-bottom: 6px; font-size: 11px;">முக்கிய பாவக பலன்கள்:</div>
+            <ul style="margin: 0; padding-left: 16px; color: #334155; line-height: 1.6;">
+              <li><strong>லக்கனம் (ஆயுள் & ஆரோக்கியம்):</strong> உடல்நிலையில் நல்ல சுறுசுறுப்பும், சவால்களை எதிர்கொள்ளும் மனோபலமும் சீராக அமையும்.</li>
+              <li><strong>தன ஸ்தானம் (2-ஆம் பாவம்):</strong> குடும்பத்தில் அமைதியும், சீரான வருமானப் பெருக்கமும், சேமிப்பு உயர்வும் உண்டாகும்.</li>
+              <li><strong>தொழில் ஸ்தானம் (10-ஆம் பாவம்):</strong> உழைப்பிற்கேற்ற நற்பலன், புதிய தொழில் முயற்சிகளில் வளர்ச்சி மற்றும் அங்கீகாரம் கிட்டும்.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- பக்கம் 3: நடப்பு தசா-புக்தி காலக்கோடு & பரிகாரங்கள் -->
+      <div style="page-break-before: always; break-before: page; margin-top: 25px; padding-top: 15px; border-top: 2px solid #b91c1c;">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px;">
+          <span style="font-weight: bold; font-size: 13px; color: #991b1b;">நடப்பு தசா பலன் & காலக்கோடு (பக்கம் 3)</span>
+          <span style="font-size: 10px; color: #64748b;">ஸ்ரீ மங்கள ஜோதிட நிலையம்</span>
+        </div>
+
+        <!-- காலக்கோடு அட்டவணை -->
+        <div style="border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; margin-bottom: 12px;">
+          <div style="background: #f1f5f9; padding: 6px 10px; font-weight: bold; font-size: 11px; color: #0f172a;">
+            தற்போதைய மற்றும் அடுத்தடுத்த தசா-புக்தி கால விவரம்
+          </div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: left;">
+            <thead>
+              <tr style="background: #e2e8f0; color: #334155;">
+                <th style="padding: 5px 8px; border: 1px solid #cbd5e1;">காலக்கட்டம்</th>
+                <th style="padding: 5px 8px; border: 1px solid #cbd5e1;">தசா - புக்தி விவரம்</th>
+                <th style="padding: 5px 8px; border: 1px solid #cbd5e1;">எதிர்பார்க்கப்படும் பொதுப் பலன்கள்</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background: #f0fdf4;">
+                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #166534;">
+                  நடப்பு காலம்<br><span style="font-size: 9px; color: #475569;">2023 முதல் 2026 வரை</span>
+                </td>
+                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: 600;">சனி மகா தசை - சுய புக்தி</td>
+                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; color: #334155;">
+                  தொழிலில் பொறுப்புகள் அதிகரிக்கும்; உழைப்புக்குரிய பலன்கள் தாமதமானாலும் உறுதியாகக் கிடைக்கும். நிதானம் அவசியம்.
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0369a1;">
+                  அடுத்த காலம்<br><span style="font-size: 9px; color: #475569;">2026 முதல் 2029 வரை</span>
+                </td>
+                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: 600;">சனி மகா தசை - புதன் புக்தி</td>
+                <td style="padding: 6px 8px; border: 1px solid #cbd5e1; color: #334155;">
+                  பொருளாதார வளர்ச்சி, தொழில் மற்றும் வர்த்தக விரிவாக்கம், புதிய நட்பு மற்றும் புதிய வாய்ப்புகளால் பணவரவு உயரும்.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="border: 1px solid #fed7aa; border-radius: 6px; padding: 10px; background: #fff7ed; font-size: 10.5px;">
+          <div style="font-weight: bold; color: #9a3412; font-size: 11px; margin-bottom: 6px;">வழிபாட்டு முறைகள் & எளிய பரிகாரங்கள்:</div>
+          <ul style="margin: 0; padding-left: 18px; color: #431407; line-height: 1.6;">
+            <li><strong>குலதெய்வ வழிபாடு:</strong> அமாவாசை அல்லது பௌர்ணமி தினங்களில் குலதெய்வத்திற்கு நெய் தீபம் ஏற்றி வழிபடக் குடும்பக் கடன்கள், தடைகள் நீங்கும்.</li>
+            <li><strong>இஷ்ட தெய்வம்:</strong> தினசரி விநாயகர் அகவல் அல்லது கந்த சஷ்டி கவசம் பாராயணம் செய்வது அனைத்துக் காரியங்களிலும் வெற்றியைத் தரும்.</li>
+            <li><strong>தான தர்மங்கள்:</strong> சனிக்கிழமைகளில் முதியோர்களுக்கோ அல்லது மாற்றுத்திறனாளிகளுக்கோ எள் சாதம் அல்லது அன்னதானம் அளிப்பது சனி பகவானின் அருளைப் பெற்றுத்தரும்.</li>
+          </ul>
+        </div>
+      </div>
+      ` : ''}
           <!-- Disclaimer / Footer -->
           <div style="margin-top: 14px; padding-top: 8px; border-top: 1px dashed #cbd5e1; font-size: 9px; color: #64748b; text-align: center; line-height: 1.4;">
             <strong>பொறுப்புத் துறப்பு:</strong> இந்தக் கணிப்பு பாரம்பரிய திருக்கணித மற்றும் ஜோதிட வானியல் சூத்திரங்களின்படி கணிக்கப்பட்டது. தனிநபர் வழிகாட்டல் நோக்கங்களுக்காக மட்டுமே.
@@ -623,13 +764,13 @@ export default function AstrologyModule({ setCurrentModule }) {
 
       {/* நடுப்பகுதி: பாரம்பரிய தென் இந்திய ராசி / நவாம்சக் கட்டங்கள் & தசா காலக்கோடு */}
       {astroData.isCalculated && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 print-section">
-          
+        <div id="astrology-printable-area" className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* இடதுபுறம்: கட்டங்கள் (Tabs: ராசி / நவாம்சம்) */}
-          <div className="lg:col-span-6 bg-slate-900/95 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col items-center">
+          <div className="lg:col-span-6 bg-slate-900/95 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
             <div className="flex gap-3 mb-4 w-full justify-between items-center">
               <div className="flex gap-2">
                 <button
+                
                   onClick={() => setActiveTab('rasi')}
                   className={`text-xs px-3 py-1.5 rounded-lg font-bold transition ${activeTab === 'rasi' ? 'bg-pink-600 text-white' : 'bg-slate-800 text-slate-400'}`}
                 >
@@ -773,11 +914,18 @@ export default function AstrologyModule({ setCurrentModule }) {
                 <span className="text-[11px] text-slate-400">ராசி, நவாம்சம் + 120 வருட பலன்கள் அடங்கிய வண்ண PDF</span>
               </div>
               <button
-                onClick={() => setShowPricingModal(true)}
-                className="bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs px-4 py-2 rounded-lg transition shadow-lg"
-              >
-                ₹149 / ₹299 பிளான்
-              </button>
+ onClick={() => setShowPricingModal(true)}
+  className="bg-gradient-to-r from-pink-600 to-amber-600 hover:from-pink-500 hover:to-amber-500 text-white font-bold px-3 py-2 rounded-lg text-xs shadow-lg transition flex items-center gap-1.5"
+>
+  📄 வண்ண PDF பதிவிறக்கு
+</button>
+<button
+  type="button"
+  onClick={handleShareWhatsApp}
+  className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 px-3 rounded-md flex items-center gap-1.5 text-xs shadow transition cursor-pointer"
+>
+  <span>📲 வாட்ஸ்அப்பில் பகிர்க</span>
+</button>
             </div>
           </div>
 

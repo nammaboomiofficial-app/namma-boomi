@@ -17,6 +17,7 @@ import InsuranceModule from '../components/InsuranceModule';
 import WholesaleModule from '../components/WholesaleModule';
 import SpiritualModule from '../components/SpiritualModule';
 import AstrologyModule from '../components/AstrologyModule';
+import TourismModule from '../components/TourismModule';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -1234,7 +1235,12 @@ export default function Home() {
     <AstrologyModule setCurrentModule={setCurrentModule} />
   </div>
 )}
-
+{/* சுற்றுலா மாடியூல் (Tourism 360) */}
+          {currentModule === 'tourism' && (
+            <div className="space-y-6">
+              <TourismModule setCurrentModule={setCurrentModule} />
+            </div>
+          )}
         
         {/* 3. விவசாயம் (Agri 360) மாடியூல் */}
           {currentModule === 'agri' && (
