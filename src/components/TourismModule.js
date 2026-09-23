@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import circuitsData from '../data/circuitsData.json';
 export default function TourismModule({ setCurrentModule }) {
   const [activeTab, setActiveTab] = useState('highway'); // நேரடி பார்வைக்காக 'highway' டேப்
   const [selectedCircuit, setSelectedCircuit] = useState('navagraha');
@@ -10,7 +10,7 @@ export default function TourismModule({ setCurrentModule }) {
   const [selectedFilter, setSelectedFilter] = useState('அனைத்தும்');
 
   // 1. முதன்மை சுற்றுலா சுற்றுகள் (Tour Circuits)
-  const circuitsData = {
+  const oldcircuitsData = {
     navagraha: {
       id: 'navagraha',
       title: 'நவகிரக 9 தலங்கள் 360° ஆன்மீக யாத்திரை',
@@ -670,14 +670,14 @@ export default function TourismModule({ setCurrentModule }) {
     }
   };
 
-  const currentCircuit = circuitsData[selectedCircuit];
-  const grandTotalBudget = currentCircuit.budget.fuel + currentCircuit.budget.toll + currentCircuit.budget.stay + (currentCircuit.budget.foodPerHead * travelersCount);
+  const currentCircuit = circuitsData.find(c => c.id === selectedCircuit) || circuitsData[0];
+ const grandTotalBudget = ((currentCircuit?.budget?.fuel || 0) + (currentCircuit?.budget?.toll || 0) + (currentCircuit?.budget?.food || 0) + (currentCircuit?.budget?.stay || 0));
 
   // செலவுப் பட்டியல்
   const [expenses, setExpenses] = useState([
-    { id: 1, title: 'எரிபொருள் (Fuel - தோராய மதிப்பு)', amount: currentCircuit.budget.fuel, paidBy: 'உதயகுமார்' },
-    { id: 2, title: 'டோல்கேட் கட்டணம்', amount: currentCircuit.budget.toll, paidBy: 'உதயகுமார்' },
-    { id: 3, title: 'ஹோட்டல் / தங்குமிடம்', amount: currentCircuit.budget.stay, paidBy: 'உதயகுமார்' }
+    { id: 1, title: 'எரிபொருள் (Fuel - தோராய மதிப்பு)', amount: currentCircuit?.budget?.fuel || 0 },
+    { id: 2, title: 'டோல்கேட் கட்டணம்', amount: currentCircuit?.budget?.toll || 0 },
+    { id: 3, title: 'ஹோட்டல் / தங்குமிடம்', amount: currentCircuit?.budget?.stay || 0 }
   ]);
   const [newExp, setNewExp] = useState({ title: '', amount: '', paidBy: '' });
 
@@ -698,14 +698,15 @@ export default function TourismModule({ setCurrentModule }) {
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 
-  const handleGoogleMapsRoute = () => {
+ const handleGoogleMapsRoute = () => {
     const routeUrls = {
-      navagraha: 'https://www.google.com/maps/dir/Chennai/Suryanar+Kovil/Kanjanur/Thirunageswaram/Vaitheeswarankoil/Thiruvenkadu/Keezhaperumpallam/Kumbakonam/Thirunallar/Alangudi/Thingalur',
-      arupadai: 'https://www.google.com/maps/dir/Chennai/Thiruparankundram/Pazhamudircholai/Tiruchendur/Palani/Swamimalai/Tiruttani',
-      hills_falls: 'https://www.google.com/maps/dir/Chennai/Kodaikanal/Courtallam/Tenkasi/Tirunelveli',
-      agri: 'https://www.google.com/maps/dir/Chennai/Pollachi/Sethumadai/Topslip/Aliyar+Dam'
+      navagraha: 'https://www.google.com/maps/dir/Chennai,+Tamil+Nadu/Sooriyanar+Kovil,+Thanjavur/Kailasanathar+Temple,+Thingalur/Vaitheeswarankoil/Thiruvengadu+Budhan+Temple/Alangudi+Guru+Temple/Agneeswarar+Temple+Kanjanur/Thirunallar+Saneeswaran+Temple/Thirunageswaram+Rahu+Temple/Keezhaperumpallam+Kethu+Temple',
+      arupadai: 'https://www.google.com/maps/dir/Chennai,+Tamil+Nadu/Swaminathaswamy+Temple,+Swamimalai/Thiruparankundram+Murugan+Temple,+Madurai/Pazhamudircholai+Murugan+Temple/Subramaniya+Swamy+Temple,+Tiruchendur/Arulmigu+Dhandayuthapani+Swamy+Temple,+Palani/Tiruttani+Murugan+Temple/Chennai,+Tamil+Nadu',
+      hills_falls: 'https://www.google.com/maps/dir/Chennai,+Tamil+Nadu/Kodaikanal+Lake,+Tamil+Nadu/Pillar+Rocks,+Kodaikanal/Courtallam+Main+Falls,+Tenkasi/Old+Courtallam+Waterfalls/Chennai,+Tamil+Nadu',
+      agri: 'https://www.google.com/maps/dir/Chennai,+Tamil+Nadu/Pollachi,+Tamil+Nadu/Sethumadai,+Tamil+Nadu/Aliyar+Dam+Park/Masani+Amman+Temple/Chennai,+Tamil+Nadu',
     };
-    window.open(routeUrls[selectedCircuit], '_blank');
+    const url = routeUrls[selectedCircuit] || routeUrls.navagraha;
+    window.open(url, '_blank');
   };
 
   const activeDistrictData = districtsDirectory[selectedDistrict] || districtsDirectory['சென்னை'];
@@ -966,7 +967,7 @@ export default function TourismModule({ setCurrentModule }) {
               </div>
 
               <div style={{ display: 'grid', gap: '20px' }}>
-                {currentCircuit.itinerary.map((dayPlan, dIdx) => (
+               {currentCircuit?.itinerary?.map((dayPlan, dIdx) => (
                   <div key={dIdx} style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: '14px', padding: '18px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid #1e293b', paddingBottom: '10px' }}>
                       <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#facc15' }}>{dayPlan.day}</div>
@@ -974,7 +975,7 @@ export default function TourismModule({ setCurrentModule }) {
                     </div>
 
                     <div style={{ position: 'relative', paddingLeft: '24px', borderLeft: '2px dashed #334155', display: 'grid', gap: '16px' }}>
-                      {dayPlan.steps.map((step, sIdx) => (
+                      {dayPlan?.steps?.map((step, sIdx) => (
                         <div key={sIdx} style={{ position: 'relative' }}>
                           <div style={{
                             position: 'absolute',
@@ -1024,7 +1025,7 @@ export default function TourismModule({ setCurrentModule }) {
                 <span>💡</span> அத்தியாவசிய வழிகாட்டி & சிறப்பு குறிப்புகள்
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px' }}>
-                {currentCircuit.tips.map((tip, tIdx) => (
+                {currentCircuit?.tips?.map((tip, tIdx) => (
                   <div key={tIdx} style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: '12px', padding: '14px' }}>
                     <div style={{ color: '#facc15', fontWeight: 'bold', fontSize: '13px', marginBottom: '6px' }}>{tip.title}</div>
                     <div style={{ color: '#cbd5e1', fontSize: '12px', lineHeight: '1.5' }}>{tip.desc}</div>
@@ -1032,7 +1033,57 @@ export default function TourismModule({ setCurrentModule }) {
                 ))}
               </div>
             </div>
+{/* சுற்றுலா & தங்குமிடம் நடத்துவோருக்கான பார்ட்னர்ஷிப் கார்டு */}
+      <div style={{
+        marginTop: '24px',
+        marginBottom: '24px',
+        padding: '20px 24px',
+        borderRadius: '16px',
+        background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%)',
+        border: '1px solid rgba(56, 189, 248, 0.25)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '16px'
+      }}>
+        <div style={{ flex: '1 1 300px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+            <span style={{ fontSize: '1.3rem' }}>🤝</span>
+            <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '600', color: '#38bdf8' }}>
+              சுற்றுலா & தங்குமிடம் நடத்துவோரா நீங்கள்?
+            </h4>
+          </div>
+          <p style={{ margin: 0, fontSize: '0.88rem', color: '#cbd5e1', lineHeight: '1.5' }}>
+            உங்கள் ஹோட்டல், இயற்கை பண்ணை இல்லம் (Farmstay) அல்லது சுற்றுலா வாகனங்களை 'நம்ம பூமி' தளத்தில் இணைத்து பயணிகளை நேரடியாகச் சென்றடைய எங்களைத் தொடர்பு கொள்ளவும்.
+          </p>
+        </div>
 
+        <div>
+          <a
+            href="https://wa.me/919962369131?text=வணக்கம்,%20நம்ம%20பூமி%20சுற்றுலா%20தளத்தில்%20எங்கள்%20ஹோட்டல்%20/%20வாகனங்களை%20இணைக்க%20விரும்புகிறோம்."
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 18px',
+              borderRadius: '10px',
+              backgroundColor: '#25D366',
+              color: '#ffffff',
+              fontSize: '0.9rem',
+              fontWeight: '600',
+              textDecoration: 'none',
+              boxShadow: '0 4px 14px rgba(37, 211, 102, 0.35)'
+            }}
+          >
+            <span>💬</span>
+            <span>வாட்ஸ்அப்பில் இணைய</span>
+          </a>
+        </div>
+      </div>
             {/* SEARCH & DISCOVER CHIPS */}
             <div style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: '14px', padding: '16px' }}>
               <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#f8fafc', marginBottom: '10px' }}>🔍 பிற சுற்றுலா & இயற்கை தலங்களைத் தேடுங்கள்</div>
