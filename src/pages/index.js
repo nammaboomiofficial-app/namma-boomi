@@ -18,6 +18,7 @@ import WholesaleModule from '../components/WholesaleModule';
 import SpiritualModule from '../components/SpiritualModule';
 import AstrologyModule from '../components/AstrologyModule';
 import TourismModule from '../components/TourismModule';
+import landsData from '../data/landsData.json';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -25,7 +26,7 @@ export default function Home() {
     window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
   };
   // பிரதான 9 தூண்கள்
-  const [currentModule, setCurrentModule] = useState('astro');  
+  const [currentModule, setCurrentModule] = useState('home');  
   // பூமி மாட்யூல் சப்-டேப்கள்
   const [activeMainTab, setActiveMainTab] = useState('marketplace'); // 'marketplace' | 'audit' | 'sell'
 
@@ -160,77 +161,7 @@ export default function Home() {
     }
   };
 
-  const [listedLands, setListedLands] = useState([
-    {
-      id: 'LND-101',
-      title: 'OMR பிரதான சாலை அருகே முதலீட்டு மனை & தோட்டம்',
-      surveyNo: '142/1B',
-      district: 'செங்கல்பட்டு',
-      taluk: 'திருப்போரூர்',
-      village: 'திருப்போரூர்',
-      ownerName: 'ராமசாமி (த/பெ சுப்பையா)',
-      phone: '+91 98400 12345',
-      extent: '2.50 ஏக்கர் (1,08,900 ச.அடி)',
-      askingPrice: '₹1,750 / ச.அடி',
-      approxValue: 19000000,
-      guidelineValue: '₹850 / ச.அடி',
-      trustScore: 98,
-      trustGrade: 'A+',
-      waterNote: '90 அடியில் வற்றாத குடிநீர் ஊற்று',
-      highwayDist: '400 மீ OMR சாலை இணைப்பு',
-      badge: 'நேரடி உரிமையாளர்',
-      verifiedBoundary: true,
-      droneView: true,
-      image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60',
-      mapEmbedUrl: 'https://maps.google.com/maps?q=Thiruporur,+Tamil+Nadu&t=&z=14&ie=UTF8&iwloc=&output=embed'
-    },
-    {
-      id: 'LND-102',
-      title: 'GST நெடுஞ்சாலை & ரயில் நிலையம் அருகே குடியிருப்பு நிலம்',
-      surveyNo: '88/4A',
-      district: 'செங்கல்பட்டு',
-      taluk: 'செங்கல்பட்டு',
-      village: 'செங்கல்பட்டு டவுன்',
-      ownerName: 'கணேசன் (த/பெ முத்து)',
-      phone: '+91 98400 54321',
-      extent: '1.20 ஏக்கர் (52,272 ச.அடி)',
-      askingPrice: '₹2,350 / ச.அடி',
-      approxValue: 12000000,
-      guidelineValue: '₹1,200 / ச.அடி',
-      trustScore: 92,
-      trustGrade: 'A',
-      waterNote: '50 அடியில் நிறைவான நிலத்தடி நீர்',
-      highwayDist: '800 மீ GST தேசிய நெடுஞ்சாலை',
-      badge: 'வங்கி கடன் தகுதியானது',
-      verifiedBoundary: true,
-      droneView: false,
-      image: 'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=800&auto=format&fit=crop&q=60',
-      mapEmbedUrl: 'https://maps.google.com/maps?q=Chengalpattu,+Tamil+Nadu&t=&z=14&ie=UTF8&iwloc=&output=embed'
-    },
-    {
-      id: 'LND-103',
-      title: 'கேளம்பாக்கம் சந்திப்பு மிக அருகில் தனி ரெடி மனை',
-      surveyNo: '56/2C',
-      district: 'செங்கல்பட்டு',
-      taluk: 'திருப்போரூர்',
-      village: 'கேளம்பாக்கம்',
-      ownerName: 'ராஜேந்திரன்',
-      phone: '+91 98400 98765',
-      extent: '2,400 ச.அடி (5.5 சென்ட்)',
-      askingPrice: '₹2,900 / ச.அடி',
-      approxValue: 6960000,
-      guidelineValue: '₹1,800 / ச.அடி',
-      trustScore: 95,
-      trustGrade: 'A+',
-      waterNote: '70 அடியில் நல்ல நன்னீர் ஆதாரம்',
-      highwayDist: '300 மீ பேருந்து சந்திப்பு',
-      badge: 'உடனடி பத்திரப் பதிவு',
-      verifiedBoundary: true,
-      droneView: true,
-      image: 'https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&auto=format&fit=crop&q=60',
-      mapEmbedUrl: 'https://maps.google.com/maps?q=Kelambakkam,+Tamil+Nadu&t=&z=14&ie=UTF8&iwloc=&output=embed'
-    }
-  ]);
+  const [listedLands, setListedLands] = useState(landsData);
 
   const fullLandDatabase = {
     'திருப்போரூர்-142/1B': {
@@ -415,12 +346,42 @@ export default function Home() {
       <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex items-center space-x-3">
-            <span className="text-3xl">🧭</span>
+            <div style={{
+              width: '46px',
+              height: '46px',
+              borderRadius: '14px',
+              background: 'linear-gradient(145deg, #064e3b 0%, #065f46 60%, #0f172a 100%)',
+              border: '1.5px solid #d97706',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 16px rgba(217, 119, 6, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2)',
+              position: 'relative',
+              flexShrink: 0
+            }}>
+              {/* தமிழ் மரபு: நெற்கதிர் + கோபுரக் கலச வடிவம் */}
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* கோபுரக் கலச உச்சி */}
+                <path d="M12 2L13.5 5.5H10.5L12 2Z" fill="#fbbf24" />
+                <circle cx="12" cy="7" r="1.5" fill="#f59e0b" />
+                {/* தமிழரின் உழவு - நெற்கதிர் வளைவுகள் */}
+                <path d="M12 8.5C12 14.5 7.5 17 5 17.5C7 16 8 13.5 8 10C9.5 11.5 11 11.5 12 8.5Z" fill="#34d399" />
+                <path d="M12 8.5C12 14.5 16.5 17 19 17.5C17 16 16 13.5 16 10C14.5 11.5 13 11.5 12 8.5Z" fill="#fbbf24" />
+                {/* பூமி ஆதார பீடம் */}
+                <path d="M6 20C9 18.8 15 18.8 18 20C15 21.2 9 21.2 6 20Z" fill="#d97706" />
+                <path d="M12 9V20" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-black text-2xl text-emerald-400 tracking-wide">
-                  நம்ம பூமி 360
-                </h1>
+                <h1 className="font-black text-2xl tracking-wide" style={{
+                    background: 'linear-gradient(to right, #34d399, #fbbf24)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    letterSpacing: '0.5px'
+                  }}>
+                    நம்ம பூமி 360
+                  </h1>
                 <button
                         onClick={() => setIsSellModalOpen(true)}
                         className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all shadow cursor-pointer ml-2"
@@ -467,6 +428,156 @@ export default function Home() {
 
       {/* பிரதான பக்கம் */}
       <main className="max-w-6xl mx-auto p-4 md:p-8 space-y-8">
+       {/* நம்ம பூமி 360 - அல்ட்ரா பிரீமியம் சூப்பர் ஆப் ஹீரோ பிரிவு */}
+        {currentModule === 'home' && (
+          <div className="space-y-8">
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#02130d] via-[#041e15] to-[#010b07] border border-emerald-500/30 p-6 md:p-10 shadow-[0_20px_60px_rgba(2,19,13,0.8)]">
+              
+              {/* பின்னணி நியான் ஒளிவட்டம் */}
+              <div className="absolute -top-28 -left-28 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="absolute -bottom-28 -right-28 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                {/* இடதுபுறம்: தாத்பரியம், விளக்கம் & 4 சிறப்பம்ச பேட்ஜ்கள் */}
+                <div className="lg:col-span-7 space-y-6 text-left">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-400/40 text-emerald-300 text-xs md:text-sm font-semibold shadow-inner">
+                    <span className="text-amber-400">✨</span> தமிழ்நாடு முழுமைக்குமான 12 முதன்மை வாழ்வியல் & டிஜிட்டல் சேவைகள்
+                  </div>
+
+                  <div className="space-y-2">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-wide text-white drop-shadow-md">
+                      நம்ம பூமி 360
+                    </h1>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-emerald-300 via-teal-200 to-amber-300 bg-clip-text text-transparent">
+                      உழவும் நிலமும் தமிழரின் வாழ்வியலும்
+                    </h2>
+                  </div>
+
+                  <p className="text-slate-200 text-sm md:text-base leading-relaxed bg-black/25 p-4 rounded-2xl border border-emerald-500/20 backdrop-blur-sm">
+                    பாரம்பரிய இயற்கை விவசாயம், பாதுகாப்பான நிலப் பரிவர்த்தனை வழிகாட்டல்கள், அரசு சேவைகள் மற்றும் அதிநவீன AI தொழில்நுட்ப வழிகாட்டல்களை ஒரே இடத்தில் இணைக்கும் டிஜிட்டல் தளம்.
+                  </p>
+
+                  {/* 4 பிரீமியம் சூப்பர் ஆப் பேட்ஜ்கள் */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+                    <div className="bg-emerald-950/60 border border-emerald-500/30 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1 shadow-sm hover:border-emerald-400/60 transition-all">
+                      <span className="text-xl">🛡️</span>
+                      <span className="text-[11px] text-slate-200 font-medium">பாதுகாப்பான பரிவர்த்தனை</span>
+                    </div>
+                    <div className="bg-emerald-950/60 border border-emerald-500/30 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1 shadow-sm hover:border-emerald-400/60 transition-all">
+                      <span className="text-xl">📈</span>
+                      <span className="text-[11px] text-slate-200 font-medium">சரியான AI மதிப்பீடு</span>
+                    </div>
+                    <div className="bg-emerald-950/60 border border-emerald-500/30 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1 shadow-sm hover:border-emerald-400/60 transition-all">
+                      <span className="text-xl">⚡</span>
+                      <span className="text-[11px] text-slate-200 font-medium">வேகமான சேவைகள்</span>
+                    </div>
+                    <div className="bg-emerald-950/60 border border-emerald-500/30 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1 shadow-sm hover:border-emerald-400/60 transition-all">
+                      <span className="text-xl">🎧</span>
+                      <span className="text-[11px] text-slate-200 font-medium">24x7 தமிழ் ஆதரவு</span>
+                    </div>
+                  </div>
+
+                  {/* வழிகாட்டும் குறிப்பு */}
+                  <div className="pt-1 flex items-center gap-2 text-amber-300 text-xs md:text-sm font-semibold">
+                    <span className="text-base inline-block animate-bounce">👆</span>
+                    <span>மேலே உள்ள 12 பிரிவுகளில் நீங்கள் விரும்பும் சேவையைத் தொட்டுப் பயன்படுத்தலாம்</span>
+                  </div>
+                </div>
+
+                {/* வலதுபுறம்: சுழலும் 3D நியான் குளோப் + லொகேஷன் பின் & நில வலைப்பின்னல் */}
+                <div className="lg:col-span-5 flex justify-center">
+                  <div className="relative w-full max-w-[340px] md:max-w-[380px] aspect-[4/5] rounded-3xl bg-gradient-to-b from-[#021812] via-[#010f0b] to-[#000806] border border-cyan-500/30 p-5 shadow-[0_0_50px_rgba(6,182,212,0.2)] flex flex-col items-center justify-between overflow-hidden">
+                    
+                    {/* மேல் தலைப்பு டேக் */}
+                    <div className="w-full flex items-center justify-between px-2 py-1 text-[11px] font-bold text-cyan-300 border-b border-cyan-500/20 z-10">
+                      <span className="flex items-center gap-1.5">
+                        <span className="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                        தமிழ்நாடு இயற்கை 360°
+                      </span>
+                      <span className="text-amber-400 font-extrabold tracking-wider">NAMMA BHOOMI</span>
+                    </div>
+
+                    {/* 3D நியான் குளோப் & லொகேஷன் பின் */}
+                    <div className="relative w-full h-[270px] flex items-center justify-center my-auto">
+                      
+                      {/* மெதுவாகச் சுழலும் நியான் பூமி வளையம் */}
+                      <div className="w-56 h-56 rounded-full border border-cyan-500/30 bg-gradient-to-tr from-cyan-950/60 via-emerald-950/50 to-slate-950/90 shadow-[inset_0_0_40px_rgba(6,182,212,0.3)] animate-[spin_25s_linear_infinite] flex items-center justify-center relative">
+                        <div className="absolute inset-0 rounded-full border border-dashed border-cyan-400/25"></div>
+                        <div className="w-full h-28 border-y border-cyan-400/20 rounded-[50%]"></div>
+                        <div className="h-full w-28 border-x border-cyan-400/20 rounded-[50%]"></div>
+                      </div>
+
+                      {/* வெளிப்பக்க நீல ஒளிவட்டம் */}
+                      <div className="absolute w-60 h-60 rounded-full border border-cyan-400/20 shadow-[0_0_35px_rgba(6,182,212,0.25)] pointer-events-none"></div>
+
+                      {/* மையத்தில் மிளிரும் ஹைடெக் லொகேஷன் பின் & உழவு வேர்கள் */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <div className="relative flex items-center justify-center">
+                          {/* நீல நியான் பேக் டிராப் குளோவ் */}
+                          <div className="absolute w-24 h-24 rounded-full bg-cyan-400/20 blur-xl animate-pulse"></div>
+
+                          {/* ஹைடெக் லொகேஷன் பின் SVG */}
+                          <svg className="w-20 h-24 drop-shadow-[0_0_16px_rgba(6,182,212,0.85)] z-10" viewBox="0 0 100 120" fill="none">
+                            <defs>
+                              <linearGradient id="pinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#38bdf8" />
+                                <stop offset="60%" stopColor="#06b6d4" />
+                                <stop offset="100%" stopColor="#0d9488" />
+                              </linearGradient>
+                            </defs>
+                            {/* பின் வடிவம் */}
+                            <path 
+                              d="M50 5 C25 5 10 25 10 48 C10 75 50 115 50 115 C50 115 90 75 90 48 C90 25 75 5 50 5 Z" 
+                              fill="url(#pinGrad)" 
+                              stroke="#a5f3fc" 
+                              strokeWidth="2.5" 
+                            />
+                            {/* உள்ளே இருக்கும் வட்ட ஒளி */}
+                            <circle cx="50" cy="45" r="14" fill="#042f2e" stroke="#38bdf8" strokeWidth="2" />
+                            {/* மையத்தில் உழவுத் துளிர் */}
+                            <path d="M50 38 C50 48 44 50 42 51 C44 49 45 47 45 44 C46 45 48 45 50 38 Z" fill="#34d399" />
+                            <path d="M50 38 C50 48 56 50 58 51 C56 49 55 47 55 44 C54 45 52 45 50 38 Z" fill="#fde047" />
+                          </svg>
+                        </div>
+
+                        {/* நிலம் & உழவு டிஜிட்டல் வலைப்பின்னல் கோடுகள் */}
+                        <div className="w-28 h-5 -mt-2 border-b-2 border-cyan-400/40 rounded-full blur-[0.5px]"></div>
+                      </div>
+
+                    </div>
+
+                    {/* அடியில் பொன் வாசகம் */}
+                    <div className="w-full text-center py-2 bg-gradient-to-r from-emerald-950/70 via-teal-950/80 to-emerald-950/70 rounded-xl border border-cyan-500/30 text-xs text-cyan-200 font-bold tracking-wide shadow-md z-10">
+                      நிலம் • விவசாயம் • AI • நிதி சொத்து
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* கீழே தமிழ்நாடு வணிகக் கூட்டமைப்பு கார்டு */}
+            <div className="rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/40 to-slate-900 border border-emerald-500/30 p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+              <div className="space-y-1.5 text-center md:text-left">
+                <h3 className="text-lg md:text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                  <span className="text-2xl">🤝</span> நம்ம பூமி வணிகக் கூட்டமைப்பு (Partner with Us)
+                </h3>
+                <p className="text-xs md:text-sm text-slate-300 max-w-xl">
+                  விவசாய உற்பத்தியாளர்கள், நில உரிமையாளர்கள், சுற்றுலா வாகன ஓட்டுநர்கள் மற்றும் உள்ளூர் சேவை வழங்குநர்கள் நேரடியாக மக்களுடன் இணைய கைகோருங்கள்!
+                </p>
+              </div>
+              <button
+                onClick={() => window.open('https://api.whatsapp.com/send?phone=919962369131&text=' + encodeURIComponent('வணக்கம் நம்ம பூமி 360, நான் உங்களுடன் பார்ட்னராக இணைய விரும்புகிறேன்.'), '_blank')}
+                className="whitespace-nowrap px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center gap-2 border border-emerald-400/30"
+              >
+                <span>வாட்ஸ்அப் மூலம் இணைய</span>
+                <span className="text-base">💬</span>
+              </button>
+            </div>
+          </div>
+        )}
+                  
         {/* ============================================================ */}
         {/* பட்டா & அரசு சேவைகள் பிரிவு */}
         {currentModule === 'govt' && (
@@ -740,7 +851,7 @@ export default function Home() {
                               <span>📲</span>
                             </button>
                             <button
-                              onClick={() => setActiveMapModalLand(land)}
+                              onClick={(e) => { e.stopPropagation(); setActiveMapModalLand(land); }}
                               className="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1"
                             >
                               <span>🗺️</span> மேப்
@@ -1880,6 +1991,73 @@ export default function Home() {
               </button>
             </div>
 
+          </div>
+        </div>
+      )}
+      {/* கூகுள் மேப் நேரலை பாப்-அப் (Map Modal) */}
+      {activeMapModalLand && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => setActiveMapModalLand(null)}
+        >
+          <div 
+            className="relative w-full max-w-2xl bg-slate-900 border border-emerald-500/40 rounded-3xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* தலைப்பு பகுதி */}
+            <div className="flex items-center justify-between p-4 bg-slate-950/80 border-b border-emerald-500/20">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🗺️</span>
+                <div>
+                  <h3 className="text-sm md:text-base font-bold text-white">
+                    {activeMapModalLand.title || 'நில இருப்பிடம்'}
+                  </h3>
+                  <p className="text-[11px] text-emerald-400">
+                    {activeMapModalLand.taluk}, {activeMapModalLand.district} • சர்வே: #{activeMapModalLand.surveyNo}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveMapModalLand(null)}
+                className="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 flex items-center justify-center text-sm font-bold transition-all"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* கூகுள் மேப் ஐபிரேம் */}
+            <div className="w-full h-80 bg-slate-950">
+              <iframe
+                title="Land Google Map Location"
+                src={
+                  activeMapModalLand.mapEmbedUrl || 
+                  `https://maps.google.com/maps?q=${encodeURIComponent(
+                    (activeMapModalLand.village || activeMapModalLand.taluk || '') + ', ' + (activeMapModalLand.district || 'Tamil Nadu')
+                  )}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+                }
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+
+            {/* கீழ் விவரம் & மூடும் பட்டன் */}
+            <div className="p-4 bg-slate-950/90 flex items-center justify-between border-t border-emerald-500/20">
+              <span className="text-xs text-slate-300">
+                நேரடி களப் பார்வைக்கு விசிட் பாஸ் பெறவும்
+              </span>
+              <button
+                type="button"
+                onClick={() => setActiveMapModalLand(null)}
+                className="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition-all"
+              >
+                சரி / மூடுக
+              </button>
+            </div>
           </div>
         </div>
       )}

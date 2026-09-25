@@ -1,5 +1,5 @@
 import React from 'react';
-import { landGovtServices } from '../data/landServicesData';
+import landServicesData from '../data/landServices.json';
 
 export default function LandGovtServices() {
   const handleHelpClick = (service) => {
@@ -26,7 +26,7 @@ export default function LandGovtServices() {
 
       {/* கார்டுகள் கிரிட் */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {landGovtServices.map((service) => (
+        {landServicesData.govtServices.map((service) => (
           <div
             key={service.id}
             className="bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:shadow-emerald-950/30"

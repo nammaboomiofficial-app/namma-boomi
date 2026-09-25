@@ -1,0 +1,20 @@
+{
+  "conversionRates": {
+    "sqft": 1,
+    "cent": 435.6,
+    "ground": 2400,
+    "acre": 43560,
+    "kuzhi": 144,
+    "guntha": 1089,
+    "hectare": 107639
+  },
+  "unitLabels": [
+    { "key": "sqft", "label": "சதுர அடி (Sq.Ft)" },
+    { "key": "cent", "label": "சென்ட் (Cent)" },
+    { "key": "ground", "label": "கிரவுண்ட் (Ground)" },
+    { "key": "acre", "label": "ஏக்கர் (Acre)" },
+    { "key": "kuzhi", "label": "குழி (Kuzhi)" },
+    { "key": "guntha", "label": "குண்டா (Guntha)" },
+    { "key": "hectare", "label": "ஹெக்டேர் (Hectare)" }
+  ]
+}

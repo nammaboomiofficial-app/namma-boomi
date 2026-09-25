@@ -1,41 +1,39 @@
 import React, { useState } from 'react';
+import unitsData from '../data/landUnits.json';
 
-const conversionRates = {
-  sqft: 1,
-  cent: 435.6,
-  ground: 2400,
-  acre: 43560,
-  kuzhi: 144,
-};
+const { conversionRates, unitLabels } = unitsData;
 
 export default function LandCalculator() {
   const [val, setVal] = useState('1');
   const [unit, setUnit] = useState('cent');
 
   const num = parseFloat(val) || 0;
-  const baseSqft = num * (conversionRates[unit] || 1);
+  const baseSqFt = num * (conversionRates[unit] || 1);
 
-  const results = [
-    { label: 'சதுர அடி (Sq.Ft)', value: baseSqft.toLocaleString('en-IN', { maximumFractionDigits: 2 }), unit: 'ச.அடி' },
-    { label: 'சென்ட் (Cent)', value: (baseSqft / 435.6).toFixed(3), unit: 'சென்ட்' },
-    { label: 'கிரவுண்ட் (Ground)', value: (baseSqft / 2400).toFixed(3), unit: 'கிரவுண்ட்' },
-    { label: 'ஏக்கர் (Acre)', value: (baseSqft / 43560).toFixed(4), unit: 'ஏக்கர்' },
-    { label: 'குழி (Kuzhi)', value: (baseSqft / 144).toFixed(2), unit: 'குழி' },
-  ];
+  const results = unitLabels.map((u) => {
+    const calculatedValue = baseSqFt / conversionRates[u.key];
+    return {
+      label: u.label,
+      value: u.key === 'sqft'
+        ? Math.round(calculatedValue).toLocaleString('en-IN')
+        : Number(calculatedValue.toFixed(3)).toLocaleString('en-IN'),
+      unit: u.label
+    };
+  });
 
   return (
-    <div className="mt-8 bg-slate-900/90 border border-slate-800 rounded-2xl p-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+    <div className="mt-8 bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800/80">
         <div>
-          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             📐 நில அளவை மாற்றி
           </span>
-          <h4 className="text-lg font-bold text-white mt-1">தமிழக நில அளவீடு கால்குலேட்டர்</h4>
-          <p className="text-xs text-slate-400">சென்ட், சதுர அடி, கிரவுண்ட் மற்றும் ஏக்கர் உடனடி மாற்றுக் கருவி.</p>
+          <h4 className="text-lg font-bold text-white mt-1">தமிழக நில அளவீட்டு கால்குலேட்டர்</h4>
+          <p className="text-xs text-slate-400">சென்ட், சதுர அடி, கிரவுண்ட், ஏக்கர் மற்றும் குழி அளவீடுகள்</p>
         </div>
 
         {/* Input & Unit Selector */}
-        <div className="flex items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+        <div className="flex items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 shadow-inner">
           <input
             type="number"
             min="0"
@@ -47,24 +45,30 @@ export default function LandCalculator() {
           <select
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
-            className="bg-slate-800 text-emerald-300 text-xs font-medium px-3 py-2 rounded-lg focus:outline-none cursor-pointer border border-slate-700"
+            className="bg-slate-800 text-emerald-300 text-xs font-medium px-3 py-2 rounded-lg border border-slate-700 focus:outline-none cursor-pointer hover:bg-slate-750 transition-colors"
           >
-            <option value="cent">சென்ட்</option>
-            <option value="sqft">ச.அடி (Sq.Ft)</option>
-            <option value="ground">கிரவுண்ட்</option>
-            <option value="acre">ஏக்கர்</option>
-            <option value="kuzhi">குழி</option>
+            {unitLabels.map((u) => (
+              <option key={u.key} value={u.key}>
+                {u.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>
 
-      {/* Result Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        {results.map((r) => (
-          <div key={r.label} className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3 text-center">
-            <span className="text-[11px] text-slate-400 block truncate">{r.label}</span>
-            <span className="text-base font-bold text-emerald-400 block mt-1">{r.value}</span>
-            <span className="text-[10px] text-slate-500">{r.unit}</span>
+      {/* Result Cards Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-6">
+        {results.map((r, index) => (
+          <div
+            key={index}
+            className="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 hover:border-slate-700 transition-all group"
+          >
+            <span className="text-[11px] font-medium text-slate-400 block group-hover:text-emerald-400 transition-colors">
+              {r.label}
+            </span>
+            <span className="text-lg font-bold text-white tracking-tight mt-1 block">
+              {r.value}
+            </span>
           </div>
         ))}
       </div>
