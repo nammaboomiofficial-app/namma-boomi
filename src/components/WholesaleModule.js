@@ -1,27 +1,9 @@
+
+
 import React, { useState, useMemo } from 'react';
+import wholesaleData from '../data/wholesaleData.json';
 
-// 1. நேரடி விளைபொருட்கள் மாதிரி பட்டியல்
-const FARM_LOTS = [
-  { id: 1, name: 'பொள்ளாச்சி வீரிய ஒட்டு தேங்காய்', location: 'பொள்ளாச்சி, கோவை', qty: '15,000 காய்கள்', price: '₹14.50 / காய்', moq: '2,500 காய்கள்', moisture: 'தரமானது (600g+ எடை)', fpo: 'பொள்ளாச்சி தென்னை உழவர் சங்கம்', tag: 'Farm-Gate' },
-  { id: 2, name: 'நாட்டு மணிலா (நிலக்கடலை காய்)', location: 'உளுந்தூர்பேட்டை, கள்ளக்குறிச்சி', qty: '80 மூட்டை (40kg)', price: '₹3,400 / மூட்டை', moq: '15 மூட்டை', moisture: 'ஈரப்பதம்: 8% (உலர்ந்தது)', fpo: 'விழுப்புரம் எண்ணெய் வித்து உற்பத்தியாளர் FPO', tag: 'Direct Mill' },
-  { id: 3, name: 'விரலி மஞ்சள் (ஈரோடு தரம்)', location: 'கொடுமுடி, ஈரோடு', qty: '12 டன்', price: '₹135 / கிலோ', moq: '500 கிலோ', moisture: 'குர்குமின்: 3.8%+', fpo: 'ஈரோடு மஞ்சள் உழவர் குழு', tag: 'Export Grade' },
-  { id: 4, name: 'நாட்டுத் தக்காளி (கிரேட் A)', location: 'ஒட்டன்சத்திரம், திண்டுக்கல்', qty: '400 பெட்டிகள் (15kg)', price: '₹220 / பெட்டி', moq: '50 பெட்டிகள்', moisture: 'பறித்த 6 மணிநேரம்', fpo: 'திண்டுக்கல் காய்கறி சங்கம்', tag: 'Daily Fresh' }
-];
-
-// 2. நேரடி ஆலை அரிசி & பருப்பு மொத்த மண்டி
-const GROCERY_MILLS = [
-  { id: 'rice_bpt', name: 'பிபிடி / டீலக்ஸ் பொன்னி அரிசி (ஆரணி ஆலை)', location: 'ஆரணி, திருவண்ணாமலை', bagSize: '26 கிலோ சிப்பம்', millPrice: '₹1,220', localMarket: '₹1,450', moq: '25 மூட்டைகள்', fssai: '12423008000123' },
-  { id: 'rice_idly', name: 'முதல் தர இட்லி அரிசி (குண்டு அரிசி)', location: 'காங்கேயம், திருப்பூர்', bagSize: '26 கிலோ சிப்பம்', millPrice: '₹890', localMarket: '₹1,080', moq: '30 மூட்டைகள்', fssai: '12421012000456' },
-  { id: 'dal_toor', name: 'விருதுநகர் முதல் தரம் துவரம் பருப்பு', location: 'விருதுநகர் மொத்த மண்டி', bagSize: '50 கிலோ மூட்டை', millPrice: '₹6,800', localMarket: '₹7,600', moq: '5 மூட்டைகள்', fssai: '12422005000789' },
-  { id: 'jaggery_cane', name: 'தூய நாட்டுச் சர்க்கரை (ரசாயனமற்றது)', location: 'பரமத்தி வேலூர், நாமக்கல்', bagSize: '50 கிலோ பை', millPrice: '₹2,650', localMarket: '₹3,200', moq: '10 மூட்டைகள்', fssai: '12420002000321' }
-];
-
-// 3. வாங்குவோர் நேரடி தேவைகள் (Buyer Requirement Board)
-const BUYER_REQUIREMENTS = [
-  { id: 101, buyer: 'ஸ்ரீ பாலாஜி கேட்டரிங் & ஹோட்டல்ஸ்', location: 'சென்னை (கோயம்பேடு)', item: 'ஆரணி பொன்னி பழைய அரிசி', needQty: '200 மூட்டைகள் (26kg)', targetPrice: '₹1,240 / மூட்டை', timeline: 'உடனடி கொள்முதல்', escrow: 'தயார்' },
-  { id: 102, buyer: 'ஆர்கானிக் ஆயில் மில்ஸ்', location: 'மதுரை', item: 'உடைக்காத நாட்டு மணிலா விதை', needQty: '5 டன்', targetPrice: '₹84 / கிலோ', timeline: '3 நாட்களுக்குள்', escrow: 'தயார்' },
-  { id: 103, buyer: 'ஹைப்பர் சூப்பர் மார்க்கெட் நெட்வொர்க்', location: 'கோவை & திருப்பூர்', item: 'பொள்ளாச்சி தேங்காய் (Grade A)', needQty: '8,000 காய்கள்', targetPrice: '₹15 / காய்', timeline: 'வாரம் இருமுறை', escrow: 'தயார்' }
-];
+const { farmLots: FARM_LOTS, groceryMills: GROCERY_MILLS, buyerRequirements: BUYER_REQUIREMENTS } = wholesaleData;
 
 export default function WholesaleModule({ setCurrentModule }) {
   const [activeTab, setActiveTab] = useState('agri_lots'); // 'agri_lots', 'rice_grocery', 'buyer_board', 'logistics_calc', 'compliance'

@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
+import courses from '../data/educationData.json';
 
-const courses = [
-  { id: 1, title: "Data Analyst", desc: "Analyze & Make Decisions", category: "Data", badge: "High Demand", icon: "📊" },
-  { id: 2, title: "AI / Machine Learning", desc: "Build Intelligent Solutions", category: "AI", badge: "Trending", icon: "🤖" },
-  { id: 3, title: "Data Science", desc: "Turn Data into Real Insights", category: "Data", badge: "Hot", icon: "📈" },
-  { id: 4, title: "DevOps & Cloud", desc: "Build • Deploy • Automate", category: "Cloud", badge: "Popular", icon: "⚙️" },
-  { id: 5, title: "Cybersecurity", desc: "Protect • Detect • Defend", category: "Security", badge: "Secure", icon: "🛡️" },
-  { id: 6, title: "DevSecOps", desc: "Next-Gen Secure Everything", category: "Cloud", badge: "Advanced", icon: "🔒" },
-  { id: 7, title: "Deep Learning & GPT", desc: "Next-Gen AI Capabilities", category: "AI", badge: "New", icon: "🧠" },
-  { id: 8, title: "Data Engineering", desc: "Build Big Data Pipelines", category: "Data", badge: "Core", icon: "🗄️" },
-  { id: 9, title: "Advanced Excel & BI", desc: "Work Smarter With Data", category: "Office", badge: "Starter", icon: "📑" }
-];
+
 
 export default function EducationModule() {
   const [selectedCourse, setSelectedCourse] = useState(courses[0].title);

@@ -1,21 +1,8 @@
 import React, { useState, useMemo } from 'react';
+import insuranceData from '../data/insuranceData.json';
+const { TERM_PLANS, VEHICLE_MODELS } = insuranceData;
 
-// 1. டேர்ம் இன்சூரன்ஸ் பிரீமியம் மாதிரிகள்
-const TERM_PLANS = [
-  { age: 25, cover1Cr: 540, cover50L: 380, cover2Cr: 980 },
-  { age: 30, cover1Cr: 720, cover50L: 490, cover2Cr: 1320 },
-  { age: 35, cover1Cr: 1050, cover50L: 680, cover2Cr: 1890 },
-  { age: 40, cover1Cr: 1580, cover50L: 990, cover2Cr: 2750 },
-  { age: 45, cover1Cr: 2450, cover50L: 1480, cover2Cr: 4100 },
-];
 
-// 2. வாகனக் காப்பீட்டு மாதிரிகள்
-const VEHICLE_MODELS = [
-  { id: 'bike', name: 'இருசக்கர வாகனம் (Bike / Scooter)', tpCost: '₹714 / ஆண்டு', compCost: 'சுமார் ₹1,150 முதல்', ncbDiscount: '50% வரை NCB தள்ளுபடி' },
-  { id: 'car', name: 'கார் / ஜீப் (Private Car)', tpCost: '₹2,094 / ஆண்டு', compCost: 'சுமார் ₹4,500 முதல்', ncbDiscount: 'Zero Dep கவரேஜ் பரிந்துரை' },
-  { id: 'tractor', name: 'விவசாய டிராக்டர் & டிரெய்லர்', tpCost: 'அரசு நிர்ணய சலுகைக் கட்டணம்', compCost: 'விவசாய இயந்திரங்கள் பாதுகாப்பு', ncbDiscount: 'விவசாயக் கடன் இணைப்பு' },
-  { id: 'commercial', name: 'சரக்கு வாகனம் / வேன் / லாரி', tpCost: 'எடை (GVW) அடிப்படையில்', compCost: 'முழுமையான வணிக இழப்பீடு', ncbDiscount: 'வாகன ஓட்டுநர் பாதுகாப்பு' },
-];
 
 export default function InsuranceModule({ setCurrentModule }) {
   const [activeTab, setActiveTab] = useState('term'); // 'term', 'health', 'vehicle', 'govt_micro', 'agri_cattle', 'shop_asset', 'claim_guide'

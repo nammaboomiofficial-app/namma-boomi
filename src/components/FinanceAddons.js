@@ -1,35 +1,7 @@
 import React, { useState } from 'react';
 
-const bankRates = [
-  { bank: 'SBI (பாரத ஸ்டேட் வங்கி)', rate: '8.50% - 9.15%', type: 'மனை & வீட்டுக் கடன்', tag: 'குறைந்த வட்டி' },
-  { bank: 'Indian Bank (இந்தியன் வங்கி)', rate: '8.55% - 9.20%', type: 'மனை + கட்டுமானக் கடன்', tag: 'தமிழகத்தில் விரைவு' },
-  { bank: 'HDFC Bank', rate: '8.70% - 9.40%', type: 'வீட்டுக் கடன் / LAP', tag: 'குறைந்த ஆவணங்கள்' },
-  { bank: 'Canara Bank', rate: '8.60% - 9.25%', type: 'விவசாய & MSME கடன்', tag: 'சிறந்த அரசு மானியம்' }
-];
-
-const docChecklist = {
-  plot: [
-    '30 ஆண்டு வில்லங்கச் சான்றிதழ் (EC - Encumbrance Certificate)',
-    'அங்கீகரிக்கப்பட்ட மனை வரைபடம் (DTCP / CMDA Approval Copy)',
-    'பட்டா, சிட்டா மற்றும் நில அளவை வரைபடம் (FMB Sketch)',
-    'முந்தைய 30 ஆண்டுகளுக்கான மூலப் பத்திரங்கள் (Parent Documents)',
-    'விற்பனையாளர் ஆதார் & பான் அட்டை நகல்'
-  ],
-  housing: [
-    'கட்டுமான திட்ட வரைபடம் (Approved Building Plan)',
-    'அங்கீகரிக்கப்பட்ட பொறியாளர் மதிப்பீட்டு அறிக்கை (Estimate Report)',
-    'கடைசி 3 மாத சம்பள ரசீதுகள் (Salary Slips) அல்லது 2 ஆண்டு ITR',
-    'கடைசி 6 மாத வங்கி கணக்கு அறிக்கை (Bank Statement)',
-    'சொத்து வரி ரசீது (Property Tax Receipt)'
-  ],
-  business: [
-    'தொழில் திட்ட அறிக்கை (Detailed Project Report - DPR)',
-    'உத்யாம் ஆதார் / GST பதிவுச் சான்றிதழ்',
-    'கடைசி 12 மாத நடப்பு கணக்கு அறிக்கை (Current Account Statement)',
-    '3 ஆண்டுகளுக்கான தணிக்கை அறிக்கை (Audited Financials)',
-    'நிறுவனத்தின் முகவரி மற்றும் வாடகை ஒப்பந்தம்'
-  ]
-};
+import financeAddonsData from '../data/financeAddonsData.json';
+const { bankRates, docChecklist } = financeAddonsData;
 
 export default function FinanceAddons() {
   const [activeChecklist, setActiveChecklist] = useState('plot');

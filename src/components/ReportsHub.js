@@ -1,83 +1,13 @@
 import React, { useState } from 'react';
+import reportsData from '../data/reportsData.json';
 
 export default function ReportsHub({ profile, onOpenChatWithTopic }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedPreview, setSelectedPreview] = useState(null);
 
-  const reports = [
-    {
-      id: 'wealth',
-      title: 'Wealth & Real Estate Report',
-      tamilTitle: 'செல்வந்தர் & பூமி யோக வரைபடம்',
-      category: 'foryou',
-      orders: '4.8k+ orders',
-      price: '₹149',
-      originalPrice: '₹799',
-      discount: '81% off',
-      icon: '🏡',
-      tagline: '4-ஆம் பாவ பலம், செவ்வாய் ஆதிக்கம், நிலம், வீடு, மனை வாங்குவதற்கான உச்சபட்ச வாய்ப்புக் காலம்.',
-      highlight: '2026 - 2027 பூமி சேர்க்கை யோகம்',
-      previewPoints: [
-        'மகர லக்னத்திற்கு 4-ஆம் அதிபதி செவ்வாய் சுப பலம் பெறுகிறார்.',
-        'நிலம்/மனை சேர்க்கை காலம்: 2026 பிற்பகுதி முதல் 2027 இறுதி வரை 88% உறுதியாக உள்ளது.',
-        'அனுகூல திசை: வடக்கு மற்றும் கிழக்கு நோக்கிய இடங்கள் அதிக லாபத்தைத் தரும்.'
-      ]
-    },
-    {
-      id: 'past_life',
-      title: 'Past Life & Karma Report',
-      tamilTitle: 'முற்பிறவி & கர்ம வினை அறிக்கை',
-      category: 'onetime',
-      orders: '11.4k+ orders',
-      price: '₹49',
-      originalPrice: '₹499',
-      discount: '90% off',
-      icon: '🔮',
-      tagline: 'முற்பிறவி கர்ம வினைகள், பித்ரு தோஷ தாக்கம் மற்றும் அதற்கான எளிய பரிகார வழிமுறைகள்.',
-      highlight: 'பித்ரு தோஷ நிவர்த்தி சூட்சுமம்',
-      previewPoints: [
-        '9-ஆம் அதிபதி புதன் கடகத்தில் அமர்ந்து முற்பிறவி புண்ணிய பலன்களைத் தருகிறார்.',
-        '8-ஆம் பாவ சூரியன்-ராகு சேர்க்கையினால் பூர்வீக சொத்துக்களில் சிறு தாமதம் நேரலாம்.',
-        'பரிகாரம்: அமாவாசை தோறும் எள் தீபம் ஏற்றி வழிபடுவது கர்ம வினையை நீக்கும்.'
-      ]
-    },
-    {
-      id: 'career',
-      title: 'Career & 30-Day Growth Forecast',
-      tamilTitle: 'தொழில் & பதவி உயர்வு வரைபடம்',
-      category: 'monthly',
-      orders: '3.6k+ orders',
-      price: '₹49',
-      originalPrice: '₹299',
-      discount: '83% off',
-      icon: '💼',
-      tagline: 'அமாத்யகாரகன் புதன் பலம், D10 தசாம்ச நிலை, பதவி உயர்வு மற்றும் புதிய சாஃப்ட்வேர் தொடங்கும் நேரம்.',
-      highlight: 'அமாத்யகாரகன் 7-ஆம் வீடு ஆய்வு',
-      previewPoints: [
-        'தொழிலின் ஆத்ம காரகன் புதன் 7-ஆம் வீட்டில் உச்ச குருவுடன் இணைந்துள்ளார்.',
-        'D10 தசாம்சத்தில் 11-ஆம் வீட்டில் 34 அஷ்டகவர்க்க பரல்கள் உள்ளன.',
-        'வெளியீட்டு காலம்: செப்டம்பர் - அக்டோபர் 2026 மற்றும் மே 2027 காலகட்டம் 82% வெற்றி தரும்.'
-      ]
-    },
-    {
-      id: 'baby_name',
-      title: 'Baby Name & Future Report',
-      tamilTitle: 'குழந்தை பெயர் & எதிர்கால அறிக்கை',
-      category: 'onetime',
-      orders: '7.8k+ orders',
-      price: '₹149',
-      originalPrice: '₹399',
-      discount: '62% off',
-      icon: '👶',
-      tagline: 'அதிர்ஷ்ட நட்சத்திரப் பாத எழுத்துக்கள், பாலாரிஷ்ட ஆய்வு மற்றும் ஆரம்பக் கல்வி யோகம்.',
-      highlight: `${profile.nakshatra || 'அஸ்தம்'} பாத நாமகரணம்`,
-      previewPoints: [
-        'அஸ்தம் நட்சத்திர 3-ஆம் பாத அட்சரங்கள்: பூ, ஷ, ண, ட.',
-        'பாலாரிஷ்ட தோஷம் இல்லை, தீர்க்காயுள் அமைப்பு உள்ளது.',
-        'கணிதம், அறிவியல் மற்றும் தொழில்நுட்பத் துறையில் சிறந்த முன்னேற்றம் அமையும்.'
-      ]
-    }
-  ];
+ const reports = reportsData.reports.map(r => 
+  r.id === 'baby_name' ? { ...r, highlight: `${profile?.nakshatra || 'அஸ்தம்'} பாத நாமகரணம்` } : r
+);
 
   const filteredReports = activeCategory === 'all' 
     ? reports 
@@ -177,7 +107,11 @@ export default function ReportsHub({ profile, onOpenChatWithTopic }) {
                   👁️ மாதிரி
                 </button>
                 <button
-  onClick={() => onOpenChatWithTopic(report.tamilTitle)}
+ onClick={() => {
+  const adminPhone = '919962369131';
+  const msg = `வணக்கம் நம்ம பூமி 360, நான் "${report.tamilTitle} (${report.title})" முழு அறிக்கையைப் பெற விரும்புகிறேன். கட்டணம்: ${report.price}. என்னை வழிகாட்டவும்.`;
+  window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+}}
   style={{
     backgroundColor: '#db2777',
     color: '#ffffff',

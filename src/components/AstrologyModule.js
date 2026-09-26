@@ -1,34 +1,14 @@
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import astrologyData from '../data/astrologyData.json';
+import ReportHub from './ReportsHub';
+const { 
+  rasiList: RASI_LIST, 
+  nakshatraList: NAKSHATRA_LIST, 
+  dasaOrder: DASA_ORDER 
+} = astrologyData;
 
-// ராசி மற்றும் நட்சத்திரப் பட்டியல்கள்
-const RASI_LIST = [
-  'மேஷம்', 'ரிஷபம்', 'மிதுனம்', 'கடகம்', 
-  'சிம்மம்', 'கன்னி', 'துலாம்', 'விருச்சிகம்', 
-  'தனுசு', 'மகரம்', 'கும்பம்', 'மீனம்'
-];
-
-const NAKSHATRA_LIST = [
-  'அசுவினி', 'பரணி', 'கார்த்திகை', 'ரோகிணி', 'மிருகசீரிஷம்', 'திருவாதிரை',
-  'புனர்பூசம்', 'பூசம்', 'ஆயில்யம்', 'மகம்', 'பூரம்', 'உத்திரம்',
-  'அஸ்தம்', 'சித்திரை', 'சுவாதி', 'விசாகம்', 'அனுஷம்', 'கேட்டை',
-  'மூலம்', 'பூராடம்', 'உத்திராடம்', 'திருவோணம்', 'அவிட்டம்', 'சதயம்',
-  'பூரட்டாதி', 'உத்திரட்டாதி', 'ரேவதி'
-];
-
-// விம்சோத்தரி தசா கால அளவுகள் (120 ஆண்டுகள்)
-const DASA_ORDER = [
-  { lord: 'கேது', years: 7 },
-  { lord: 'சுக்கிரன்', years: 20 },
-  { lord: 'சூரியன்', years: 6 },
-  { lord: 'சந்திரன்', years: 10 },
-  { lord: 'செவ்வாய்', years: 7 },
-  { lord: 'ராகு', years: 18 },
-  { lord: 'குரு', years: 16 },
-  { lord: 'சனி', years: 19 },
-  { lord: 'புதன்', years: 17 }
-];
 
 export default function AstrologyModule({ setCurrentModule }) {
   // 1. பயனர் உள்ளீடுகள்
@@ -1091,6 +1071,15 @@ const ashtakavargaSigns = ['மேஷம்', 'ரிஷபம்', 'மித�
           }
         }
       `}</style>
+      {/* ஜோதிட & யோக வரைபட அறிக்கைகள் */}
+      <ReportHub 
+        profile={profile} 
+        onOpenChatWithTopic={(topic) => {
+          if (typeof setInputQuery === 'function') {
+            setInputQuery(topic);
+          }
+        }} 
+      />
     </div>
   );
 }
