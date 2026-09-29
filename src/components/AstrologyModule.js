@@ -28,10 +28,10 @@ export default function AstrologyModule({ profile }) {
 
   // தூய வானியல் முறைப்படி இயங்கும் திருக்கணித கணித சூத்திரம்
   const calculateHoroscope = () => {
-    if (!birthDetails.birthDate || !birthDetails.birthTime) {
-      setErrorMsg('தயவுசெய்து பிறந்த தேதி மற்றும் நேரத்தை உள்ளிடவும்.');
-      return;
-    }
+    if (!birthDetails.birthDate || (!birthDetails.birthTime && !birthDetails.isTimeUnknown)) {
+  setErrorMsg('தயவுசெய்து பிறந்த தேதியை உள்ளிடவும்.');
+  return;
+}
     setErrorMsg('');
     setLoading(true);
 
@@ -580,14 +580,33 @@ export default function AstrologyModule({ profile }) {
             />
           </div>
           <div>
-            <label className="text-xs text-slate-400 block mb-1 font-medium">பிறந்த நேரம் *</label>
-            <input 
-              type="time" 
-              value={birthDetails.birthTime} 
-              onChange={e => setBirthDetails({...birthDetails, birthTime: e.target.value})}
-              className="w-full bg-slate-800/80 border border-slate-700 rounded-lg p-2.5 text-sm focus:border-amber-400 outline-none"
-            />
-          </div>
+  <div className="flex items-center justify-between mb-1">
+    <label className="text-xs text-slate-400 font-medium">பிறந்த நேரம்</label>
+    <label className="text-[11px] text-amber-400/90 flex items-center gap-1 cursor-pointer">
+      <input
+        type="checkbox"
+        className="rounded border-slate-700 bg-slate-800 text-amber-500 focus:ring-0 cursor-pointer"
+        checked={birthDetails.isTimeUnknown || false}
+        onChange={(e) => {
+          const checked = e.target.checked;
+          setBirthDetails({
+            ...birthDetails,
+            isTimeUnknown: checked,
+            birthTime: checked ? "" : birthDetails.birthTime
+          });
+        }}
+      />
+      நேரம் தெரியாது
+    </label>
+  </div>
+  <input
+    type="time"
+    disabled={birthDetails.isTimeUnknown}
+    value={birthDetails.birthTime || ""}
+    onChange={(e) => setBirthDetails({ ...birthDetails, birthTime: e.target.value })}
+    className={`w-full bg-slate-800/80 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-amber-500 ${birthDetails.isTimeUnknown ? 'opacity-40 cursor-not-allowed' : ''}`}
+  />
+</div>
           <div>
             <label className="text-xs text-slate-400 block mb-1 font-medium">பிறந்த ஊர்</label>
             <input 
@@ -974,7 +993,7 @@ export default function AstrologyModule({ profile }) {
                       <span>❓</span>
                       <span>{item.question}</span>
                     </div>
-                    <div className="text-slate-200 leading-relaxed pl-6 border-l-2 border-amber-500/40">
+                    <div className="whitespace-pre-line text-slate-200 leading-relaxed pl-6 border-l-2 ...">
                       {item.answer}
                     </div>
                   </div>
@@ -1025,8 +1044,15 @@ export default function AstrologyModule({ profile }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   question: q,
-                  profile,
-                  astroData
+                 
+        profile: {
+          name: birthDetails?.name || profile?.name || 'அன்பர்',
+          dob: birthDetails?.birthDate || profile?.dob || '',
+          tob: birthDetails?.birthTime || profile?.tob || '',
+          isTimeUnknown: birthDetails?.isTimeUnknown || false,
+          birthPlace: birthDetails?.birthPlace || ''
+        },
+        astroData: astroData || null
                 })
               })
               .then(res => res.json())
