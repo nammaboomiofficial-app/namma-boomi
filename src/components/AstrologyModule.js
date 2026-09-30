@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-
+import BirthdayCalendar from './BirthdayCalendar';
 export default function AstrologyModule({ profile }) {
   const [birthDetails, setBirthDetails] = useState({
     name: profile?.name || '',
@@ -637,7 +637,15 @@ export default function AstrologyModule({ profile }) {
           {loading ? 'துல்லியமாக கணக்கிடுகிறது...' : 'ஜாதகம் கணக்கிடு (Calculate 360°)'}
         </button>
       </div>
-
+{/* பிறந்த தின பாரம்பரிய பஞ்சாங்க காலண்டர் */}
+{birthDetails?.birthDate && (
+  <div className="flex justify-center my-6">
+    <BirthdayCalendar 
+      dob={birthDetails.birthDate} 
+      astroData={astroData} 
+    />
+  </div>
+)}
       {/* UPI Payment Modal */}
       {showPayModal && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
