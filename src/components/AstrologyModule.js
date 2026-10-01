@@ -1019,24 +1019,45 @@ export default function AstrologyModule({ profile }) {
                   placeholder={aiCredits > 0 ? "உங்கள் கேள்வியை இங்கு தட்டச்சு செய்யவும் (எ.கா: எனக்கு புதிய வேலை எப்போது அமையும்?)..." : "கேள்வி கேட்க முதலில் ₹30 பேக்கை அன்லாக் செய்யவும்..."}
                   disabled={aiCredits <= 0 || aiLoading}
                   className="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 disabled:opacity-50"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && userQuestion.trim() && aiCredits > 0 && !aiLoading) {
-                      const q = userQuestion.trim();
-                      setUserQuestion("");
-                      setAiLoading(true);
-                      setTimeout(() => {
-                        setConsultationHistory((prev) => [
-                          ...prev,
-                          {
-                            question: q,
-                            answer: `உங்கள் லக்னம் (${astroData?.lagna || "மகரம்"}) மற்றும் நடப்பு விம்சோத்தரி தசையை ஆய்வு செய்ததில், நீங்கள் கேட்ட காரியத்திற்கு சாதகமான அமைப்புகள் உருவாகி வருகின்றன. எண் கணித விதி எண் உங்கள் முயற்சியை ஆதரிக்கிறது.`
-                          }
-                        ]);
-                        setAiCredits((prev) => Math.max(0, prev - 1));
-                        setAiLoading(false);
-                      }, 1000);
-                    }
-                  }}
+                  onKeyDown={async (e) => {
+              if (e.key === "Enter" && userQuestion.trim() && !aiLoading && aiCredits > 0) {
+                e.preventDefault();
+                const q = userQuestion.trim();
+                setUserQuestion("");
+                setAiLoading(true);
+
+                try {
+                  const res = await fetch('/api/astrology-ai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      name: profile?.name || "அன்பர்",
+                      lagnam: astroData?.lagna || astroData?.lagnam || "மகரம்",
+                      rasi: astroData?.rasi || astroData?.moonSign || "கன்னி",
+                      dob: profile?.dob || "26/08/1979",
+                      dasa_balance: astroData?.dasaBalance || astroData?.currentDasa || "",
+                      question: q
+                    })
+                  });
+
+                  const data = await res.json();
+                  const aiAnswer = data.reply || "கணக்கீட்டில் பிழை ஏற்பட்டுள்ளது. மீண்டும் முயற்சிக்கவும்.";
+
+                  setConsultationHistory((prev) => [
+                    ...prev,
+                    { question: q, answer: aiAnswer }
+                  ]);
+                  setAiCredits((prev) => Math.max(0, prev - 1));
+                } catch (err) {
+                  setConsultationHistory((prev) => [
+                    ...prev,
+                    { question: q, answer: "தகவல் தொடர்பில் பிழை ஏற்பட்டுள்ளது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்." }
+                  ]);
+                } finally {
+                  setAiLoading(false);
+                }
+              }
+            }}
                 />
 
                 <button

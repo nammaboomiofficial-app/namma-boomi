@@ -1,173 +1,60 @@
+import { spawn } from 'child_process';
+import path from 'path';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ reply: 'Method not allowed' });
   }
 
   const body = req.body || {};
-  const data = body.profile || body.astroProfile || body.astrologyData || body;
-  const userQuestion = (body.question || body.query || body.userQuestion || '').trim();
+  const astro = body.astroData || {};
+  const prof = body.profile || {};
+  const data = astro.horoscope || astro.reportData || astro || prof;
 
-  if (!userQuestion) {
-    return res.status(400).json({ reply: 'தயவுசெய்து உங்கள் கேள்வியைத் தட்டச்சு செய்யவும்.' });
-  }
+  // பயனர் விவரங்கள்
+  const userName = prof.name || body.name || "udayakumar s";
+  const lagnam = astro.lagnam || astro.lagna || astro.ascendant || data.lagnam || data.lagna || body.lagnam || "மகரம்";
+  const rasi = astro.rasi || astro.moonSign || data.rasi || "கன்னி";
+  const dob = prof.dob || body.dob || "26/08/1979";
+  const dasaBalance = astro.dasaBalance || astro.currentDasa || data.currentDasa || "சந்திரன் தசை இருப்பு: 2.7 ஆண்டுகள்";
+  const userQuestion = (body.question || body.query || '').trim();
 
-  try {
-    // திரையில் உள்ள உண்மையான ஜாதகத் தகவல்கள்
-    const userName = data.name || body.name || "உதயகுமார்";
-    const lagnam = data.lagnam || data.lagna || data.ascendant || body.lagnam || "மகரம்";
-    const rasi = data.rasi || data.moonSign || data.sign || body.rasi || "கன்னி";
-    const nakshatra = data.nakshatra || data.star || body.nakshatra || "அஸ்தம்";
-    const dasa = data.currentDasa || data.dasa || data.activeDasa || body.dasa || "சந்திரன் தசை";
+  // பைத்தானுக்கு அனுப்பப்படும் சுத்தமான தரவு
+  const payload = JSON.stringify({
+    name: userName,
+    lagnam: lagnam,
+    rasi: rasi,
+    dob: dob,
+    dasa_balance: dasaBalance,
+    question: userQuestion
+  });
 
-    // வேத சாஸ்திரப்படி 12 லக்னங்களின் துல்லிய பாவக மற்றும் கிரக அதிபதி அட்டவணை
-    const lagnaRules = {
-      "மகரம்": {
-        lord: "சனி",
-        job: { house: "10-ஆம் பாவகமான துலாம்", lord: "சுக்கிரன்" },
-        house: { house: "4-ஆம் பாவகமான மேஷம்", lord: "செவ்வாய்" },
-        wealth: { house: "2-ஆம் பாவகமான கும்பம் மற்றும் 11-ஆம் பாவகமான விருச்சிகம்", lord: "சனி மற்றும் செவ்வாய்" },
-        marriage: { house: "7-ஆம் பாவகமான கடகம்", lord: "சந்திரன்" }
-      },
-      "ரிஷபம்": {
-        lord: "சுக்கிரன்",
-        job: { house: "10-ஆம் பாவகமான கும்பம்", lord: "சனி" },
-        house: { house: "4-ஆம் பாவகமான சிம்மம்", lord: "சூரியன்" },
-        wealth: { house: "2-ஆம் பாவகமான மிதுனம் மற்றும் 11-ஆம் பாவகமான மீனம்", lord: "புதன் மற்றும் குரு" },
-        marriage: { house: "7-ஆம் பாவகமான விருச்சிகம்", lord: "செவ்வாய்" }
-      },
-      "மேஷம்": {
-        lord: "செவ்வாய்",
-        job: { house: "10-ஆம் பாவகமான மகரம்", lord: "சனி" },
-        house: { house: "4-ஆம் பாவகமான கடகம்", lord: "சந்திரன்" },
-        wealth: { house: "2-ஆம் பாவகமான ரிஷபம் மற்றும் 11-ஆம் பாவகமான கும்பம்", lord: "சுக்கிரன் மற்றும் சனி" },
-        marriage: { house: "7-ஆம் பாவகமான துலாம்", lord: "சுக்கிரன்" }
-      },
-      "மிதுனம்": {
-        lord: "புதன்",
-        job: { house: "10-ஆம் பாவகமான மீனம்", lord: "குரு" },
-        house: { house: "4-ஆம் பாவகமான கன்னி", lord: "புதன்" },
-        wealth: { house: "2-ஆம் பாவகமான கடகம் மற்றும் 11-ஆம் பாவகமான மேஷம்", lord: "சந்திரன் மற்றும் செவ்வாய்" },
-        marriage: { house: "7-ஆம் பாவகமான தனுசு", lord: "குரு" }
-      },
-      "கடகம்": {
-        lord: "சந்திரன்",
-        job: { house: "10-ஆம் பாவகமான மேஷம்", lord: "செவ்வாய்" },
-        house: { house: "4-ஆம் பாவகமான துலாம்", lord: "சுக்கிரன்" },
-        wealth: { house: "2-ஆம் பாவகமான சிம்மம் மற்றும் 11-ஆம் பாவகமான ரிஷபம்", lord: "சூரியன் மற்றும் சுக்கிரன்" },
-        marriage: { house: "7-ஆம் பாவகமான மகரம்", lord: "சனி" }
-      },
-      "சிம்மம்": {
-        lord: "சூரியன்",
-        job: { house: "10-ஆம் பாவகமான ரிஷபம்", lord: "சுக்கிரன்" },
-        house: { house: "4-ஆம் பாவகமான விருச்சிகம்", lord: "செவ்வாய்" },
-        wealth: { house: "2-ஆம் பாவகமான கன்னி மற்றும் 11-ஆம் பாவகமான மிதுனம்", lord: "புதன்" },
-        marriage: { house: "7-ஆம் பாவகமான கும்பம்", lord: "சனி" }
-      },
-      "கன்னி": {
-        lord: "புதன்",
-        job: { house: "10-ஆம் பாவகமான மிதுனம்", lord: "புதன்" },
-        house: { house: "4-ஆம் பாவகமான தனுசு", lord: "குரு" },
-        wealth: { house: "2-ஆம் பாவகமான துலாம் மற்றும் 11-ஆம் பாவகமான கடகம்", lord: "சுக்கிரன் மற்றும் சந்திரன்" },
-        marriage: { house: "7-ஆம் பாவகமான மீனம்", lord: "குரு" }
-      },
-      "துலாம்": {
-        lord: "சுக்கிரன்",
-        job: { house: "10-ஆம் பாவகமான கடகம்", lord: "சந்திரன்" },
-        house: { house: "4-ஆம் பாவகமான மகரம்", lord: "சனி" },
-        wealth: { house: "2-ஆம் பாவகமான விருச்சிகம் மற்றும் 11-ஆம் பாவகமான சிம்மம்", lord: "செவ்வாய் மற்றும் சூரியன்" },
-        marriage: { house: "7-ஆம் பாவகமான மேஷம்", lord: "செவ்வாய்" }
-      },
-      "விருச்சிகம்": {
-        lord: "செவ்வாய்",
-        job: { house: "10-ஆம் பாவகமான சிம்மம்", lord: "சூரியன்" },
-        house: { house: "4-ஆம் பாவகமான கும்பம்", lord: "சனி" },
-        wealth: { house: "2-ஆம் பாவகமான தனுசு மற்றும் 11-ஆம் பாவகமான கன்னி", lord: "குரு மற்றும் புதன்" },
-        marriage: { house: "7-ஆம் பாவகமான ரிஷபம்", lord: "சுக்கிரன்" }
-      },
-      "தனுசு": {
-        lord: "குரு",
-        job: { house: "10-ஆம் பாவகமான கன்னி", lord: "புதன்" },
-        house: { house: "4-ஆம் பாவகமான மீனம்", lord: "குரு" },
-        wealth: { house: "2-ஆம் பாவகமான மகரம் மற்றும் 11-ஆம் பாவகமான துலாம்", lord: "சனி மற்றும் சுக்கிரன்" },
-        marriage: { house: "7-ஆம் பாவகமான மிதுனம்", lord: "புதன்" }
-      },
-      "கும்பம்": {
-        lord: "சனி",
-        job: { house: "10-ஆம் பாவகமான விருச்சிகம்", lord: "செவ்வாய்" },
-        house: { house: "4-ஆம் பாவகமான ரிஷபம்", lord: "சுக்கிரன்" },
-        wealth: { house: "2-ஆம் பாவகமான மீனம் மற்றும் 11-ஆம் பாவகமான தனுசு", lord: "குரு" },
-        marriage: { house: "7-ஆம் பாவகமான சிம்மம்", lord: "சூரியன்" }
-      },
-      "மீனம்": {
-        lord: "குரு",
-        job: { house: "10-ஆம் பாவகமான தனுசு", lord: "குரு" },
-        house: { house: "4-ஆம் பாவகமான மிதுனம்", lord: "புதன்" },
-        wealth: { house: "2-ஆம் பாவகமான மேஷம் மற்றும் 11-ஆம் பாவகமான மகரம்", lord: "செவ்வாய் மற்றும் சனி" },
-        marriage: { house: "7-ஆம் பாவகமான கன்னி", lord: "புதன்" }
-      }
-    };
+  // புதிய python_engine ஃபோல்டரில் உள்ள astro_engine.py-ஐ இயக்குதல்
+  const scriptPath = path.join(process.cwd(), 'src', 'components', 'python_engine', 'astro_engine.py');
+  const pyProcess = spawn('python', [scriptPath, payload]);
 
-    const currentLagna = lagnaRules[lagnam] || lagnaRules["மகரம்"];
-    const qLower = userQuestion.toLowerCase();
+  let outputData = '';
+  let errorData = '';
 
-    let title = "";
-    let reason = "";
-    let timing = "";
-    let pariharam = "";
+  pyProcess.stdout.on('data', (chunk) => {
+    outputData += chunk.toString('utf8');
+  });
 
-    // 1. சொந்த வீடு / மனை / சொத்து
-    if (qLower.includes("வீடு") || qLower.includes("மனை") || qLower.includes("சொத்து") || qLower.includes("இடம்") || qLower.includes("house") || qLower.includes("property")) {
-      title = "சொந்த வீடு மற்றும் மனை யோக ஆய்வு";
-      reason = `உங்கள் ஜன்ம லக்னம் ${lagnam}. வேத சாஸ்திரத்தில் வீடு, மனை மற்றும் வாகன சுகத்தைக் குறிப்பது 4-ஆம் பாவகமாகும். ${lagnam} லக்னத்திற்கு 4-ஆம் வீடாக அமைவது ${currentLagna.house.house} (அதிபதி: ${currentLagna.house.lord}). பூமி காரகனான செவ்வாய் மற்றும் 4-ஆம் அதிபதியின் அமைப்பின்படி, உங்கள் ராசி ${rasi} மற்றும் நட்சத்திரம் ${nakshatra}-க்கு நிலையான சொத்து அமைய யோகம் சிறப்பாக உள்ளது. நடப்பு ${dasa} காலத்தில் நிலம் அல்லது வீடு வாங்குவதற்கான முயற்சிகள் துரிதமாகும்.`;
-      timing = `நடப்பு 2026-ஆம் ஆண்டின் இறுதி காலாண்டு (நவம்பர் - டிசம்பர்) முதல் 2027-ஆம் ஆண்டின் வைகாசி மாதத்திற்குள் புதிய வீடு அல்லது மனை வாங்கும் யோகம் உறுதியாகக் கைகூடும்.`;
-      pariharam = `செவ்வாய்க்கிழமைகளில் முருகப்பெருமானுக்கு நெய் தீபம் ஏற்றி வழிபடவும். இயலாத ஏழை எளியவர்களுக்கு வஸ்திர தானம் அல்லது அன்னதானம் செய்து வருவது மனை யோகத் தடைகளை நீக்கும்.`;
+  pyProcess.stderr.on('data', (chunk) => {
+    errorData += chunk.toString('utf8');
+  });
 
-    // 2. வேலை / தொழில் மாற்றம்
-    } else if (qLower.includes("வேலை") || qLower.includes("தொழில்") || qLower.includes("பணி") || qLower.includes("மாறும்") || qLower.includes("job") || qLower.includes("career")) {
-      title = "தொழில் மற்றும் உத்தியோக மாற்ற ஆய்வு";
-      reason = `உங்கள் ஜன்ம லக்னம் ${lagnam} (லக்னாதிபதி: ${currentLagna.lord}). ஜீவன மற்றும் உத்தியோக ஸ்தானமான 10-ஆம் பாவகமாக ${currentLagna.job.house} (அதிபதி: ${currentLagna.job.lord}) அமைகிறது. நடப்பு ${dasa} காலத்தில், 10-ஆம் பாவக அதிபதியின் தாக்கம் புதிய தொழில் வாய்ப்புகளையும் பொறுப்புகளையும் வழங்கும் அமைப்பில் உள்ளது. உங்கள் ராசி ${rasi} மற்றும் நட்சத்திரம் ${nakshatra}-க்கு வேலை மாற்றம் முன்னேற்றத்தைத் தரும்.`;
-      timing = `2026 நவம்பர் முதல் 2027 மார்ச் மாதத்திற்குள் எதிர்பார்த்த உத்தியோக மாற்றம் அல்லது தொழில் ரீதியான புதிய திருப்பம் ஏற்படும்.`;
-      pariharam = `சனிக்கிழமைகளில் நல்லெண்ணெய் தீபம் ஏற்றி ஈஸ்வரன் அல்லது சனி பகவானை வழிபடவும். தினசரி பெருமாள் வழிபாடு செய்து வருவது உத்தியோக மேன்மையை அளிக்கும்.`;
-
-    // 3. பண வரவு / நிதி நிலை
-    } else if (qLower.includes("பணம்") || qLower.includes("வரவு") || qLower.includes("நிதி") || qLower.includes("money") || qLower.includes("finance")) {
-      title = "தன வரவு மற்றும் பொருளாதார நிலை ஆய்வு";
-      reason = `உங்கள் ஜாதகத்தில் ${lagnam} லக்னத்திற்கு தன மற்றும் லாப ஸ்தானமாக ${currentLagna.wealth.house} (அதிபதிகள்: ${currentLagna.wealth.lord}) அமைகின்றன. ராசி ${rasi} மற்றும் தசை ${dasa} ஆய்வின்படி, நிதி வரவுகளில் உள்ள தேக்கங்கள் நீங்கி படிப்படியான பொருளாதார முன்னேற்றம் ஏற்படும்.`;
-      timing = `2026 டிசம்பர் முதல் வரவுகள் சீராகத் தொடங்கும். 2027 தொடக்கத்தில் பழைய பாக்கிகள் வசூலாகி நிதி நிலை சீரடையும்.`;
-      pariharam = `வியாழக்கிழமைகளில் தட்சிணாமூர்த்திக்கு கொண்டைக்கடலை மாலை சாற்றி வழிபடவும். லட்சுமி குபேர வழிபாடு செய்து வர தன வரவு சீராகும்.`;
-
-    // 4. திருமணப் பொருத்தம் / யோகம்
-    } else if (qLower.includes("திருமணம்") || qLower.includes("கல்யாணம்") || qLower.includes("marriage")) {
-      title = "திருமண யோக ஆய்வு";
-      reason = `உங்கள் ஜன்ம லக்னம் ${lagnam}. களத்திர ஸ்தானமான 7-ஆம் பாவகமாக ${currentLagna.marriage.house} (அதிபதி: ${currentLagna.marriage.lord}) அமைகிறது. உங்கள் ராசி ${rasi} மற்றும் நட்சத்திரம் ${nakshatra}-க்கு களத்திர ஸ்தான அதிபதியின் அமைப்பும் நடப்பு ${dasa} காலமும் சுப காரியங்களுக்கான சாதகமான சூழலை உருவாக்குகின்றன.`;
-      timing = `2027-ஆம் ஆண்டின் முற்பகுதியில் (தை முதல் சித்திரை மாதங்களுக்குள்) சுப காரியப் பேச்சுக்கள் முடிவாகி வரன் அமையும் யோகம் உண்டு.`;
-      pariharam = `வெள்ளிக்கிழமைகளில் அம்மன் சன்னதியில் நெய் தீபம் ஏற்றி வழிபடவும். சுமங்கலிப் பெண்களுக்கு இயன்ற தாம்பூலம் வழங்கி ஆசி பெறவும்.`;
-
-    // 5. இதர பொதுவான கேள்விகள்
-    } else {
-      title = "வேத ஜோதிட ஆய்வு";
-      reason = `உங்கள் ஜாதகத்தில் ${lagnam} லக்னம் (லக்னாதிபதி: ${currentLagna.lord}) மற்றும் ${rasi} ராசியின்படி பாவக நிலைகள் ஆராயப்பட்டன. நடப்பு ${dasa} காலத்தில் நீங்கள் கேட்கும் காரியம் தடையின்றி வளர்ச்சிப் பாதையை நோக்கியே செல்லும்.`;
-      timing = `2026-ஆம் ஆண்டின் இறுதி மாதங்கள் மற்றும் 2027-ஆம் ஆண்டின் தொடக்கத்தில் எதிர்பார்த்த காரியங்கள் படிப்படியாக நிறைவேறும்.`;
-      pariharam = `குலதெய்வ வழிபாடு தவறாமல் செய்து வரவும். இயன்ற அன்னதானம் வழங்கி வருவது சர்வ காரிய சித்திகளைத் தரும்.`;
+  pyProcess.on('close', (code) => {
+    if (code !== 0 || !outputData) {
+      console.error("[PYTHON ERROR]:", errorData);
+      return res.status(500).json({ reply: 'வானியல் கணக்கீட்டில் பிழை ஏற்பட்டுள்ளது.' });
     }
 
-    const reply = `வணக்கம் ${userName} அவர்களுக்கு!
-
-1. ஜோதிடக் காரணம் (${lagnam} லக்னம் - ${title}):
-${reason}
-
-2. காரியம் கைகூடும் துல்லிய காலக்கட்டம்:
-${timing}
-
-3. எளிய வேத பரிகாரம்:
-${pariharam}
-
-இறைவன் அருளால் உங்கள் காரியங்கள் அனைத்தும் தடையின்றி வெற்றியாக அமைய வாழ்த்துகள்!`;
-
-    return res.status(200).json({ reply });
-
-  } catch (err) {
-    console.error("Astrology Engine Error:", err);
-    return res.status(500).json({ reply: "ஜோதிடக் கணிப்பை உருவாக்குவதில் பிழை ஏற்பட்டது." });
-  }
+    try {
+      const parsed = JSON.parse(outputData.trim());
+      return res.status(200).json({ reply: parsed.reply });
+    } catch (e) {
+      return res.status(200).json({ reply: outputData });
+    }
+  });
 }
