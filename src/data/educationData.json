@@ -1,0 +1,11 @@
+[
+  { "id": 1, "title": "Data Analyst", "desc": "Analyze & Make Decisions", "badge": "Hot", "icon": "📊" },
+  { "id": 2, "title": "AI / Machine Learning", "desc": "Build Intelligent Solutions", "badge": "Trending", "icon": "🤖" },
+  { "id": 3, "title": "Data Science", "desc": "Turn Data into Real Insights", "badge": "Popular", "icon": "🔬" },
+  { "id": 4, "title": "DevOps & Cloud", "desc": "Build • Deploy • Automate", "badge": "Demand", "icon": "☁️" },
+  { "id": 5, "title": "Cybersecurity", "desc": "Protect • Detect • Defend", "badge": "High Pay", "icon": "🛡️" },
+  { "id": 6, "title": "DevSecOps", "desc": "Next-Gen Secure Everything", "badge": "Pro", "icon": "🔐" },
+  { "id": 7, "title": "Deep Learning & GPT", "desc": "Next-Gen AI Capabilities", "badge": "New", "icon": "🧠" },
+  { "id": 8, "title": "Data Engineering", "desc": "Big Data Pipelines & ETL", "badge": "Core", "icon": "⚙️" },
+  { "id": 9, "title": "Advanced Excel & BI", "desc": "Work Smarter With Data", "badge": "Essential", "icon": "📈" }
+]

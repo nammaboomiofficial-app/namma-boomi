@@ -1,0 +1,36 @@
+{
+  "govtServices": [
+    {
+      "id": "patta-chitta",
+      "title": "பட்டா / சிட்டா நகல்",
+      "category": "உடனடி பதிவிறக்கம்",
+      "description": "வருவாய்த்துறை இணையதளம் மூலம் நிலத்தின் உண்மை உரிமை சரிபார்ப்பு.",
+      "link": "https://eservices.tn.gov.in/eservicesnew/land/chitta.html?lan=ta",
+      "queryTemplate": "பட்டா / சிட்டா நகல் சரிபார்ப்பு உதவி தேவைப்படுகிறது"
+    },
+    {
+      "id": "ec-view",
+      "title": "30 வருட வில்லங்கச் சான்று (EC)",
+      "category": "அரசு தளம்",
+      "description": "Tnreginet போர்ட்டலில் முந்தைய அடமானங்கள் மற்றும் விற்பனை வரலாறு ஆய்வு.",
+      "link": "https://tnreginet.gov.in/portal/",
+      "queryTemplate": "30 வருட வில்லங்கச் சான்று (EC) பெறுவதில் உதவி தேவைப்படுகிறது"
+    },
+    {
+      "id": "fmb-sketch",
+      "title": "புல வரைபடம் (FMB Sketch)",
+      "category": "வரைபடம்",
+      "description": "நிலத்தின் எல்லைக் கோடுகள் மற்றும் துல்லியமான வடிவம் காணும் வரைபடம்.",
+      "link": "https://eservices.tn.gov.in/eservicesnew/land/chitta.html?lan=ta",
+      "queryTemplate": "புல வரைபடம் (FMB Sketch) பெறுவதில் உதவி தேவைப்படுகிறது"
+    },
+    {
+      "id": "tslr-extract",
+      "title": "நகர நில ஆவணம் (TSLR)",
+      "category": "நகர மனை",
+      "description": "நகராட்சி மற்றும் மாநகராட்சி எல்லைக்குட்பட்ட மனைகளின் டிஜிட்டல் பதிவு.",
+      "link": "https://eservices.tn.gov.in/eservicesnew/land/chitta.html?lan=ta",
+      "queryTemplate": "நகர நில ஆவணம் (TSLR) நகல் பெறுவதில் உதவி தேவைப்படுகிறது"
+    }
+  ]
+}

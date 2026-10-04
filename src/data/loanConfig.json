@@ -1,0 +1,32 @@
+{
+  "adminWhatsApp": "919962369131",
+  "scriptUrl": "https://script.google.com/macros/s/AKfycbyxE0I9_Z1lq_MhMvJ4F5_wXQ/exec",
+  "defaults": {
+    "loanAmount": 2500000,
+    "interestRate": 8.75,
+    "tenureYears": 15
+  },
+  "ranges": {
+    "amount": {
+      "min": 200000,
+      "max": 10000000,
+      "step": 50000,
+      "minLabel": "₹2 லட்சம்",
+      "maxLabel": "₹1 கோடி"
+    },
+    "interest": {
+      "min": 7.5,
+      "max": 15.0,
+      "step": 0.1,
+      "minLabel": "7.5%",
+      "maxLabel": "15%"
+    },
+    "tenure": {
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "minLabel": "1 வருடம்",
+      "maxLabel": "30 வருடங்கள்"
+    }
+  }
+}
