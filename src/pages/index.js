@@ -108,6 +108,7 @@ export default function Home() {
   const [searchSurveyNo, setSearchSurveyNo] = useState('142/1B');
   const [surveyResult, setSurveyResult] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
+  const [focusedLandId, setFocusedLandId] = useState(null);
 
   // லோன் டெஸ்க் மாடல்
   const [activeLoanLand, setActiveLoanLand] = useState(null);
@@ -742,6 +743,13 @@ export default function Home() {
                     </button>
                   ))}
                 </div>
+                <div id="master-land-map" className="w-full my-4">
+  <LandMap 
+    onSelectVisitPass={(land) => setSelectedVisitPassLand(land)}
+    focusedLandId={focusedLandId}
+    filterDistrict={filterDistrict} 
+  />
+</div>
                 <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-lg">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
                     <span>🔍 மாவட்ட வடிகட்டி:</span>
@@ -855,7 +863,7 @@ export default function Home() {
                               <span>📲</span>
                             </button>
                             <button
-                              onClick={(e) => { e.stopPropagation(); setActiveMapModalLand(land); }}
+                              onClick={(e) => { e.stopPropagation(); setFocusedLandId(land.id || land._id); document.getElementById('master-land-map')?.scrollIntoView({ behavior: 'smooth' }); }}
                               className="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1"
                             >
                               <span>🗺️</span> மேப்
@@ -1994,73 +2002,7 @@ export default function Home() {
             </div>
           </div>
         )}
-        {/* கூகுள் மேப் நேரலை பாப்-அப் (Map Modal) */}
-        {activeMapModalLand && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-            onClick={() => setActiveMapModalLand(null)}
-          >
-            <div
-              className="relative w-full max-w-2xl bg-slate-900 border border-emerald-500/40 rounded-3xl overflow-hidden shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* தலைப்பு பகுதி */}
-              <div className="flex items-center justify-between p-4 bg-slate-950/80 border-b border-emerald-500/20">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">🗺️</span>
-                  <div>
-                    <h3 className="text-sm md:text-base font-bold text-white">
-                      {activeMapModalLand.title || 'நில இருப்பிடம்'}
-                    </h3>
-                    <p className="text-[11px] text-emerald-400">
-                      {activeMapModalLand.taluk}, {activeMapModalLand.district} • சர்வே: #{activeMapModalLand.surveyNo}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setActiveMapModalLand(null)}
-                  className="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 flex items-center justify-center text-sm font-bold transition-all"
-                >
-                  ✕
-                </button>
-              </div>
-
-              {/* கூகுள் மேப் ஐபிரேம் */}
-              <div className="w-full h-80 bg-slate-950">
-                <iframe
-                  title="Land Google Map Location"
-                  src={
-                    activeMapModalLand.mapEmbedUrl ||
-                    `https://maps.google.com/maps?q=${encodeURIComponent(
-                      (activeMapModalLand.village || activeMapModalLand.taluk || '') + ', ' + (activeMapModalLand.district || 'Tamil Nadu')
-                    )}&t=&z=13&ie=UTF8&iwloc=&output=embed`
-                  }
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </div>
-
-              {/* கீழ் விவரம் & மூடும் பட்டன் */}
-              <div className="p-4 bg-slate-950/90 flex items-center justify-between border-t border-emerald-500/20">
-                <span className="text-xs text-slate-300">
-                  நேரடி களப் பார்வைக்கு விசிட் பாஸ் பெறவும்
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setActiveMapModalLand(null)}
-                  className="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition-all"
-                >
-                  சரி / மூடுக
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        
         {/* VIP விசிட் பாஸ் மாடல் (VIP Site Visit Pass Modal) */}
         {selectedVisitPassLand && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
