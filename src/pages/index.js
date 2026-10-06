@@ -2065,14 +2065,31 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (!visitorPhone) {
-                      alert('தயவுசெய்து உங்கள் வாட்ஸ்அப் எண்ணை உள்ளிடவும்');
-                      return;
-                    }
-                    const msg = `வணக்கம் நம்ம பூமி 360, விஐபி விசிட் பாஸ் பதிவு:\n👤 பெயர்: ${visitorName || 'வாடிக்கையாளர்'}\n📱 எண்: ${visitorPhone}\n🏞️ நிலம்: ${selectedVisitPassLand.title || 'நிலம்'} (${selectedVisitPassLand.district || ''})\n\nஉரிமையாளர் எண் மற்றும் GPS லொகேஷன் அனுப்பவும்.`;
-                    window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
-                    setSelectedVisitPassLand(null);
-                  }}
+  if (!visitorPhone || visitorPhone.trim().length < 10) {
+    alert('தயவுசெய்து சரியான 10 இலக்க வாட்ஸ்அப் எண்ணை உள்ளிடவும்');
+    return;
+  }
+
+  const land = selectedVisitPassLand;
+  const lat = land?.lat || (land?.location_coords && land.location_coords[0]) || 12.6939;
+  const lng = land?.lng || (land?.location_coords && land.location_coords[1]) || 79.9757;
+  const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
+
+  const message = `🎫 *நம்ம பூமி 360 - VIP களப்பார்வை பாஸ் (Site Visit Pass)* 🎫%0A%0A` +
+    `👤 *பார்வையாளர் பெயர்:* ${visitorName || 'நேரடி பார்வையாளர்'}%0A` +
+    `📞 *வாட்ஸ்அப் எண்:* ${visitorPhone}%0A` +
+    `🏷️ *சொத்து வகை:* ${land?.tag || land?.type || 'நிலம்'}%0A` +
+    `🏡 *நிலத்தின் பெயர்:* ${land?.title || 'பிரீமியம் நிலம்'}%0A` +
+    `📍 *அமைவிடம்:* ${land?.location || land?.taluk || land?.district || 'தமிழ்நாடு'}%0A` +
+    `💰 *விலை:* ${land?.price || 'நேரடி பேச்சுவார்த்தை'}%0A` +
+    `🗺️ *மேப் லொகேஷன்:* ${mapLink}%0A%0A` +
+    `✅ இந்த விசிட் பாஸ் மூலம் நேரடி களப்பார்வை மேற்கொள்ள அனுமதி கோரப்படுகிறது.`;
+
+  window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${message}`, '_blank');
+  setSelectedVisitPassLand(null);
+  setVisitorPhone('');
+  if (typeof setVisitorName === 'function') setVisitorName('');
+}}
                   className="w-full mt-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all text-xs"
                 >
                   <span>🎟️</span> வாட்ஸ்அப்பில் பாஸ் பெறுக
