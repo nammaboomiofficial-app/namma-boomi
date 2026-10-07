@@ -64,7 +64,7 @@ export default function DocumentAnalysisBureau() {
                     {item.badge}
                   </span>
                 </div>
-                <p className="text-xs text-slate-400 mb-4">{item.desc}</p>
+                <p className="text-xs text-slate-100 mb-4">{item.desc}</p>
               </div>
               <a
                 href={item.link}
@@ -90,7 +90,7 @@ export default function DocumentAnalysisBureau() {
             </h3>
           </div>
           <div className="text-right">
-            <span className="text-xs text-slate-400 block">ஆய்வுக் கட்டணம்</span>
+            <span className="text-xs text-slate-100 block">ஆய்வுக் கட்டணம்</span>
             <span className="text-lg font-extrabold text-cyan-400">₹1,999</span>
           </div>
         </div>
@@ -99,7 +99,7 @@ export default function DocumentAnalysisBureau() {
           பத்திரப்பதிவு வழக்கறிஞர்கள் குழு மூலம் வில்லங்கப் பதிவு, பாகப்பிரிவினை, வாரிசு சான்றிதழ் மற்றும் மூல ஆவணங்களின் வரிசையை முழுமையாக ஆய்வு செய்து சட்ட அறிக்கை வழங்கப்படும்.
         </p>
 
-        <div className="grid grid-cols-2 gap-2 text-xs text-slate-400 mb-5">
+        <div className="grid grid-cols-2 gap-2 text-xs text-slate-100 mb-5">
           <div className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> 30 ஆண்டு வில்லங்க ஆய்வு</div>
           <div className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> வாரிசு / பாகப்பிரிவினை சரிபார்ப்பு</div>
           <div className="flex items-center gap-1.5"><span className="text-emerald-400">✓</span> வழக்கறிஞர் சட்ட அறிக்கை</div>
@@ -118,7 +118,7 @@ export default function DocumentAnalysisBureau() {
         <h3 className="text-md font-semibold text-slate-100 mb-2 flex items-center gap-2">
           <span>📐</span> டிஜிட்டல் நில அளவையர் முன்பதிவு (Land Survey)
         </h3>
-        <p className="text-xs text-slate-400 mb-4">
+        <p className="text-xs text-slate-100 mb-4">
           அரசு உரிமம் பெற்ற சர்வேயர்கள் மூலம் சாட்டிலைட் DGPS / டோட்டல் ஸ்டேஷன் முறையில் துல்லியமான எல்லைக் கல் நடுதல்.
         </p>
 
@@ -128,7 +128,7 @@ export default function DocumentAnalysisBureau() {
             className={`py-2 px-3 text-xs rounded-lg border transition font-medium ${
               surveyType === 'dgps'
                 ? 'bg-emerald-500/10 border-emerald-500 text-emerald-400'
-                : 'bg-slate-800 border-slate-700 text-slate-400'
+                : 'bg-slate-800 border-slate-700 text-slate-100'
             }`}
           >
             DGPS சாட்டிலைட் அளவீடு
@@ -138,7 +138,7 @@ export default function DocumentAnalysisBureau() {
             className={`py-2 px-3 text-xs rounded-lg border transition font-medium ${
               surveyType === 'boundary'
                 ? 'bg-emerald-500/10 border-emerald-500 text-emerald-400'
-                : 'bg-slate-800 border-slate-700 text-slate-400'
+                : 'bg-slate-800 border-slate-700 text-slate-100'
             }`}
           >
             எல்லை கல் நடுதல் / தகராறு

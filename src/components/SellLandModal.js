@@ -38,7 +38,7 @@ export default function SellLandModal({ isOpen, onClose }) {
         {/* Close Button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-white text-lg w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center"
+          className="absolute top-4 right-4 text-slate-100 hover:text-white text-lg w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center"
         >
           ✕
         </button>
@@ -48,7 +48,7 @@ export default function SellLandModal({ isOpen, onClose }) {
             🏡 விற்பனையாளர் படிவம்
           </span>
           <h3 className="text-xl font-bold text-white mt-1.5">உங்கள் நிலத்தை விற்பனைக்கு பதிவிடுங்கள்</h3>
-          <p className="text-xs text-slate-400 mt-0.5">விவரங்களைப் பூர்த்தி செய்தால் எங்கள் குழு உங்களை நேரடியாகத் தொடர்பு கொள்ளும்.</p>
+          <p className="text-xs text-slate-100 mt-0.5">விவரங்களைப் பூர்த்தி செய்தால் எங்கள் குழு உங்களை நேரடியாகத் தொடர்பு கொள்ளும்.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3.5">

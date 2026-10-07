@@ -29,7 +29,7 @@ export default function LandCalculator() {
             📐 நில அளவை மாற்றி
           </span>
           <h4 className="text-lg font-bold text-white mt-1">தமிழக நில அளவீட்டு கால்குலேட்டர்</h4>
-          <p className="text-xs text-slate-400">சென்ட், சதுர அடி, கிரவுண்ட், ஏக்கர் மற்றும் குழி அளவீடுகள்</p>
+          <p className="text-xs text-slate-100">சென்ட், சதுர அடி, கிரவுண்ட், ஏக்கர் மற்றும் குழி அளவீடுகள்</p>
         </div>
 
         {/* Input & Unit Selector */}
@@ -63,7 +63,7 @@ export default function LandCalculator() {
             key={index}
             className="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 hover:border-slate-700 transition-all group"
           >
-            <span className="text-[11px] font-medium text-slate-400 block group-hover:text-emerald-400 transition-colors">
+            <span className="text-[11px] font-medium text-slate-100 block group-hover:text-emerald-400 transition-colors">
               {r.label}
             </span>
             <span className="text-lg font-bold text-white tracking-tight mt-1 block">

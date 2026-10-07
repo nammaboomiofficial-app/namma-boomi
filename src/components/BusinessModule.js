@@ -116,7 +116,7 @@ export default function BusinessModule({ setCurrentModule }) {
             <span className="text-2xl">🏛️</span>
             <div className="text-xs">
               <span className="text-amber-400 font-bold block">PMEGP / NEEDS / முத்ரா</span>
-              <span className="text-slate-400 text-[11px]">100% அரசு அங்கீகரிக்கப்பட்ட நடைமுறை</span>
+              <span className="text-slate-100 text-[11px]">100% அரசு அங்கீகரிக்கப்பட்ட நடைமுறை</span>
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@ export default function BusinessModule({ setCurrentModule }) {
                       ₹{(item.baseCost / 100000).toFixed(1)}L
                     </span>
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1">{item.category}</div>
+                  <div className="text-[11px] text-slate-100 mt-1">{item.category}</div>
                 </button>
               ))}
             </div>
@@ -174,7 +174,7 @@ export default function BusinessModule({ setCurrentModule }) {
                 <div>
                   <span className="text-[11px] font-semibold text-amber-400">{activePreset.category}</span>
                   <h3 className="text-base md:text-lg font-black text-white">{activePreset.title}</h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">{activePreset.desc}</p>
+                  <p className="text-xs text-slate-100 mt-1 leading-relaxed">{activePreset.desc}</p>
                 </div>
                 <span className="text-2xl p-2 bg-slate-900 rounded-xl border border-slate-800">📊</span>
               </div>
@@ -182,7 +182,7 @@ export default function BusinessModule({ setCurrentModule }) {
               {/* திட்ட நிதி கணக்கீடுகள் (Financial Breakdown) */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 text-center">
                 <div className="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800">
-                  <span className="text-[10px] text-slate-400 block">திட்ட மதிப்பு:</span>
+                  <span className="text-[10px] text-slate-100 block">திட்ட மதிப்பு:</span>
                   <span className="text-xs font-bold text-white">₹{calculations.totalCost.toLocaleString('en-IN')}</span>
                 </div>
                 <div className="bg-slate-900/90 p-2.5 rounded-xl border border-emerald-500/30">
@@ -202,7 +202,7 @@ export default function BusinessModule({ setCurrentModule }) {
               {/* வணிக அளவீடுகள் & உரிமங்கள் */}
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-800 text-xs">
                 <div className="space-y-1.5 bg-slate-900/50 p-3 rounded-xl border border-slate-800/80">
-                  <div className="text-slate-400 text-[11px] font-semibold">📈 வணிக எதிர்பார்ப்புகள்:</div>
+                  <div className="text-slate-100 text-[11px] font-semibold">📈 வணிக எதிர்பார்ப்புகள்:</div>
                   <div className="flex justify-between text-slate-300">
                     <span>உத்தேச மாத நிகர லாபம்:</span>
                     <span className="text-emerald-400 font-bold">{activePreset.monthlyProfit}</span>
@@ -218,7 +218,7 @@ export default function BusinessModule({ setCurrentModule }) {
                 </div>
 
                 <div className="space-y-1.5 bg-slate-900/50 p-3 rounded-xl border border-slate-800/80">
-                  <div className="text-slate-400 text-[11px] font-semibold">📜 தேவைப்படும் சட்டப்பூர்வ உரிமங்கள்:</div>
+                  <div className="text-slate-100 text-[11px] font-semibold">📜 தேவைப்படும் சட்டப்பூர்வ உரிமங்கள்:</div>
                   <ul className="space-y-1 text-slate-300 text-[11px]">
                     {activePreset.licenses.map((lic, idx) => (
                       <li key={idx} className="flex items-center gap-1.5">
@@ -296,7 +296,7 @@ export default function BusinessModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🏡</span>
           <h4 className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">தொழிலுக்கு உகந்த நிலம் வேண்டுமா?</h4>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-100">
             குடோன், பண்ணை அல்லது தொழிற்சாலை அமைக்க ₹499 சட்ட தணிக்கை செய்யப்பட்ட பாதுகாப்பான நிலங்கள்.
           </p>
           <span className="text-[11px] text-blue-400 font-bold block pt-1 underline">நம்ம பூமி நிலப்பிரிவு செல்ல ↗</span>
@@ -311,7 +311,7 @@ export default function BusinessModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">👥</span>
           <h4 className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">தொழிலுக்கு ஊழியர்கள் தேவையா?</h4>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-100">
             பில்லிங், களப்பணி மற்றும் உற்பத்திப் பணிகளுக்கு உள்ளூர் இளைஞர்களை உடனே தேர்வு செய்யுங்கள்.
           </p>
           <span className="text-[11px] text-emerald-400 font-bold block pt-1 underline">நம்ம பூமி Jobs Hub செல்ல ↗</span>
@@ -326,7 +326,7 @@ export default function BusinessModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">📑</span>
           <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">கணக்கு & ஜிஎஸ்டி ஆட்டோமேஷன்</h4>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-100">
             Advanced Excel & Tally தேர்ச்சி பெற்ற சான்றளிக்கப்பட்ட மாணவர்களைப் பணியமர்த்துங்கள்.
           </p>
           <span className="text-[11px] text-amber-400 font-bold block pt-1 underline">கல்வி மாடியூல் செல்ல ↗</span>

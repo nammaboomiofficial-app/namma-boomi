@@ -63,7 +63,7 @@ export default function FinanceModule() {
 
         <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3 md:p-4 max-w-3xl mx-auto flex flex-col sm:flex-row items-center gap-3 shadow-inner">
           <div className="flex-1 w-full text-left">
-            <label className="block text-xs font-medium text-slate-400 mb-1">
+            <label className="block text-xs font-medium text-slate-100 mb-1">
               கடன் வகை:
             </label>
             <select
@@ -78,7 +78,7 @@ export default function FinanceModule() {
           </div>
 
           <div className="w-full sm:w-64 text-left">
-            <label className="block text-xs font-medium text-slate-400 mb-1">
+            <label className="block text-xs font-medium text-slate-100 mb-1">
               வாட்ஸ்அப் எண் (10 இலக்கம்):
             </label>
             <input
@@ -121,17 +121,17 @@ export default function FinanceModule() {
               <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">
                 {card.title}
               </h3>
-              <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+              <p className="text-xs text-slate-100 mt-1 line-clamp-2">
                 {card.desc}
               </p>
 
               <div className="mt-4 pt-3 border-t border-slate-800/80 grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <span className="text-slate-500 block text-[11px]">கடன் வரம்பு</span>
+                  <span className="text-slate-200 block text-[11px]">கடன் வரம்பு</span>
                   <span className="text-emerald-400 font-semibold">{card.range}</span>
                 </div>
                 <div>
-                  <span className="text-slate-500 block text-[11px]">சிறப்பம்சம்</span>
+                  <span className="text-slate-200 block text-[11px]">சிறப்பம்சம்</span>
                   <span className="text-slate-300 font-medium">{card.tenure}</span>
                 </div>
               </div>
@@ -154,7 +154,7 @@ export default function FinanceModule() {
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
               <span>🏦</span> முன்னணி வங்கிகளின் தற்போதைய வட்டி ஒப்பீடு
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">குறைந்த வட்டியில் கடன் ஒப்புதல் பெற ஒப்பீட்டு வழிகாட்டி</p>
+            <p className="text-xs text-slate-100 mt-0.5">குறைந்த வட்டியில் கடன் ஒப்புதல் பெற ஒப்பீட்டு வழிகாட்டி</p>
           </div>
           <span className="text-[11px] px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hidden sm:inline-block">
             சமீபத்திய நிலவரம்
@@ -168,7 +168,7 @@ export default function FinanceModule() {
                 {b.tag}
               </span>
               <h4 className="text-sm font-bold text-white line-clamp-1">{b.name}</h4>
-              <p className="text-xs text-slate-400">{b.type}</p>
+              <p className="text-xs text-slate-100">{b.type}</p>
               <p className="text-base font-extrabold text-blue-400 pt-1 border-t border-slate-900">
                 {b.rate}
               </p>
@@ -182,7 +182,7 @@ export default function FinanceModule() {
         <h3 className="text-lg font-bold text-white flex items-center gap-2 mb-1">
           <span>📑</span> வங்கிக் கடனுக்குத் தேவையான முக்கிய ஆவணங்கள்
         </h3>
-        <p className="text-xs text-slate-400 mb-4">கடன் நிராகரிக்கப்படாமல் இருக்க இந்த ஆவணங்கள் அனைத்தும் முறையாக உள்ளதா என்பதை முன்கூட்டியே சரிபார்க்கவும்.</p>
+        <p className="text-xs text-slate-100 mb-4">கடன் நிராகரிக்கப்படாமல் இருக்க இந்த ஆவணங்கள் அனைத்தும் முறையாக உள்ளதா என்பதை முன்கூட்டியே சரிபார்க்கவும்.</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
           <div className="flex items-center gap-2 p-3 bg-slate-950/60 border border-slate-800 rounded-lg text-slate-300">
@@ -207,7 +207,7 @@ export default function FinanceModule() {
       </div>
 
       {/* 5. டிரஸ்ட் பேட்ஜ் */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs text-slate-400 bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs text-slate-100 bg-slate-900/50 p-4 rounded-xl border border-slate-800">
         <div className="p-1.5">⚡ CIBIL ஸ்கோர் வழிகாட்டல்</div>
         <div className="p-1.5">🛡️ 100% வெளிப்படையானது</div>
         <div className="p-1.5">🚫 முன் கட்டணம் ஏதுமில்லை</div>

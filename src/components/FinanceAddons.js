@@ -23,7 +23,7 @@ export default function FinanceAddons() {
             <h3 className="text-xl font-bold text-white flex items-center gap-2">
               <span>🏦</span> முன்னணி வங்கிகளின் தற்போதைய வட்டி ஒப்பீடு
             </h3>
-            <p className="text-slate-400 text-xs mt-1">குறைந்த வட்டியில் கடன் ஒப்புதல் பெற ஒப்பீட்டு வழிகாட்டி</p>
+            <p className="text-slate-100 text-xs mt-1">குறைந்த வட்டியில் கடன் ஒப்புதல் பெற ஒப்பீட்டு வழிகாட்டி</p>
           </div>
           <span className="text-xs bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-full w-fit">
             சமீபத்திய நிலவரம்
@@ -38,10 +38,10 @@ export default function FinanceAddons() {
                   {item.tag}
                 </span>
                 <h4 className="text-white font-bold text-sm mt-2">{item.bank}</h4>
-                <p className="text-slate-400 text-xs">{item.type}</p>
+                <p className="text-slate-100 text-xs">{item.type}</p>
               </div>
               <div className="pt-2 border-t border-slate-700/50">
-                <span className="text-[11px] text-slate-400">வட்டி விகிதம்:</span>
+                <span className="text-[11px] text-slate-100">வட்டி விகிதம்:</span>
                 <p className="text-lg font-black text-amber-400">{item.rate}</p>
               </div>
             </div>
@@ -55,7 +55,7 @@ export default function FinanceAddons() {
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
             <span>📑</span> வங்கிக் கடனுக்குத் தேவையான முக்கிய ஆவணங்கள்
           </h3>
-          <p className="text-slate-400 text-xs mt-1">
+          <p className="text-slate-100 text-xs mt-1">
             கடன் நிராகரிக்கப்படாமல் இருக்க இந்த ஆவணங்கள் அனைத்தும் முறையாக உள்ளதா என்பதை முன்கூட்டியே சரிபார்க்கவும்.
           </p>
         </div>
@@ -108,7 +108,7 @@ export default function FinanceAddons() {
         <div className="bg-slate-800/70 border border-emerald-500/20 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left">
             <h5 className="text-white font-bold text-sm">ஆவணங்களில் ஏதேனும் சந்தேகம் அல்லது வில்லங்கம் உள்ளதா?</h5>
-            <p className="text-slate-400 text-xs mt-0.5">எங்கள் ₹499 டிஜிட்டல் ஆவண சரிபார்ப்பு மூலம் 100% பாதுகாப்பை உறுதி செய்யுங்கள்.</p>
+            <p className="text-slate-100 text-xs mt-0.5">எங்கள் ₹499 டிஜிட்டல் ஆவண சரிபார்ப்பு மூலம் 100% பாதுகாப்பை உறுதி செய்யுங்கள்.</p>
           </div>
           <button
             onClick={sendDocVerificationRequest}

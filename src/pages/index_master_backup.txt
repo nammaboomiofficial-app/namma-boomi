@@ -338,7 +338,7 @@ export default function Home() {
                   SUPER APP
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400">நிலம் • விவசாயம் • AI ஜோதிடம் • நிதி வாழ்வியல் டிஜிட்டல் தளம்</p>
+              <p className="text-[11px] text-slate-100">நிலம் • விவசாயம் • AI ஜோதிடம் • நிதி வாழ்வியல் டிஜிட்டல் தளம்</p>
             </div>
           </div>
 
@@ -359,7 +359,7 @@ export default function Home() {
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                   currentModule === mod.id
                     ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                    : 'text-slate-100 hover:text-white hover:bg-slate-900'
                 }`}
               >
                 <span>{mod.icon}</span>
@@ -382,14 +382,14 @@ export default function Home() {
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
                   <span>🌐</span> நம்ம பூமி நிலச் சந்தை & சரிபார்ப்பு மையம்
                 </h2>
-                <p className="text-xs text-slate-400 mt-0.5">நேரடி உரிமையாளர் தொடர்பு • விசிட் பாஸ் • வாட்ஸ்அப் பகிர்வு • லைவ் மேப்</p>
+                <p className="text-xs text-slate-100 mt-0.5">நேரடி உரிமையாளர் தொடர்பு • விசிட் பாஸ் • வாட்ஸ்அப் பகிர்வு • லைவ் மேப்</p>
               </div>
 
               <div className="flex bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs">
                 <button
                   onClick={() => setActiveMainTab('marketplace')}
                   className={`px-3 py-1.5 rounded-lg font-bold transition ${
-                    activeMainTab === 'marketplace' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-400'
+                    activeMainTab === 'marketplace' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-100'
                   }`}
                 >
                   🏪 நிலச் சந்தை ({filteredLands.length})
@@ -397,7 +397,7 @@ export default function Home() {
                 <button
                   onClick={() => setActiveMainTab('audit')}
                   className={`px-3 py-1.5 rounded-lg font-bold transition ${
-                    activeMainTab === 'audit' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-400'
+                    activeMainTab === 'audit' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-100'
                   }`}
                 >
                   📜 A to Z ஜாதகம்
@@ -451,7 +451,7 @@ export default function Home() {
                     </button>
                   </div>
 
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-slate-100">
                     மொத்தம் {filteredLands.length} சரிபார்க்கப்பட்ட நிலங்கள்
                   </span>
                 </div>
@@ -497,7 +497,7 @@ export default function Home() {
                             {land.title}
                           </h3>
 
-                          <div className="text-[11px] text-slate-400 space-y-1">
+                          <div className="text-[11px] text-slate-100 space-y-1">
                             <div className="flex items-center gap-1">
                               <span className="text-emerald-400">📍</span>
                               <span>{land.village}, {land.taluk}</span>
@@ -515,7 +515,7 @@ export default function Home() {
 
                         <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800/80 flex items-center justify-between">
                           <div>
-                            <div className="text-[9px] text-slate-400">கேட்கும் விலை:</div>
+                            <div className="text-[9px] text-slate-100">கேட்கும் விலை:</div>
                             <div className="text-base font-black text-emerald-400">{land.askingPrice}</div>
                           </div>
                           <div className="flex gap-1">
@@ -576,14 +576,14 @@ export default function Home() {
                   <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
                     <span>📜</span> சர்வே எண் உடனடி A to Z நில ஜாதகம் & சட்டத் தணிக்கை
                   </h3>
-                  <p className="text-xs text-slate-400 mb-5">
+                  <p className="text-xs text-slate-100 mb-5">
                     அரசு வருவாய்த்துறை பொது ஆவணங்கள், நிலத்தடி நீர் மட்டம், வழிகாட்டி மதிப்பு மற்றும் 6 அடுக்கு சட்டப் பாதுகாப்புச் சோதனை.
                   </p>
 
                   <form onSubmit={handleSurveySearch} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                       <div>
-                        <label className="text-[11px] text-slate-400 mb-1 block">1. மாவட்டம்</label>
+                        <label className="text-[11px] text-slate-100 mb-1 block">1. மாவட்டம்</label>
                         <select
                           value={selectedDistrict}
                           onChange={handleDistrictChange}
@@ -595,7 +595,7 @@ export default function Home() {
                         </select>
                       </div>
                       <div>
-                        <label className="text-[11px] text-slate-400 mb-1 block">2. வட்டம்</label>
+                        <label className="text-[11px] text-slate-100 mb-1 block">2. வட்டம்</label>
                         <select
                           value={selectedTaluk}
                           onChange={handleTalukChange}
@@ -607,7 +607,7 @@ export default function Home() {
                         </select>
                       </div>
                       <div>
-                        <label className="text-[11px] text-slate-400 mb-1 block">3. கிராமம்</label>
+                        <label className="text-[11px] text-slate-100 mb-1 block">3. கிராமம்</label>
                         <select
                           value={selectedVillage}
                           onChange={(e) => setSelectedVillage(e.target.value)}
@@ -619,7 +619,7 @@ export default function Home() {
                         </select>
                       </div>
                       <div>
-                        <label className="text-[11px] text-slate-400 mb-1 block">4. சர்வே எண்</label>
+                        <label className="text-[11px] text-slate-100 mb-1 block">4. சர்வே எண்</label>
                         <div className="flex gap-1.5">
                           <input
                             type="text"
@@ -652,7 +652,7 @@ export default function Home() {
                             சர்வே எண் #{surveyResult.surveyNo} - அதிகாரப்பூர்வ A to Z ஜாதகம்
                           </h4>
                         </div>
-                        <p className="text-xs text-slate-400 mt-0.5">
+                        <p className="text-xs text-slate-100 mt-0.5">
                           {surveyResult.village}, {surveyResult.taluk}, {surveyResult.district} மாவட்டம்
                         </p>
                       </div>
@@ -686,19 +686,19 @@ export default function Home() {
                       </h5>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">பட்டா எண்</span>
+                          <span className="text-slate-100 block text-[10px]">பட்டா எண்</span>
                           <strong className="text-white text-sm">{surveyResult.pattaNo}</strong>
                         </div>
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">உரிமையாளர்</span>
+                          <span className="text-slate-100 block text-[10px]">உரிமையாளர்</span>
                           <strong className="text-white text-sm">{surveyResult.ownerName}</strong>
                         </div>
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">வகைப்பாடு</span>
+                          <span className="text-slate-100 block text-[10px]">வகைப்பாடு</span>
                           <strong className="text-emerald-400 text-sm">{surveyResult.landType}</strong>
                         </div>
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">பரப்பளவு</span>
+                          <span className="text-slate-100 block text-[10px]">பரப்பளவு</span>
                           <strong className="text-white text-sm">{surveyResult.extent}</strong>
                         </div>
                       </div>
@@ -710,15 +710,15 @@ export default function Home() {
                       </h5>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">அரசு வழிகாட்டி மதிப்பு</span>
+                          <span className="text-slate-100 block text-[10px]">அரசு வழிகாட்டி மதிப்பு</span>
                           <strong className="text-amber-400 text-base">{surveyResult.guidelineValue}</strong>
                         </div>
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">நடப்பு சந்தை மதிப்பு</span>
+                          <span className="text-slate-100 block text-[10px]">நடப்பு சந்தை மதிப்பு</span>
                           <strong className="text-emerald-400 text-base">{surveyResult.marketValue}</strong>
                         </div>
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">எதிர்கால வளர்ச்சி</span>
+                          <span className="text-slate-100 block text-[10px]">எதிர்கால வளர்ச்சி</span>
                           <span className="text-slate-300 text-[11px] block mt-0.5">{surveyResult.futureGrowth}</span>
                         </div>
                       </div>
@@ -789,7 +789,7 @@ export default function Home() {
                   <span className="text-2xl">📢</span>
                   <h3 className="text-xl font-bold text-white">உங்கள் நிலத்தை நேரடி விற்பனைக்கு பட்டியலிடுங்கள்</h3>
                 </div>
-                <p className="text-xs text-slate-400 mb-6">
+                <p className="text-xs text-slate-100 mb-6">
                   இடைத்தரகர்கள் இன்றி, உண்மையான வாங்குபவர்களிடம் இருந்து நேரடியாக அழைப்புகள் மற்றும் விசிட் பாஸ்களைப் பெறுங்கள்.
                 </p>
 
@@ -908,7 +908,7 @@ export default function Home() {
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <span>🔮</span> AI மகா வேத ஜோதிட & எளிய பரிகார மையம் (Universal Astro Engine)
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-100 mt-1">
                   வேத ஜாதகம் • KP முறை • நாடி ஜோதிடம் • எண் கணிதம் • மனை வாஸ்து • சுப முகூர்த்தம் • திருத்தல பரிகாரங்கள்
                 </p>
               </div>
@@ -930,7 +930,7 @@ export default function Home() {
                     className={`px-3 py-1.5 rounded-lg font-bold transition ${
                       astroMethodTab === tab.id
                         ? 'bg-emerald-500 text-slate-950 shadow'
-                        : 'text-slate-400 hover:text-white'
+                        : 'text-slate-100 hover:text-white'
                     }`}
                   >
                     {tab.label}
@@ -945,14 +945,14 @@ export default function Home() {
                 <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
                   <span>✨</span> ஜாதகப் பிறந்த விபரம் உள்ளிட்ட உடனடி AI பகுப்பாய்வு
                 </span>
-                <span className="text-[10px] text-slate-400 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">
+                <span className="text-[10px] text-slate-100 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">
                   துல்லிய வானியல் கணிப்பான் (Astronomical Ephemeris)
                 </span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">பெயர்</label>
+                  <label className="text-[10px] text-slate-100 block mb-1">பெயர்</label>
                   <input
                     type="text"
                     value={birthDetails.name}
@@ -961,7 +961,7 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">பிறந்த தேதி</label>
+                  <label className="text-[10px] text-slate-100 block mb-1">பிறந்த தேதி</label>
                   <input
                     type="date"
                     value={birthDetails.dob}
@@ -970,7 +970,7 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">பிறந்த நேரம்</label>
+                  <label className="text-[10px] text-slate-100 block mb-1">பிறந்த நேரம்</label>
                   <input
                     type="time"
                     value={birthDetails.tob}
@@ -979,7 +979,7 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">பிறந்த ஊர்</label>
+                  <label className="text-[10px] text-slate-100 block mb-1">பிறந்த ஊர்</label>
                   <input
                     type="text"
                     value={birthDetails.pob}
@@ -988,7 +988,7 @@ export default function Home() {
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">ராசி</label>
+                  <label className="text-[10px] text-slate-100 block mb-1">ராசி</label>
                   <select
                     value={birthDetails.rasi}
                     onChange={(e) => setBirthDetails({ ...birthDetails, rasi: e.target.value })}
@@ -1000,7 +1000,7 @@ export default function Home() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">நட்சத்திரம்</label>
+                  <label className="text-[10px] text-slate-100 block mb-1">நட்சத்திரம்</label>
                   <select
                     value={birthDetails.nakshatra}
                     onChange={(e) => setBirthDetails({ ...birthDetails, nakshatra: e.target.value })}
@@ -1041,11 +1041,11 @@ export default function Home() {
 
                   <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
                     <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                      <span className="text-slate-400 block text-[10px]">தற்போதைய தசா-புக்தி இருப்பு</span>
+                      <span className="text-slate-100 block text-[10px]">தற்போதைய தசா-புக்தி இருப்பு</span>
                       <strong className="text-emerald-400 text-sm">குரு தசை - சுக்கிர புக்தி</strong>
                     </div>
                     <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                      <span className="text-slate-400 block text-[10px]">சொத்து சேர உகந்த காலம்</span>
+                      <span className="text-slate-100 block text-[10px]">சொத்து சேர உகந்த காலம்</span>
                       <strong className="text-amber-400 text-sm">அடுத்த 8 முதல் 14 மாதங்கள்</strong>
                     </div>
                   </div>
@@ -1055,11 +1055,11 @@ export default function Home() {
                   <h4 className="font-bold text-white text-sm">🧭 உகந்த திசை & நிறங்கள்</h4>
                   <div className="text-xs space-y-2 text-slate-300">
                     <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-                      <span className="text-slate-400 text-[10px] block">மனை பார்க்க வேண்டிய திசை:</span>
+                      <span className="text-slate-100 text-[10px] block">மனை பார்க்க வேண்டிய திசை:</span>
                       <strong className="text-white">வடக்கு அல்லது கிழக்கு பார்த்த மனை</strong>
                     </div>
                     <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-                      <span className="text-slate-400 text-[10px] block">அதிர்ஷ்ட வஸ்திர நிறம்:</span>
+                      <span className="text-slate-100 text-[10px] block">அதிர்ஷ்ட வஸ்திர நிறம்:</span>
                       <strong className="text-emerald-400">வெள்ளை, வெளிர் பச்சை, மஞ்சள்</strong>
                     </div>
                   </div>
@@ -1074,31 +1074,31 @@ export default function Home() {
                   <span className="text-2xl">🎯</span>
                   <div>
                     <h3 className="text-base font-bold text-white">KP ஜோதிட முறை - உப அதிபதி (Sub-Lord) துல்லிய கணிப்பு</h3>
-                    <p className="text-xs text-slate-400">கிருஷ்ணமூர்த்தி பத்ததி முறைப்படி நிகழ்வுகள் நடைபெறும் துல்லிய காலம்</p>
+                    <p className="text-xs text-slate-100">கிருஷ்ணமூர்த்தி பத்ததி முறைப்படி நிகழ்வுகள் நடைபெறும் துல்லிய காலம்</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs pt-2">
                   <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
-                    <span className="text-slate-400 block text-[10px]">4-ஆம் பாவக உப அதிபதி (4th Cusp Sub-Lord)</span>
+                    <span className="text-slate-100 block text-[10px]">4-ஆம் பாவக உப அதிபதி (4th Cusp Sub-Lord)</span>
                     <strong className="text-emerald-400 text-base">செவ்வாய் (Mars)</strong>
-                    <p className="text-slate-400 text-[11px] pt-1">
+                    <p className="text-slate-100 text-[11px] pt-1">
                       4, 11-ஆம் பாவங்களுடன் தொடர்புகொள்வதால் நிலம் வாங்குவது 100% உறுதியாகும்.
                     </p>
                   </div>
 
                   <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
-                    <span className="text-slate-400 block text-[10px]">10-ஆம் பாவ தொழில் வெற்றி (Career Sub-Lord)</span>
+                    <span className="text-slate-100 block text-[10px]">10-ஆம் பாவ தொழில் வெற்றி (Career Sub-Lord)</span>
                     <strong className="text-sky-400 text-base">புதன் (Mercury)</strong>
-                    <p className="text-slate-400 text-[11px] pt-1">
+                    <p className="text-slate-100 text-[11px] pt-1">
                       ரியல் எஸ்டேட், விவசாயம் மற்றும் தகவல் தொழில்நுட்பம் சார்ந்த தொழிலில் உச்ச லாபம் கிடைக்கும்.
                     </p>
                   </div>
 
                   <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
-                    <span className="text-slate-400 block text-[10px]">கடன் அனுமதி காலம் (Loan Approval Date)</span>
+                    <span className="text-slate-100 block text-[10px]">கடன் அனுமதி காலம் (Loan Approval Date)</span>
                     <strong className="text-amber-400 text-base">சூரிய அந்தரம் (2026 இறுதிக்குள்)</strong>
-                    <p className="text-slate-400 text-[11px] pt-1">
+                    <p className="text-slate-100 text-[11px] pt-1">
                       வங்கி மனை/வீட்டுக் கடன் தங்கு தடையின்றி உடனடியாக ஒப்புதலாகும்.
                     </p>
                   </div>
@@ -1113,7 +1113,7 @@ export default function Home() {
                   <span className="text-2xl">📜</span>
                   <div>
                     <h3 className="text-base font-bold text-white">அகத்தியர் & சுகர் நாடி ஜோதிட சாரம்</h3>
-                    <p className="text-xs text-slate-400">பூர்வ புண்ணியம், முற்பிறவி கர்ம வினைகள் மற்றும் ஆன்ம வழிகாட்டல்</p>
+                    <p className="text-xs text-slate-100">பூர்வ புண்ணியம், முற்பிறவி கர்ம வினைகள் மற்றும் ஆன்ம வழிகாட்டல்</p>
                   </div>
                 </div>
 
@@ -1132,27 +1132,27 @@ export default function Home() {
             {astroMethodTab === 'numerology' && (
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-1">
-                  <span className="text-xs text-slate-400">பிறவி எண் (Birth Number)</span>
+                  <span className="text-xs text-slate-100">பிறவி எண் (Birth Number)</span>
                   <div className="text-3xl font-black text-emerald-400">6</div>
-                  <span className="text-[10px] text-slate-500">சுக்கிரனின் ஆதிக்கம் (அழகு, வசதி)</span>
+                  <span className="text-[10px] text-slate-200">சுக்கிரனின் ஆதிக்கம் (அழகு, வசதி)</span>
                 </div>
 
                 <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-1">
-                  <span className="text-xs text-slate-400">விதி எண் (Destiny Number)</span>
+                  <span className="text-xs text-slate-100">விதி எண் (Destiny Number)</span>
                   <div className="text-3xl font-black text-sky-400">9</div>
-                  <span className="text-[10px] text-slate-500">செவ்வாயின் ஆதிக்கம் (பூமி, நிலம்)</span>
+                  <span className="text-[10px] text-slate-200">செவ்வாயின் ஆதிக்கம் (பூமி, நிலம்)</span>
                 </div>
 
                 <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-1">
-                  <span className="text-xs text-slate-400">அதிர்ஷ்ட தேதிகள்</span>
+                  <span className="text-xs text-slate-100">அதிர்ஷ்ட தேதிகள்</span>
                   <div className="text-xl font-bold text-amber-400">6, 15, 24 & 9, 18, 27</div>
-                  <span className="text-[10px] text-slate-500">ஒப்பந்தம் செய்ய உகந்தது</span>
+                  <span className="text-[10px] text-slate-200">ஒப்பந்தம் செய்ய உகந்தது</span>
                 </div>
 
                 <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-1">
-                  <span className="text-xs text-slate-400">அதிர்ஷ்ட வாகன எண் கூட்டு</span>
+                  <span className="text-xs text-slate-100">அதிர்ஷ்ட வாகன எண் கூட்டு</span>
                   <div className="text-2xl font-black text-purple-400">கூட்டு எண் 6</div>
-                  <span className="text-[10px] text-slate-500">விபத்து தவிர்த்து வெற்றி தரும்</span>
+                  <span className="text-[10px] text-slate-200">விபத்து தவிர்த்து வெற்றி தரும்</span>
                 </div>
               </div>
             )}
@@ -1214,11 +1214,11 @@ export default function Home() {
                     </div>
                     <div className="text-xs space-y-2">
                       <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-                        <span className="text-slate-400 block text-[10px]">உகந்த திதி & நட்சத்திரம்</span>
+                        <span className="text-slate-100 block text-[10px]">உகந்த திதி & நட்சத்திரம்</span>
                         <strong className="text-emerald-400">{m.date}</strong>
                       </div>
                       <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-                        <span className="text-slate-400 block text-[10px]">சுப ஓரை நேரம்</span>
+                        <span className="text-slate-100 block text-[10px]">சுப ஓரை நேரம்</span>
                         <strong className="text-white">{m.time}</strong>
                       </div>
                       <div className="text-[11px] text-rose-300 bg-rose-950/30 p-2 rounded-lg border border-rose-900/40">
@@ -1284,7 +1284,7 @@ export default function Home() {
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <span>🌾</span> உழவர் களம் - விவசாயம் (Agri 360)
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-100 mt-1">
                   மண் சார்ந்த பயிர் வழிகாட்டல் • அரசு மானியத் திட்டங்கள் • விவசாய நிலக் குத்தகை மேசை
                 </p>
               </div>
@@ -1293,7 +1293,7 @@ export default function Home() {
                 <button
                   onClick={() => setAgriSubTab('crops')}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
-                    agriSubTab === 'crops' ? 'bg-emerald-500 text-slate-950' : 'bg-slate-900 text-slate-400 border border-slate-800'
+                    agriSubTab === 'crops' ? 'bg-emerald-500 text-slate-950' : 'bg-slate-900 text-slate-100 border border-slate-800'
                   }`}
                 >
                   மண் & பயிர் ஆலோசனை
@@ -1323,7 +1323,7 @@ export default function Home() {
                   <div key={idx} className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
                     <h4 className="font-bold text-white text-base">{s.soil}</h4>
                     <p className="text-xs text-emerald-400">உகந்த பயிர்கள்: {s.crops}</p>
-                    <p className="text-xs text-slate-400">பாசனம்: {s.irrigation}</p>
+                    <p className="text-xs text-slate-100">பாசனம்: {s.irrigation}</p>
                   </div>
                 ))}
               </div>
@@ -1340,7 +1340,7 @@ export default function Home() {
             <h3 className="text-xl font-black text-white">
               {navigationModules.find((m) => m.id === currentModule)?.label}
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-100 leading-relaxed">
               நம்ம பூமி 360 பெருந்திட்டத்தின்படி இப்பிரிவின் சேவைகள் அடுத்த கட்டமாக இணைக்கப்பட்டு வருகின்றன.
             </p>
             <button
@@ -1361,7 +1361,7 @@ export default function Home() {
                   setActiveLoanLand(null);
                   setLoanSuccess(false);
                 }}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white font-bold bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center"
+                className="absolute top-4 right-4 text-slate-100 hover:text-white font-bold bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center"
               >
                 ✕
               </button>
@@ -1371,17 +1371,17 @@ export default function Home() {
                   <div>
                     <span className="text-emerald-400 font-bold uppercase tracking-wider text-[10px]">வங்கி மனை கடன் உதவி</span>
                     <h3 className="font-bold text-base text-white">{activeLoanLand.village} நிலத்திற்கான கடன் தகுதி</h3>
-                    <p className="text-slate-400 text-[11px]">சர்வே எண் #{activeLoanLand.surveyNo}</p>
+                    <p className="text-slate-100 text-[11px]">சர்வே எண் #{activeLoanLand.surveyNo}</p>
                   </div>
 
                   <div className="bg-slate-950 p-4 rounded-2xl border border-emerald-500/30 flex justify-between items-center">
                     <div>
-                      <span className="text-[10px] text-slate-400 block">மாதாந்திர தோராய EMI (8.5%)</span>
+                      <span className="text-[10px] text-slate-100 block">மாதாந்திர தோராய EMI (8.5%)</span>
                       <span className="text-xl font-black text-emerald-400">
                         ₹{calculateEMI(loanAmount, loanTenure).toLocaleString('en-IN')} / மாதம்
                       </span>
                     </div>
-                    <span className="text-[10px] text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">
+                    <span className="text-[10px] text-slate-100 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">
                       {loanTenure} ஆண்டுகள்
                     </span>
                   </div>
@@ -1459,7 +1459,7 @@ export default function Home() {
             <div className="bg-slate-900 border border-emerald-500/40 rounded-3xl p-6 max-w-2xl w-full shadow-2xl relative">
               <button
                 onClick={() => setActiveMapModalLand(null)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white font-bold bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center"
+                className="absolute top-4 right-4 text-slate-100 hover:text-white font-bold bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center"
               >
                 ✕
               </button>
@@ -1482,7 +1482,7 @@ export default function Home() {
                 ></iframe>
               </div>
 
-              <div className="flex items-center justify-between text-xs text-slate-400">
+              <div className="flex items-center justify-between text-xs text-slate-100">
                 <span>📍 {activeMapModalLand.village}, {activeMapModalLand.district}</span>
                 <button
                   onClick={() => setActiveMapModalLand(null)}
@@ -1501,7 +1501,7 @@ export default function Home() {
             <div className="bg-slate-900 border border-emerald-500/40 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl relative">
               <button
                 onClick={() => setContactModalLand(null)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white font-bold bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center"
+                className="absolute top-4 right-4 text-slate-100 hover:text-white font-bold bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center"
               >
                 ✕
               </button>
@@ -1509,7 +1509,7 @@ export default function Home() {
               {!generatedPass ? (
                 <div>
                   <h3 className="font-bold text-base text-white mb-1">நம்ம பூமி 360 விசிட் பாஸ்</h3>
-                  <p className="text-[11px] text-slate-400 mb-4">சர்வே எண் #{contactModalLand.surveyNo} • {contactModalLand.village}</p>
+                  <p className="text-[11px] text-slate-100 mb-4">சர்வே எண் #{contactModalLand.surveyNo} • {contactModalLand.village}</p>
 
                   <form onSubmit={handleGeneratePass} className="space-y-4 text-xs">
                     <div>
@@ -1541,22 +1541,22 @@ export default function Home() {
                         type="button"
                         onClick={() => setBuyerType('loan')}
                         className={`p-3 rounded-xl border text-left transition ${
-                          buyerType === 'loan' ? 'bg-emerald-950/60 border-emerald-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-400'
+                          buyerType === 'loan' ? 'bg-emerald-950/60 border-emerald-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-100'
                         }`}
                       >
                         <div className="font-bold text-xs">🏦 வங்கிக் கடன்</div>
-                        <div className="text-[10px] text-slate-400">80% உடனடி கடன் தகுதி</div>
+                        <div className="text-[10px] text-slate-100">80% உடனடி கடன் தகுதி</div>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setBuyerType('cash')}
                         className={`p-3 rounded-xl border text-left transition ${
-                          buyerType === 'cash' ? 'bg-amber-950/60 border-amber-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-400'
+                          buyerType === 'cash' ? 'bg-amber-950/60 border-amber-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-100'
                         }`}
                       >
                         <div className="font-bold text-xs text-amber-400">👑 நேரடி ரொக்கம் (VIP)</div>
-                        <div className="text-[10px] text-slate-400">டோர்ஸ்டெப் அசல் சரிபார்ப்பு</div>
+                        <div className="text-[10px] text-slate-100">டோர்ஸ்டெப் அசல் சரிபார்ப்பு</div>
                       </button>
                     </div>
 
@@ -1573,13 +1573,13 @@ export default function Home() {
                   <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl text-center">
                     <span className="text-xs uppercase text-emerald-400 font-bold block mb-1">அங்கீகரிக்கப்பட்ட விசிட் டோக்கன்</span>
                     <div className="text-2xl font-black text-white">{generatedPass.code}</div>
-                    <span className="text-[10px] text-slate-400 block mt-1">பயனர்: {generatedPass.buyerName} ({generatedPass.buyerPhone})</span>
+                    <span className="text-[10px] text-slate-100 block mt-1">பயனர்: {generatedPass.buyerName} ({generatedPass.buyerPhone})</span>
                   </div>
 
                   <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1.5">
-                    <div className="text-slate-400">நில உரிமையாளர்: <strong className="text-white">{generatedPass.land.ownerName}</strong></div>
-                    <div className="text-slate-400">தொடர்பு எண்: <strong className="text-emerald-400 text-base">{generatedPass.land.phone}</strong></div>
-                    <p className="text-[10px] text-slate-500">அழைக்கும் போது விசிட் டோக்கன் எண்ணைத் தெரிவிக்கவும்.</p>
+                    <div className="text-slate-100">நில உரிமையாளர்: <strong className="text-white">{generatedPass.land.ownerName}</strong></div>
+                    <div className="text-slate-100">தொடர்பு எண்: <strong className="text-emerald-400 text-base">{generatedPass.land.phone}</strong></div>
+                    <p className="text-[10px] text-slate-200">அழைக்கும் போது விசிட் டோக்கன் எண்ணைத் தெரிவிக்கவும்.</p>
                   </div>
 
                   <button

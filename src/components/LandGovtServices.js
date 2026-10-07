@@ -18,7 +18,7 @@ export default function LandGovtServices() {
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
             அரசு நில ஆவண வழிகாட்டல் & சரிபார்ப்பு மையம்
           </h3>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-100 mt-1">
             பட்டா, சிட்டா, FMB வரைபடம் மற்றும் வில்லங்கச் சான்றுகளை ஆன்லைனில் சரிபார்க்கும் நேரடி உதவி.
           </p>
         </div>
@@ -38,7 +38,7 @@ export default function LandGovtServices() {
                 </span>
               </div>
               <h4 className="text-base font-bold text-slate-100">{service.title}</h4>
-              <p className="text-xs text-slate-400 mt-0.5">{service.subtitle}</p>
+              <p className="text-xs text-slate-100 mt-0.5">{service.subtitle}</p>
               <p className="text-xs text-slate-300 mt-3 leading-relaxed">
                 {service.description}
               </p>

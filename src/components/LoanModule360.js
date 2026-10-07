@@ -59,7 +59,7 @@ export default function LoanModule360() {
         <h2 className="text-2xl sm:text-4xl font-black text-white">
           மனை & வீட்டுக் கடன் <span className="text-emerald-400">EMI கால்குலேட்டர்</span>
         </h2>
-        <p className="text-slate-400 text-sm max-w-xl mx-auto">
+        <p className="text-slate-100 text-sm max-w-xl mx-auto">
           உங்கள் மாதத் தவணையை (EMI) துல்லியமாகக் கணக்கிட்டு உடனடியாக விண்ணப்பியுங்கள்
         </p>
       </div>
@@ -83,7 +83,7 @@ export default function LoanModule360() {
               onChange={(e) => setLoanAmount(Number(e.target.value))}
               className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
             />
-            <div className="flex justify-between text-[11px] text-slate-500">
+            <div className="flex justify-between text-[11px] text-slate-200">
               <span>{ranges.amount.minLabel}</span>
               <span>{ranges.amount.maxLabel}</span>
             </div>
@@ -104,7 +104,7 @@ export default function LoanModule360() {
               onChange={(e) => setInterestRate(Number(e.target.value))}
               className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
             />
-            <div className="flex justify-between text-[11px] text-slate-500">
+            <div className="flex justify-between text-[11px] text-slate-200">
               <span>{ranges.interest.minLabel}</span>
               <span>{ranges.interest.maxLabel}</span>
             </div>
@@ -125,7 +125,7 @@ export default function LoanModule360() {
               onChange={(e) => setTenureYears(Number(e.target.value))}
               className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
             />
-            <div className="flex justify-between text-[11px] text-slate-500">
+            <div className="flex justify-between text-[11px] text-slate-200">
               <span>{ranges.tenure.minLabel}</span>
               <span>{ranges.tenure.maxLabel}</span>
             </div>
@@ -136,22 +136,22 @@ export default function LoanModule360() {
         <div className="lg:col-span-5 bg-gradient-to-br from-slate-950 to-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="text-center pb-4 border-b border-slate-800">
-              <span className="text-xs text-slate-400 uppercase tracking-wider">மாதத் தவணை (EMI)</span>
+              <span className="text-xs text-slate-100 uppercase tracking-wider">மாதத் தவணை (EMI)</span>
               <div className="text-3xl sm:text-4xl font-black text-emerald-400 mt-1">
                 ₹{emi.toLocaleString('en-IN')}
               </div>
             </div>
 
             <div className="space-y-2.5 text-xs sm:text-sm">
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-slate-100">
                 <span>அசல் தொகை:</span>
                 <span className="font-semibold text-white">₹{loanAmount.toLocaleString('en-IN')}</span>
               </div>
-              <div className="flex justify-between text-slate-400">
+              <div className="flex justify-between text-slate-100">
                 <span>மொத்த வட்டி:</span>
                 <span className="font-semibold text-amber-400">₹{totalInterest.toLocaleString('en-IN')}</span>
               </div>
-              <div className="flex justify-between text-slate-400 pt-2 border-t border-slate-800/80">
+              <div className="flex justify-between text-slate-100 pt-2 border-t border-slate-800/80">
                 <span>மொத்த திருப்பிச் செலுத்துதல்:</span>
                 <span className="font-bold text-white">₹{totalPayment.toLocaleString('en-IN')}</span>
               </div>

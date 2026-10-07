@@ -285,7 +285,7 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
           >
             {gpsLoading ? '⏳ கண்டறிகிறது...' : '📍 என் இருப்பிடம் (Live GPS)'}
           </button>
-          <span className="text-xs text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700">
+          <span className="text-xs text-slate-100 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700">
             செயற்கைக்கோள் வசதியுடன்
           </span>
         </div>

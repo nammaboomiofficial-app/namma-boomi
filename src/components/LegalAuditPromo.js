@@ -107,10 +107,10 @@ export default function LegalAuditPromo() {
             <div className="border-b border-slate-800 pb-3 flex justify-between items-center">
               <div>
                 <h3 className="text-base font-bold text-white">ஆடிட் அறிக்கை முன்பதிவு</h3>
-                <p className="text-xs text-slate-400">உடனடி சரிபார்ப்பு & வாட்ஸ்அப் டெலிவரி</p>
+                <p className="text-xs text-slate-100">உடனடி சரிபார்ப்பு & வாட்ஸ்அப் டெலிவரி</p>
               </div>
               <div className="text-right">
-                <span className="text-xs text-slate-400 line-through block">₹1,999</span>
+                <span className="text-xs text-slate-100 line-through block">₹1,999</span>
                 <span className="text-xl font-extrabold text-emerald-400">₹499</span>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function LegalAuditPromo() {
                 <span>🛡️</span> ₹499-ல் தணிக்கை கோருங்கள் (WhatsApp)
               </button>
 
-              <p className="text-[10px] text-center text-slate-400">
+              <p className="text-[10px] text-center text-slate-100">
                 🔒 100% பாதுகாப்பானது • உங்கள் தகவல்கள் ரகசியமாக வைக்கப்படும்
               </p>
             </form>
@@ -184,18 +184,29 @@ export default function LegalAuditPromo() {
 
       {/* மாதிரி அறிக்கை பாப்-அப் மாடல் (Sample Certificate Modal) */}
       {showSample && (
-        // ✅ புதிய வரிகள் (167 & 168):
-<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-  <div className="relative w-full max-w-xl bg-white text-slate-800 rounded-3xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto">
+        
+<div onClick={() => setShowSample(false)} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm cursor-pointer">
+  <div id="printable-audit-report" onClick={(e) => e.stopPropagation()} className="relative w-full max-w-xl bg-white text-slate-800 rounded-3xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto">
             
-            {/* மாடல் மூடும் பட்டன் */}
-            <button
-              onClick={() => setShowSample(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl font-bold bg-slate-100 hover:bg-slate-200 w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer"
-            >
-              ✕
-            </button>
-
+           
+{/* PDF பதிவிறக்க பட்டன் & மாடல் மூடும் பட்டன் */}
+<div className="absolute top-3 right-3 flex items-center gap-1.5 z-20 print:hidden">
+  <button
+    type="button"
+   onClick={() => window.print()}
+    className="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] px-2.5 py-1 rounded-md flex items-center gap-1 shadow font-medium transition-all"
+    title="PDF பதிவிறக்கம் செய்க"
+  >
+    <span>📥</span> PDF டவுன்லோட்
+  </button>
+  <button
+    type="button"
+    onClick={() => setShowSample(false)}
+    className="text-slate-100 hover:text-slate-700 text-lg font-bold px-1"
+  >
+    ✕
+  </button>
+</div>
             {/* சான்றிதழ் மாதிரி தலைப்பு */}
             <div className="flex items-center justify-between border-b pb-4 border-slate-200">
               <div className="flex items-center gap-2">
@@ -291,7 +302,7 @@ export default function LegalAuditPromo() {
                 எனது நிலத்திற்கும் சரிபார்ப்பு செய்க (₹499)
               </button>
 
-              <p className="text-[9px] text-slate-400 text-center leading-tight">
+              <p className="text-[9px] text-slate-100 text-center leading-tight">
                 ⚖️ <strong>பொறுப்புத் துறப்பு:</strong> இந்த அறிக்கை தமிழ்நாடு அரசின் Tnreginet மற்றும் e-Services அதிகாரப்பூர்வ பொதுத் தரவுகளின் அடிப்படையில் ஆய்வு செய்து வழங்கப்படும் டிஜிட்டல் சரிபார்ப்பு அறிக்கையாகும்.
               </p>
             </div>

@@ -36,7 +36,7 @@ export default function AdminDashboard() {
           <span className="w-9 h-9 rounded-xl bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-lg shadow-lg shadow-emerald-500/20">360</span>
           <div>
             <h1 className="text-base font-bold text-white tracking-wide">நம்ம பூமி 360 - அட்மின் சிஆர்எம்</h1>
-            <p className="text-xs text-slate-400">லீட்ஸ் & தணிக்கை மேலாண்மை தளம்</p>
+            <p className="text-xs text-slate-100">லீட்ஸ் & தணிக்கை மேலாண்மை தளம்</p>
           </div>
         </div>
         <Link href="/" className="text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-lg transition-colors">
@@ -54,7 +54,7 @@ export default function AdminDashboard() {
                 🔒
               </div>
               <h2 className="text-lg font-bold text-white mb-1">அட்மின் உள்நுழைவு</h2>
-              <p className="text-xs text-slate-400 mb-6">லீட்களைப் பார்க்க உங்கள் 4 இலக்க PIN உள்ளிடவும்</p>
+              <p className="text-xs text-slate-100 mb-6">லீட்களைப் பார்க்க உங்கள் 4 இலக்க PIN உள்ளிடவும்</p>
 
               <form onSubmit={handleLogin} className="space-y-4">
                 <input
