@@ -13,7 +13,7 @@ import LandGovtServices from '../components/LandGovtServices';
 import LandCalculator from '../components/LandCalculator';
 import SellLandModal from '../components/SellLandModal';
 import contactConfig from '../data/contactConfig';
-import DocumentAnalysisBureau from '../components/DocumentAnalysisBureau';
+
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
 import LegalAuditPromo from '../components/LegalAuditPromo';
 import LoanModule360 from '../components/LoanModule360';
@@ -50,6 +50,8 @@ export default function Home() {
   const [visitorName, setVisitorName] = useState('');
   const [visitorPhone, setVisitorPhone] = useState('');
   const [calcLandValue, setCalcLandValue] = useState(1000000);
+  const [selectedLoanLand, setSelectedLoanLand] = useState(null);
+  
 
   // விவசாயம் சப்-டேப்கள்
   const [agriSubTab, setAgriSubTab] = useState('crops');
@@ -877,21 +879,208 @@ export default function Home() {
                             <span>🎫</span> விசிட் பாஸ் & எண் பெறுக
                           </button>
 
-                          <button
-                            onClick={() => {
-                              const msg = `வணக்கம் நம்ம பூமி 360, நான் தளத்தில் பார்த்த இந்த நிலத்திற்கு 80% வங்கிக் கடன் மற்றும் EMI வழிகாட்டல் உதவி பெற விரும்புகிறேன்.\n\n• நில விவரம்: ${land.title}`;
-                              window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
-                            }}
-                            className="w-full bg-slate-800 hover:bg-slate-700 text-emerald-400 hover:text-emerald-300 font-bold py-2 rounded-xl text-xs transition border border-slate-700 flex items-center justify-center gap-1.5 cursor-pointer"
-                          >
-                            <span>🏦</span> 80% கடன் & EMI உதவி
-                          </button>
+                         <button
+                type="button"
+                onClick={() => setSelectedLoanLand(land)}
+                className="w-full py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer select-none active:scale-95 transition bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30"
+              >
+                <span>🏦</span> <span>கடன், EMI & ஆவண வழிகாட்டல் (DAB)</span>
+              </button>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-                <DocumentAnalysisBureau />
+               {/* 🌟 ஒருங்கிணைந்த சேவை மையம்: கடன், EMI & சட்ட ஆவண ஆய்வு (DAB) */}
+      {/* 🌟 100% Zero-Scroll கச்சிதமான மனை சேவை மையம் */}
+      {selectedLoanLand && (() => {
+        const rawPrice = selectedLoanLand.approxValue || 4500000;
+        const loanAmount = Math.round(rawPrice * 0.8);
+        const interestRate = 8.5;
+        const monthlyRate = interestRate / 12 / 100;
+        const totalMonths = (loanTenure || 10) * 12;
+        
+        const emi = Math.round(
+          (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) /
+          (Math.pow(1 + monthlyRate, totalMonths) - 1)
+        );
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 animate-fadeIn">
+            <div className="relative w-full max-w-2xl rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-emerald-500/40 p-4 shadow-2xl text-white">
+              {/* க்ளோஸ் பட்டன் */}
+              <button
+                type="button"
+                onClick={() => setSelectedLoanLand(null)}
+                className="absolute top-2.5 right-2.5 text-slate-400 hover:text-white p-1 rounded-full hover:bg-slate-800 transition"
+              >
+                ✕
+              </button>
+
+              {/* தலைப்பு */}
+              <div className="text-center mb-3">
+                <h3 className="text-sm font-bold text-emerald-400 flex items-center justify-center gap-1.5">
+                  <span>🏛️</span> பூமி 360 - மனை சேவை மையம்
+                </h3>
+                <p className="text-[11px] text-slate-200 font-medium truncate mt-0.5">
+                  {selectedLoanLand.title} <span className="text-slate-400">({selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'})</span>
+                </p>
+              </div>
+
+              {/* இரு பக்க கிரிட் (No Scroll Layout) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* இடது பக்கம்: கடன் & EMI */}
+                <div className="bg-slate-800/60 rounded-xl p-3 border border-slate-700/50 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[11px] font-bold text-emerald-300 block mb-2">🏦 80% வங்கி கடன் & EMI</span>
+                    
+                    <div className="space-y-1 text-[11px] mb-2.5">
+                      <div className="flex justify-between text-slate-300">
+                        <span>நில மதிப்பு:</span>
+                        <span className="font-semibold text-white">₹{rawPrice.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-300">
+                        <span>80% கடன்:</span>
+                        <span className="font-bold text-emerald-400">₹{loanAmount.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="flex justify-between items-center pt-1 border-t border-slate-700/60">
+                        <span className="text-slate-200 font-medium">மாத EMI:</span>
+                        <span className="text-sm font-extrabold text-emerald-400">
+                          ₹{emi.toLocaleString('en-IN')}<span className="text-[9px] text-slate-400">/மா</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* ஸ்லைடர் */}
+                    <div className="mb-3">
+                      <div className="flex justify-between text-[10px] text-slate-400 mb-0.5">
+                        <span>கால அளவு:</span>
+                        <span className="font-bold text-emerald-300">{loanTenure || 10} ஆண்டுகள்</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="5"
+                        max="20"
+                        step="1"
+                        value={loanTenure || 10}
+                        onChange={(e) => setLoanTenure && setLoanTenure(Number(e.target.value))}
+                        className="w-full accent-emerald-500 cursor-pointer h-1 bg-slate-700 rounded-lg"
+                      />
+                      <div className="flex justify-between text-[9px] text-slate-500 mt-0.5">
+                        <span>5 வருடம்</span>
+                        <span>10 வருடம்</span>
+                        <span>20 வருடம்</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* விண்ணப்ப பட்டன் */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const message = `*🏦 பூமி 360 - 80% கடன் & EMI உதவி விண்ணப்பம்*\n\n` +
+                        `📍 *நிலம்:* ${selectedLoanLand.title}\n` +
+                        `🔢 *சர்வே எண்:* ${selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'}\n` +
+                        `💰 *மதிப்பிடப்பட்ட கடன்:* ₹${loanAmount.toLocaleString('en-IN')}\n` +
+                        `⏳ *தேர்ந்தெடுத்த காலம்:* ${loanTenure || 10} ஆண்டுகள்\n` +
+                        `📊 *மாதத் தவணை (EMI):* ₹${emi.toLocaleString('en-IN')} / மாதம்\n\n` +
+                        `✅ எனக்கு இந்த நிலத்திற்கான வங்கி கடன் ஒப்புதல் செயல்முறைக்கு வழிகாட்டவும்.`;
+                      window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(message)}`, '_blank');
+                      setSelectedLoanLand(null);
+                    }}
+                    className="w-full py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer active:scale-95 transition bg-emerald-600 hover:bg-emerald-500 text-slate-950 mt-1"
+                  >
+                    <span>💬</span> <span>இந்த EMI-யில் கடன் பெறுக</span>
+                  </button>
+                </div>
+
+                {/* வலது பக்கம்: ஆவண ஆய்வு, சர்வேயர் & அரசு சேவைகள் */}
+                <div className="flex flex-col justify-between space-y-2.5">
+                  {/* நேரடி சேவை பட்டன்கள் */}
+                  <div className="space-y-1.5">
+                    <span className="text-[11px] font-bold text-cyan-300 block">⚖️ ஆவண ஆய்வு & சர்வே சேவைகள்</span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const msg = `*⚖️ பூமி 360 - 30 ஆண்டு தாய் பத்திர சட்ட ஆய்வு கோரிக்கை*\n\n` +
+                            `📍 *நிலம்:* ${selectedLoanLand.title}\n` +
+                            `🔢 *சர்வே எண்:* ${selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'}\n` +
+                            `💰 *ஆய்வுக் கட்டணம்:* ₹1,999\n\n` +
+                            `✅ இந்த நிலத்திற்கான தாய் பத்திரங்களை ஆய்வு செய்து 48 மணிநேர சட்ட சான்றிதழ் வழிகாட்டல் தர வேண்டுகிறேன்.`;
+                          window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
+                          setSelectedLoanLand(null);
+                        }}
+                        className="p-2 bg-slate-800 hover:bg-slate-700/80 border border-cyan-500/30 rounded-lg text-left text-cyan-300 transition"
+                      >
+                        <div className="text-[11px] font-bold leading-tight">📜 பத்திர ஆய்வு (₹1,999)</div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">48 மணிநேர அறிக்கை</div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const msg = `*📐 பூமி 360 - டிஜிட்டல் நில அளவையர் முன்பதிவு*\n\n` +
+                            `📍 *நிலம்:* ${selectedLoanLand.title}\n` +
+                            `🔢 *சர்வே எண்:* ${selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'}\n` +
+                            `🛰️ *வகை:* சாட்லைட் DGPS / எல்லை நிர்ணயம்\n\n` +
+                            `✅ இந்த நிலத்தை அளவீடு செய்ய சர்வேயர் வழிகாட்டல் தர வேண்டுகிறேன்.`;
+                          window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
+                          setSelectedLoanLand(null);
+                        }}
+                        className="p-2 bg-slate-800 hover:bg-slate-700/80 border border-emerald-500/30 rounded-lg text-left text-emerald-300 transition"
+                      >
+                        <div className="text-[11px] font-bold leading-tight">📐 DGPS சர்வேயர்</div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">எல்லை நிர்ணயம்</div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 4 அரசு மின்-சேவைகள் */}
+                  <div className="bg-slate-800/40 p-2 rounded-lg border border-slate-700/40">
+                    <span className="text-[10px] font-semibold text-slate-400 block mb-1">🏛️ அரசு நேரடி மின்-சேவைகள்:</span>
+                    <div className="grid grid-cols-2 gap-1 text-[10px]">
+                      <a
+                        href="https://eservices.tn.gov.in/eservicesnew/index.html"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
+                      >
+                        📄 பட்டா / சிட்டா ↗
+                      </a>
+                      <a
+                        href="https://tnreginet.gov.in/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
+                      >
+                        📜 வில்லங்கம் (EC) ↗
+                      </a>
+                      <a
+                        href="https://eservices.tn.gov.in/eservicesnew/index.html"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
+                      >
+                        🗺️ வரைபடம் (FMB) ↗
+                      </a>
+                      <a
+                        href="https://eservices.tn.gov.in/eservicesnew/index.html"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
+                      >
+                        🏙️ மனை (TSLR) ↗
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+                
                 <LandCalculator />
                 <SellLandModal
                   isOpen={isSellModalOpen}
@@ -1855,250 +2044,342 @@ export default function Home() {
             <SpiritualModule setCurrentModule={setCurrentModule} />
           </div>
         )}
-        {/* ================= 360° சொத்து முழு விவர மாடல் ================= */}
-        {selectedLandDetail && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
-            <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col">
+       {/* 360 சொத்து முழு விவர மாடல் */}
+      {selectedLandDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black bg-opacity-80 backdrop-blur-sm">
+          <div className="relative w-full max-w-4xl max-h-[94vh] bg-slate-900 border border-slate-700/80 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+            
+            {/* மூடும் பொத்தான் */}
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setSelectedLandDetail(null)}
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-950/80 hover:bg-slate-800 text-white flex items-center justify-center transition shadow z-20 border border-slate-700 cursor-pointer"
+            >
+              ✕
+            </div>
 
-              {/* மேல் படம் & மூடும் பட்டன் */}
-              <div className="relative h-48 sm:h-56 w-full flex-shrink-0 bg-slate-950">
-                <img
-                  src={selectedLandDetail.image}
-                  alt={selectedLandDetail.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedLandDetail(null)}
-                  className="absolute top-3 right-3 w-9 h-9 rounded-full bg-slate-950/80 text-slate-300 hover:text-white flex items-center justify-center border border-slate-700 text-lg transition-all"
-                >
-                  ✕
-                </button>
-                <div className="absolute bottom-3 left-4 right-4">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
-                      {selectedLandDetail.type || 'மனை / நிலம்'}
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full text-xs bg-slate-800 text-slate-300">
-                      📍 {selectedLandDetail.location || selectedLandDetail.district}
-                    </span>
+            {/* பிரதான 2-நெடுவரிசை அமைப்பு */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
+              
+              {/* இடதுபுறம்: படம், விலை & உரிமையாளர் அட்டை */}
+              <div className="md:col-span-5 bg-slate-950/60 p-4 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800">
+                <div className="space-y-3">
+                  <div className="relative h-44 w-full rounded-xl overflow-hidden border border-slate-800 shadow">
+                    <img
+                      src={selectedLandDetail.image || '/placeholder-land.jpg'}
+                      alt={selectedLandDetail.title || 'நில விவரம்'}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
+                    <div className="absolute bottom-2 left-2 right-2">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                        {selectedLandDetail.category || selectedLandDetail.type || 'மனை / நிலம்'}
+                      </span>
+                      <p className="text-xs text-slate-300 mt-1 truncate">
+                        📍 {selectedLandDetail.village ? `${selectedLandDetail.village}, ` : ''}{selectedLandDetail.district || ''}
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-white line-clamp-1">{selectedLandDetail.title}</h3>
+
+                  <h3 className="text-sm font-bold text-white line-clamp-2 leading-snug">
+                    {selectedLandDetail.title}
+                  </h3>
+
+                  {/* விலை & பரப்பளவு */}
+                  <div className="grid grid-cols-2 gap-2 bg-slate-900 p-2.5 rounded-xl border border-slate-800 text-xs">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block">மதிப்பு / விலை</span>
+                      <span className="text-sm font-extrabold text-emerald-400">
+                        {selectedLandDetail.askingPrice || selectedLandDetail.price || 'விவரம் இல்லை'}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[10px] text-slate-400 block">பரப்பளவு</span>
+                      <span className="text-xs font-bold text-white">
+                        {selectedLandDetail.extent || selectedLandDetail.area || 'விவரம் இல்லை'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
+
+                {/* நேரடி உரிமையாளர் தொடர்பு அட்டை */}
+                {selectedLandDetail.ownerName && (
+                  <div className="bg-slate-900 border border-emerald-500/40 rounded-xl p-2.5 mt-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-300 font-bold text-xs">
+                          {selectedLandDetail.ownerName[0]}
+                        </div>
+                        <div>
+                          <p className="font-bold text-white text-[11px] leading-tight">
+                            {selectedLandDetail.ownerName}
+                          </p>
+                          <span className="text-emerald-400 text-[9px] font-semibold">
+                            {selectedLandDetail.badge || 'நேரடி உரிமையாளர்'} ✓
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        {selectedLandDetail.phone && (
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => window.open(`tel:${selectedLandDetail.phone.replace(/\s+/g, '')}`, '_self')}
+                            className="px-2.5 py-1.5 rounded-lg font-bold text-[10px] flex items-center gap-1 shadow cursor-pointer active:scale-95"
+                            style={{ backgroundColor: '#059669', color: '#ffffff' }}
+                          >
+                            <span>📞</span> <span>அழை</span>
+                          </div>
+                        )}
+                        {selectedLandDetail.phone && (
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => window.open(`https://wa.me/${selectedLandDetail.phone.replace(/[^0-9]/g, '')}`, '_blank')}
+                            className="px-2.5 py-1.5 rounded-lg font-bold text-[10px] flex items-center gap-1 shadow cursor-pointer active:scale-95"
+                            style={{ backgroundColor: '#16a34a', color: '#ffffff' }}
+                          >
+                            <span>💬</span> <span>WA</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* மாடல் விவரங்கள் - ஸ்க்ரோல் வசதியுடன் */}
-              <div className="p-4 sm:p-6 overflow-y-auto space-y-4 text-sm text-slate-300">
-
-                {/* விலை & பரப்பளவு */}
-                <div className="flex items-center justify-between p-3.5 bg-slate-800/60 border border-slate-700/60 rounded-2xl">
-                  <div>
-                    <div className="text-[11px] text-slate-100">மதிப்பு / விலை</div>
-                    <div className="text-xl font-extrabold text-emerald-400">
-                      {selectedLandDetail.price || selectedLandDetail.pricePerSqft || selectedLandDetail.totalPrice || '₹1,750 / ச.அடி'}
+              {/* வலதுபுறம்: கள விவரங்கள், ஆவணங்கள் & சைட் விசிட் */}
+              <div className="md:col-span-7 p-4 flex flex-col justify-between space-y-2.5 bg-slate-900">
+                <div className="space-y-2">
+                  
+                  {/* கள விவரங்கள் */}
+                  <div className="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 space-y-1.5">
+                    <div className="text-[11px] font-bold text-slate-200 flex items-center gap-1.5">
+                      <span>📐</span> கள விவரங்கள் (Physical 360)
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
+                        <span className="text-slate-400 block text-[10px]">சர்வே எண்:</span>
+                        <span className="font-semibold text-slate-200 text-[11px]">
+                          {selectedLandDetail.surveyNo || 'சரிபார்க்கப்படுகிறது'}
+                        </span>
+                      </div>
+                      <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
+                        <span className="text-slate-400 block text-[10px]">வழிகாட்டி மதிப்பு:</span>
+                        <span className="font-semibold text-emerald-400 text-[11px]">
+                          {selectedLandDetail.guidelineValue || 'விவரம் இல்லை'}
+                        </span>
+                      </div>
+                      <div className="col-span-2 p-2 rounded-lg bg-slate-900 border border-slate-800/80">
+                        <span className="text-slate-400 block text-[10px]">நிலத்தடி நீர் ஆதாரம்:</span>
+                        <span className="font-semibold text-slate-200 text-[11px]">
+                          {selectedLandDetail.waterSource || selectedLandDetail.water || 'சரிபார்க்கப்படுகிறது'}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-[11px] text-slate-100">பரப்பளவு</div>
-                    <div className="text-base font-bold text-white">
-                      {selectedLandDetail.area || selectedLandDetail.size || selectedLandDetail.extent || '2.50 ஏக்கர்'}
-                    </div>
-                  </div>
-                </div>
 
-                {/* 📐 கள விவரங்கள் (Physical 360) */}
-                <div className="bg-slate-950/50 p-3.5 rounded-2xl border border-slate-800 space-y-2">
-                  <div className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                    <span>📐</span> கள விவரங்கள் (Physical 360)
-                  </div>
+                  {/* கடன் உதவி & ஆவண நிலை */}
                   <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
-                      <span className="text-slate-100 block text-[10px]">அணுகு சாலை:</span>
-                      <span className="font-semibold text-slate-200">{selectedLandDetail.roadWidth || '30 அடி தார் சாலை'}</span>
+                    <div className="bg-slate-950/70 p-2 rounded-xl border border-slate-800 flex justify-between items-center">
+                      <span className="text-slate-400 text-[10px]">கடன் வசதி:</span>
+                      <span className="font-bold text-white text-[11px]">
+                        {selectedLandDetail.loanEligible || '80% வங்கி கடன் வசதி'}
+                      </span>
                     </div>
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
-                      <span className="text-slate-100 block text-[10px]">மின்சார வசதி:</span>
-                      <span className="font-semibold text-slate-200">{selectedLandDetail.electricity || 'அருகில் EB கம்பம் உள்ளது'}</span>
+                    <div className="bg-slate-950/70 p-2 rounded-xl border border-slate-800 flex justify-between items-center">
+                      <span className="text-slate-400 text-[10px]">ஆவண நிலை:</span>
+                      <span className="font-bold text-emerald-400 text-[11px]">சுத்தமான பட்டா ✓</span>
                     </div>
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
-                      <span className="text-slate-100 block text-[10px]">நிலத்தடி நீர்:</span>
-                      <span className="font-semibold text-slate-200">{selectedLandDetail.waterSource || '120 அடி (குடிநீர் உகந்தது)'}</span>
+                  </div>
+
+                  {/* நம்பிக்கை குறியீடு */}
+                  {selectedLandDetail.trustScore && (
+                    <div className="bg-slate-950/70 p-2 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
+                      <span className="text-slate-400 text-[10px]">நம்பிக்கை குறியீடு (Trust Score):</span>
+                      <span className="font-extrabold text-emerald-400 text-[11px]">
+                        ⭐ {selectedLandDetail.trustScore} / 100 (சரிபார்க்கப்பட்டது)
+                      </span>
                     </div>
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
-                      <span className="text-slate-100 block text-[10px]">மண் வகைப்பாடு:</span>
-                      <span className="font-semibold text-slate-200">{selectedLandDetail.soilType || 'செம்மண் / கடின தரை'}</span>
-                    </div>
+                  )}
+
+                </div>
+
+                {/* கீழே உள்ள செயல் பொத்தான்கள் */}
+                <div className="pt-2 border-t border-slate-800 flex items-center gap-2">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => {
+                      const msg = encodeURIComponent(`வணக்கம்! நான் இந்த இடத்தை நேரில் பார்க்க (Site Visit) விரும்புகிறேன்: ${selectedLandDetail.title} (சர்வே எண்: ${selectedLandDetail.surveyNo || ''})`);
+                      window.open(`https://wa.me/919962369131?text=${msg}`, '_blank');
+                    }}
+                    className="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer active:scale-95"
+                    style={{ backgroundColor: '#059669', color: '#ffffff' }}
+                  >
+                    <span>📅</span> <span>நேரில் பார்க்க முன்பதிவு (Site Visit)</span>
+                  </div>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setSelectedLandDetail(null)}
+                    className="py-2.5 px-4 rounded-xl font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition cursor-pointer"
+                  >
+                    மூடு
                   </div>
                 </div>
 
-                {/* ⚖️ சட்ட தணிக்கை நிலை (Legal 360) */}
-                <div className="bg-slate-950/50 p-3.5 rounded-2xl border border-slate-800 space-y-2">
-                  <div className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                    <span>⚖️</span> சட்ட தணிக்கை நிலை (Legal 360)
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
-                      <span className="text-slate-100 block text-[10px]">பட்டா வகை:</span>
-                      <span className="font-semibold text-emerald-400">{selectedLandDetail.pattaStatus || 'ரயத்துவாரி மனை'}</span>
-                    </div>
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
-                      <span className="text-slate-100 block text-[10px]">வில்லங்கம் (EC):</span>
-                      <span className="font-semibold text-emerald-400">{selectedLandDetail.ecStatus || '30 ஆண்டுகள் வில்லங்கமற்றது'}</span>
-                    </div>
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70 col-span-2">
-                      <span className="text-slate-100 block text-[10px]">அங்கீகாரம்:</span>
-                      <span className="font-semibold text-slate-200">{selectedLandDetail.approval || 'DTCP / உள்ளாட்சி அப்ரூவல் சரிபார்க்கப்பட்டது'}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 📍 அருகிலுள்ள வசதிகள் (Proximity 360) */}
-                <div className="bg-slate-950/50 p-3.5 rounded-2xl border border-slate-800 space-y-2">
-                  <div className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                    <span>📍</span> அருகிலுள்ள முக்கிய இடங்கள்
-                  </div>
-                  <div className="grid grid-cols-3 gap-1.5 text-center text-xs">
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
-                      <div className="text-slate-100 text-[10px]">மெயின் ரோடு</div>
-                      <div className="font-bold text-slate-200">500 மீ</div>
-                    </div>
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
-                      <div className="text-slate-100 text-[10px]">பேருந்து நிறுத்தம்</div>
-                      <div className="font-bold text-slate-200">1 கி.மீ</div>
-                    </div>
-                    <div className="p-2 rounded-xl bg-slate-900 border border-slate-800/70">
-                      <div className="text-slate-100 text-[10px]">பள்ளி / கல்லூரி</div>
-                      <div className="font-bold text-slate-200">2.5 கி.மீ</div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* நேரடி சைட் விசிட் வாட்ஸ்அப் பட்டன் */}
-              <div className="p-4 bg-slate-950 border-t border-slate-800 mt-auto flex gap-2">
-                <a
-                  href={`https://wa.me/919444123456?text=${encodeURIComponent(
-                    `வணக்கம் நம்ம பூமி 360! நான் இந்த நிலத்தை நேரில் பார்க்க (Site Visit) விரும்புகிறேன்:\n\n📍 இடம்: ${selectedLandDetail.title}\n💰 விலை: ${selectedLandDetail.price}\n📐 அளவு: ${selectedLandDetail.area}\n\nமுன்பதிவு செய்ய நேரம் ஒதுக்கவும்.`
-                  )}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 py-3 px-4 rounded-xl font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-center flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all text-sm"
-                >
-                  <span>💬</span> நேரில் பார்க்க முன்பதிவு (Site Visit)
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setSelectedLandDetail(null)}
-                  className="py-3 px-4 rounded-xl font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition-all"
-                >
-                  மூடு
-                </button>
               </div>
 
             </div>
           </div>
-        )}
+        </div>
+      )}
         
-        {/* VIP விசிட் பாஸ் மாடல் (VIP Site Visit Pass Modal) */}
-        {selectedVisitPassLand && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <div className="bg-slate-900 border border-emerald-500/40 w-full max-w-sm rounded-2xl p-5 shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-200">
-              {/* Top Golden Accent */}
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-amber-400 to-emerald-500" />
+      {/* VIP விசிட் பாஸ் மாடல் (VIP Site Visit Pass Modal - 100% Dynamic & Fast) */}
+      {selectedVisitPassLand && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm">
+          <div className="relative w-full max-w-md bg-slate-900 border border-emerald-500/50 rounded-2xl p-4 sm:p-5 shadow-2xl overflow-hidden flex flex-col">
+            
+            {/* Top Golden Accent */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-amber-400 to-emerald-500" />
 
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={() => setSelectedVisitPassLand(null)}
-                className="absolute top-3 right-3 text-slate-100 hover:text-white p-1 rounded-lg bg-slate-800 text-sm"
-              >
-                ✕
-              </button>
+            {/* Close Button */}
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setSelectedVisitPassLand(null)}
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer z-10 border border-slate-700 select-none"
+            >
+              ✕
+            </div>
 
-              {/* Header */}
-              <div className="text-center mb-4 mt-1">
-                <span className="text-3xl">🎫</span>
-                <h3 className="text-base font-bold text-white mt-1">VIP விசிட் பாஸ் & எண்</h3>
-                <p className="text-xs text-emerald-400">நேரடி உரிமையாளர் எண் & GPS வழிகாட்டல்</p>
+            {/* Header */}
+            <div className="text-center mb-3 mt-1">
+              <span className="text-2xl">🎫</span>
+              <h3 className="text-base font-bold text-white mt-0.5">VIP விசிட் பாஸ் & நேரடி வழிகாட்டல்</h3>
+              <p className="text-[11px] text-emerald-400 font-medium">நேரடி உரிமையாளர் எண் & GPS நேரடி வரைபடம்</p>
+            </div>
+
+            {/* Selected Land Summary Card */}
+            <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 mb-3 text-xs">
+              <p className="text-slate-400 text-[10px] font-medium">தேர்ந்தெடுக்கப்பட்ட நிலம்:</p>
+              <p className="text-white font-bold text-xs line-clamp-1 mt-0.5">
+                {selectedVisitPassLand.title || 'பிரீமியம் நிலம்'}
+              </p>
+              
+              <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-800 text-[11px]">
+                <div>
+                  <span className="text-slate-400 block text-[9px]">அமைவிடம்</span>
+                  <span className="text-slate-200 font-semibold truncate block">
+                    📍 {selectedVisitPassLand.village ? `${selectedVisitPassLand.village}, ` : ''}{selectedVisitPassLand.district || 'தமிழ்நாடு'}
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="text-slate-400 block text-[9px]">மதிப்பு / விலை</span>
+                  <span className="text-emerald-400 font-extrabold text-xs block">
+                    {selectedVisitPassLand.askingPrice || selectedVisitPassLand.price || 'நேரடி பேச்சுவார்த்தை'}
+                  </span>
+                </div>
               </div>
 
-              {/* Selected Land Summary */}
-              <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 mb-4 text-xs">
-                <p className="text-slate-100 font-medium">தேர்ந்தெடுக்கப்பட்ட நிலம்:</p>
-                <p className="text-white font-semibold line-clamp-1 mt-0.5">
-                  {selectedVisitPassLand.title || 'பிரீமியம் நிலம்'}
-                </p>
-                <div className="flex justify-between items-center text-slate-300 mt-1 pt-1 border-t border-slate-800/80">
-                  <span>📍 {selectedVisitPassLand.district || 'தமிழ்நாடு'}</span>
-                  <span className="text-emerald-400 font-bold">{selectedVisitPassLand.price || ''}</span>
+              {selectedVisitPassLand.surveyNo && (
+                <div className="mt-1.5 pt-1.5 border-t border-slate-800/60 flex justify-between items-center text-[10px]">
+                  <span className="text-slate-400">சர்வே எண்:</span>
+                  <span className="text-amber-300 font-bold">{selectedVisitPassLand.surveyNo}</span>
                 </div>
+              )}
+            </div>
+
+            {/* Inputs */}
+            <div className="space-y-2.5 mb-3.5">
+              <div>
+                <label className="block text-[11px] text-slate-300 mb-1 font-medium">உங்கள் பெயர்:</label>
+                <input
+                  type="text"
+                  placeholder="எ.கா: குமார்"
+                  value={visitorName}
+                  onChange={(e) => setVisitorName(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-800/90 border border-slate-700 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                />
               </div>
 
-              {/* Inputs */}
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-xs text-slate-300 mb-1">உங்கள் பெயர்:</label>
-                  <input
-                    type="text"
-                    placeholder="எ.கா: குமார்"
-                    value={visitorName}
-                    onChange={(e) => setVisitorName(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500 placeholder-slate-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs text-slate-300 mb-1">வாட்ஸ்அப் எண்:</label>
-                  <input
-                    type="tel"
-                    placeholder="10 இலக்க வாட்ஸ்அப் எண்"
-                    value={visitorPhone}
-                    onChange={(e) => setVisitorPhone(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500 placeholder-slate-500"
-                  />
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => {
-  if (!visitorPhone || visitorPhone.trim().length < 10) {
-    alert('தயவுசெய்து சரியான 10 இலக்க வாட்ஸ்அப் எண்ணை உள்ளிடவும்');
-    return;
-  }
-
-  const land = selectedVisitPassLand;
-  const lat = land?.lat || (land?.location_coords && land.location_coords[0]) || 12.6939;
-  const lng = land?.lng || (land?.location_coords && land.location_coords[1]) || 79.9757;
-  const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
-
-  const message = `🎫 *நம்ம பூமி 360 - VIP களப்பார்வை பாஸ் (Site Visit Pass)* 🎫%0A%0A` +
-    `👤 *பார்வையாளர் பெயர்:* ${visitorName || 'நேரடி பார்வையாளர்'}%0A` +
-    `📞 *வாட்ஸ்அப் எண்:* ${visitorPhone}%0A` +
-    `🏷️ *சொத்து வகை:* ${land?.tag || land?.type || 'நிலம்'}%0A` +
-    `🏡 *நிலத்தின் பெயர்:* ${land?.title || 'பிரீமியம் நிலம்'}%0A` +
-    `📍 *அமைவிடம்:* ${land?.location || land?.taluk || land?.district || 'தமிழ்நாடு'}%0A` +
-    `💰 *விலை:* ${land?.price || 'நேரடி பேச்சுவார்த்தை'}%0A` +
-    `🗺️ *மேப் லொகேஷன்:* ${mapLink}%0A%0A` +
-    `✅ இந்த விசிட் பாஸ் மூலம் நேரடி களப்பார்வை மேற்கொள்ள அனுமதி கோரப்படுகிறது.`;
-
-  window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${message}`, '_blank');
-  setSelectedVisitPassLand(null);
-  setVisitorPhone('');
-  if (typeof setVisitorName === 'function') setVisitorName('');
-}}
-                  className="w-full mt-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all text-xs"
-                >
-                  <span>🎟️</span> வாட்ஸ்அப்பில் பாஸ் பெறுக
-                </button>
-                <p className="text-[10px] text-center text-slate-100 mt-1">
-                  🔒 100% பாதுகாப்பானது • நேரடி உரிமையாளர் தொடர்பு
-                </p>
+              <div>
+                <label className="block text-[11px] text-slate-300 mb-1 font-medium">வாட்ஸ்அப் எண்:</label>
+                <input
+                  type="tel"
+                  placeholder="10 இலக்க வாட்ஸ்அப் எண்"
+                  value={visitorPhone}
+                  onChange={(e) => setVisitorPhone(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-800/90 border border-slate-700 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                />
               </div>
             </div>
+
+            {/* Action Buttons: WhatsApp Pass & Direct Live Google Maps */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
+              {/* WhatsApp Pass Button */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  if (!visitorPhone || visitorPhone.trim().length < 10) {
+                    alert('தயவுசெய்து சரியான 10 இலக்க வாட்ஸ்அப் எண்ணை உள்ளிடவும்');
+                    return;
+                  }
+
+                  const land = selectedVisitPassLand;
+                  const lat = land?.lat || (land?.location_coords && land.location_coords[0]) || 12.6939;
+                  const lng = land?.lng || (land?.location_coords && land.location_coords[1]) || 79.9757;
+                  const mapLink = `https://maps.google.com/?q=${lat},${lng}`;
+
+                  const message = `*🎫 நம்ம பூமி 360 - VIP களப்பார்வை பாஸ் (Site Visit Pass)*%0A%0A` +
+                    `👤 *பார்வையாளர்:* ${visitorName || 'நேரடி பார்வையாளர்'}%0A` +
+                    `📞 *எண்:* ${visitorPhone}%0A` +
+                    `🏷️ *வகை:* ${land?.category || land?.type || 'நிலம்'}%0A` +
+                    `📍 *நிலம்:* ${land?.title || 'பிரீமியம் நிலம்'}%0A` +
+                    `📌 *அமைவிடம்:* ${land?.village ? land.village + ', ' : ''}${land?.district || 'தமிழ்நாடு'}%0A` +
+                    `🔢 *சர்வே எண்:* ${land?.surveyNo || 'சரிபார்க்கப்படுகிறது'}%0A` +
+                    `💰 *விலை:* ${land?.askingPrice || land?.price || 'நேரடி பேச்சுவார்த்தை'}%0A` +
+                    `🗺️ *மேப் லொகேஷன்:* ${mapLink}%0A%0A` +
+                    `✅ இந்த விசிட் பாஸ் மூலம் நேரடி களப்பார்வை மேற்கொள்ள அனுமதி கோரப்படுகிறது.`;
+
+                  window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${message}`, '_blank');
+                  setSelectedVisitPassLand(null);
+                  setVisitorPhone('');
+                  if (typeof setVisitorName === 'function') setVisitorName('');
+                }}
+                className="w-full py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer select-none active:scale-95 transition text-center"
+                style={{ background: '#047857', color: '#ffffff' }}
+              >
+                <span>🎫</span> <span>வாட்ஸ்அப் பாஸ்</span>
+              </div>
+
+              {/* Direct Live Google Maps Navigation Button */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  const land = selectedVisitPassLand;
+                  const lat = land?.lat || (land?.location_coords && land.location_coords[0]) || 12.6939;
+                  const lng = land?.lng || (land?.location_coords && land.location_coords[1]) || 79.9757;
+                  window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
+                }}
+                className="w-full py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer select-none active:scale-95 transition text-center border border-blue-500/40"
+                style={{ background: '#1d4ed8', color: '#ffffff' }}
+              >
+                <span>🗺️</span> <span>நேரடி மேப் வழித்தடம்</span>
+              </div>
+            </div>
+
+            <p className="text-[10px] text-center text-slate-400 mt-2">
+              🔒 100% பாதுகாப்பானது • நேரடி உரிமையாளர் தொடர்பு
+            </p>
+
           </div>
-        )}
+        </div>
+      )}  
       </main>
 
       {/* 📱 மொபைல் பாட்டம் நேவிகேஷன் பார் (Mobile Only App Bar) */}
