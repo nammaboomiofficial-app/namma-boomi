@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import loansData from '../data/loansData.json';
+import LoanModule360 from './LoanModule360';
 
 const { loanCards: LOAN_CARDS, bankRates: BANK_RATES } = loansData;
 
@@ -92,12 +93,17 @@ export default function FinanceModule() {
           </div>
 
           <button
-            onClick={() => handleLoanEnquiry(selectedLoan)}
-            disabled={loading}
-            className="w-full sm:w-auto mt-2 sm:mt-5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm px-6 py-2.5 rounded-lg shadow-lg shadow-emerald-900/30 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
-          >
-            {loading ? 'இணைகிறது...' : 'தகுதி அறிய ↗'}
-          </button>
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('loan-calculator-section');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="w-full sm:w-auto mt-2 sm:mt-5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-xs transition shadow-lg shadow-emerald-500/20"
+            >
+              📊 தகுதி அறிய ↗
+            </button>
         </div>
       </div>
 
@@ -212,6 +218,10 @@ export default function FinanceModule() {
         <div className="p-1.5">🛡️ 100% வெளிப்படையானது</div>
         <div className="p-1.5">🚫 முன் கட்டணம் ஏதுமில்லை</div>
         <div className="p-1.5">🤝 நேரடி வங்கி ஒருங்கிணைப்பு</div>
+      </div>
+      {/* 6. ஸ்மார்ட் கடன் தகுதி தணிக்கை கால்குலேட்டர் */}
+      <div id="loan-calculator-section" className="pt-8">
+        <LoanModule360 />
       </div>
     </div>
   );

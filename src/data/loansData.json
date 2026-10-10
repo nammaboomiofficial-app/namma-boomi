@@ -8,7 +8,13 @@
       "tenure": "1 முதல் 5 ஆண்டுகள்",
       "badge": "INSTANT APPROVAL",
       "badgeColor": "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-      "icon": "⚡"
+      "icon": "⚡",
+      "minIncome": 20000,
+      "minCibil": 750,
+      "maxTenureYears": 5,
+      "interestRate": 10.5,
+      "foirLimit": 0.40,
+      "requiredDocs": ["பான் & ஆதார்", "3 மாத சம்பள ரசீது", "6 மாத வங்கி அறிக்கை"]
     },
     {
       "id": "business",
@@ -18,7 +24,13 @@
       "tenure": "2 முதல் 7 ஆண்டுகள்",
       "badge": "NO COLLATERAL",
       "badgeColor": "bg-blue-500/20 text-blue-300 border-blue-500/30",
-      "icon": "🏢"
+      "icon": "🏢",
+      "minIncome": 20000,
+      "minCibil": 680,
+      "maxTenureYears": 7,
+      "interestRate": 9.5,
+      "foirLimit": 0.50,
+      "requiredDocs": ["உத்யோக் ஆதார்", "GST அறிக்கை", "1 வருட வங்கி அறிக்கை"]
     },
     {
       "id": "home_plot",
@@ -28,7 +40,13 @@
       "tenure": "குறைந்த வட்டி (8.4%*)",
       "badge": "LOW INTEREST",
       "badgeColor": "bg-amber-500/20 text-amber-300 border-amber-500/30",
-      "icon": "🏠"
+      "icon": "🏠",
+      "minIncome": 25000,
+      "minCibil": 700,
+      "maxTenureYears": 20,
+      "interestRate": 8.4,
+      "foirLimit": 0.50,
+      "requiredDocs": ["பட்டா & சிட்டா", "30 ஆண்டு வில்லங்கச் சான்று", "அங்கீகரிக்கப்பட்ட மனை வரைபடம்", "சம்பள ரசீது / ITR"]
     },
     {
       "id": "agri",
@@ -38,7 +56,13 @@
       "tenure": "நெகிழ்வான தவணை",
       "badge": "GOVT SUBSIDY",
       "badgeColor": "bg-green-500/20 text-green-300 border-green-500/30",
-      "icon": "🌾"
+      "icon": "🌾",
+      "minIncome": 15000,
+      "minCibil": 650,
+      "maxTenureYears": 15,
+      "interestRate": 7.0,
+      "foirLimit": 0.55,
+      "requiredDocs": ["உழவர் பாஸ்புக்", "விவசாய பட்டா & அடங்கல்", "FMB புல வரைபடம்"]
     },
     {
       "id": "microfinance",
@@ -48,7 +72,13 @@
       "tenure": "சுலப ஆவணங்கள்",
       "badge": "EASY PROCESS",
       "badgeColor": "bg-purple-500/20 text-purple-300 border-purple-500/30",
-      "icon": "👥"
+      "icon": "👥",
+      "minIncome": 10000,
+      "minCibil": 600,
+      "maxTenureYears": 3,
+      "interestRate": 8.0,
+      "foirLimit": 0.50,
+      "requiredDocs": ["குழு தீர்மான நகல்", "உறுப்பினர்கள் ஆதார்", "வங்கி கணக்குப் புத்தகம்"]
     },
     {
       "id": "lap",
@@ -58,7 +88,13 @@
       "tenure": "15 ஆண்டுகள் வரை",
       "badge": "MAX VALUE",
       "badgeColor": "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
-      "icon": "📑"
+      "icon": "📄",
+      "minIncome": 30000,
+      "minCibil": 680,
+      "maxTenureYears": 15,
+      "interestRate": 9.25,
+      "foirLimit": 0.60,
+      "requiredDocs": ["தாய் பத்திரங்கள் (30 ஆண்டுகள்)", "வில்லங்கச் சான்று (EC)", "சொத்து வரி ரசீது", "2 வருட ITR"]
     }
   ],
   "bankRates": [
@@ -79,7 +115,7 @@
     },
     {
       "name": "Canara Bank",
-      "type": "விவசாய & MSME கடன்",
+      "type": "விவசாயம் & MSME கடன்",
       "rate": "8.60% - 9.25%"
     }
   ]

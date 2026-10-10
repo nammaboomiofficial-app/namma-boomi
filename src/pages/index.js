@@ -1037,21 +1037,21 @@ export default function Home() {
                   </div>
 
                   {/* 4 அரசு மின்-சேவைகள் */}
-                  <div className="bg-slate-800/40 p-2 rounded-lg border border-slate-700/40">
+                 <div className="bg-slate-800/40 p-2 rounded-lg border border-slate-700/40">
                     <span className="text-[10px] font-semibold text-slate-400 block mb-1">🏛️ அரசு நேரடி மின்-சேவைகள்:</span>
                     <div className="grid grid-cols-2 gap-1 text-[10px]">
                       <a
                         href="https://eservices.tn.gov.in/eservicesnew/index.html"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
                       >
                         📄 பட்டா / சிட்டா ↗
                       </a>
                       <a
-                        href="https://tnreginet.gov.in/"
+                        href="https://tnreginet.gov.in/portal/"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
                       >
                         📜 வில்லங்கம் (EC) ↗
@@ -1059,7 +1059,7 @@ export default function Home() {
                       <a
                         href="https://eservices.tn.gov.in/eservicesnew/index.html"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
                       >
                         🗺️ வரைபடம் (FMB) ↗
@@ -1067,7 +1067,7 @@ export default function Home() {
                       <a
                         href="https://eservices.tn.gov.in/eservicesnew/index.html"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
                       >
                         🏙️ மனை (TSLR) ↗
