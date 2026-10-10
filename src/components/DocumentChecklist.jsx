@@ -1,10 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import checklistData from '../data/documentChecklistData.json';
 
 export default function DocumentChecklist() {
   const [selectedLoanId, setSelectedLoanId] = useState(checklistData.loanCategories[0].id);
   const [checkedDocs, setCheckedDocs] = useState({});
+  const [uploadedFiles, setUploadedFiles] = useState({});
+  const fileInputRefs = useRef({});
 
   const activeCategory = checklistData.loanCategories.find((cat) => cat.id === selectedLoanId);
 
@@ -15,6 +17,28 @@ export default function DocumentChecklist() {
     }));
   };
 
+  const handleFileUpload = (docId, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setUploadedFiles((prev) => ({
+        ...prev,
+        [docId]: file.name
+      }));
+      // ஃபைல் அப்லோட் செய்தவுடன் தானாகவே அந்த ஆவணத்தை டிக் செய்தல்
+      setCheckedDocs((prev) => ({
+        ...prev,
+        [docId]: true
+      }));
+    }
+  };
+
+  const triggerFileInput = (e, docId) => {
+    e.stopPropagation();
+    if (fileInputRefs.current[docId]) {
+      fileInputRefs.current[docId].click();
+    }
+  };
+
   const totalDocs = activeCategory?.requiredDocs.length || 0;
   const readyDocs = activeCategory?.requiredDocs.filter((doc) => checkedDocs[doc.id]).length || 0;
   const progressPercent = totalDocs > 0 ? Math.round((readyDocs / totalDocs) * 100) : 0;
@@ -23,7 +47,7 @@ export default function DocumentChecklist() {
   const handleShareWhatsApp = () => {
     const readyList = activeCategory?.requiredDocs
       .filter((doc) => checkedDocs[doc.id])
-      .map((doc) => `✅ ${doc.name}`)
+      .map((doc) => `✅ ${doc.name} ${uploadedFiles[doc.id] ? `(${uploadedFiles[doc.id]})` : ''}`)
       .join('\n');
 
     const pendingList = activeCategory?.requiredDocs
@@ -109,11 +133,13 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
       <div className="space-y-3">
         {activeCategory?.requiredDocs.map((doc, idx) => {
           const isDone = !!checkedDocs[doc.id];
+          const fileName = uploadedFiles[doc.id];
+
           return (
             <div
               key={doc.id}
               onClick={() => toggleDoc(doc.id)}
-              className={`p-3.5 rounded-2xl border transition-all flex items-center justify-between cursor-pointer select-none ${
+              className={`p-3.5 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none ${
                 isDone
                   ? 'bg-emerald-950/30 border-emerald-500/40 text-white'
                   : 'bg-slate-800/50 border-slate-800 text-slate-300 hover:border-slate-700'
@@ -130,7 +156,7 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
                   <span className="text-xs font-semibold">
                     {idx + 1}. {doc.name}
                   </span>
-                  <div className="flex items-center gap-2 mt-0.5">
+                  <div className="flex flex-wrap items-center gap-2 mt-0.5">
                     <span className="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">
                       வகை: {doc.type}
                     </span>
@@ -139,16 +165,39 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
                     ) : (
                       <span className="text-[10px] text-slate-400">கூடுதல் ஆவணம்</span>
                     )}
+                    {fileName && (
+                      <span className="text-[10px] text-emerald-400 bg-emerald-900/50 border border-emerald-700/50 px-2 py-0.5 rounded truncate max-w-[160px]">
+                        📎 {fileName}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
 
-              <div className="text-xs font-bold">
-                {isDone ? (
-                  <span className="text-emerald-400 flex items-center gap-1">✓ தயாராக உள்ளது</span>
-                ) : (
-                  <span className="text-slate-400">நிலுவை</span>
-                )}
+              {/* பதிவேற்ற பொத்தான் & நிலை */}
+              <div className="flex items-center gap-3 justify-end sm:justify-start">
+                <input
+                  type="file"
+                  ref={(el) => (fileInputRefs.current[doc.id] = el)}
+                  onChange={(e) => handleFileUpload(doc.id, e)}
+                  accept=".pdf,image/*"
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={(e) => triggerFileInput(e, doc.id)}
+                  className="text-[11px] font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow cursor-pointer"
+                >
+                  📤 {fileName ? 'மாற்றுக' : 'பதிவேற்றுக'}
+                </button>
+
+                <div className="text-xs font-bold min-w-[75px] text-right">
+                  {isDone ? (
+                    <span className="text-emerald-400">✓ தயார்</span>
+                  ) : (
+                    <span className="text-slate-400">நிலுவை</span>
+                  )}
+                </div>
               </div>
             </div>
           );
