@@ -19,6 +19,35 @@ export default function DocumentChecklist() {
   const readyDocs = activeCategory?.requiredDocs.filter((doc) => checkedDocs[doc.id]).length || 0;
   const progressPercent = totalDocs > 0 ? Math.round((readyDocs / totalDocs) * 100) : 0;
 
+  // WhatsApp-ல் பகிரும் செயல்பாடு
+  const handleShareWhatsApp = () => {
+    const readyList = activeCategory?.requiredDocs
+      .filter((doc) => checkedDocs[doc.id])
+      .map((doc) => `✅ ${doc.name}`)
+      .join('\n');
+
+    const pendingList = activeCategory?.requiredDocs
+      .filter((doc) => !checkedDocs[doc.id])
+      .map((doc) => `⏳ ${doc.name}`)
+      .join('\n');
+
+    const message = `📋 *நம்ம பூமி 360 - கடன் ஆவணங்கள் சரிபார்ப்பு விபரம்*
+
+📂 *கடன் பிரிவு:* ${activeCategory?.title}
+📊 *தயார் நிலை:* ${readyDocs}/${totalDocs} (${progressPercent}%)
+
+*தயாராக உள்ள ஆவணங்கள்:*
+${readyList || 'எதுவுமில்லை'}
+
+*நிலுவையில் உள்ள ஆவணங்கள்:*
+${pendingList || 'அனைத்தும் தயாராக உள்ளன!'}
+
+இதை சரிபார்த்து அடுத்தகட்ட கடன் அனுமதிக்கு உதவவும்.`;
+
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+  };
+
   return (
     <div className="w-full max-w-5xl mx-auto my-8 p-6 bg-slate-900/80 border border-slate-800 rounded-3xl backdrop-blur-xl shadow-2xl text-slate-100">
       
@@ -124,6 +153,16 @@ export default function DocumentChecklist() {
             </div>
           );
         })}
+      </div>
+
+      {/* WhatsApp பகிர்வு பொத்தான் */}
+      <div className="mt-6 pt-5 border-t border-slate-800 flex justify-end">
+        <button
+          onClick={handleShareWhatsApp}
+          className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-emerald-600/20 cursor-pointer"
+        >
+          <span>📲</span> வாட்ஸ்அப்பில் பட்டியலைப் பகிர்க (WhatsApp Share)
+        </button>
       </div>
 
     </div>
