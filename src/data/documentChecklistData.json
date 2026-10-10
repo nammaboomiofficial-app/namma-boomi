@@ -1,0 +1,39 @@
+{
+  "loanCategories": [
+    {
+      "id": "personal",
+      "title": "தனிநபர் கடன் (Personal Loan)",
+      "badge": "விரைவு அனுமதி",
+      "requiredDocs": [
+        { "id": "aadhaar", "name": "ஆதார் அட்டை (Aadhaar Card)", "type": "KYC", "mandatory": true },
+        { "id": "pan", "name": "பான் அட்டை (PAN Card)", "type": "KYC", "mandatory": true },
+        { "id": "bank_statement", "name": "கடந்த 6 மாத வங்கி கணக்கு விவரம் (Bank Statement)", "type": "Financial", "mandatory": true },
+        { "id": "payslip", "name": "சமீபத்திய 3 மாத சம்பளச் சீட்டு (Salary Slip)", "type": "Income", "mandatory": true }
+      ]
+    },
+    {
+      "id": "home_plot",
+      "title": "வீட்டுமனை & வீட்டுக் கடன் (Plot / Home Loan)",
+      "badge": "முக்கிய ஆவணங்கள்",
+      "requiredDocs": [
+        { "id": "aadhaar", "name": "விண்ணப்பதாரர் ஆதார் & பான் (KYC)", "type": "KYC", "mandatory": true },
+        { "id": "patta_chitta", "name": "அரசு பட்டா & சிட்டா நகல் (Patta / Chitta)", "type": "Property", "mandatory": true },
+        { "id": "ec_30yrs", "name": "30 ஆண்டு வில்லங்கச் சான்றிதழ் (EC)", "type": "Property", "mandatory": true },
+        { "id": "parent_deed", "name": "மூலப் பத்திரம் & விற்பனை ஒப்பந்தம் (Sale Deed)", "type": "Property", "mandatory": true },
+        { "id": "approval_plan", "name": "DTCP / CMDA அங்கீகார வரைபடம்", "type": "Property", "mandatory": true },
+        { "id": "itr_2yrs", "name": "கடந்த 2 ஆண்டு வருமான வரிக் கணக்கு (ITR)", "type": "Income", "mandatory": false }
+      ]
+    },
+    {
+      "id": "business_msme",
+      "title": "MSME & வணிகக் கடன் (Business Loan)",
+      "badge": "வணிக வளர்ச்சி",
+      "requiredDocs": [
+        { "id": "udyam_reg", "name": "உத்யாம் பதிவுச் சான்றிதழ் (Udyam Registration)", "type": "Business", "mandatory": true },
+        { "id": "gst_returns", "name": "கடந்த 12 மாத GST ரிட்டர்ன்ஸ் (GST Returns)", "type": "Financial", "mandatory": true },
+        { "id": "bank_statement_1yr", "name": "12 மாத நடப்புக் கணக்கு அறிக்கை (Current A/c Statement)", "type": "Financial", "mandatory": true },
+        { "id": "business_pan", "name": "நிறுவன பான் & ஆதார்", "type": "KYC", "mandatory": true }
+      ]
+    }
+  ]
+}

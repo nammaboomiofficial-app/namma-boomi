@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import loansData from '../data/loansData.json';
 import { calculateLoanEligibility } from '../utils/loanEngine';
+import DocumentChecklist from './DocumentChecklist';
 
 export default function LoanModule360() {
   const { loanCards = [], bankRates = [] } = loansData;
@@ -258,8 +259,11 @@ export default function LoanModule360() {
               <span className="text-emerald-400 font-bold text-xs mt-1 block">{bank.rate}</span>
             </div>
           ))}
+       </div>
         </div>
+
+        {/* கடன் ஆவணங்கள் சரிபார்ப்புப் பட்டியல் */}
+        <DocumentChecklist />
       </div>
-    </div>
-  );
+    );
 }
