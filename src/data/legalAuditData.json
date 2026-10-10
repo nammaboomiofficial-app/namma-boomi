@@ -1,0 +1,30 @@
+{
+  "config": {
+    "priceOriginal": 1999,
+    "priceDiscounted": 499,
+    "adminWhatsApp": "919962369131",
+    "googleSheetUrl": "https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZBOYKKBNNT3f_Wk_2K_w/exec"
+  },
+  "tamilNaduDistricts": [
+    {
+      "id": "chengalpattu",
+      "name": "செங்கல்பட்டு",
+      "taluks": ["திருப்போரூர்", "செங்கல்பட்டு", "தாம்பரம்", "பல்லாவரம்", "மதுராந்தகம்", "செய்யூர்", "திருவக்கரை"]
+    },
+    {
+      "id": "kanchipuram",
+      "name": "காஞ்சிபுரம்",
+      "taluks": ["காஞ்சிபுரம்", "வாலாஜாபாத்", "உத்திரமேரூர்", "ஸ்ரீபெரும்புதூர்", "குன்றத்தூர்"]
+    },
+    {
+      "id": "tiruvallur",
+      "name": "திருவள்ளூர்",
+      "taluks": ["திருவள்ளூர்", "பூந்தமல்லி", "ஆவடி", "பொன்னேரி", "கும்மிடிப்பூண்டி", "திருத்தணி"]
+    },
+    {
+      "id": "chennai",
+      "name": "சென்னை",
+      "taluks": ["மைலாப்பூர்", "மாம்பலம்", "கிண்டி", "வேளச்சேரி", "அம்பத்தூர்", "அண்ணா நகர்"]
+    }
+  ]
+}

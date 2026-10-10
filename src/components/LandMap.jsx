@@ -11,9 +11,63 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-// இரு புள்ளிகளுக்கு இடையிலான தூரத்தை (KM) கணக்கிடும் ஃபார்முலா (Haversine)
+// இரு புள்ளிகளுக்கு இடையிலான தூரத்தை மீட்டரில் (Meters) கணக்கிடுதல்
+function getDistanceMeters(lat1, lon1, lat2, lon2) {
+  const R = 6371e3; // பூமியின் ஆரம் மீட்டரில்
+  const phi1 = (lat1 * Math.PI) / 180;
+  const phi2 = (lat2 * Math.PI) / 180;
+  const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
+  const deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+    Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+// நில எல்லையின் சுற்றளவு (Perimeter) மற்றும் பரப்பளவு (Area) கணக்கீடு
+function calculateLandMetrics(coords) {
+  let perimeterMeters = 0;
+  for (let i = 0; i < coords.length; i++) {
+    const nextIdx = (i + 1) % coords.length;
+    perimeterMeters += getDistanceMeters(
+      coords[i][0], coords[i][1],
+      coords[nextIdx][0], coords[nextIdx][1]
+    );
+  }
+
+  // Shoelace Formula - Planar approximation for parcel area
+  const midLat = coords.reduce((acc, c) => acc + c[0], 0) / coords.length;
+  const metersPerDegLat = 111132.92;
+  const metersPerDegLng = 111412.84 * Math.cos((midLat * Math.PI) / 180);
+
+  let areaSqM = 0;
+  for (let i = 0; i < coords.length; i++) {
+    const j = (i + 1) % coords.length;
+    const xi = coords[i][1] * metersPerDegLng;
+    const yi = coords[i][0] * metersPerDegLat;
+    const xj = coords[j][1] * metersPerDegLng;
+    const yj = coords[j][0] * metersPerDegLat;
+    areaSqM += xi * yj - xj * yi;
+  }
+  areaSqM = Math.abs(areaSqM) / 2;
+
+  const perimeterFeet = Math.round(perimeterMeters * 3.28084);
+  const areaSqFt = Math.round(areaSqM * 10.7639);
+  const areaCents = (areaSqFt / 435.6).toFixed(2); // 1 Cent = 435.6 Sq.Ft
+
+  return {
+    perimeterFeet,
+    perimeterMeters: Math.round(perimeterMeters),
+    areaSqFt,
+    areaCents
+  };
+}
+
+// இரு புள்ளிகளுக்கு இடையிலான தூரத்தை (KM) கணக்கிடும் ஃபார்முலா
 function calculateDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371; // பூமியின் ஆரம் (கி.மீ)
+  const R = 6371;
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLon = (lon2 - lon1) * (Math.PI / 180);
   const a =
@@ -48,6 +102,7 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
 
   const [userLocation, setUserLocation] = useState(null);
   const [gpsLoading, setGpsLoading] = useState(false);
+  const [selectedMetrics, setSelectedMetrics] = useState(null);
 
   useEffect(() => {
     window.handleMapVisitPass = (landId) => {
@@ -61,6 +116,32 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
       delete window.handleMapVisitPass;
     };
   }, [onSelectVisitPass]);
+
+  const drawBoundary = (coords, metrics) => {
+    if (!mapInstanceRef.current) return;
+    if (activePolygonRef.current) {
+      mapInstanceRef.current.removeLayer(activePolygonRef.current);
+    }
+
+    const polygon = L.polygon(coords, {
+      color: '#10b981',
+      weight: 3,
+      fillColor: '#34d399',
+      fillOpacity: 0.35,
+      dashArray: '4, 4'
+    }).addTo(mapInstanceRef.current);
+
+    if (metrics) {
+      polygon.bindTooltip(`📐 சுற்றளவு: ${metrics.perimeterFeet} அடி | ${metrics.areaCents} சென்ட்`, {
+        permanent: false,
+        direction: 'center',
+        className: 'bg-slate-900 text-emerald-400 font-bold px-2 py-1 rounded text-xs border border-emerald-500'
+      });
+    }
+
+    activePolygonRef.current = polygon;
+    setSelectedMetrics(metrics);
+  };
 
   useEffect(() => {
     if (mapContainerRef.current && !mapInstanceRef.current) {
@@ -104,15 +185,17 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
             [lat - offset, lng - offset]
           ];
 
+          const metrics = calculateLandMetrics(boundaryCoords);
+
           const marker = L.marker([lat, lng], {
             icon: createCustomIcon(land.type === 'plots' ? '#f59e0b' : '#10b981'),
           }).addTo(map);
 
-          markersRef.current[landId] = { marker, lat, lng, boundaryCoords, land };
+          markersRef.current[landId] = { marker, lat, lng, boundaryCoords, land, metrics };
 
           const updatePopup = (distText = '') => {
             const popupHtml = `
-              <div style="font-family: sans-serif; min-width: 190px; padding: 4px; color: #0f172a;">
+              <div style="font-family: sans-serif; min-width: 210px; padding: 4px; color: #0f172a;">
                 <span style="font-size: 10px; font-weight: bold; background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 9999px;">
                   ${land.tag || land.type || 'விவசாய நிலம்'}
                 </span>
@@ -122,6 +205,13 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
                 <p style="margin: 0; font-size: 11px; color: #64748b;">
                   📍 ${land.location || land.district || 'தமிழ்நாடு'}
                 </p>
+
+                <!-- சுற்றளவு & எல்லை விவர பேட்ஜ் -->
+                <div style="margin: 6px 0; padding: 6px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 11px;">
+                  <div style="color: #0f172a; font-weight: 600;">📐 சுற்றளவு: <span style="color: #059669;">${metrics.perimeterFeet} அடி</span> (${metrics.perimeterMeters} மீ)</div>
+                  <div style="color: #0f172a; font-weight: 600; margin-top: 2px;">🌾 பரப்பளவு: <span style="color: #059669;">${metrics.areaCents} சென்ட்</span> (${metrics.areaSqFt} ச.அடி)</div>
+                </div>
+
                 ${distText ? `<p style="margin: 4px 0 0 0; font-size: 11px; font-weight: bold; color: #2563eb;">🚗 உங்கள் இடத்திலிருந்து: ${distText} கி.மீ</p>` : ''}
                 <div style="margin: 6px 0; display: flex; justify-content: space-between; align-items: center;">
                   <span style="font-size: 12px; font-weight: bold; color: #059669;">
@@ -142,7 +232,7 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
           updatePopup();
 
           marker.on('click', () => {
-            drawBoundary(boundaryCoords);
+            drawBoundary(boundaryCoords, metrics);
           });
         });
       }
@@ -176,7 +266,6 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
             mapInstanceRef.current.removeLayer(userMarkerRef.current);
           }
 
-          // பயனர் மார்க்கர் (நீல நிற வட்டம்)
           const uMarker = L.circleMarker([uLat, uLng], {
             radius: 8,
             fillColor: '#3b82f6',
@@ -191,12 +280,11 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
 
           mapInstanceRef.current.flyTo([uLat, uLng], 12, { duration: 1.5 });
 
-          // நிலங்களுக்கான தொலைவை அப்டேட் செய்தல்
           Object.keys(markersRef.current).forEach((key) => {
             const item = markersRef.current[key];
             const dist = calculateDistance(uLat, uLng, item.lat, item.lng);
             const popupHtml = `
-              <div style="font-family: sans-serif; min-width: 190px; padding: 4px; color: #0f172a;">
+              <div style="font-family: sans-serif; min-width: 210px; padding: 4px; color: #0f172a;">
                 <span style="font-size: 10px; font-weight: bold; background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 9999px;">
                   ${item.land.tag || item.land.type || 'விவசாய நிலம்'}
                 </span>
@@ -206,6 +294,12 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
                 <p style="margin: 0; font-size: 11px; color: #64748b;">
                   📍 ${item.land.location || item.land.district || 'தமிழ்நாடு'}
                 </p>
+
+                <div style="margin: 6px 0; padding: 6px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 11px;">
+                  <div style="color: #0f172a; font-weight: 600;">📐 சுற்றளவு: <span style="color: #059669;">${item.metrics.perimeterFeet} அடி</span></div>
+                  <div style="color: #0f172a; font-weight: 600; margin-top: 2px;">🌾 பரப்பளவு: <span style="color: #059669;">${item.metrics.areaCents} சென்ட்</span></div>
+                </div>
+
                 <p style="margin: 4px 0 0 0; font-size: 11px; font-weight: bold; color: #2563eb;">🚗 உங்கள் இடத்திலிருந்து: ${dist} கி.மீ</p>
                 <div style="margin: 6px 0; display: flex; justify-content: space-between; align-items: center;">
                   <span style="font-size: 12px; font-weight: bold; color: #059669;">
@@ -232,30 +326,16 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
     );
   };
 
-  const drawBoundary = (coords) => {
-    if (!mapInstanceRef.current) return;
-    if (activePolygonRef.current) {
-      mapInstanceRef.current.removeLayer(activePolygonRef.current);
-    }
-    const polygon = L.polygon(coords, {
-      color: '#10b981',
-      weight: 3,
-      fillColor: '#34d399',
-      fillOpacity: 0.35,
-      dashArray: '4, 4'
-    }).addTo(mapInstanceRef.current);
-    activePolygonRef.current = polygon;
-  };
-
   useEffect(() => {
     if (focusedLandId && mapInstanceRef.current && markersRef.current[focusedLandId]) {
       const target = markersRef.current[focusedLandId];
       mapInstanceRef.current.flyTo([target.lat, target.lng], 16, { duration: 1.8 });
-      drawBoundary(target.boundaryCoords);
+      drawBoundary(target.boundaryCoords, target.metrics);
       target.marker.openPopup();
     }
   }, [focusedLandId]);
-// மாவட்ட வடிகட்டிக்கு ஏற்ப வரைபடத்தை நகர்த்துதல்
+
+  // மாவட்ட வடிகட்டி
   useEffect(() => {
     if (!mapInstanceRef.current || !filterDistrict || filterDistrict === 'அனைத்தும்') return;
 
@@ -271,6 +351,7 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
       mapInstanceRef.current.flyTo(targetCoords, 11, { duration: 1.5 });
     }
   }, [filterDistrict]);
+
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/60 p-3 backdrop-blur-md shadow-2xl">
       <div className="flex flex-wrap items-center justify-between pb-3 px-2 gap-2">
@@ -290,6 +371,20 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
           </span>
         </div>
       </div>
+
+      {/* நில எல்லை & சுற்றளவு நேரலை தகவல் பட்டை */}
+      {selectedMetrics && (
+        <div className="mb-3 mx-1 p-2.5 bg-emerald-950/70 border border-emerald-500/40 rounded-xl flex flex-wrap items-center justify-between text-xs text-emerald-200">
+          <span className="font-bold flex items-center gap-1.5 text-white">
+            📐 நில எல்லைத் தகவல்:
+          </span>
+          <div className="flex items-center gap-4 font-medium">
+            <span>சுற்றளவு: <strong className="text-emerald-400">{selectedMetrics.perimeterFeet} அடி</strong> ({selectedMetrics.perimeterMeters} மீ)</span>
+            <span>பரப்பளவு: <strong className="text-emerald-400">{selectedMetrics.areaCents} சென்ட்</strong> ({selectedMetrics.areaSqFt} ச.அடி)</span>
+          </div>
+        </div>
+      )}
+
       <div
         ref={mapContainerRef}
         style={{ height: '400px', width: '100%', borderRadius: '12px', zIndex: 10 }}
