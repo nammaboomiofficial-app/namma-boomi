@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import landsData from '../data/landsData.json';
+import unitsData from '../data/landUnits.json';
+import mapConfig from '../data/mapConfig.json';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -11,9 +13,12 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-// இரு புள்ளிகளுக்கு இடையிலான தூரத்தை மீட்டரில் (Meters) கணக்கிடுதல்
+const { mapDefaults, districtCenters, defaultLocations, uiLabels } = mapConfig;
+const { conversionRates = {} } = unitsData;
+
+// இரு புள்ளிகளுக்கு இடையிலான தூரத்தை மீட்டரில் கணக்கிடுதல்
 function getDistanceMeters(lat1, lon1, lat2, lon2) {
-  const R = 6371e3; // பூமியின் ஆரம் மீட்டரில்
+  const R = mapDefaults.earthRadiusMeters || 6371000;
   const phi1 = (lat1 * Math.PI) / 180;
   const phi2 = (lat2 * Math.PI) / 180;
   const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
@@ -26,7 +31,7 @@ function getDistanceMeters(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-// நில எல்லையின் சுற்றளவு (Perimeter) மற்றும் பரப்பளவு (Area) கணக்கீடு
+// நில எல்லையின் சுற்றளவு மற்றும் பரப்பளவு கணக்கீடு
 function calculateLandMetrics(coords) {
   let perimeterMeters = 0;
   for (let i = 0; i < coords.length; i++) {
@@ -37,7 +42,6 @@ function calculateLandMetrics(coords) {
     );
   }
 
-  // Shoelace Formula - Planar approximation for parcel area
   const midLat = coords.reduce((acc, c) => acc + c[0], 0) / coords.length;
   const metersPerDegLat = 111132.92;
   const metersPerDegLng = 111412.84 * Math.cos((midLat * Math.PI) / 180);
@@ -53,9 +57,10 @@ function calculateLandMetrics(coords) {
   }
   areaSqM = Math.abs(areaSqM) / 2;
 
-  const perimeterFeet = Math.round(perimeterMeters * 3.28084);
-  const areaSqFt = Math.round(areaSqM * 10.7639);
-  const areaCents = (areaSqFt / 435.6).toFixed(2); // 1 Cent = 435.6 Sq.Ft
+  const perimeterFeet = Math.round(perimeterMeters * (mapDefaults.metersToFeet || 3.28084));
+  const areaSqFt = Math.round(areaSqM * (mapDefaults.sqMetersToSqFt || 10.7639104));
+  const centRate = conversionRates.cent || 435.6;
+  const areaCents = (areaSqFt / centRate).toFixed(2);
 
   return {
     perimeterFeet,
@@ -65,7 +70,6 @@ function calculateLandMetrics(coords) {
   };
 }
 
-// இரு புள்ளிகளுக்கு இடையிலான தூரத்தை (KM) கணக்கிடும் ஃபார்முலா
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371;
   const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -78,7 +82,6 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   return (R * c).toFixed(1);
 }
 
-// தனித்துவமான மார்க்கர் ஐகான்
 const createCustomIcon = (color = '#10b981') => {
   return L.divIcon({
     className: 'custom-map-pin',
@@ -131,29 +134,22 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
       dashArray: '4, 4'
     }).addTo(mapInstanceRef.current);
 
-    if (metrics) {
-      polygon.bindTooltip(`📐 சுற்றளவு: ${metrics.perimeterFeet} அடி | ${metrics.areaCents} சென்ட்`, {
-        permanent: false,
-        direction: 'center',
-        className: 'bg-slate-900 text-emerald-400 font-bold px-2 py-1 rounded text-xs border border-emerald-500'
-      });
-    }
-
     activePolygonRef.current = polygon;
     setSelectedMetrics(metrics);
   };
 
   useEffect(() => {
     if (mapContainerRef.current && !mapInstanceRef.current) {
-      const map = L.map(mapContainerRef.current).setView([12.75, 80.1], 9);
+      const map = L.map(mapContainerRef.current).setView(
+        mapDefaults.center || [12.75, 80.1], 
+        mapDefaults.zoom || 9
+      );
       mapInstanceRef.current = map;
 
-      // 1. தெரு வரைபடம் (Street Map)
       const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap'
       }).addTo(map);
 
-      // 2. செயற்கைக்கோள் பார்வை (Satellite Imagery)
       const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: '&copy; Esri World Imagery'
       });
@@ -163,21 +159,14 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
         '🛰️ செயற்கைக்கோள் (Satellite)': satelliteLayer
       }, null, { position: 'topright' }).addTo(map);
 
-      const defaultLocations = [
-        { lat: 12.7480, lng: 80.1980 },
-        { lat: 12.6840, lng: 79.9830 },
-        { lat: 12.7880, lng: 80.2220 },
-        { lat: 11.0168, lng: 76.9558 },
-        { lat: 9.9252, lng: 78.1198 }
-      ];
-
       if (Array.isArray(landsData) && landsData.length > 0) {
         landsData.forEach((land, index) => {
-          const lat = land.lat || (land.location_coords && land.location_coords[0]) || defaultLocations[index % defaultLocations.length].lat;
-          const lng = land.lng || (land.location_coords && land.location_coords[1]) || defaultLocations[index % defaultLocations.length].lng;
+          const fallback = defaultLocations[index % defaultLocations.length];
+          const lat = land.lat || (land.location_coords && land.location_coords[0]) || fallback.lat;
+          const lng = land.lng || (land.location_coords && land.location_coords[1]) || fallback.lng;
           const landId = land.id || land._id || `land-${index}`;
 
-          const offset = 0.0018;
+          const offset = mapDefaults.boundaryOffset || 0.0018;
           const boundaryCoords = [
             [lat + offset, lng - offset],
             [lat + offset, lng + offset],
@@ -195,38 +184,43 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
 
           const updatePopup = (distText = '') => {
             const popupHtml = `
-              <div style="font-family: sans-serif; min-width: 210px; padding: 4px; color: #0f172a;">
+              <div style="font-family: sans-serif; min-width: 200px; padding: 2px; color: #0f172a;">
                 <span style="font-size: 10px; font-weight: bold; background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 9999px;">
-                  ${land.tag || land.type || 'விவசாய நிலம்'}
+                  ${land.tag || land.type || uiLabels.defaultTag}
                 </span>
-                <h4 style="margin: 6px 0 2px 0; font-size: 13px; font-weight: bold; color: #0f172a; line-height: 1.3;">
-                  ${land.title || 'பிரீமியம் நிலம்'}
+                <h4 style="margin: 4px 0 2px 0; font-size: 12px; font-weight: bold; color: #0f172a; line-height: 1.3;">
+                  ${land.title || uiLabels.defaultTitle}
                 </h4>
                 <p style="margin: 0; font-size: 11px; color: #64748b;">
-                  📍 ${land.location || land.district || 'தமிழ்நாடு'}
+                  📍 ${land.location || land.district || uiLabels.defaultLocation}
                 </p>
 
-                <!-- சுற்றளவு & எல்லை விவர பேட்ஜ் -->
-                <div style="margin: 6px 0; padding: 6px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 11px;">
-                  <div style="color: #0f172a; font-weight: 600;">📐 சுற்றளவு: <span style="color: #059669;">${metrics.perimeterFeet} அடி</span> (${metrics.perimeterMeters} மீ)</div>
-                  <div style="color: #0f172a; font-weight: 600; margin-top: 2px;">🌾 பரப்பளவு: <span style="color: #059669;">${metrics.areaCents} சென்ட்</span> (${metrics.areaSqFt} ச.அடி)</div>
+                <div style="margin: 5px 0; padding: 5px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 11px;">
+                  <div style="color: #0f172a; font-weight: 600;">📐 ${uiLabels.perimeterLabel} <span style="color: #059669;">${metrics.perimeterFeet} ${uiLabels.feetUnit}</span></div>
+                  <div style="color: #0f172a; font-weight: 600; margin-top: 2px;">🌾 ${uiLabels.areaLabel} <span style="color: #059669;">${metrics.areaCents} ${uiLabels.centsUnit}</span></div>
                 </div>
 
-                ${distText ? `<p style="margin: 4px 0 0 0; font-size: 11px; font-weight: bold; color: #2563eb;">🚗 உங்கள் இடத்திலிருந்து: ${distText} கி.மீ</p>` : ''}
-                <div style="margin: 6px 0; display: flex; justify-content: space-between; align-items: center;">
-                  <span style="font-size: 12px; font-weight: bold; color: #059669;">
-                    💰 ${land.price || 'விலை தகவல்'}
+                ${distText ? `<p style="margin: 3px 0; font-size: 10px; font-weight: bold; color: #2563eb;">${uiLabels.distanceFromYou} ${distText}${uiLabels.kmUnit}</p>` : ''}
+                <div style="margin: 4px 0; display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 11px; font-weight: bold; color: #059669;">
+                    💰 ${land.price || uiLabels.defaultPrice}
                   </span>
                 </div>
                 <button 
                   onclick="window.handleMapVisitPass('${landId}')" 
-                  style="width: 100%; background: #059669; color: white; border: none; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;"
+                  style="width: 100%; background: #059669; color: white; border: none; padding: 5px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;"
                 >
-                  🎫 விசிட் பாஸ் பெறுக
+                  ${uiLabels.visitPassBtn}
                 </button>
               </div>
             `;
-            marker.bindPopup(popupHtml);
+            // பாப்அப் வரைபடத்தின் உச்சிக்கு வெளியே போகாமல் இருக்க autoPan வசதி
+            marker.bindPopup(popupHtml, {
+              autoPan: true,
+              autoPanPaddingTopLeft: [20, 40],
+              autoPanPaddingBottomRight: [20, 20],
+              offset: [0, -12]
+            });
           };
 
           updatePopup();
@@ -246,10 +240,9 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
     };
   }, []);
 
-  // பயனர் நேரலை இருப்பிடத்தைக் கண்டறியும் செயல்பாடு (Live GPS)
   const handleLocateMe = () => {
     if (!navigator.geolocation) {
-      alert('உங்கள் உலாவியில் GPS வசதி ஆதரிக்கப்படவில்லை.');
+      alert(uiLabels.gpsUnsupported);
       return;
     }
 
@@ -275,7 +268,7 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
             fillOpacity: 0.9
           }).addTo(mapInstanceRef.current);
 
-          uMarker.bindPopup('<b>📍 உங்கள் தற்போதைய இருப்பிடம்</b>').openPopup();
+          uMarker.bindPopup(`<b>${uiLabels.userLocationTitle}</b>`).openPopup();
           userMarkerRef.current = uMarker;
 
           mapInstanceRef.current.flyTo([uLat, uLng], 12, { duration: 1.5 });
@@ -284,43 +277,48 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
             const item = markersRef.current[key];
             const dist = calculateDistance(uLat, uLng, item.lat, item.lng);
             const popupHtml = `
-              <div style="font-family: sans-serif; min-width: 210px; padding: 4px; color: #0f172a;">
+              <div style="font-family: sans-serif; min-width: 200px; padding: 2px; color: #0f172a;">
                 <span style="font-size: 10px; font-weight: bold; background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 9999px;">
-                  ${item.land.tag || item.land.type || 'விவசாய நிலம்'}
+                  ${item.land.tag || item.land.type || uiLabels.defaultTag}
                 </span>
-                <h4 style="margin: 6px 0 2px 0; font-size: 13px; font-weight: bold; color: #0f172a; line-height: 1.3;">
-                  ${item.land.title || 'பிரீமியம் நிலம்'}
+                <h4 style="margin: 4px 0 2px 0; font-size: 12px; font-weight: bold; color: #0f172a; line-height: 1.3;">
+                  ${item.land.title || uiLabels.defaultTitle}
                 </h4>
                 <p style="margin: 0; font-size: 11px; color: #64748b;">
-                  📍 ${item.land.location || item.land.district || 'தமிழ்நாடு'}
+                  📍 ${item.land.location || item.land.district || uiLabels.defaultLocation}
                 </p>
 
-                <div style="margin: 6px 0; padding: 6px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 11px;">
-                  <div style="color: #0f172a; font-weight: 600;">📐 சுற்றளவு: <span style="color: #059669;">${item.metrics.perimeterFeet} அடி</span></div>
-                  <div style="color: #0f172a; font-weight: 600; margin-top: 2px;">🌾 பரப்பளவு: <span style="color: #059669;">${item.metrics.areaCents} சென்ட்</span></div>
+                <div style="margin: 5px 0; padding: 5px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 11px;">
+                  <div style="color: #0f172a; font-weight: 600;">📐 ${uiLabels.perimeterLabel} <span style="color: #059669;">${item.metrics.perimeterFeet} ${uiLabels.feetUnit}</span></div>
+                  <div style="color: #0f172a; font-weight: 600; margin-top: 2px;">🌾 ${uiLabels.areaLabel} <span style="color: #059669;">${item.metrics.areaCents} ${uiLabels.centsUnit}</span></div>
                 </div>
 
-                <p style="margin: 4px 0 0 0; font-size: 11px; font-weight: bold; color: #2563eb;">🚗 உங்கள் இடத்திலிருந்து: ${dist} கி.மீ</p>
-                <div style="margin: 6px 0; display: flex; justify-content: space-between; align-items: center;">
-                  <span style="font-size: 12px; font-weight: bold; color: #059669;">
-                    💰 ${item.land.price || 'விலை தகவல்'}
+                <p style="margin: 3px 0; font-size: 10px; font-weight: bold; color: #2563eb;">${uiLabels.distanceFromYou} ${dist} ${uiLabels.kmUnit}</p>
+                <div style="margin: 4px 0; display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 11px; font-weight: bold; color: #059669;">
+                    💰 ${item.land.price || uiLabels.defaultPrice}
                   </span>
                 </div>
                 <button 
                   onclick="window.handleMapVisitPass('${key}')" 
-                  style="width: 100%; background: #059669; color: white; border: none; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;"
+                  style="width: 100%; background: #059669; color: white; border: none; padding: 5px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;"
                 >
-                  🎫 விசிட் பாஸ் பெறுக
+                  ${uiLabels.visitPassBtn}
                 </button>
               </div>
             `;
-            item.marker.bindPopup(popupHtml);
+            item.marker.bindPopup(popupHtml, {
+              autoPan: true,
+              autoPanPaddingTopLeft: [20, 40],
+              autoPanPaddingBottomRight: [20, 20],
+              offset: [0, -12]
+            });
           });
         }
       },
-      (err) => {
+      () => {
         setGpsLoading(false);
-        alert('இருப்பிட அனுமதி மறுக்கப்பட்டது அல்லது பிழை ஏற்பட்டது.');
+        alert(uiLabels.gpsError);
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );
@@ -329,65 +327,81 @@ export default function LandMap({ onSelectVisitPass, focusedLandId, filterDistri
   useEffect(() => {
     if (focusedLandId && mapInstanceRef.current && markersRef.current[focusedLandId]) {
       const target = markersRef.current[focusedLandId];
-      mapInstanceRef.current.flyTo([target.lat, target.lng], 16, { duration: 1.8 });
+      // பாப்அப் முழுமையாகத் தெரிய மேப்பை சற்றே இறக்கி மையப்படுத்துதல் (+0.0018)
+      mapInstanceRef.current.flyTo(
+        [target.lat + 0.0018, target.lng], 
+        mapDefaults.focusedZoom || 16, 
+        { duration: 1.8 }
+      );
       drawBoundary(target.boundaryCoords, target.metrics);
       target.marker.openPopup();
     }
   }, [focusedLandId]);
 
-  // மாவட்ட வடிகட்டி
   useEffect(() => {
     if (!mapInstanceRef.current || !filterDistrict || filterDistrict === 'அனைத்தும்') return;
-
-    const districtCenters = {
-      'செங்கல்பட்டு': [12.6939, 79.9757],
-      'காஞ்சிபுரம்': [12.8342, 79.7036],
-      'திருவள்ளூர்': [13.1437, 79.9079],
-      'சென்னை': [13.0827, 80.2707],
-    };
-
     const targetCoords = districtCenters[filterDistrict];
     if (targetCoords) {
-      mapInstanceRef.current.flyTo(targetCoords, 11, { duration: 1.5 });
+      mapInstanceRef.current.flyTo(targetCoords, mapDefaults.districtZoom || 11, { duration: 1.5 });
     }
   }, [filterDistrict]);
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/60 p-3 backdrop-blur-md shadow-2xl">
-      <div className="flex flex-wrap items-center justify-between pb-3 px-2 gap-2">
-        <h4 className="text-sm font-semibold text-emerald-400 flex items-center gap-2">
-          📍 நேரலை நில அமைவிடம் & எல்லை வரைபடம் (GPS Boundary Map)
+    <div className="w-full rounded-2xl border border-slate-700 bg-slate-900 p-4 shadow-2xl">
+      {/* 1. முதன்மைத் தலைப்புப் பட்டை */}
+      <div className="flex flex-wrap items-center justify-between pb-3 px-1 gap-2 border-b border-slate-800">
+        <h4 className="text-sm font-bold text-emerald-400 flex items-center gap-2">
+          {uiLabels.title}
         </h4>
         <div className="flex items-center gap-2">
           <button
             onClick={handleLocateMe}
             disabled={gpsLoading}
-            className="text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium px-3 py-1 rounded-full transition flex items-center gap-1 shadow-md disabled:opacity-50"
+            className="text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium px-3 py-1.5 rounded-full transition flex items-center gap-1 shadow-md disabled:opacity-50 cursor-pointer"
           >
-            {gpsLoading ? '⏳ கண்டறிகிறது...' : '📍 என் இருப்பிடம் (Live GPS)'}
+            {gpsLoading ? uiLabels.locating : uiLabels.locateMe}
           </button>
-          <span className="text-xs text-slate-100 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700">
-            செயற்கைக்கோள் வசதியுடன்
+          <span className="text-xs text-slate-300 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">
+            {uiLabels.satelliteBadge}
           </span>
         </div>
       </div>
 
-      {/* நில எல்லை & சுற்றளவு நேரலை தகவல் பட்டை */}
+      {/* 2. நில எல்லை & சுற்றளவு தகவல் கார்டுகள் (பளிச்சென்ற வடிவம்) */}
       {selectedMetrics && (
-        <div className="mb-3 mx-1 p-2.5 bg-emerald-950/70 border border-emerald-500/40 rounded-xl flex flex-wrap items-center justify-between text-xs text-emerald-200">
-          <span className="font-bold flex items-center gap-1.5 text-white">
-            📐 நில எல்லைத் தகவல்:
-          </span>
-          <div className="flex items-center gap-4 font-medium">
-            <span>சுற்றளவு: <strong className="text-emerald-400">{selectedMetrics.perimeterFeet} அடி</strong> ({selectedMetrics.perimeterMeters} மீ)</span>
-            <span>பரப்பளவு: <strong className="text-emerald-400">{selectedMetrics.areaCents} சென்ட்</strong> ({selectedMetrics.areaSqFt} ச.அடி)</span>
+        <div className="my-3 p-3 bg-slate-950/80 border border-emerald-500/30 rounded-xl flex flex-wrap items-center justify-between gap-3 shadow-lg">
+          <div className="flex items-center gap-2 font-bold text-emerald-400 text-sm">
+            <span className="text-base">📐</span>
+            <span>{uiLabels.boundaryInfo}</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            {/* சுற்றளவு கார்டு */}
+            <div className="bg-emerald-950/60 border border-emerald-500/40 px-3.5 py-1.5 rounded-lg flex items-center gap-2">
+              <span className="text-emerald-300 text-xs">{uiLabels.perimeterLabel}</span>
+              <strong className="text-white text-sm font-bold">
+                {selectedMetrics.perimeterFeet} {uiLabels.feetUnit}
+              </strong>
+              <span className="text-emerald-400/70 text-xs">({selectedMetrics.perimeterMeters} {uiLabels.meterUnit})</span>
+            </div>
+
+            {/* பரப்பளவு கார்டு */}
+            <div className="bg-emerald-950/60 border border-emerald-500/40 px-3.5 py-1.5 rounded-lg flex items-center gap-2">
+              <span className="text-emerald-300 text-xs">{uiLabels.areaLabel}</span>
+              <strong className="text-white text-sm font-bold">
+                {selectedMetrics.areaCents} {uiLabels.centsUnit}
+              </strong>
+              <span className="text-emerald-400/70 text-xs">({selectedMetrics.areaSqFt} {uiLabels.sqftUnit})</span>
+            </div>
           </div>
         </div>
       )}
 
+      {/* 3. வரைபடம் */}
       <div
         ref={mapContainerRef}
-        style={{ height: '400px', width: '100%', borderRadius: '12px', zIndex: 10 }}
+        className="mt-2"
+        style={{ height: '430px', width: '100%', borderRadius: '12px', zIndex: 10 }}
       />
     </div>
   );
