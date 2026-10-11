@@ -25,10 +25,12 @@ import BusinessModule from '../components/BusinessModule';
 import AgriModule from '../components/AgriModule';
 import InsuranceModule from '../components/InsuranceModule';
 import WholesaleModule from '../components/WholesaleModule';
+
 import SpiritualModule from '../components/SpiritualModule';
 import AstrologyModule from '../components/AstrologyModule';
 import TourismModule from '../components/TourismModule';
 import landsData from '../data/landsData.json';
+
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -51,6 +53,9 @@ export default function Home() {
   const [visitorPhone, setVisitorPhone] = useState('');
   const [calcLandValue, setCalcLandValue] = useState(1000000);
   const [selectedLoanLand, setSelectedLoanLand] = useState(null);
+  const [activeVideo, setActiveVideo] = useState(null);
+  const [filterCategory, setFilterCategory] = useState('all');
+  const [filterListingType, setFilterListingType] = useState('all');
   
 
   // விவசாயம் சப்-டேப்கள்
@@ -206,21 +211,28 @@ export default function Home() {
     }
   };
 
-  const filteredLands = listedLands.filter((l) => {
-    // 1. மாவட்ட வடிகட்டி சரிபார்ப்பு
+  const filteredLands = (listedLands || landsData).filter((l) => {
+    // 1. மாவட்ட வடிகட்டி
     const matchesDistrict = filterDistrict === 'அனைத்தும்' || l.district === filterDistrict;
     if (!matchesDistrict) return false;
 
-    // 2. விரைவு ஃபில்டர் (Quick Category & Budget)
+    // 2. சொத்து வகை வடிகட்டி (நிலம், வீடு, வணிக கடை)
+    const matchesCategory = filterCategory === 'all' || l.propertyType === filterCategory;
+    if (!matchesCategory) return false;
+
+    // 3. பரிவர்த்தனை வகை வடிகட்டி (விற்பனை, வாடகை, லீஸ்)
+    const matchesListing = filterListingType === 'all' || l.listingType === filterListingType;
+    if (!matchesListing) return false;
+
+    // 4. விரைவு ஃபில்டர் (Quick Filter)
     if (quickFilter === 'all') return true;
 
-    const landInfo = `${l.title || ''} ${l.type || ''} ${l.category || ''} ${l.description || ''}`.toLowerCase();
-
-    if (quickFilter === 'agri') return landInfo.includes('விவசாய') || landInfo.includes('தோட்டம்') || landInfo.includes('agri');
-    if (quickFilter === 'plots') return landInfo.includes('மனை') || landInfo.includes('plot') || landInfo.includes('dtcp');
-    if (quickFilter === 'budget') return landInfo.includes('15') || landInfo.includes('12') || landInfo.includes('10') || (l.price && Number(String(l.price).replace(/\D/g, '')) <= 1500000);
-    if (quickFilter === 'urgent') return landInfo.includes('அவசர') || landInfo.includes('urgent') || l.urgent;
-    if (quickFilter === 'road') return landInfo.includes('ரோடு') || landInfo.includes('road') || landInfo.includes('சாலை');
+    const landInfo = `${l.title || ''} ${l.type || ''} ${l.category || ''}`;
+    if (quickFilter === 'agri') return landInfo.includes('விவசாய') || landInfo.includes('தோட்டம்');
+    if (quickFilter === 'plots') return landInfo.includes('மனை') || landInfo.includes('DTCP');
+    if (quickFilter === 'budget') return landInfo.includes('15') || landInfo.includes('முதலீடு');
+    if (quickFilter === 'urgent') return landInfo.includes('அவசர') || landInfo.includes('உடனடி');
+    if (quickFilter === 'road') return landInfo.includes('ரோடு') || landInfo.includes('சாலை');
 
     return true;
   });
@@ -785,6 +797,54 @@ export default function Home() {
                   <span className="text-[11px] text-slate-100">
                     மொத்தம் {filteredLands.length} சரிபார்க்கப்பட்ட நிலங்கள்
                   </span>
+                  {/* புதிய சொத்து வகை & விற்பனை/வாடகை/லீஸ் வடிகட்டி */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mt-3 pt-3 border-t border-slate-800/80 w-full">
+          {/* வகை: நிலம், வீடு, வணிக கடை */}
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {[
+              { id: 'all', label: 'அனைத்து சொத்துக்கள்' },
+              { id: 'land', label: '🌾 நிலங்கள்' },
+              { id: 'house', label: '🏠 வீடுகள்' },
+              { id: 'commercial', label: '🏢 வணிக கடைகள்' },
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setFilterCategory(cat.id)}
+                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  filterCategory === cat.id
+                    ? 'bg-emerald-500 text-slate-950 shadow-md'
+                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* பரிவர்த்தனை: விற்பனை, வாடகை, லீஸ் */}
+          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
+            {[
+              { id: 'all', label: 'அனைத்தும்' },
+              { id: 'விற்பனை', label: 'விற்பனை' },
+              { id: 'வாடகை', label: 'வாடகை' },
+              { id: 'லீஸ்', label: 'லீஸ்' },
+            ].map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setFilterListingType(t.id)}
+                className={`px-2.5 py-0.5 rounded-lg text-[11px] font-medium transition-all cursor-pointer ${
+                  filterListingType === t.id
+                    ? 'bg-emerald-600 text-white font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -800,6 +860,18 @@ export default function Home() {
                           alt={land.title}
                           className="w-full h-full object-cover hover:scale-105 transition duration-500"
                         />
+                        {land.videoUrl && (
+  <button
+    type="button"
+    onClick={(e) => {
+      e.stopPropagation();
+      setActiveVideo({ url: land.videoUrl, title: land.title });
+    }}
+    className="absolute bottom-2 right-2 z-10 bg-red-600 hover:bg-red-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
+  >
+    <span>▶</span> நேரலை வீடியோ
+  </button>
+)}
                         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
                           <span className="bg-slate-950/90 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded">
                             {land.badge}
@@ -2447,9 +2519,46 @@ export default function Home() {
           </a>
         </div>
       </div>
+      
       {/* ₹499 லீகல் ஆடிட் முன்பதிவு பிரிவு */}
 {(currentModule === 'land' || currentModule === 'patta') && <LegalAuditPromo />}
 <FloatingWhatsApp />
+{/* நேரலை வீடியோ பாப்-அப் பிளேயர் */}
+        {activeVideo && (
+          <div
+            onClick={() => setActiveVideo(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md cursor-pointer"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-2xl bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl"
+            >
+              <div className="flex items-center justify-between p-3.5 border-b border-slate-800 bg-slate-900">
+                <div className="flex items-center gap-2 text-white text-xs font-bold truncate">
+                  <span className="text-red-500">🎥</span>
+                  <span className="truncate">{activeVideo.title}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveVideo(null)}
+                  className="text-slate-400 hover:text-white font-bold text-base px-2 cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="aspect-video w-full bg-black flex items-center justify-center">
+                <video
+                  src={activeVideo.url}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain"
+                >
+                  வீடியோவை ஆதரிக்கவில்லை.
+                </video>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 }
