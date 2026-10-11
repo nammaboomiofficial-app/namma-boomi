@@ -13,7 +13,7 @@ import LandGovtServices from '../components/LandGovtServices';
 import LandCalculator from '../components/LandCalculator';
 import SellLandModal from '../components/SellLandModal';
 import contactConfig from '../data/contactConfig';
-
+import TamilHeritageModule from '../components/TamilHeritageModule';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
 import LegalAuditPromo from '../components/LegalAuditPromo';
 import LoanModule360 from '../components/LoanModule360';
@@ -56,6 +56,7 @@ export default function Home() {
   const [activeVideo, setActiveVideo] = useState(null);
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterListingType, setFilterListingType] = useState('all');
+  const [isHeritageModalOpen, setIsHeritageModalOpen] = useState(false);
   
 
   // விவசாயம் சப்-டேப்கள்
@@ -163,7 +164,7 @@ export default function Home() {
     { id: 'spiritual', label: 'ஆன்மிகம்', icon: '🛕' },
     { id: 'tourism', label: 'சுற்றுலா', icon: '🚗' },
     { id: 'astro', label: 'AI ஜோதிடம்', icon: '🔮' },
-    { id: 'govt', label: 'பட்டா & அரசு', icon: '📜' },
+    { id: 'heritage', label: 'தமிழர் மரபு', icon: '🏛️' },
   ];
 
 
@@ -602,11 +603,10 @@ export default function Home() {
           </div>
         )}
 
-        {/* ============================================================ */}
         {/* பட்டா & அரசு சேவைகள் பிரிவு */}
-        {currentModule === 'govt' && (
-          <div className="mt-4 space-y-4">
-            <LandGovtServices />
+{currentModule === 'govt' && (
+  <div className="mt-8 space-y-6">
+    <LandGovtServices />
 
             {/* தமிழ்நாடு பத்திரப் பதிவு & முத்திரைத் தாள் கட்டணக் கால்குலேட்டர் */}
             <div className="bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all rounded-2xl p-5 shadow-xl">
@@ -820,6 +820,13 @@ export default function Home() {
                 {cat.label}
               </button>
             ))}
+            <button
+  type="button"
+  onClick={() => setIsHeritageModalOpen(true)}
+  className="px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 flex items-center gap-1 shadow-sm"
+>
+  🏛️ தமிழர் மரபு & வாழ்வியல்
+</button>
           </div>
 
           {/* பரிவர்த்தனை: விற்பனை, வாடகை, லீஸ் */}
@@ -2116,6 +2123,12 @@ export default function Home() {
             <SpiritualModule setCurrentModule={setCurrentModule} />
           </div>
         )}
+        {/* 12. தமிழர் மரபு மாட்யூல் */}
+{currentModule === 'heritage' && (
+  <div className="space-y-6">
+    <TamilHeritageModule />
+  </div>
+)}
        {/* 360 சொத்து முழு விவர மாடல் */}
       {selectedLandDetail && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black bg-opacity-80 backdrop-blur-sm">
@@ -2559,6 +2572,7 @@ export default function Home() {
             </div>
           </div>
         )}
+        
     </div>
   );
 }

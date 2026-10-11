@@ -1,0 +1,92 @@
+[
+  {
+    "id": "prop-land-01",
+    "category": "land",
+    "listingType": "sale",
+    "title": "OMR பிரதான சாலை அருகே முதலீட்டு மனை & தோட்டம்",
+    "district": "செங்கல்பட்டு",
+    "location": "திருப்போரூர்",
+    "surveyNo": "#142/1B",
+    "score": "98/100",
+    "badgePrimary": "நேரடி உரிமையாளர்",
+    "verified": true,
+    "has360": true,
+    "price": "₹1,750",
+    "priceUnit": "/ ச.அடி",
+    "totalPrice": "₹45,00,000",
+    "specs": {
+      "area": "2.50 ஏக்கர் (1,08,900 ச.அடி)",
+      "perimeter": "5189 அடி",
+      "zone": "விவசாயம் / பண்ணை",
+      "roadAccess": "30 அடி தார் சாலை"
+    },
+    "coordinates": { "lat": 12.7234, "lng": 80.1912 },
+    "media": {
+      "featured": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=80"
+      ],
+      "videoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
+    }
+  },
+  {
+    "id": "prop-house-01",
+    "category": "house",
+    "listingType": "sale",
+    "title": "3 BHK பிரீமியம் தனி வீடு (Gated Community)",
+    "district": "செங்கல்பட்டு",
+    "location": "காயரம்பேடு",
+    "surveyNo": "#88/4A",
+    "score": "92/100",
+    "badgePrimary": "வங்கி கடன் தகுதியானது",
+    "verified": true,
+    "has360": true,
+    "price": "₹2,350",
+    "priceUnit": "/ ச.அடி",
+    "totalPrice": "₹90,00,000",
+    "specs": {
+      "area": "2200 ச.அடி",
+      "bhk": "3 BHK",
+      "facing": "வடக்கு பார்த்த வாசல்",
+      "parking": "2 கார்கள் நிறுத்துமிடம்"
+    },
+    "coordinates": { "lat": 12.6939, "lng": 79.9757 },
+    "media": {
+      "featured": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&auto=format&fit=crop&q=80"
+      ],
+      "videoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
+    }
+  },
+  {
+    "id": "prop-comm-01",
+    "category": "commercial",
+    "listingType": "lease",
+    "title": "மெயின் ரோடு வணிக கடை / அலுவலக இடம் லீசுக்கு",
+    "district": "செங்கல்பட்டு",
+    "location": "செங்கல்பட்டு டவுன்",
+    "surveyNo": "#56/2C",
+    "score": "95/100",
+    "badgePrimary": "உடனடி பத்திரப்பதிவு",
+    "verified": true,
+    "has360": true,
+    "price": "₹2,900",
+    "priceUnit": "/ ச.அடி (லீஸ் மதிப்பு)",
+    "totalPrice": "₹18,00,000",
+    "specs": {
+      "area": "2,400 ச.அடி (5.5 சென்ட்)",
+      "frontage": "20 அடி முகப்பு",
+      "suitability": "மருந்தகம் / சூப்பர் மார்க்கெட்",
+      "power": "3-Phase EB வசதி"
+    },
+    "coordinates": { "lat": 12.6841, "lng": 79.9836 },
+    "media": {
+      "featured": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&auto=format&fit=crop&q=80"
+      ],
+      "videoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
+    }
+  }
+]
