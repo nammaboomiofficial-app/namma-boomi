@@ -3,13 +3,101 @@
     "priceOriginal": 1999,
     "priceDiscounted": 499,
     "adminWhatsApp": "919962369131",
-    "googleSheetUrl": "https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZBOYKKBNNT3f_Wk_2K_w/exec"
+    "googleSheetUrl": "https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZB0YKKBNNT3f_Wk_2K_w/exec"
+  },
+  "uiLabels": {
+    "badge": "🛡️ பிரத்யேக சட்டத் தணிக்கைச் சேவை",
+    "mainTitle": "நீங்கள் வாங்கும் நிலம்",
+    "mainTitleHighlight": "100% பாதுகாப்பானதா?",
+    "subtitle": "பத்திரம் பதிவு செய்வதற்கு முன் அரசு ஆவணங்களை (Tnreginet & e-Services) முழுமையாக ஆய்வு செய்து, 6-அடுக்கு டிஜிட்டல் லீகல் ஆடிட் அறிக்கையை உங்கள் வாட்ஸ்அப்பிற்கே பெறுங்கள்!",
+    "viewSampleBtn": "👁️ மாதிரி ஆடிட் அறிக்கையைப் பார்க்க (View Sample Report)",
+    "formTitle": "ஆடிட் அறிக்கை முன்பதிவு",
+    "formSubtitle": "உடனடி சரிபார்ப்பு & வாட்ஸ்அப் டெலிவரி",
+    "nameLabel": "உங்கள் பெயர்",
+    "namePlaceholder": "உதாரணம்: குமார்",
+    "phoneLabel": "வாட்ஸ்அப் எண் *",
+    "phonePlaceholder": "10 இலக்க எண் (அறிக்கை அனுப்ப)",
+    "districtLabel": "மாவட்டம் *",
+    "districtPlaceholder": "மாவட்டம் தேர்ந்தெடுக்கவும்",
+    "talukLabel": "வட்டம் (Taluk) *",
+    "talukPlaceholder": "வட்டம் தேர்ந்தெடுக்கவும்",
+    "villageLabel": "வருவாய் கிராமம் (Village) *",
+    "villagePlaceholder": "கிராமத்தின் பெயர்",
+    "surveyNoLabel": "சர்வே எண் *",
+    "surveyNoPlaceholder": "சர்வே எண்",
+    "subDivLabel": "உட்பிரிவு (Sub-Div)",
+    "subDivPlaceholder": "உட்பிரிவு எண்",
+    "submitBtn": "🛡️ ₹{price}-ல் தணிக்கை கோருங்கள் (WhatsApp)",
+    "securityNote": "🔒 100% பாதுகாப்பானது • உங்கள் தகவல்கள் ரகசியமாக வைக்கப்படும்",
+    "requiredAlert": "தயவுசெய்து வாட்ஸ்அப் எண், மாவட்டம் மற்றும் சர்வே எண்ணை உள்ளிடவும்"
+  },
+  "features": [
+    "30 ஆண்டு வில்லங்க ஆய்வு (EC Verification)",
+    "அரசு பட்டா & பட்டாதாரர் உண்மைத்தன்மை",
+    "அரசு வழிகாட்டி மதிப்பு ஒப்பீடு",
+    "அதிகாரப்பூர்வ டிஜிட்டல் PDF சான்றிதழ்"
+  ],
+  "sampleReport": {
+    "brandName": "நம்ம பூமி 360",
+    "deptName": "டிஜிட்டல் நில ஆவண சரிபார்ப்புப் பிரிவு",
+    "sampleBadge": "மாதிரி அறிக்கை / SAMPLE",
+    "client": "செல்வகுமார்",
+    "surveyNo": "#142/1B",
+    "location": "செங்கல்பட்டு / திருப்போரூர்",
+    "certificateNo": "NB-847958",
+    "tableTitle": "8 அடுக்கு விரிவான அரசு ஆவணச் சரிபார்ப்பு முடிவுகள்",
+    "checklist": [
+      {
+        "step": "1. பட்டா & உரிமை நிலை",
+        "result": "பட்டாதாரர்: ராமநாதன் (உறுதியானது)",
+        "statusColor": "text-emerald-700"
+      },
+      {
+        "step": "2. நில வகைப்பாடு & மண்டலம்",
+        "result": "ரயத்துவாரி புஞ்சை (குடியிருப்பு பகுதி)",
+        "statusColor": "text-slate-800"
+      },
+      {
+        "step": "3. DTCP / CMDA அப்ரூவல் நிலை",
+        "result": "அங்கீகரிக்கப்பட்ட மனை (#124/2018)",
+        "statusColor": "text-emerald-700"
+      },
+      {
+        "step": "4. வில்லங்க சான்றிதழ் (30 ஆண்டு EC)",
+        "result": "முழுமையான வில்லங்கமற்றது (Nil EC)",
+        "statusColor": "text-emerald-700"
+      },
+      {
+        "step": "5. அரசு வழிகாட்டி மதிப்பு",
+        "result": "₹1,250 / சதுர அடி",
+        "statusColor": "text-amber-700"
+      },
+      {
+        "step": "6. உத்தேச பதிவுச் செலவு (~9%)",
+        "result": "வழிகாட்டி மதிப்பில் 9% (முத்திரை + பதிவு)",
+        "statusColor": "text-slate-800"
+      },
+      {
+        "step": "7. கள அணுகு பாதை",
+        "result": "30 அடி தார் சாலை இணைப்பு உறுதி",
+        "statusColor": "text-slate-800"
+      },
+      {
+        "step": "8. நீர்நிலை / புறம்போக்கு எல்லை",
+        "result": "ஆட்சேபணையற்ற எல்லை (Safe Zone)",
+        "statusColor": "text-emerald-700"
+      }
+    ],
+    "scoreTitle": "பாதுகாப்பு மதிப்பீடு: 98/100 (A+ மிக உயர் பாதுகாப்பு)",
+    "scoreDesc": "பட்டா மற்றும் வில்லங்கம் அரசு பதிவுகளுடன் 100% ஒத்துப் போகிறது.",
+    "scoreBadge": "✓ PASS",
+    "disclaimer": "⚖️ பொறுப்புத் துறப்பு: இந்த அறிக்கை வழிகாட்டுதலுக்கு மட்டுமே."
   },
   "tamilNaduDistricts": [
     {
       "id": "chengalpattu",
       "name": "செங்கல்பட்டு",
-      "taluks": ["திருப்போரூர்", "செங்கல்பட்டு", "தாம்பரம்", "பல்லாவரம்", "மதுராந்தகம்", "செய்யூர்", "திருவக்கரை"]
+      "taluks": ["திருப்போரூர்", "செங்கல்பட்டு", "தாம்பரம்", "பல்லாவரம்", "மதுராந்தகம்", "செய்யூர்", "திருவள்ளூர்"]
     },
     {
       "id": "kanchipuram",
