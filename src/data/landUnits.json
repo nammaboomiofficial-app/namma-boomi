@@ -1,4 +1,14 @@
 {
+  "config": {
+    "defaultVal": "1",
+    "defaultUnit": "cent",
+    "precisionDecimals": 3
+  },
+  "uiLabels": {
+    "badge": "நில அளவை மாற்றி",
+    "title": "தமிழக நில அளவீட்டு கால்குலேட்டர்",
+    "subtitle": "சென்ட், சதுர அடி, கிரவுண்ட், ஏக்கர் மற்றும் குழி அளவீடுகள்"
+  },
   "conversionRates": {
     "sqft": 1,
     "cent": 435.6,
@@ -6,7 +16,7 @@
     "acre": 43560,
     "kuzhi": 144,
     "guntha": 1089,
-    "hectare": 107639
+    "hectare": 107639.1
   },
   "unitLabels": [
     { "key": "sqft", "label": "சதுர அடி (Sq.Ft)" },

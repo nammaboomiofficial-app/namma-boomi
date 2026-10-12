@@ -80,7 +80,7 @@ export default function SpiritualModule({ setCurrentModule }) {
             <span className="text-3xl">🕉️</span>
             <div className="text-xs">
               <span className="text-amber-400 font-bold block">100% அதிகாரப்பூர்வ தகவல்கள்</span>
-              <span className="text-slate-400 text-[11px]">இடைத்தரகர்கள் இன்றி நேரடி தரிசனம்</span>
+              <span className="text-slate-100 text-[11px]">இடைத்தரகர்கள் இன்றி நேரடி தரிசனம்</span>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function SpiritualModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('radar')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'radar' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'radar' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🎯 பரிகார ரேடார் (தோஷம் & பிரார்த்தனை)
@@ -98,7 +98,7 @@ export default function SpiritualModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('circuits')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'circuits' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'circuits' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🛕 புனித சுற்றுப்பாதைகள் (நவகிரகம் / அறுபடை / பஞ்சபூதம்)
@@ -106,7 +106,7 @@ export default function SpiritualModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('itinerary')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'itinerary' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'itinerary' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             ⏱️ 2-நாள் 'ஜீரோ டிராஃபிக்' ரூட் பிளானர்
@@ -114,7 +114,7 @@ export default function SpiritualModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('hrce')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'hrce' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'hrce' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🏛️ HR&CE அரசு தேவஸ்தான சேவைகள்
@@ -122,7 +122,7 @@ export default function SpiritualModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('poosari')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'poosari' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'poosari' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🙏 கிராமப் பூசாரிகள் நலன் & நலிந்த கோவில்கள்
@@ -177,15 +177,15 @@ export default function SpiritualModule({ setCurrentModule }) {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                   <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px] uppercase">செய்ய வேண்டிய பூஜை:</span>
+                    <span className="text-slate-100 block text-[10px] uppercase">செய்ய வேண்டிய பூஜை:</span>
                     <span className="font-bold text-white mt-0.5 block">{matchedDosha.pooja}</span>
                   </div>
                   <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px] uppercase">உகந்த நாள் & காலம்:</span>
+                    <span className="text-slate-100 block text-[10px] uppercase">உகந்த நாள் & காலம்:</span>
                     <span className="font-bold text-amber-300 mt-0.5 block">{matchedDosha.bestDay}</span>
                   </div>
                   <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px] uppercase">முக்கிய வழிகாட்டல்:</span>
+                    <span className="text-slate-100 block text-[10px] uppercase">முக்கிய வழிகாட்டல்:</span>
                     <span className="font-bold text-emerald-400 mt-0.5 block">{matchedDosha.note}</span>
                   </div>
                 </div>
@@ -201,7 +201,7 @@ export default function SpiritualModule({ setCurrentModule }) {
                     <div key={d.id} className="p-3 bg-slate-950 flex flex-col md:flex-row md:items-center justify-between gap-2 hover:bg-slate-900/60 transition-colors">
                       <div>
                         <span className="font-bold text-white block">{d.label}</span>
-                        <span className="text-slate-400 text-[11px]">🛕 {d.temple} ({d.place})</span>
+                        <span className="text-slate-100 text-[11px]">🛕 {d.temple} ({d.place})</span>
                       </div>
                       <span className="text-amber-400 font-semibold text-[11px] whitespace-nowrap">✨ {d.pooja}</span>
                     </div>
@@ -218,7 +218,7 @@ export default function SpiritualModule({ setCurrentModule }) {
                 <button
                   onClick={() => setCircuitType('navagraha')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    circuitType === 'navagraha' ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-400'
+                    circuitType === 'navagraha' ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-100'
                   }`}
                 >
                   ☀️ நவகிரகத் தலங்கள் (கும்பகோணம் & மயிலாடுதுறை)
@@ -226,7 +226,7 @@ export default function SpiritualModule({ setCurrentModule }) {
                 <button
                   onClick={() => setCircuitType('murugan')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    circuitType === 'murugan' ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-400'
+                    circuitType === 'murugan' ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-100'
                   }`}
                 >
                   🦚 அறுபடை வீடுகள் (முருகன் க்ஷேத்திரங்கள்)
@@ -234,7 +234,7 @@ export default function SpiritualModule({ setCurrentModule }) {
                 <button
                   onClick={() => setCircuitType('panchabhootham')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    circuitType === 'panchabhootham' ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-400'
+                    circuitType === 'panchabhootham' ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-100'
                   }`}
                 >
                   🔥 பஞ்சபூத ஸ்தலங்கள் (சிவன் லிங்கங்கள்)
@@ -253,12 +253,12 @@ export default function SpiritualModule({ setCurrentModule }) {
                         <span className="text-[10px] text-emerald-400 font-semibold">{item.specialDay}</span>
                       </div>
                       <h4 className="text-sm font-black text-white">{item.name}</h4>
-                      <p className="text-[11px] text-slate-400">📍 {item.place}</p>
+                      <p className="text-[11px] text-slate-100">📍 {item.place}</p>
                       <div className="text-[11px] bg-slate-900 p-2 rounded border border-slate-800/80 space-y-1">
-                        <div><span className="text-slate-500">மூலவர்:</span> <span className="text-slate-300 font-semibold">{item.deity}</span></div>
-                        <div><span className="text-slate-500">நடை நேரம்:</span> <span className="text-amber-300">{item.timing}</span></div>
+                        <div><span className="text-slate-200">மூலவர்:</span> <span className="text-slate-300 font-semibold">{item.deity}</span></div>
+                        <div><span className="text-slate-200">நடை நேரம்:</span> <span className="text-amber-300">{item.timing}</span></div>
                       </div>
-                      <p className="text-[10px] text-slate-400 leading-relaxed italic border-t border-slate-900 pt-1.5">
+                      <p className="text-[10px] text-slate-100 leading-relaxed italic border-t border-slate-900 pt-1.5">
                         💡 {item.highlight}
                       </p>
                     </div>
@@ -273,13 +273,13 @@ export default function SpiritualModule({ setCurrentModule }) {
                     <div key={m.id} className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-xs font-bold text-amber-400">{m.padai}</span>
-                        <span className="text-[11px] text-slate-400">📍 {m.place}</span>
+                        <span className="text-[11px] text-slate-100">📍 {m.place}</span>
                       </div>
                       <h4 className="text-sm font-black text-white">{m.name}</h4>
                       <div className="text-xs text-slate-300 bg-slate-900 p-2 rounded">
                         🕒 நடை நேரம்: <span className="text-emerald-400 font-semibold">{m.timing}</span>
                       </div>
-                      <p className="text-xs text-slate-400 leading-relaxed">
+                      <p className="text-xs text-slate-100 leading-relaxed">
                         🌟 {m.highlight}
                       </p>
                     </div>
@@ -300,7 +300,7 @@ export default function SpiritualModule({ setCurrentModule }) {
                           <h4 className="text-sm font-black text-white">{pb.temple}</h4>
                         </div>
                        <p className="text-xs text-amber-400 font-semibold">லிங்கம்: {pb.lingam}</p>
-<p className="text-xs text-slate-400">நடை நேரம்: {pb.timing}</p>
+<p className="text-xs text-slate-100">நடை நேரம்: {pb.timing}</p>
 <p className="text-xs text-emerald-400 font-medium">✨ {pb.highlight}</p>
                       </div>
                     </div>
@@ -334,7 +334,7 @@ export default function SpiritualModule({ setCurrentModule }) {
                           </div>
                           <div className="flex-1">
                             <span className="font-bold text-white block">{s.temple}</span>
-                            <span className="text-slate-400 text-[11px]">{s.note}</span>
+                            <span className="text-slate-100 text-[11px]">{s.note}</span>
                           </div>
                         </div>
                       ))}
@@ -355,7 +355,7 @@ export default function SpiritualModule({ setCurrentModule }) {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                   <span className="text-amber-400 font-bold block text-sm">1. சிறப்பு தரிசன டிக்கெட்</span>
-                  <p className="text-slate-400">பழனி, திருச்செந்தூர், சமயபுரம், திருத்தணி, மற்றும் திருவண்ணாமலை ₹100/₹200 கட்டண விரைவு தரிசன முன்பதிவு.</p>
+                  <p className="text-slate-100">பழனி, திருச்செந்தூர், சமயபுரம், திருத்தணி, மற்றும் திருவண்ணாமலை ₹100/₹200 கட்டண விரைவு தரிசன முன்பதிவு.</p>
                   <a
                     href="https://hrce.tn.gov.in"
                     target="_blank"
@@ -368,7 +368,7 @@ export default function SpiritualModule({ setCurrentModule }) {
 
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                   <span className="text-amber-400 font-bold block text-sm">2. தேவஸ்தான காட்டேஜ் தங்குமிடம்</span>
-                  <p className="text-slate-400">அரசு தேவஸ்தான விடுதிகளில் பாதுகாப்பான, குறைந்த கட்டண குடும்ப தங்குமிடம் ஆன்லைனில் முன் கூட்டியே பதிவு செய்யும் முறை.</p>
+                  <p className="text-slate-100">அரசு தேவஸ்தான விடுதிகளில் பாதுகாப்பான, குறைந்த கட்டண குடும்ப தங்குமிடம் ஆன்லைனில் முன் கூட்டியே பதிவு செய்யும் முறை.</p>
                   <a
                     href="https://hrce.tn.gov.in"
                     target="_blank"
@@ -381,7 +381,7 @@ export default function SpiritualModule({ setCurrentModule }) {
 
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                   <span className="text-amber-400 font-bold block text-sm">3. ஒரு நாள் அன்னதானத் திட்டம்</span>
-                  <p className="text-slate-400">உங்கள் பிறந்தநாள் அல்லது திருமண நாளில் பக்தர்களுக்கு முழு நாள் அன்னதானம் வழங்க அரசு ரசீதுடன் கூடிய நேரடி பங்களிப்பு.</p>
+                  <p className="text-slate-100">உங்கள் பிறந்தநாள் அல்லது திருமண நாளில் பக்தர்களுக்கு முழு நாள் அன்னதானம் வழங்க அரசு ரசீதுடன் கூடிய நேரடி பங்களிப்பு.</p>
                   <a
                     href="https://hrce.tn.gov.in"
                     target="_blank"
@@ -404,7 +404,7 @@ export default function SpiritualModule({ setCurrentModule }) {
                   <p className="text-slate-300 leading-relaxed">
                     அறநிலையத்துறை கட்டுப்பாட்டில் இல்லாத கிராமப்புற சிறு திருக்கோயில்களில் பணிபுரியும் அர்ச்சகர் மற்றும் பூசாரிகளுக்கு அரசு வழங்கும் நலத்திட்டங்கள்:
                   </p>
-                  <ul className="space-y-1.5 text-slate-400 list-disc list-inside">
+                  <ul className="space-y-1.5 text-slate-100 list-disc list-inside">
                     <li>மாதாந்திர ஓய்வூதியம்: <strong>மாதம் ₹4,000</strong> (60 வயது பூர்த்தியடைந்த பூசாரிகளுக்கு).</li>
                     <li>இலவச மிதிவண்டி (சைக்கிள்) மற்றும் புத்தாடைகள் (வேட்டி / சேலை).</li>
                     <li>பூசாரிகளின் வாரிசுகளுக்கு தொழிற்கல்வி & உயர் கல்வி உதவித்தொகை.</li>
@@ -532,7 +532,7 @@ export default function SpiritualModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🚗</span>
           <h4 className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">ஆன்மிக டிராவல்ஸ் ஓட்டுநர்கள்</h4>
-          <p className="text-xs text-slate-400">கும்பகோணம், திருச்சி, மதுரை உள்ளூர் கோவில் வழிகாட்டி மற்றும் ஓட்டுநர்கள்.</p>
+          <p className="text-xs text-slate-100">கும்பகோணம், திருச்சி, மதுரை உள்ளூர் கோவில் வழிகாட்டி மற்றும் ஓட்டுநர்கள்.</p>
           <span className="text-[11px] text-blue-400 font-bold block pt-1 underline">Jobs Hub செல்ல ↗</span>
         </div>
 
@@ -545,7 +545,7 @@ export default function SpiritualModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🔮</span>
           <h4 className="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">AI ஜோதிடம் & ஜாதக ஆய்வு</h4>
-          <p className="text-xs text-slate-400">உங்கள் தசா புக்திக்கு ஏற்ற இஷ்ட தெய்வம் மற்றும் கிரக பரிகாரங்களை அறிய.</p>
+          <p className="text-xs text-slate-100">உங்கள் தசா புக்திக்கு ஏற்ற இஷ்ட தெய்வம் மற்றும் கிரக பரிகாரங்களை அறிய.</p>
           <span className="text-[11px] text-purple-400 font-bold block pt-1 underline">ஜோதிட மையம் செல்ல ↗</span>
         </div>
 
@@ -558,7 +558,7 @@ export default function SpiritualModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🏦</span>
           <h4 className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">குடும்பப் பாதுகாப்பு & காப்பீடு</h4>
-          <p className="text-xs text-slate-400">குடும்ப யாத்திரைக்கான விபத்துக் காப்பீடு மற்றும் மருத்துவக் காப்பீடு பாதுகாப்பு.</p>
+          <p className="text-xs text-slate-100">குடும்ப யாத்திரைக்கான விபத்துக் காப்பீடு மற்றும் மருத்துவக் காப்பீடு பாதுகாப்பு.</p>
           <span className="text-[11px] text-emerald-400 font-bold block pt-1 underline">காப்பீடு மையம் செல்ல ↗</span>
         </div>
       </div>

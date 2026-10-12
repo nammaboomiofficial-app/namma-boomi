@@ -48,7 +48,7 @@ export default function WholesalePage() {
           </Link>
           <div className="text-right">
             <h1 className="text-base font-bold text-slate-100">A-Z மொத்த மண்டி</h1>
-            <p className="text-xs text-slate-400">Wholesale Market Hub</p>
+            <p className="text-xs text-slate-100">Wholesale Market Hub</p>
           </div>
         </div>
       </header>
@@ -80,11 +80,11 @@ export default function WholesalePage() {
               placeholder="பொருளின் பெயர் அல்லது ஊர் தேடவும்... (எ.கா: அரிசி, Rice, Erode, Manachanallur)"
               className="w-full bg-slate-950/80 border border-slate-700 focus:border-emerald-500 rounded-xl px-4 py-3.5 pl-11 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
             />
-            <span className="absolute left-4 top-3.5 text-slate-400 text-base">🔍</span>
+            <span className="absolute left-4 top-3.5 text-slate-100 text-base">🔍</span>
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-3 text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-md"
+                className="absolute right-3 top-3 text-slate-100 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-md"
               >
                 அழி (Clear)
               </button>
@@ -110,7 +110,7 @@ export default function WholesalePage() {
         </div>
 
         {/* Results Counter */}
-        <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+        <div className="flex items-center justify-between text-xs text-slate-100 px-1">
           <span>காட்டப்படும் மண்டிகள்: <strong className="text-emerald-400">{filteredHubs.length}</strong></span>
           {searchTerm && <span>தேடல் சொல்: &ldquo;{searchTerm}&rdquo;</span>}
         </div>
@@ -137,7 +137,7 @@ export default function WholesalePage() {
                 <h3 className="text-base font-bold text-white mt-2.5 leading-snug">
                   {hub.name}
                 </h3>
-                <p className="text-xs text-slate-400">{hub.englishName}</p>
+                <p className="text-xs text-slate-100">{hub.englishName}</p>
 
                 <p className="text-xs text-slate-300 mt-2 line-clamp-2">
                   <strong className="text-slate-200">சிறப்பு:</strong> {hub.specialty}
@@ -175,7 +175,7 @@ export default function WholesalePage() {
           <div className="text-center py-12 bg-slate-800/30 rounded-2xl border border-dashed border-slate-700">
             <p className="text-3xl mb-2">🔍</p>
             <h3 className="text-base font-bold text-slate-200">மண்டி விவரங்கள் கிடைக்கவில்லை</h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+            <p className="text-xs text-slate-100 mt-1 max-w-sm mx-auto">
               வேறு வார்த்தைகளைத் தட்டச்சு செய்து தேடவும் அல்லது கீழே உள்ள நேரடி உதவிச் சேவையைப் பயன்படுத்தவும்.
             </p>
           </div>

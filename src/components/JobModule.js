@@ -128,7 +128,7 @@ export default function JobModule() {
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 tab === 'seeker'
                   ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
-                  : 'bg-slate-800 text-slate-400 hover:text-white'
+                  : 'bg-slate-800 text-slate-100 hover:text-white'
               }`}
             >
               🎯 எனக்கு வேலை வேண்டும் (Job Seeker)
@@ -138,7 +138,7 @@ export default function JobModule() {
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 tab === 'employer'
                   ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30'
-                  : 'bg-slate-800 text-slate-400 hover:text-white'
+                  : 'bg-slate-800 text-slate-100 hover:text-white'
               }`}
             >
               🏢 எனக்கு ஆட்கள் தேவை (Hire Staff)
@@ -151,7 +151,7 @@ export default function JobModule() {
           <form onSubmit={handleSeekerSubmit} className="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 md:p-6 max-w-4xl mx-auto shadow-inner text-left">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">உங்கள் பெயர்:</label>
+                <label className="block text-xs font-medium text-slate-100 mb-1">உங்கள் பெயர்:</label>
                 <input
                   type="text"
                   placeholder="உதாரணம்: கார்த்திக்"
@@ -162,7 +162,7 @@ export default function JobModule() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-slate-100 mb-1">
                   வாட்ஸ்அப் எண் <span className="text-red-400">*</span>:
                 </label>
                 <input
@@ -177,7 +177,7 @@ export default function JobModule() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">கல்வித் தகுதி:</label>
+                <label className="block text-xs font-medium text-slate-100 mb-1">கல்வித் தகுதி:</label>
                 <select
                   value={seekerData.qualification}
                   onChange={(e) => setSeekerData({ ...seekerData, qualification: e.target.value })}
@@ -191,7 +191,7 @@ export default function JobModule() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">விரும்பும் பணி:</label>
+                <label className="block text-xs font-medium text-slate-100 mb-1">விரும்பும் பணி:</label>
                 <select
                   value={seekerData.jobRole}
                   onChange={(e) => setSeekerData({ ...seekerData, jobRole: e.target.value })}
@@ -228,7 +228,7 @@ export default function JobModule() {
           <form onSubmit={handleEmployerSubmit} className="bg-slate-900/95 border border-emerald-500/30 rounded-2xl p-4 md:p-6 max-w-4xl mx-auto shadow-inner text-left">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">நிறுவனம் / வணிகப் பெயர்:</label>
+                <label className="block text-xs font-medium text-slate-100 mb-1">நிறுவனம் / வணிகப் பெயர்:</label>
                 <input
                   type="text"
                   required
@@ -240,7 +240,7 @@ export default function JobModule() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">தொடர்பாளர் பெயர்:</label>
+                <label className="block text-xs font-medium text-slate-100 mb-1">தொடர்பாளர் பெயர்:</label>
                 <input
                   type="text"
                   placeholder="உதாரணம்: ரமேஷ் (மேலாளர்)"
@@ -251,7 +251,7 @@ export default function JobModule() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-slate-100 mb-1">
                   தொடர்பு எண் <span className="text-red-400">*</span>:
                 </label>
                 <input
@@ -266,7 +266,7 @@ export default function JobModule() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">தேவைப்படும் ஆட்கள்:</label>
+                <label className="block text-xs font-medium text-slate-100 mb-1">தேவைப்படும் ஆட்கள்:</label>
                 <input
                   type="text"
                   placeholder="எ.கா: 2 களப்பணியாளர்கள்"
@@ -342,20 +342,20 @@ export default function JobModule() {
               <h3 className="text-base font-bold text-white group-hover:text-blue-300 transition-colors mt-0.5">
                 {job.title}
               </h3>
-              <p className="text-xs text-slate-400 mt-1.5 leading-relaxed line-clamp-2">
+              <p className="text-xs text-slate-100 mt-1.5 leading-relaxed line-clamp-2">
                 {job.desc}
               </p>
 
               <div className="mt-4 pt-3 border-t border-slate-800/80 space-y-1.5 text-xs">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-500 text-[11px]">சம்பளம் / வருமானம்:</span>
+                  <span className="text-slate-200 text-[11px]">சம்பளம் / வருமானம்:</span>
                   <span className="text-emerald-400 font-bold">{job.salary}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-500 text-[11px]">தகுதி:</span>
+                  <span className="text-slate-200 text-[11px]">தகுதி:</span>
                   <span className="text-slate-300 font-medium">{job.qualification}</span>
                 </div>
-                <div className="text-[11px] text-slate-400 pt-1">
+                <div className="text-[11px] text-slate-100 pt-1">
                   📍 {job.locations}
                 </div>
               </div>
@@ -372,7 +372,7 @@ export default function JobModule() {
       </div>
 
       {/* 4. உத்தரவாதம் & வெளிப்படைத்தன்மை பேட்ஜ்கள் */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs text-slate-400 bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs text-slate-100 bg-slate-900/50 p-4 rounded-xl border border-slate-800">
         <div className="p-1.5">🚫 பதிவுக் கட்டணம் ஏதுமில்லை</div>
         <div className="p-1.5">🤝 நேரடி நேர்காணல் வழிகாட்டல்</div>
         <div className="p-1.5">🛡️ 100% சரிபார்க்கப்பட்ட வேலைகள்</div>

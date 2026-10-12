@@ -102,7 +102,7 @@ export default function InsuranceModule({ setCurrentModule }) {
             <span className="text-3xl">🛡️</span>
             <div className="text-xs">
               <span className="text-cyan-400 font-bold block">மத்திய & மாநில அரசுத் திட்டங்கள்</span>
-              <span className="text-slate-400 text-[11px]">நேரடி வழிகாட்டல் & தகுதி ஆய்வு</span>
+              <span className="text-slate-100 text-[11px]">நேரடி வழிகாட்டல் & தகுதி ஆய்வு</span>
             </div>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function InsuranceModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('term')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'term' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'term' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             👨‍👩‍👧 டேர்ம் லைஃப் (₹1 கோடி)
@@ -120,7 +120,7 @@ export default function InsuranceModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('health')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'health' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'health' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🏥 பணமில்லா மருத்துவம் (Health)
@@ -128,7 +128,7 @@ export default function InsuranceModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('govt_micro')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'govt_micro' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'govt_micro' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🏛️ மத்திய & தமிழக அரசுத் திட்டங்கள்
@@ -136,7 +136,7 @@ export default function InsuranceModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('vehicle')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'vehicle' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'vehicle' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🛵 பைக் / கார் / டிராக்டர்
@@ -144,7 +144,7 @@ export default function InsuranceModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('agri_cattle')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'agri_cattle' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'agri_cattle' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🌾 PMFBY பயிர் & மாடு காப்பீடு
@@ -152,7 +152,7 @@ export default function InsuranceModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('shop_asset')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'shop_asset' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'shop_asset' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🏢 கடை & குடோன் பாதுகாப்பு
@@ -160,7 +160,7 @@ export default function InsuranceModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('claim_guide')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'claim_guide' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'claim_guide' ? 'bg-cyan-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             📋 க்ளைம் உதவி & வழிகாட்டி
@@ -181,7 +181,7 @@ export default function InsuranceModule({ setCurrentModule }) {
                         key={age}
                         onClick={() => setUserAge(age)}
                         className={`py-2 rounded-lg text-xs font-bold border transition-all ${
-                          userAge === age ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-400'
+                          userAge === age ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-100'
                         }`}
                       >
                         {age}
@@ -198,7 +198,7 @@ export default function InsuranceModule({ setCurrentModule }) {
                         key={cov}
                         onClick={() => setCoverAmount(cov)}
                         className={`py-2 rounded-lg text-xs font-bold border ${
-                          coverAmount === cov ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-400'
+                          coverAmount === cov ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-100'
                         }`}
                       >
                         {cov === '50L' ? '₹50 லட்சம்' : cov === '1Cr' ? '₹1 கோடி' : '₹2 கோடி'}
@@ -212,7 +212,7 @@ export default function InsuranceModule({ setCurrentModule }) {
                 <div className="border-b border-slate-800 pb-3">
                   <span className="text-xs font-bold text-cyan-400">குறைந்த கட்டண குடும்ப நிதிப் பாதுகாப்பு</span>
                   <h3 className="text-xl font-black text-white">
-                    சுமார் ₹{selectedTermPremium} <span className="text-xs font-normal text-slate-400">/ மாதம் முதல்</span>
+                    சுமார் ₹{selectedTermPremium} <span className="text-xs font-normal text-slate-100">/ மாதம் முதல்</span>
                   </h3>
                   <p className="text-xs text-slate-300 mt-1">
                     {userAge} வயதில் எடுக்கும் போது பாலிசி முடியும் வரை பிரீமியம் மாறாது (Zero Price Hike).
@@ -220,13 +220,13 @@ export default function InsuranceModule({ setCurrentModule }) {
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">இறப்பு இழப்பீடு:</span>
+                    <span className="text-slate-100 block text-[10px]">இறப்பு இழப்பீடு:</span>
                     <span className="text-sm font-bold text-white">
                       {coverAmount === '1Cr' ? '₹1,00,00,000' : coverAmount === '2Cr' ? '₹2,00,00,000' : '₹50,00,000'}
                     </span>
                   </div>
                   <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">வரிச்சலுகை:</span>
+                    <span className="text-slate-100 block text-[10px]">வரிச்சலுகை:</span>
                     <span className="text-sm font-bold text-emerald-400">Section 80C படி வரிவிலக்கு</span>
                   </div>
                 </div>
@@ -258,7 +258,7 @@ export default function InsuranceModule({ setCurrentModule }) {
                   }`}
                 >
                   <div className="text-xs font-bold">தனிநபர் காப்பீடு (Individual Cover)</div>
-                  <div className="text-[11px] text-slate-400">இளைஞர்கள் & தனியாக இருப்போருக்கு</div>
+                  <div className="text-[11px] text-slate-100">இளைஞர்கள் & தனியாக இருப்போருக்கு</div>
                 </button>
                 <button
                   onClick={() => setFamilyType('parents')}
@@ -279,11 +279,11 @@ export default function InsuranceModule({ setCurrentModule }) {
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">உத்தேச பிரீமியம்:</span>
+                    <span className="text-slate-100 block text-[10px]">உத்தேச பிரீமியம்:</span>
                     <span className="text-sm font-bold text-cyan-300">{healthEstimate.approxCost}</span>
                   </div>
                   <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">நெட்வொர்க்:</span>
+                    <span className="text-slate-100 block text-[10px]">நெட்வொர்க்:</span>
                     <span className="text-sm font-bold text-white">10,000+ அரசு & தனியார் மருத்துவமனைகள்</span>
                   </div>
                 </div>
@@ -315,7 +315,7 @@ export default function InsuranceModule({ setCurrentModule }) {
                     <p className="text-xs text-slate-300">
                       குடும்ப அட்டை (Ration Card) உள்ள தகுதியான குடும்பங்களுக்கு தமிழகத்தின் முன்னணி தனியார் மற்றும் அரசு மருத்துவமனைகளில் இலவச சிகிச்சை.
                     </p>
-                    <div className="pt-2 text-[11px] text-slate-400 border-t border-slate-800">
+                    <div className="pt-2 text-[11px] text-slate-100 border-t border-slate-800">
                       📌 <strong>தகுதி:</strong> குடும்ப ஆண்டு வருமானம் ₹1,20,000-க்குள் இருத்தல் வேண்டும் (ஸ்மார்ட் கார்டு கட்டாயம்).
                     </div>
                   </div>
@@ -329,7 +329,7 @@ export default function InsuranceModule({ setCurrentModule }) {
                     <p className="text-xs text-slate-300">
                       விவசாயிகள் மற்றும் விவசாயத் தொழிலாளர்களுக்கு விபத்து மரணம், உடல் உறுப்பு இழப்பு மற்றும் இயற்கை மரணத்திற்கான நேரடி அரசு நிவாரணம்.
                     </p>
-                    <div className="pt-2 text-[11px] text-slate-400 border-t border-slate-800">
+                    <div className="pt-2 text-[11px] text-slate-100 border-t border-slate-800">
                       📌 <strong>பலன்கள்:</strong> விபத்து மரண நிவாரணம், கல்வி உதவித்தொகை, திருமண நிதி மற்றும் முதியோர் ஓய்வூதியம்.
                     </div>
                   </div>
@@ -349,21 +349,21 @@ export default function InsuranceModule({ setCurrentModule }) {
                     <span className="text-xs font-bold text-blue-400 block">PMSBY விபத்துக் காப்பீடு</span>
                     <div className="text-lg font-black text-white">ஆண்டுக்கு ₹20 மட்டும்</div>
                     <div className="text-xs font-bold text-slate-200">₹ 2,00,000 விபத்து மரண இழப்பீடு</div>
-                    <p className="text-[11px] text-slate-400">18 முதல் 70 வயது வரை உள்ள எவரும் சேமிப்பு வங்கிக் கணக்கு மூலம் நொடியில் செயல்படுத்தலாம்.</p>
+                    <p className="text-[11px] text-slate-100">18 முதல் 70 வயது வரை உள்ள எவரும் சேமிப்பு வங்கிக் கணக்கு மூலம் நொடியில் செயல்படுத்தலாம்.</p>
                   </div>
 
                   <div className="bg-slate-950 p-4 rounded-xl border border-blue-500/30 space-y-2">
                     <span className="text-xs font-bold text-blue-400 block">PMJJBY ஆயுள் காப்பீடு</span>
                     <div className="text-lg font-black text-white">ஆண்டுக்கு ₹436 மட்டும்</div>
                     <div className="text-xs font-bold text-slate-200">₹ 2,00,000 இயற்கை / விபத்து மரணம்</div>
-                    <p className="text-[11px] text-slate-400">18 முதல் 50 வயது வரை உள்ளவர்களுக்கு குடும்ப நிதிப் பாதுகாப்பை உறுதி செய்யும் எளிய திட்டம்.</p>
+                    <p className="text-[11px] text-slate-100">18 முதல் 50 வயது வரை உள்ளவர்களுக்கு குடும்ப நிதிப் பாதுகாப்பை உறுதி செய்யும் எளிய திட்டம்.</p>
                   </div>
 
                   <div className="bg-slate-950 p-4 rounded-xl border border-amber-500/30 space-y-2">
                     <span className="text-xs font-bold text-amber-400 block">ஆயுஷ்மான் பாரத் (PM-JAY) & APY</span>
                     <div className="text-lg font-black text-white">₹5 லட்சம் மருத்துவ அட்டை</div>
                     <div className="text-xs font-bold text-slate-200">+ மாதம் ₹5,000 ஓய்வூதியம் (APY)</div>
-                    <p className="text-[11px] text-slate-400">தேசிய அளவிலான இலவச மருத்துவ சிகிச்சை அட்டை மற்றும் அமைப்புசாரா தொழிலாளர் ஓய்வூதியம்.</p>
+                    <p className="text-[11px] text-slate-100">தேசிய அளவிலான இலவச மருத்துவ சிகிச்சை அட்டை மற்றும் அமைப்புசாரா தொழிலாளர் ஓய்வூதியம்.</p>
                   </div>
                 </div>
               </div>
@@ -398,11 +398,11 @@ export default function InsuranceModule({ setCurrentModule }) {
 
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">Third Party (கட்டாய காப்பீடு):</span>
+                    <span className="text-slate-100 block text-[10px]">Third Party (கட்டாய காப்பீடு):</span>
                     <span className="text-sm font-bold text-emerald-400">{activeVehicleData.tpCost}</span>
                   </div>
                   <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">முழு கவரேஜ் (Comprehensive):</span>
+                    <span className="text-slate-100 block text-[10px]">முழு கவரேஜ் (Comprehensive):</span>
                     <span className="text-sm font-bold text-white">{activeVehicleData.compCost}</span>
                   </div>
                 </div>
@@ -421,17 +421,17 @@ export default function InsuranceModule({ setCurrentModule }) {
               <div className="bg-slate-950 p-4 rounded-xl border border-emerald-500/30 space-y-2">
                 <span className="text-xs font-bold text-emerald-400 block">பிரதான் மந்திரி பயிர்க் காப்பீடு (PMFBY)</span>
                 <div className="text-xl font-black text-white">1.5% முதல் 2% பிரீமியம்</div>
-                <p className="text-xs text-slate-400">வறட்சி, புயல், பூச்சித் தாக்குதல் மற்றும் இயற்கை பேரிடரால் ஏற்படும் விளைச்சல் நஷ்டத்திற்கு இழப்பீடு.</p>
+                <p className="text-xs text-slate-100">வறட்சி, புயல், பூச்சித் தாக்குதல் மற்றும் இயற்கை பேரிடரால் ஏற்படும் விளைச்சல் நஷ்டத்திற்கு இழப்பீடு.</p>
               </div>
               <div className="bg-slate-950 p-4 rounded-xl border border-blue-500/30 space-y-2">
                 <span className="text-xs font-bold text-blue-400 block">கறவை மாடு & கன்று காப்பீடு</span>
                 <div className="text-xl font-black text-white">₹50,000 - ₹80,000 வரை</div>
-                <p className="text-xs text-slate-400">காதணி (Ear Tag) பொருத்தப்பட்ட கறவை மாடுகள் உயிரிழப்பிற்கு உடனடி இழப்பீடு வழிகாட்டல்.</p>
+                <p className="text-xs text-slate-100">காதணி (Ear Tag) பொருத்தப்பட்ட கறவை மாடுகள் உயிரிழப்பிற்கு உடனடி இழப்பீடு வழிகாட்டல்.</p>
               </div>
               <div className="bg-slate-950 p-4 rounded-xl border border-amber-500/30 space-y-2">
                 <span className="text-xs font-bold text-amber-400 block">ஆடு & நாட்டுக்கோழிப் பண்ணை</span>
                 <div className="text-xl font-black text-white">குழு பாலிசி பாதுகாப்பு</div>
-                <p className="text-xs text-slate-400">தொற்றுநோய்கள் பரவும் போது ஒருங்கிணைந்த பண்ணை மூலதனத்தைப் பாதுகாக்கும் திட்டம்.</p>
+                <p className="text-xs text-slate-100">தொற்றுநோய்கள் பரவும் போது ஒருங்கிணைந்த பண்ணை மூலதனத்தைப் பாதுகாக்கும் திட்டம்.</p>
               </div>
             </div>
           )}
@@ -442,12 +442,12 @@ export default function InsuranceModule({ setCurrentModule }) {
               <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                 <span className="text-xs font-bold text-cyan-400">வணிக நிறுவனங்கள் & கடைகள்</span>
                 <h4 className="text-sm font-bold text-white">தீ, வெள்ளம் & திருட்டுப் பாதுகாப்பு (Shopkeeper Policy)</h4>
-                <p className="text-xs text-slate-400">கடையில் உள்ள சரக்குகள், பர்னிச்சர் மற்றும் பில்டிங் சேதங்களுக்குக் குறைந்த கட்டணத்தில் முழு பாதுகாப்பு.</p>
+                <p className="text-xs text-slate-100">கடையில் உள்ள சரக்குகள், பர்னிச்சர் மற்றும் பில்டிங் சேதங்களுக்குக் குறைந்த கட்டணத்தில் முழு பாதுகாப்பு.</p>
               </div>
               <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                 <span className="text-xs font-bold text-cyan-400">குடோன் & தொழிற்சாலைகள்</span>
                 <h4 className="text-sm font-bold text-white">இயந்திர பழுது & சரக்கு பாதுகாப்பு (Standard Fire Policy)</h4>
-                <p className="text-xs text-slate-400">தானியக் கிடங்கு, ஆலை இயந்திரங்கள் மற்றும் மூலப்பொருட்களுக்கான பெருநிறுவனப் பாதுகாப்பு.</p>
+                <p className="text-xs text-slate-100">தானியக் கிடங்கு, ஆலை இயந்திரங்கள் மற்றும் மூலப்பொருட்களுக்கான பெருநிறுவனப் பாதுகாப்பு.</p>
               </div>
             </div>
           )}
@@ -463,15 +463,15 @@ export default function InsuranceModule({ setCurrentModule }) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                 <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1">
                   <span className="text-white font-bold block">1. 72 மணிநேரத் தகவல்</span>
-                  <p className="text-slate-400 text-[11px]">மருத்துவமனையில் அனுமதிக்கப்பட்டாலோ அல்லது விபத்து நடந்தாலோ 72 மணி நேரத்திற்குள் நிறுவனத்திற்குத் தகவல் தெரிவிக்க வேண்டும்.</p>
+                  <p className="text-slate-100 text-[11px]">மருத்துவமனையில் அனுமதிக்கப்பட்டாலோ அல்லது விபத்து நடந்தாலோ 72 மணி நேரத்திற்குள் நிறுவனத்திற்குத் தகவல் தெரிவிக்க வேண்டும்.</p>
                 </div>
                 <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1">
                   <span className="text-white font-bold block">2. நெட்வொர்க் TPA கார்டு</span>
-                  <p className="text-slate-400 text-[11px]">பணமில்லா சிகிச்சைக்கு இன்சூரன்ஸ் கார்டு மற்றும் ஆதார் அட்டையை மருத்துவமனை இன்சூரன்ஸ் டெஸ்க்கில் சமர்ப்பிக்கவும்.</p>
+                  <p className="text-slate-100 text-[11px]">பணமில்லா சிகிச்சைக்கு இன்சூரன்ஸ் கார்டு மற்றும் ஆதார் அட்டையை மருத்துவமனை இன்சூரன்ஸ் டெஸ்க்கில் சமர்ப்பிக்கவும்.</p>
                 </div>
                 <div className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1">
                   <span className="text-white font-bold block">3. முறையான ஆவணங்கள்</span>
-                  <p className="text-slate-400 text-[11px]">வாகன விபத்திற்கு FIR நகல், மருத்துவ சிகிச்சைக்கு டிஸ்சார்ஜ் சம்மரி மற்றும் ஒரிஜினல் பில்கள் கட்டாயம் வைத்திருக்க வேண்டும்.</p>
+                  <p className="text-slate-100 text-[11px]">வாகன விபத்திற்கு FIR நகல், மருத்துவ சிகிச்சைக்கு டிஸ்சார்ஜ் சம்மரி மற்றும் ஒரிஜினல் பில்கள் கட்டாயம் வைத்திருக்க வேண்டும்.</p>
                 </div>
               </div>
             </div>
@@ -547,7 +547,7 @@ export default function InsuranceModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🏦</span>
           <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">கடன் வாங்கும் போது காப்பீடு தேவையா?</h4>
-          <p className="text-xs text-slate-400">வீட்டுக்கடன் மற்றும் தனிநபர் கடன்களுக்கான குறைந்த பிரீமியம் Loan Shield வழிகாட்டல்.</p>
+          <p className="text-xs text-slate-100">வீட்டுக்கடன் மற்றும் தனிநபர் கடன்களுக்கான குறைந்த பிரீமியம் Loan Shield வழிகாட்டல்.</p>
           <span className="text-[11px] text-amber-400 font-bold block pt-1 underline">நிதி & கடன்கள் பிரிவு செல்ல ↗</span>
         </div>
 
@@ -560,7 +560,7 @@ export default function InsuranceModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🌱</span>
           <h4 className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">விவசாயப் பயிர்களைத் தேர்வு செய்ய</h4>
-          <p className="text-xs text-slate-400">மண், போர்வெல் நீர் TDS பரிசோதனை மற்றும் 100% சொட்டுநீர் மானியத் திட்டங்கள்.</p>
+          <p className="text-xs text-slate-100">மண், போர்வெல் நீர் TDS பரிசோதனை மற்றும் 100% சொட்டுநீர் மானியத் திட்டங்கள்.</p>
           <span className="text-[11px] text-emerald-400 font-bold block pt-1 underline">Agri Hub செல்ல ↗</span>
         </div>
 
@@ -573,7 +573,7 @@ export default function InsuranceModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🏢</span>
           <h4 className="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">தொழில் தொடங்க 35% அரசு மானியம்</h4>
-          <p className="text-xs text-slate-400">குடோன், எண்ணெய் செக்கு மற்றும் MSME தொழில்களுக்கான திட்ட அறிக்கை (Live DPR).</p>
+          <p className="text-xs text-slate-100">குடோன், எண்ணெய் செக்கு மற்றும் MSME தொழில்களுக்கான திட்ட அறிக்கை (Live DPR).</p>
           <span className="text-[11px] text-cyan-400 font-bold block pt-1 underline">தொழில் & MSME பிரிவு செல்ல ↗</span>
         </div>
       </div>

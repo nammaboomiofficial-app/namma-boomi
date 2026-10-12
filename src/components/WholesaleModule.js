@@ -95,7 +95,7 @@ export default function WholesaleModule({ setCurrentModule }) {
             <span className="text-3xl">⚖️</span>
             <div className="text-xs">
               <span className="text-amber-400 font-bold block">100% தர்மகாண்டா எடை</span>
-              <span className="text-slate-400 text-[11px]">FSSAI & GST e-Way சட்டமுறை பாதுகாப்பு</span>
+              <span className="text-slate-100 text-[11px]">FSSAI & GST e-Way சட்டமுறை பாதுகாப்பு</span>
             </div>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default function WholesaleModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('agri_lots')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'agri_lots' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'agri_lots' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🌾 பண்ணை வாசல் லாட்கள் (விளைபொருட்கள்)
@@ -113,7 +113,7 @@ export default function WholesaleModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('rice_grocery')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'rice_grocery' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'rice_grocery' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🏪 நேரடி ஆலை அரிசி & மொத்த மளிகை
@@ -121,7 +121,7 @@ export default function WholesaleModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('buyer_board')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'buyer_board' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'buyer_board' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             📢 வாங்குவோர் தேவைகள் பலகை (Buyer Board)
@@ -129,7 +129,7 @@ export default function WholesaleModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('logistics_calc')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'logistics_calc' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'logistics_calc' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             🚛 சரக்கு & லாரி வாடகை கணிப்பான்
@@ -137,7 +137,7 @@ export default function WholesaleModule({ setCurrentModule }) {
           <button
             onClick={() => setActiveTab('compliance')}
             className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeTab === 'compliance' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+              activeTab === 'compliance' ? 'bg-amber-600 text-white shadow-lg' : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             📜 FSSAI, GST & பாதுகாப்பு விதிகள்
@@ -151,7 +151,7 @@ export default function WholesaleModule({ setCurrentModule }) {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-amber-400">தோட்டத்திலிருந்து நேரடியாக மொத்த கொள்முதல்</span>
-                <span className="text-[11px] text-slate-400">இடைத்தரகர் கமிஷன்: 0%</span>
+                <span className="text-[11px] text-slate-100">இடைத்தரகர் கமிஷன்: 0%</span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -163,27 +163,27 @@ export default function WholesaleModule({ setCurrentModule }) {
                           {lot.tag}
                         </span>
                         <h4 className="text-sm font-bold text-white mt-1.5">{lot.name}</h4>
-                        <span className="text-[11px] text-slate-400">📍 {lot.location}</span>
+                        <span className="text-[11px] text-slate-100">📍 {lot.location}</span>
                       </div>
                       <div className="text-right">
                         <span className="text-base font-black text-amber-400 block">{lot.price}</span>
-                        <span className="text-[10px] text-slate-500">MOQ: {lot.moq}</span>
+                        <span className="text-[10px] text-slate-200">MOQ: {lot.moq}</span>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 text-xs bg-slate-900/80 p-2.5 rounded-lg border border-slate-800/80">
                       <div>
-                        <span className="text-[10px] text-slate-400 block">கையிருப்பு அளவு:</span>
+                        <span className="text-[10px] text-slate-100 block">கையிருப்பு அளவு:</span>
                         <span className="font-bold text-white">{lot.qty}</span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block">தரம் & ஈரப்பதம்:</span>
+                        <span className="text-[10px] text-slate-100 block">தரம் & ஈரப்பதம்:</span>
                         <span className="font-bold text-emerald-400">{lot.moisture}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between pt-1 text-[11px]">
-                      <span className="text-slate-400 truncate max-w-[180px]">🤝 {lot.fpo}</span>
+                      <span className="text-slate-100 truncate max-w-[180px]">🤝 {lot.fpo}</span>
                       <button
                         onClick={() => {
                           setLeadForm({
@@ -218,27 +218,27 @@ export default function WholesaleModule({ setCurrentModule }) {
                       <div>
                         <span className="text-xs font-bold text-emerald-400">FSSAI: {item.fssai}</span>
                         <h4 className="text-sm font-bold text-white mt-1">{item.name}</h4>
-                        <span className="text-[11px] text-slate-400">🏭 {item.location} ({item.bagSize})</span>
+                        <span className="text-[11px] text-slate-100">🏭 {item.location} ({item.bagSize})</span>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-2 text-center text-xs bg-slate-900 p-2.5 rounded-lg border border-slate-800">
                       <div>
-                        <span className="text-[10px] text-slate-400 block">நேரடி ஆலை விலை:</span>
+                        <span className="text-[10px] text-slate-100 block">நேரடி ஆலை விலை:</span>
                         <span className="text-sm font-bold text-amber-400">{item.millPrice}</span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block">உள்ளூர் மண்டி:</span>
-                        <span className="text-xs font-semibold text-slate-400 line-through">{item.localMarket}</span>
+                        <span className="text-[10px] text-slate-100 block">உள்ளூர் மண்டி:</span>
+                        <span className="text-xs font-semibold text-slate-100 line-through">{item.localMarket}</span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block">குறைந்தபட்சம் (MOQ):</span>
+                        <span className="text-[10px] text-slate-100 block">குறைந்தபட்சம் (MOQ):</span>
                         <span className="text-xs font-bold text-white">{item.moq}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between pt-1">
-                      <span className="text-[11px] text-slate-400">📦 தரப் பரிசோதனைக்கு மாதிரி பார்சல் (Sample Pack) வழங்கப்படும்</span>
+                      <span className="text-[11px] text-slate-100">📦 தரப் பரிசோதனைக்கு மாதிரி பார்சல் (Sample Pack) வழங்கப்படும்</span>
                       <button
                         onClick={() => {
                           setLeadForm({
@@ -264,7 +264,7 @@ export default function WholesaleModule({ setCurrentModule }) {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-cyan-400">பெரிய வணிக நிறுவனங்கள் & ஏற்றுமதியாளர்களின் நேரடித் தேவைகள்</span>
-                <span className="text-[11px] text-slate-400">உடனடி விநியோகம் செய்பவர்கள் தொடர்பு கொள்ளலாம்</span>
+                <span className="text-[11px] text-slate-100">உடனடி விநியோகம் செய்பவர்கள் தொடர்பு கொள்ளலாம்</span>
               </div>
 
               <div className="space-y-3">
@@ -278,14 +278,14 @@ export default function WholesaleModule({ setCurrentModule }) {
                       <div className="text-xs text-amber-400 font-semibold">
                         தேவைப்படும் பொருள்: {req.item} — <span className="text-white">{req.needQty}</span>
                       </div>
-                      <div className="text-[11px] text-slate-400">
+                      <div className="text-[11px] text-slate-100">
                         📍 டெலிவரி இடம்: {req.location} | காலம்: {req.timeline}
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between md:flex-col md:items-end gap-2">
                       <div className="text-right">
-                        <span className="text-xs text-slate-400 block">கொள்முதல் பட்ஜெட்:</span>
+                        <span className="text-xs text-slate-100 block">கொள்முதல் பட்ஜெட்:</span>
                         <span className="text-sm font-black text-white">{req.targetPrice}</span>
                       </div>
                       <button
@@ -323,7 +323,7 @@ export default function WholesaleModule({ setCurrentModule }) {
                     onChange={(e) => setCargoWeight(Number(e.target.value))}
                     className="w-full accent-amber-500 bg-slate-900"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-500">
+                  <div className="flex justify-between text-[10px] text-slate-200">
                     <span>1 டன் (மினி பிக்கப்)</span>
                     <span>6 டன் (வேன்)</span>
                     <span>15 டன் (லாரி)</span>
@@ -341,7 +341,7 @@ export default function WholesaleModule({ setCurrentModule }) {
                     onChange={(e) => setDistanceKm(Number(e.target.value))}
                     className="w-full accent-amber-500 bg-slate-900"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-500">
+                  <div className="flex justify-between text-[10px] text-slate-200">
                     <span>20 கி.மீ</span>
                     <span>300 கி.மீ</span>
                     <span>600 கி.மீ</span>
@@ -357,11 +357,11 @@ export default function WholesaleModule({ setCurrentModule }) {
 
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">உத்தேச லாரி வாடகை:</span>
+                    <span className="text-slate-100 block text-[10px]">உத்தேச லாரி வாடகை:</span>
                     <span className="text-base font-black text-white">₹ {freightEstimate.totalFreight.toLocaleString('en-IN')}</span>
                   </div>
                   <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                    <span className="text-slate-400 block text-[10px]">ரிட்டர்ன் லாரி சேமிப்பு:</span>
+                    <span className="text-slate-100 block text-[10px]">ரிட்டர்ன் லாரி சேமிப்பு:</span>
                     <span className="text-base font-black text-emerald-400">₹ {freightEstimate.returnTruckSaving.toLocaleString('en-IN')} மிச்சம்</span>
                   </div>
                 </div>
@@ -482,7 +482,7 @@ export default function WholesaleModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🏦</span>
           <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">B2B வணிகக் கடன் & வரவு செலவு</h4>
-          <p className="text-xs text-slate-400">கொள்முதல் செய்வதற்குத் தேவையான பிணையமில்லா MSME மூலதனக் கடன்கள்.</p>
+          <p className="text-xs text-slate-100">கொள்முதல் செய்வதற்குத் தேவையான பிணையமில்லா MSME மூலதனக் கடன்கள்.</p>
           <span className="text-[11px] text-amber-400 font-bold block pt-1 underline">நிதி & கடன்கள் பிரிவு செல்ல ↗</span>
         </div>
 
@@ -495,7 +495,7 @@ export default function WholesaleModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🌱</span>
           <h4 className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">விவசாய விளைச்சல் & பண்ணை மேலாண்மை</h4>
-          <p className="text-xs text-slate-400">மண் பரிசோதனை, பயிர் லாப ரேடார் மற்றும் 100% சொட்டுநீர் மானிய வழிகாட்டல்.</p>
+          <p className="text-xs text-slate-100">மண் பரிசோதனை, பயிர் லாப ரேடார் மற்றும் 100% சொட்டுநீர் மானிய வழிகாட்டல்.</p>
           <span className="text-[11px] text-emerald-400 font-bold block pt-1 underline">Agri Hub செல்ல ↗</span>
         </div>
 
@@ -508,7 +508,7 @@ export default function WholesaleModule({ setCurrentModule }) {
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🚛</span>
           <h4 className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">லாரி ஓட்டுநர்கள் & சுமை ஆட்கள்</h4>
-          <p className="text-xs text-slate-400">பொருட்களை ஏற்றி இறக்க உள்ளூர் சுமை தொழிலாளர்கள் மற்றும் சரக்கு ஓட்டுநர்கள்.</p>
+          <p className="text-xs text-slate-100">பொருட்களை ஏற்றி இறக்க உள்ளூர் சுமை தொழிலாளர்கள் மற்றும் சரக்கு ஓட்டுநர்கள்.</p>
           <span className="text-[11px] text-blue-400 font-bold block pt-1 underline">வேலைவாய்ப்பு மையம் செல்ல ↗</span>
         </div>
       </div>

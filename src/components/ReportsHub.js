@@ -32,7 +32,7 @@ export default function ReportsHub({ profile, onOpenChatWithTopic }) {
         <div className="flex items-center gap-2 bg-slate-950/80 p-2.5 rounded-2xl border border-slate-800">
           <span className="text-lg">👛</span>
           <div>
-            <div className="text-[10px] text-slate-400">வேலட் இருப்பு</div>
+            <div className="text-[10px] text-slate-100">வேலட் இருப்பு</div>
             <div className="text-sm font-bold text-amber-400">₹100 போனஸ் கிரெடிட்</div>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function ReportsHub({ profile, onOpenChatWithTopic }) {
             className={`px-4 py-2 rounded-xl font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
               activeCategory === cat.id
                 ? 'bg-gradient-to-r from-pink-600 to-rose-500 text-white shadow-lg'
-                : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
             }`}
           >
             <span>{cat.icon}</span>
@@ -77,13 +77,13 @@ export default function ReportsHub({ profile, onOpenChatWithTopic }) {
                   <div>
                     <span className="text-[10px] text-emerald-400 font-semibold block">● {report.orders}</span>
                     <h3 className="text-base font-bold text-white mt-0.5">{report.tamilTitle}</h3>
-                    <div className="text-xs text-slate-400 font-mono">{report.title}</div>
+                    <div className="text-xs text-slate-100 font-mono">{report.title}</div>
                   </div>
                 </div>
 
                 <div className="text-right">
                   <div className="text-base font-black text-emerald-400 font-mono">{report.price}</div>
-                  <div className="text-[10px] text-slate-500 line-through font-mono">{report.originalPrice}</div>
+                  <div className="text-[10px] text-slate-200 line-through font-mono">{report.originalPrice}</div>
                   <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">
                     {report.discount}
                   </span>
@@ -144,7 +144,7 @@ export default function ReportsHub({ profile, onOpenChatWithTopic }) {
               </div>
               <button
                 onClick={() => setSelectedPreview(null)}
-                className="w-8 h-8 rounded-full bg-slate-950 text-slate-400 hover:text-white flex items-center justify-center text-sm font-bold cursor-pointer"
+                className="w-8 h-8 rounded-full bg-slate-950 text-slate-100 hover:text-white flex items-center justify-center text-sm font-bold cursor-pointer"
               >
                 ✕
               </button>

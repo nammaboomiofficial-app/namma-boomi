@@ -1,171 +1,239 @@
 import React, { useState } from 'react';
-import loanConfig from '../data/loanConfig.json';
+import loansData from '../data/loansData.json';
+import { calculateLoanEligibility } from '../utils/loanEngine';
+import DocumentChecklist from './DocumentChecklist';
 
 export default function LoanModule360() {
-  const { adminWhatsApp, scriptUrl, defaults, ranges } = loanConfig;
+  const { 
+    loanCards = [], 
+    bankRates = [], 
+    calculatorConfig = {}, 
+    uiLabels = {} 
+  } = loansData;
 
-  const [loanAmount, setLoanAmount] = useState(defaults.loanAmount);
-  const [interestRate, setInterestRate] = useState(defaults.interestRate);
-  const [tenureYears, setTenureYears] = useState(defaults.tenureYears);
+  const { income, existingEmi: emiCfg, cibil } = calculatorConfig;
 
-  // EMI கணக்கீட்டு சூத்திரம்
-  const calculateEMI = () => {
-    const monthlyRate = interestRate / 12 / 100;
-    const totalMonths = tenureYears * 12;
-    const emi =
-      (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) /
-      (Math.pow(1 + monthlyRate, totalMonths) - 1);
-    return Math.round(emi) || 0;
-  };
+  // கால்குலேட்டர் நிலைகள் (States from Config)
+  const [selectedScheme, setSelectedScheme] = useState(loanCards[0] || null);
+  const [monthlyIncome, setMonthlyIncome] = useState(income?.defaultValue || 35000);
+  const [existingEmi, setExistingEmi] = useState(emiCfg?.defaultValue || 0);
+  const [cibilScore, setCibilScore] = useState(cibil?.defaultValue || 750);
+  const [tenureYears, setTenureYears] = useState(selectedScheme?.maxTenureYears || 15);
 
-  const emi = calculateEMI();
-  const totalPayment = emi * tenureYears * 12;
-  const totalInterest = totalPayment - loanAmount;
+  // தணிக்கை முடிவு (Live Calculation Engine)
+  const eligibility = calculateLoanEligibility({
+    monthlyIncome,
+    existingEmi,
+    scheme: selectedScheme || {},
+    cibilScore,
+    tenureYears
+  });
 
-  const handleLoanApply = async () => {
-    // 1. கூகுள் ஷீட்டில் ஆட்டோமேட்டிக்காக லோன் லீட் சேமித்தல்
-    try {
-      await fetch(scriptUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: 'கடன் விண்ணப்பதாரர்',
-          phone: 'WhatsApp தொடர்பு',
-          place: `கடன்: ₹${loanAmount.toLocaleString('en-IN')}`,
-          surveyNo: `EMI: ₹${emi.toLocaleString('en-IN')} (${tenureYears} yrs)`,
-          status: 'லோன் விண்ணப்பம்',
-          leadType: 'வங்கிக் கடன் லீட் (Loan Lead)',
-          feeStatus: 'லோன் விண்ணப்பம்',
-          auditStatus: 'வங்கிக் கடன் லீட் (Loan Lead)'
-        })
-      });
-    } catch (err) {
-      console.error('Sheet saving error:', err);
+  const scrollToDocs = () => {
+    const el = document.getElementById('document-checklist-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
-
-    // 2. வாட்ஸ்அப் மெசேஜ் அனுப்புதல்
-    const message = `வணக்கம் நம்ம பூமி 360! 🏛️\n\nஎனக்கு மனை / வீட்டுக் கடன் வழிகாட்டல் தேவைப்படுகிறது.\n\n• கடன் தொகை: ₹${loanAmount.toLocaleString('en-IN')}\n• வட்டி விகிதம்: ${interestRate}%\n• தவணைக் காலம்: ${tenureYears} ஆண்டுகள்\n• உத்தேச EMI: ₹${emi.toLocaleString('en-IN')}/மாதம்\n\nதயவுசெய்து வங்கி கடன் ஆவணங்கள் மற்றும் செயல்முறைகளைத் தெரியப்படுத்தவும்.`;
-    window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
-    <div className="py-8 px-4 max-w-6xl mx-auto space-y-8">
-      {/* தலைப்பு பேனர் */}
-      <div className="text-center space-y-2">
-        <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full text-xs font-semibold">
-          🏛️ வங்கி & நிதி சேவைகள் 360
-        </span>
-        <h2 className="text-2xl sm:text-4xl font-black text-white">
-          மனை & வீட்டுக் கடன் <span className="text-emerald-400">EMI கால்குலேட்டர்</span>
-        </h2>
-        <p className="text-slate-400 text-sm max-w-xl mx-auto">
-          உங்கள் மாதத் தவணையை (EMI) துல்லியமாகக் கணக்கிட்டு உடனடியாக விண்ணப்பியுங்கள்
-        </p>
-      </div>
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 text-slate-100">
+      
+      {/* கடன் திட்ட அட்டைகள் & கால்குலேட்டர் பகுதி */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        
+        {/* திட்டத் தேர்வுகள் (Cards) */}
+        <div className="lg:col-span-1 space-y-3">
+          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">
+            {uiLabels.schemesTitle}
+          </h3>
+          {loanCards.map((scheme) => {
+            const isSelected = selectedScheme?.id === scheme.id;
+            return (
+              <div
+                key={scheme.id}
+                onClick={() => {
+                  setSelectedScheme(scheme);
+                  setTenureYears(scheme.maxTenureYears || 15);
+                }}
+                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                  isSelected
+                    ? 'bg-emerald-500/15 border-emerald-500 shadow-lg shadow-emerald-500/10'
+                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="flex justify-between items-center mb-1">
+                  <h4 className="font-bold text-sm text-white">{scheme.title}</h4>
+                  <span className="text-[10px] bg-slate-800 border border-slate-700 px-2 py-0.5 rounded-full text-emerald-400 font-bold">
+                    {scheme.interestRate}% வட்டி
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400">{scheme.description}</p>
+              </div>
+            );
+          })}
+        </div>
 
-      {/* கால்குலேட்டர் மற்றும் முடிவு அட்டை */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
-        {/* ஸ்லைடர்கள் பகுதி */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* கடன் தொகை */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-300 font-medium">தேவைப்படும் கடன் தொகை</span>
-              <span className="text-emerald-400 font-bold text-base">₹{loanAmount.toLocaleString('en-IN')}</span>
+        {/* தகுதி கால்குலேட்டர் உள்ளீடுகள் (Slider + Direct Input Box) */}
+        <div className="lg:col-span-1 bg-slate-900/60 border border-slate-800 p-5 rounded-2xl space-y-4">
+          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+            {uiLabels.calcTitle}
+          </h3>
+
+          {/* மாத வருமானம் */}
+          <div>
+            <div className="flex justify-between items-center text-xs mb-1.5">
+              <span className="text-slate-400">{uiLabels.incomeLabel}</span>
+              <div className="flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-700">
+                <span className="text-emerald-400 font-bold">₹</span>
+                <input
+                  type="number"
+                  min={income?.min}
+                  max={income?.max}
+                  value={monthlyIncome}
+                  onChange={(e) => setMonthlyIncome(Number(e.target.value) || 0)}
+                  className="w-24 bg-transparent text-emerald-400 font-bold text-right outline-none text-xs"
+                />
+              </div>
             </div>
             <input
               type="range"
-              min={ranges.amount.min}
-              max={ranges.amount.max}
-              step={ranges.amount.step}
-              value={loanAmount}
-              onChange={(e) => setLoanAmount(Number(e.target.value))}
-              className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+              min={income?.min}
+              max={income?.max}
+              step={income?.step}
+              value={monthlyIncome}
+              onChange={(e) => setMonthlyIncome(Number(e.target.value))}
+              className="w-full accent-emerald-500 cursor-pointer"
             />
-            <div className="flex justify-between text-[11px] text-slate-500">
-              <span>{ranges.amount.minLabel}</span>
-              <span>{ranges.amount.maxLabel}</span>
-            </div>
           </div>
 
-          {/* வட்டி விகிதம் */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-300 font-medium">வட்டி விகிதம் (% ஆண்டுக்கு)</span>
-              <span className="text-emerald-400 font-bold text-base">{interestRate}%</span>
+          {/* தற்போதைய மாத EMI */}
+          <div>
+            <div className="flex justify-between items-center text-xs mb-1.5">
+              <span className="text-slate-400">{uiLabels.emiLabel}</span>
+              <div className="flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-700">
+                <span className="text-amber-400 font-bold">₹</span>
+                <input
+                  type="number"
+                  min={emiCfg?.min}
+                  max={emiCfg?.max}
+                  value={existingEmi}
+                  onChange={(e) => setExistingEmi(Number(e.target.value) || 0)}
+                  className="w-24 bg-transparent text-amber-400 font-bold text-right outline-none text-xs"
+                />
+              </div>
             </div>
             <input
               type="range"
-              min={ranges.interest.min}
-              max={ranges.interest.max}
-              step={ranges.interest.step}
-              value={interestRate}
-              onChange={(e) => setInterestRate(Number(e.target.value))}
-              className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+              min={emiCfg?.min}
+              max={emiCfg?.max}
+              step={emiCfg?.step}
+              value={existingEmi}
+              onChange={(e) => setExistingEmi(Number(e.target.value))}
+              className="w-full accent-amber-500 cursor-pointer"
             />
-            <div className="flex justify-between text-[11px] text-slate-500">
-              <span>{ranges.interest.minLabel}</span>
-              <span>{ranges.interest.maxLabel}</span>
-            </div>
           </div>
 
-          {/* தவணை காலம் */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-300 font-medium">தவணை காலம்</span>
-              <span className="text-emerald-400 font-bold text-base">{tenureYears} ஆண்டுகள்</span>
+          {/* சிபில் ஸ்கோர் */}
+          <div>
+            <div className="flex justify-between items-center text-xs mb-1.5">
+              <span className="text-slate-400">{uiLabels.cibilLabel}</span>
+              <div className="flex items-center bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-700">
+                <input
+                  type="number"
+                  min={cibil?.min}
+                  max={cibil?.max}
+                  value={cibilScore}
+                  onChange={(e) => setCibilScore(Number(e.target.value) || 0)}
+                  className="w-14 bg-transparent text-blue-400 font-bold text-right outline-none text-xs"
+                />
+              </div>
             </div>
             <input
               type="range"
-              min={ranges.tenure.min}
-              max={ranges.tenure.max}
-              step={ranges.tenure.step}
+              min={cibil?.min}
+              max={cibil?.max}
+              step={cibil?.step}
+              value={cibilScore}
+              onChange={(e) => setCibilScore(Number(e.target.value))}
+              className="w-full accent-blue-500 cursor-pointer"
+            />
+          </div>
+
+          {/* கால அளவு */}
+          <div>
+            <div className="flex justify-between text-xs mb-1">
+              <span className="text-slate-400">{uiLabels.tenureLabel}</span>
+              <span className="font-bold text-purple-400">{tenureYears} {uiLabels.yearsSuffix}</span>
+            </div>
+            <input
+              type="range"
+              min={1}
+              max={selectedScheme?.maxTenureYears || 20}
+              step={1}
               value={tenureYears}
               onChange={(e) => setTenureYears(Number(e.target.value))}
-              className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+              className="w-full accent-purple-500 cursor-pointer"
             />
-            <div className="flex justify-between text-[11px] text-slate-500">
-              <span>{ranges.tenure.minLabel}</span>
-              <span>{ranges.tenure.maxLabel}</span>
-            </div>
           </div>
         </div>
 
-        {/* முடிவு மற்றும் விண்ணப்பிக்கும் பகுதி */}
-        <div className="lg:col-span-5 bg-gradient-to-br from-slate-950 to-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-6">
-          <div className="space-y-4">
-            <div className="text-center pb-4 border-b border-slate-800">
-              <span className="text-xs text-slate-400 uppercase tracking-wider">மாதத் தவணை (EMI)</span>
-              <div className="text-3xl sm:text-4xl font-black text-emerald-400 mt-1">
-                ₹{emi.toLocaleString('en-IN')}
-              </div>
+        {/* தகுதி முடிவு கார்டு (Result Card) */}
+        <div className="lg:col-span-1 bg-gradient-to-br from-emerald-950/40 to-slate-900/80 border border-emerald-500/30 p-5 rounded-2xl flex flex-col justify-between">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+              {uiLabels.resultTitle}
+            </span>
+            <div className="mt-4">
+              <span className="text-xs text-slate-400 block">{uiLabels.maxLoanLabel}</span>
+              <h2 className="text-2xl sm:text-3xl font-black text-emerald-400 mt-1">
+                ₹{eligibility?.maxLoanAmount ? Number(eligibility.maxLoanAmount).toLocaleString('en-IN') : '0'}
+              </h2>
             </div>
 
-            <div className="space-y-2.5 text-xs sm:text-sm">
-              <div className="flex justify-between text-slate-400">
-                <span>அசல் தொகை:</span>
-                <span className="font-semibold text-white">₹{loanAmount.toLocaleString('en-IN')}</span>
+            <div className="mt-4 p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-xs space-y-2">
+              <div className="flex justify-between">
+                <span className="text-slate-400">{uiLabels.estimatedEmiLabel}</span>
+                <span className="font-bold text-white">₹{eligibility?.estimatedEmi ? Number(eligibility.estimatedEmi).toLocaleString('en-IN') : '0'}</span>
               </div>
-              <div className="flex justify-between text-slate-400">
-                <span>மொத்த வட்டி:</span>
-                <span className="font-semibold text-amber-400">₹{totalInterest.toLocaleString('en-IN')}</span>
-              </div>
-              <div className="flex justify-between text-slate-400 pt-2 border-t border-slate-800/80">
-                <span>மொத்த திருப்பிச் செலுத்துதல்:</span>
-                <span className="font-bold text-white">₹{totalPayment.toLocaleString('en-IN')}</span>
+              <div className="flex justify-between">
+                <span className="text-slate-400">{uiLabels.approvalStatusLabel}</span>
+                <span className={`font-bold ${eligibility?.eligible ? 'text-emerald-400' : 'text-amber-400'}`}>
+                  {eligibility?.eligible ? uiLabels.statusEligible : uiLabels.statusReview}
+                </span>
               </div>
             </div>
           </div>
 
           <button
-            onClick={handleLoanApply}
-            className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2"
+            onClick={scrollToDocs}
+            className="w-full mt-5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 cursor-pointer"
           >
-            <span>📲</span> குறைந்த வட்டியில் கடன் பெற விண்ணப்பிக்கவும்
+            {uiLabels.applyCtaText}
           </button>
         </div>
+
       </div>
+
+      {/* முன்னணி வங்கிகளின் வட்டி விகிதங்கள் */}
+      <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-800 mb-6">
+        <h4 className="text-xs font-semibold text-slate-400 mb-3">{uiLabels.bankRatesTitle}</h4>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          {bankRates.map((bank, idx) => (
+            <div key={idx} className="bg-slate-800/40 p-2.5 rounded-lg border border-slate-800">
+              <strong className="text-white block truncate">{bank.name}</strong>
+              <span className="text-[10px] text-slate-400 block truncate">{bank.type}</span>
+              <span className="text-emerald-400 font-bold text-xs mt-1 block">{bank.rate}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* கடன் ஆவணங்கள் சரிபார்ப்புப் பட்டியல் */}
+      <div id="document-checklist-section">
+        <DocumentChecklist />
+      </div>
+
     </div>
   );
 }

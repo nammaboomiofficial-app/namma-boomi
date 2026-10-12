@@ -52,7 +52,7 @@ export default function EducationModule() {
         <h2 className="text-xl sm:text-2xl font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
           நவீன தொழில்நுட்பப் பயிற்சிக் கூடம் (Tech & AI Hub)
         </h2>
-        <p className="text-slate-400 text-xs sm:text-sm mt-1">
+        <p className="text-slate-100 text-xs sm:text-sm mt-1">
           செயல்முறைப் பயிற்சிகள் • நேரடி வழிகாட்டல் • வேலைவாய்ப்பு உதவி
         </p>
       </div>
@@ -61,7 +61,7 @@ export default function EducationModule() {
       <div className="bg-slate-800/80 p-4 rounded-2xl border border-slate-700 mb-6 flex flex-col sm:flex-row gap-3 items-center justify-between">
         <div className="text-left w-full sm:w-auto">
           <p className="text-xs font-bold text-emerald-300">கட்டணம் & பாடத்திட்டம் அறிய:</p>
-          <p className="text-[11px] text-slate-400">மொபைல் எண்ணை இட்டு விருப்பமான படிப்பைத் தேர்ந்தெடுக்கவும்</p>
+          <p className="text-[11px] text-slate-100">மொபைல் எண்ணை இட்டு விருப்பமான படிப்பைத் தேர்ந்தெடுக்கவும்</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <input
@@ -101,7 +101,7 @@ export default function EducationModule() {
                 </span>
               </div>
               <h3 className="font-bold text-sm text-white">{course.title}</h3>
-              <p className="text-slate-400 text-xs mt-1">{course.desc}</p>
+              <p className="text-slate-100 text-xs mt-1">{course.desc}</p>
             </div>
             
             <button

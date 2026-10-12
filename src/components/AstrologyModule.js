@@ -142,7 +142,7 @@ export default function AstrologyModule({ profile }) {
               <div>
                 <div class="text-center border-b border-amber-500/40 pb-2 mb-3">
                   <h1 class="text-xl font-black text-amber-400">360 சர்வதேச ஜோதிட கணிப்பு அறிக்கை</h1>
-                  <p class="text-[10px] text-slate-400 mt-0.5">திருக்கணித பஞ்சாங்கம் & நாசா வானியல் கணித ஆய்வு</p>
+                  <p class="text-[10px] text-slate-100 mt-0.5">திருக்கணித பஞ்சாங்கம் & நாசா வானியல் கணித ஆய்வு</p>
                   <div class="mt-1.5 text-xs text-amber-200 font-medium">
                     ஜாதகர்: ${userName} | பிறந்த தேதி: ${birthDetails?.birthDate || '-'} | நேரம்: ${birthDetails?.birthTime || '-'}
                   </div>
@@ -160,22 +160,22 @@ export default function AstrologyModule({ profile }) {
                   </div>
                   <div class="grid grid-cols-3 gap-3 text-center">
                     <div class="bg-slate-800/80 border border-slate-700/80 p-2 rounded-lg">
-                      <div class="text-[10px] text-slate-400">பிறவி எண் (Root)</div>
+                      <div class="text-[10px] text-slate-100">பிறவி எண் (Root)</div>
                       <div class="text-lg font-black text-amber-400 mt-0.5">${astroData?.numerologyData?.rootNumber || '8'}</div>
                     </div>
                     <div class="bg-slate-800/80 border border-slate-700/80 p-2 rounded-lg">
-                      <div class="text-[10px] text-slate-400">விதி எண் (Destiny)</div>
+                      <div class="text-[10px] text-slate-100">விதி எண் (Destiny)</div>
                       <div class="text-lg font-black text-emerald-400 mt-0.5">${astroData?.numerologyData?.destinyNumber || '6'}</div>
                     </div>
                     <div class="bg-slate-800/80 border border-slate-700/80 p-2 rounded-lg">
-                      <div class="text-[10px] text-slate-400">பெயர் எண் (Name)</div>
+                      <div class="text-[10px] text-slate-100">பெயர் எண் (Name)</div>
                       <div class="text-lg font-black text-cyan-400 mt-0.5">${astroData?.numerologyData?.nameNumber || '4'}</div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="border-t border-slate-800 pt-2 flex justify-between text-[10px] text-slate-500">
+              <div class="border-t border-slate-800 pt-2 flex justify-between text-[10px] text-slate-200">
                 <span>360 AI Astrology Engine | Namma Boomi</span>
                 <span>பக்கம் 1 / 2</span>
               </div>
@@ -186,7 +186,7 @@ export default function AstrologyModule({ profile }) {
               <div>
                 <div class="text-center border-b border-amber-500/40 pb-2 mb-4">
                   <h2 class="text-lg font-bold text-amber-400">AI தனிப்பயன் ஜோதிட வழிகாட்டுதல் & பரிகாரங்கள்</h2>
-                  <p class="text-[10px] text-slate-400">திருக்கணித சாஸ்திர தீர்ப்பு மற்றும் கிரக சஞ்சார பலன்கள்</p>
+                  <p class="text-[10px] text-slate-100">திருக்கணித சாஸ்திர தீர்ப்பு மற்றும் கிரக சஞ்சார பலன்கள்</p>
                 </div>
 
                 <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
@@ -206,7 +206,7 @@ export default function AstrologyModule({ profile }) {
                 </div>
               </div>
 
-              <div class="border-t border-slate-800 pt-2 flex justify-between text-[10px] text-slate-500">
+              <div class="border-t border-slate-800 pt-2 flex justify-between text-[10px] text-slate-200">
                 <span>360 AI Astrology Engine | Namma Boomi</span>
                 <span>பக்கம் 2 / 2</span>
               </div>
@@ -766,7 +766,7 @@ export default function AstrologyModule({ profile }) {
         <div className="flex flex-wrap justify-between items-center mb-5 gap-3 border-b border-slate-800 pb-4">
           <div>
             <h2 className="text-xl font-black text-amber-400">360° சர்வதேச ஜோதிட கணிப்பு மென்பொருள்</h2>
-            <p className="text-xs text-slate-400 mt-0.5">திருக்கணித பஞ்சாங்கம் & KP வானியல் கணிப்பு அல்காரிதம்</p>
+            <p className="text-xs text-slate-100 mt-0.5">திருக்கணித பஞ்சாங்கம் & KP வானியல் கணிப்பு அல்காரிதம்</p>
           </div>
           {astroData && (
             <div className="flex gap-2">
@@ -805,7 +805,7 @@ export default function AstrologyModule({ profile }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mb-5">
           <div>
-            <label className="text-xs text-slate-400 block mb-1 font-medium">பெயர்</label>
+            <label className="text-xs text-slate-100 block mb-1 font-medium">பெயர்</label>
             <input 
               type="text" 
               placeholder="பெயரை உள்ளிடவும்"
@@ -815,7 +815,7 @@ export default function AstrologyModule({ profile }) {
             />
           </div>
           <div>
-            <label className="text-xs text-slate-400 block mb-1 font-medium">பிறந்த தேதி *</label>
+            <label className="text-xs text-slate-100 block mb-1 font-medium">பிறந்த தேதி *</label>
             <input 
               type="date" 
               value={birthDetails.birthDate} 
@@ -825,7 +825,7 @@ export default function AstrologyModule({ profile }) {
           </div>
           <div>
   <div className="flex items-center justify-between mb-1">
-    <label className="text-xs text-slate-400 font-medium">பிறந்த நேரம்</label>
+    <label className="text-xs text-slate-100 font-medium">பிறந்த நேரம்</label>
     <label className="text-[11px] text-amber-400/90 flex items-center gap-1 cursor-pointer">
       <input
         type="checkbox"
@@ -852,7 +852,7 @@ export default function AstrologyModule({ profile }) {
   />
 </div>
           <div>
-            <label className="text-xs text-slate-400 block mb-1 font-medium">பிறந்த ஊர்</label>
+            <label className="text-xs text-slate-100 block mb-1 font-medium">பிறந்த ஊர்</label>
             <input 
               type="text" 
               placeholder="ஊரின் பெயர்"
@@ -898,13 +898,13 @@ export default function AstrologyModule({ profile }) {
             <button 
               type="button"
               onClick={() => setShowPayModal(false)}
-              className="absolute top-3 right-3 text-slate-400 hover:text-white text-base font-bold"
+              className="absolute top-3 right-3 text-slate-100 hover:text-white text-base font-bold"
             >
               ✕
             </button>
 
             <h3 className="text-base font-bold text-amber-400 text-center mb-0.5">AI ஜோதிட கேள்வி ரீசார்ஜ்</h3>
-            <p className="text-[11px] text-slate-400 text-center mb-3">திட்டத்தைத் தேர்வு செய்து UPI மூலம் ஸ்கேன் செய்க</p>
+            <p className="text-[11px] text-slate-100 text-center mb-3">திட்டத்தைத் தேர்வு செய்து UPI மூலம் ஸ்கேன் செய்க</p>
 
             {/* 1. திட்டங்கள் தேர்வு செய்யும் பட்டியல் */}
             <div className="space-y-2 mb-3">
@@ -925,7 +925,7 @@ export default function AstrologyModule({ profile }) {
                         {plan.name}
                         {plan.popular && <span className="text-[9px] bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded font-black">ஆஃபர்</span>}
                       </div>
-                      <div className="text-[10px] text-slate-400 mt-0.5">{plan.desc}</div>
+                      <div className="text-[10px] text-slate-100 mt-0.5">{plan.desc}</div>
                     </div>
                     <div className="text-sm font-black text-amber-400">₹{plan.price}</div>
                   </div>
@@ -942,7 +942,7 @@ export default function AstrologyModule({ profile }) {
                   className="w-28 h-28 mx-auto"
                 />
               </div>
-              <div className="text-[11px] text-slate-400">செலுத்த வேண்டிய தொகை:</div>
+              <div className="text-[11px] text-slate-100">செலுத்த வேண்டிய தொகை:</div>
               <div className="text-base font-black text-emerald-400">₹{selectedPlan?.price || 25}</div>
             </div>
 
@@ -963,19 +963,19 @@ export default function AstrologyModule({ profile }) {
         <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-              <span className="text-xs text-slate-400 block mb-1">லக்னம்</span>
+              <span className="text-xs text-slate-100 block mb-1">லக்னம்</span>
               <span className="text-lg font-black text-rose-400">{astroData.lagnam}</span>
             </div>
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-              <span className="text-xs text-slate-400 block mb-1">ராசி</span>
+              <span className="text-xs text-slate-100 block mb-1">ராசி</span>
               <span className="text-lg font-black text-rose-400">{astroData.rasi}</span>
             </div>
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-              <span className="text-xs text-slate-400 block mb-1">நட்சத்திரம் & பாதம்</span>
+              <span className="text-xs text-slate-100 block mb-1">நட்சத்திரம் & பாதம்</span>
               <span className="text-sm font-bold text-amber-300">{astroData.nakshatra}</span>
             </div>
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-              <span className="text-xs text-slate-400 block mb-1">தசா இருப்பு</span>
+              <span className="text-xs text-slate-100 block mb-1">தசா இருப்பு</span>
               <span className="text-xs font-semibold text-emerald-400">{astroData.balanceText}</span>
             </div>
           </div>
@@ -984,18 +984,18 @@ export default function AstrologyModule({ profile }) {
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col justify-between">
               <span className="text-xs font-bold text-amber-400 block mb-2">📜 பிறப்பு பஞ்சாங்க விவரம்</span>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div><span className="text-slate-400">கிழமை:</span> <span className="font-semibold text-slate-200">{astroData.vaaram}</span></div>
-                <div><span className="text-slate-400">திதி:</span> <span className="font-semibold text-slate-200">{astroData.tithi}</span></div>
+                <div><span className="text-slate-100">கிழமை:</span> <span className="font-semibold text-slate-200">{astroData.vaaram}</span></div>
+                <div><span className="text-slate-100">திதி:</span> <span className="font-semibold text-slate-200">{astroData.tithi}</span></div>
               </div>
             </div>
 
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col justify-between">
               <span className="text-xs font-bold text-amber-400 block mb-2">💎 அதிர்ஷ்டக் குறிப்புகள்</span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                <div><span className="text-slate-400 block text-[10px]">எண்</span><span className="font-bold text-rose-400">{astroData.luckyInfo?.num}</span></div>
-                <div><span className="text-slate-400 block text-[10px]">வண்ணம்</span><span className="font-bold text-amber-300">{astroData.luckyInfo?.color}</span></div>
-                <div><span className="text-slate-400 block text-[10px]">ரத்தினம்</span><span className="font-bold text-emerald-400">{astroData.luckyInfo?.stone}</span></div>
-                <div><span className="text-slate-400 block text-[10px]">தெய்வம்</span><span className="font-bold text-sky-400">{astroData.luckyInfo?.god}</span></div>
+                <div><span className="text-slate-100 block text-[10px]">எண்</span><span className="font-bold text-rose-400">{astroData.luckyInfo?.num}</span></div>
+                <div><span className="text-slate-100 block text-[10px]">வண்ணம்</span><span className="font-bold text-amber-300">{astroData.luckyInfo?.color}</span></div>
+                <div><span className="text-slate-100 block text-[10px]">ரத்தினம்</span><span className="font-bold text-emerald-400">{astroData.luckyInfo?.stone}</span></div>
+                <div><span className="text-slate-100 block text-[10px]">தெய்வம்</span><span className="font-bold text-sky-400">{astroData.luckyInfo?.god}</span></div>
               </div>
             </div>
           </div>
@@ -1010,7 +1010,7 @@ export default function AstrologyModule({ profile }) {
                     {astroData?.doshaData?.manglikStatus ? astroData.doshaData.manglikStatus : "செவ்வாய் தோஷம் இல்லை (சாதகம்)"}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-slate-100 mt-1">
                   {astroData?.doshaData?.manglikDesc ? astroData.doshaData.manglikDesc : "லக்ன ரீதியாக செவ்வாய் சுப ஸ்தானத்தில் அமர்ந்துள்ளார்."}
                 </p>
               </div>
@@ -1022,7 +1022,7 @@ export default function AstrologyModule({ profile }) {
                     {astroData?.doshaData?.sarpaStatus ? astroData.doshaData.sarpaStatus : "தோஷம் இல்லை (சாதகம்)"}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-slate-100 mt-1">
                   {astroData?.doshaData?.sarpaDesc ? astroData.doshaData.sarpaDesc : "ராகு மற்றும் கேது சுப அனுகூல இடங்களில் சஞ்சரிக்கின்றனர்."}
                 </p>
               </div>
@@ -1035,7 +1035,7 @@ export default function AstrologyModule({ profile }) {
                 <span className="text-sm font-bold text-amber-400 flex items-center gap-2">
                   📊 சர்வாஷ்டகவர்க்க பரல்கள் (House Strengths)
                 </span>
-                <span className="text-[11px] text-slate-400 block mt-0.5">
+                <span className="text-[11px] text-slate-100 block mt-0.5">
                   12 ராசிகளின் பாவக பலம் (சராசரி பலம்: 28 பரல்கள் | மொத்தம்: 337)
                 </span>
               </div>
@@ -1083,7 +1083,7 @@ export default function AstrologyModule({ profile }) {
                     >
                       {item.points}
                     </span>
-                    <span className="text-[9px] text-slate-500">பரல்கள்</span>
+                    <span className="text-[9px] text-slate-200">பரல்கள்</span>
                   </div>
                 );
               })}
@@ -1095,18 +1095,18 @@ export default function AstrologyModule({ profile }) {
                 <div className="flex gap-2 bg-slate-800/80 p-1 rounded-xl">
                   <button 
                     onClick={() => setActiveTab('d1')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${activeTab === 'd1' ? 'bg-pink-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${activeTab === 'd1' ? 'bg-pink-600 text-white shadow' : 'text-slate-100 hover:text-slate-200'}`}
                   >
                     ராசி சக்கரம் (D1)
                   </button>
                   <button 
                     onClick={() => setActiveTab('d9')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${activeTab === 'd9' ? 'bg-pink-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${activeTab === 'd9' ? 'bg-pink-600 text-white shadow' : 'text-slate-100 hover:text-slate-200'}`}
                   >
                     நவாம்ச சக்கரம் (D9)
                   </button>
                 </div>
-                <span className="text-xs text-slate-400 hidden sm:inline">தென் இந்திய முறை</span>
+                <span className="text-xs text-slate-100 hidden sm:inline">தென் இந்திய முறை</span>
               </div>
 
               <div className="grid grid-cols-4 gap-1.5 aspect-square bg-slate-950/60 p-2 rounded-xl border border-slate-800">
@@ -1118,7 +1118,7 @@ export default function AstrologyModule({ profile }) {
                           <span className="text-sm font-bold text-amber-400">
                             {activeTab === 'd1' ? 'ராசி சக்கரம் (D1)' : 'நவாம்சம் (D9)'}
                           </span>
-                          <span className="text-xs text-slate-400 mt-1">{astroData.name}</span>
+                          <span className="text-xs text-slate-100 mt-1">{astroData.name}</span>
                         </div>
                       );
                     }
@@ -1130,7 +1130,7 @@ export default function AstrologyModule({ profile }) {
 
                   return (
                     <div key={idx} className="bg-slate-900/90 border border-slate-800 p-1.5 rounded-lg flex flex-col justify-between overflow-hidden">
-                      <span className="text-[10px] text-slate-500 font-semibold">{cell.label}</span>
+                      <span className="text-[10px] text-slate-200 font-semibold">{cell.label}</span>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {planetsInSign.map((p, pIdx) => (
                           <span key={pIdx} className={`text-[10px] font-bold px-1 rounded ${p.includes('லக்னம்') ? 'bg-rose-950 text-rose-300 border border-rose-800' : 'text-amber-200'}`}>
@@ -1149,7 +1149,7 @@ export default function AstrologyModule({ profile }) {
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-slate-800 text-slate-400 text-left">
+                    <tr className="border-b border-slate-800 text-slate-100 text-left">
                       <th className="pb-2">கிரகம்</th>
                       <th className="pb-2 text-center">ராசி</th>
                       <th className="pb-2 text-right">பாகை</th>
@@ -1177,13 +1177,13 @@ export default function AstrologyModule({ profile }) {
                 <div key={idx} className="p-3 rounded-xl border flex justify-between items-center bg-slate-800/40 border-slate-700/60">
                   <div>
                     <span className="font-bold text-slate-200 block">{t.lord} மகா தசை</span>
-                    <span className="text-[11px] text-slate-400">{t.start} - {t.end}</span>
+                    <span className="text-[11px] text-slate-100">{t.start} - {t.end}</span>
                   </div>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
                     t.status === 'நடப்பு தசை' 
                       ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' 
                       : t.status === 'கடந்த தசை' 
-                      ? 'bg-slate-800 text-slate-400' 
+                      ? 'bg-slate-800 text-slate-100' 
                       : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                   }`}>
                     {t.status}
@@ -1200,7 +1200,7 @@ export default function AstrologyModule({ profile }) {
                 <span className="text-sm font-bold text-amber-400 flex items-center gap-2">
                   🔢 எண் கணித ஆய்வு (Numerology Analysis)
                 </span>
-                <span className="text-[11px] text-slate-400 block mt-0.5">
+                <span className="text-[11px] text-slate-100 block mt-0.5">
                   சால்டியன் எண் கணித முறைப்படியான விதி எண் மற்றும் அதிர்ஷ்ட அமைப்புகள்
                 </span>
               </div>
@@ -1208,30 +1208,30 @@ export default function AstrologyModule({ profile }) {
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
               <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex flex-col items-center">
-                <span className="text-[11px] text-slate-400">பிறவி எண் (Root No)</span>
+                <span className="text-[11px] text-slate-100">பிறவி எண் (Root No)</span>
                 <span className="text-2xl font-black text-amber-300 mt-1">{astroData.numerologyData?.rootNumber || '-'}</span>
-                <span className="text-[10px] text-slate-500 mt-0.5">சுய ஆளுமை பலம்</span>
+                <span className="text-[10px] text-slate-200 mt-0.5">சுய ஆளுமை பலம்</span>
               </div>
 
               <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex flex-col items-center">
-                <span className="text-[11px] text-slate-400">விதி எண் (Destiny No)</span>
+                <span className="text-[11px] text-slate-100">விதி எண் (Destiny No)</span>
                 <span className="text-2xl font-black text-emerald-400 mt-1">{astroData.numerologyData?.destinyNumber || '-'}</span>
-                <span className="text-[10px] text-slate-500 mt-0.5">வாழ்க்கைப் பாதை</span>
+                <span className="text-[10px] text-slate-200 mt-0.5">வாழ்க்கைப் பாதை</span>
               </div>
 
               <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex flex-col items-center">
-                <span className="text-[11px] text-slate-400">பெயர் எண் (Name No)</span>
+                <span className="text-[11px] text-slate-100">பெயர் எண் (Name No)</span>
                 <span className="text-2xl font-black text-indigo-400 mt-1">{astroData.numerologyData?.nameNumber || '-'}</span>
-                <span className="text-[10px] text-slate-500 mt-0.5">பெயர் அதிர்வு பலம்</span>
+                <span className="text-[10px] text-slate-200 mt-0.5">பெயர் அதிர்வு பலம்</span>
               </div>
 
               <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex flex-col justify-center items-center text-[11px]">
                 <div className="text-slate-300">
-                  <span className="text-slate-400">அதிர்ஷ்ட கிழமை: </span>
+                  <span className="text-slate-100">அதிர்ஷ்ட கிழமை: </span>
                   <span className="text-emerald-400 font-bold">{astroData.numerologyData?.luckyDays}</span>
                 </div>
                 <div className="text-slate-300 mt-1">
-                  <span className="text-slate-400">உகந்த நிறம்: </span>
+                  <span className="text-slate-100">உகந்த நிறம்: </span>
                   <span className="text-amber-300 font-bold">{astroData.numerologyData?.luckyColors}</span>
                 </div>
             </div>
@@ -1247,7 +1247,7 @@ export default function AstrologyModule({ profile }) {
                 <h3 className="text-lg font-bold text-amber-400 flex items-center gap-2">
                   ✨ AI தனிப்பயன் ஜோதிட ஆலோசனை
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-100 mt-0.5">
                   உங்கள் உண்மையான லக்னம், தசா மற்றும் எண் கணிதப் பலன்களை ஆய்வு செய்து பதில் அளிக்கப்படும்.
                 </p>
               </div>
@@ -1277,7 +1277,7 @@ export default function AstrologyModule({ profile }) {
             <h4 className="text-sm font-bold text-amber-400 flex items-center gap-1.5">
               <span>📄</span> விரிவான ஜாதக PDF அறிக்கை
             </h4>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-slate-100">
               அனைத்து பாவக கணிதம், கிரக சஞ்சாரம் & பரிகாரங்கள் அடங்கிய முழு ஏடு
             </p>
           </div>
@@ -1345,7 +1345,7 @@ export default function AstrologyModule({ profile }) {
 
               {/* வழிகாட்டும் தலைப்புகள் / சிப்ஸ் (Quick Suggestions) */}
               <div className="flex flex-wrap gap-2 text-xs">
-                <span className="text-slate-400 py-1">பரிந்துரைகள்:</span>
+                <span className="text-slate-100 py-1">பரிந்துரைகள்:</span>
                 {[
           { label: "💼 தொழில் / பதவி உயர்வு", bhava: 10, q: "enakku eppo pathavi uyarvu kidaikkum" },
           { label: "💍 திருமண வரன் கூடும் காலம்", bhava: 7, q: "thirumana porutham eppo koodum" },
