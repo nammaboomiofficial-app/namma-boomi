@@ -7,7 +7,7 @@
   "uiLabels": {
     "badge": "நில அளவை மாற்றி",
     "title": "தமிழக நில அளவீட்டு கால்குலேட்டர்",
-    "subtitle": "சென்ட், சதுர அடி, கிரவுண்ட், ஏக்கர் மற்றும் குழி அளவீடுகள்"
+    "subtitle": "சென்ட், சதுர அடி, கிரவுண்ட், ஏக்கர் மற்றும் குழி, மா, காணி அளவீடுகள்"
   },
   "conversionRates": {
     "sqft": 1,
@@ -15,6 +15,9 @@
     "ground": 2400,
     "acre": 43560,
     "kuzhi": 144,
+    "maa": 14400,
+    "kaani": 57600,
+    "veli": 288000,
     "guntha": 1089,
     "hectare": 107639.1
   },
@@ -24,6 +27,9 @@
     { "key": "ground", "label": "கிரவுண்ட் (Ground)" },
     { "key": "acre", "label": "ஏக்கர் (Acre)" },
     { "key": "kuzhi", "label": "குழி (Kuzhi)" },
+    { "key": "maa", "label": "மா (Maa)" },
+    { "key": "kaani", "label": "காணி (Kaani)" },
+    { "key": "veli", "label": "வேலி (Veli)" },
     { "key": "guntha", "label": "குண்டா (Guntha)" },
     { "key": "hectare", "label": "ஹெக்டேர் (Hectare)" }
   ]
