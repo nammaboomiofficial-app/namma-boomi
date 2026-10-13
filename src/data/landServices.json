@@ -31,6 +31,23 @@
       "description": "நகராட்சி மற்றும் மாநகராட்சி எல்லைக்குட்பட்ட மனைகளின் டிஜிட்டல் பதிவு.",
       "link": "https://eservices.tn.gov.in/eservicesnew/land/chitta.html?lan=ta",
       "queryTemplate": "நகர நில ஆவணம் (TSLR) நகல் பெறுவதில் உதவி தேவைப்படுகிறது"
+    },
+    
+    {
+      "id": "guideline-value",
+      "title": "வழிகாட்டி மதிப்பு (Guideline Value)",
+      "category": "அரசு மதிப்பீடு",
+      "description": "பதிவுத்துறை போர்ட்டலில் நிலம் மற்றும் மனைகளின் அதிகாரப்பூர்வ அரசு வழிகாட்டி மதிப்பை அறிதல்.",
+      "link": "https://tnreginet.gov.in/portal/",
+      "queryTemplate": "நில வழிகாட்டி மதிப்பு மற்றும் சந்தை மதிப்பு அறிய உதவி தேவைப்படுகிறது"
+    },
+    {
+      "id": "patta-status",
+      "title": "பட்டா மாறுதல் மனு நிலை (Patta Status)",
+      "category": "மனு கண்காணிப்பு",
+      "description": "பட்டா பெயர் மாறுதலுக்கான இணையதள மனுவின் தற்போதைய கள ஆய்வு நிலையை அறிதல்.",
+      "link": "https://eservices.tn.gov.in/eservicesnew/land/chitta.html?lan=ta",
+      "queryTemplate": "பட்டா மாறுதல் விண்ணப்ப நிலையை அறிய உதவி தேவைப்படுகிறது"
     }
   ]
 }
