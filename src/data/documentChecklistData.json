@@ -34,6 +34,32 @@
         { "id": "bank_statement_1yr", "name": "12 மாத நடப்புக் கணக்கு அறிக்கை (Current A/c Statement)", "type": "Financial", "mandatory": true },
         { "id": "business_pan", "name": "நிறுவன பான் & ஆதார்", "type": "KYC", "mandatory": true }
       ]
+    },
+    
+    {
+      "id": "agri_loan",
+      "title": "விவசாயக் கடன் & கிசான் கிரெடிட் (Agri / KCC Loan)",
+      "badge": "விவசாயிகள் சிறப்பு",
+      "requiredDocs": [
+        { "id": "aadhaar_pan", "name": "விண்ணப்பதாரர் ஆதார் & பான் (KYC)", "type": "KYC", "mandatory": true },
+        { "id": "patta_chitta", "name": "நில உரிமை பட்டா & சிட்டா நகல்", "type": "Property", "mandatory": true },
+        { "id": "adangal_extract", "name": "கிராம நிர்வாக அலுவலர் (VAO) பயிர் சாகுபடி அடங்கல்", "type": "Property", "mandatory": true },
+        { "id": "kcc_card", "name": "கிசான் கிரெடிட் கார்டு / முந்தைய விவசாயக் கடன் ரசீது", "type": "Financial", "mandatory": false },
+        { "id": "bank_passbook", "name": "விவசாய சேமிப்பு வங்கிக் கணக்கு புத்தகம்", "type": "Financial", "mandatory": true }
+      ]
+    },
+    {
+      "id": "lap_property",
+      "title": "சொத்து அடமானக் கடன் (Loan Against Property - LAP)",
+      "badge": "உயர் நிதி வரம்பு",
+      "requiredDocs": [
+        { "id": "kyc_docs", "name": "ஆதார், பான் மற்றும் பாஸ்போர்ட் அளவு புகைப்படம்", "type": "KYC", "mandatory": true },
+        { "id": "parent_deed_all", "name": "முழுமையான மூலப் பத்திரம் மற்றும் முந்தைய ஆவணங்கள் (Parent Deeds)", "type": "Property", "mandatory": true },
+        { "id": "ec_30yrs", "name": "30 ஆண்டுகால வில்லங்கச் சான்றிதழ் (Nil EC)", "type": "Property", "mandatory": true },
+        { "id": "legal_opinion", "name": "வங்கி அங்கீகரிக்கப்பட்ட வழக்கறிஞர் சட்டக் கருத்து (Legal Opinion)", "type": "Legal", "mandatory": true },
+        { "id": "valuation_report", "name": "அங்கீகரிக்கப்பட்ட பொறியாளரின் சொத்து மதிப்பீட்டு அறிக்கை (Valuation)", "type": "Property", "mandatory": true },
+        { "id": "income_proof", "name": "3 ஆண்டுகால ITR மற்றும் 1 வருட வங்கிக் கணக்கு விவரம்", "type": "Income", "mandatory": true }
+      ]
     }
   ]
 }
