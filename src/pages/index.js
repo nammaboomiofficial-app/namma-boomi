@@ -423,9 +423,14 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-300 bg-slate-800/80 px-3.5 py-1.5 rounded-full border border-slate-700 flex items-center gap-1.5">
-              <span className="text-emerald-400 font-bold">●</span> அரசு ஆவண வழிகாட்டல் & சரிபார்ப்பு மையம்
-            </span>
+           <a
+  href="https://tnreginet.gov.in/portal/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-xs text-slate-300 bg-slate-800/80 hover:bg-slate-700 hover:text-white px-3.5 py-1.5 rounded-full border border-slate-700 transition cursor-pointer flex items-center gap-1.5"
+>
+  <span className="text-emerald-400 font-bold">•</span> அரசு ஆவண வழிகாட்டல் & சரிபார்ப்பு மையம்
+</a>
           </div>
         </div>
 
