@@ -1,0 +1,16 @@
+{
+  "name": "நம்ம பூமி 360",
+  "short_name": "NammaBhoomi360",
+  "description": "நில அளவீடு, நிலப் பரிவர்த்தனை மற்றும் அரசு ஆவண வழிகாட்டல்",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#059669",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
