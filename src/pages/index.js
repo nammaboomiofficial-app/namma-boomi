@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 const LandMap = dynamic(() => import('../components/LandMap'), {
   ssr: false,
@@ -461,6 +462,31 @@ export default function Home() {
         {/* நம்ம பூமி 360 - அல்ட்ரா பிரீமியம் சூப்பர் ஆப் ஹீரோ பிரிவு */}
         {currentModule === 'home' && (
           <div className="space-y-8">
+           {/* Fortune-500 ATS Resume Studio கார்டு */}
+        <div className="relative group bg-gradient-to-r from-slate-900 via-emerald-950/80 to-slate-900 border border-emerald-500/40 hover:border-emerald-400 rounded-2xl p-6 transition-all duration-300 shadow-xl mb-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold px-3 py-1 rounded-full mb-2">
+                <span>✨ Fortune-500 Standard</span>
+                <span>•</span>
+                <span>Harvard 1-Page ATS</span>
+              </div>
+              <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">
+                உலகத்தரம் வாய்ந்த ATS Resume Studio
+              </h3>
+              <p className="text-sm text-slate-200 font-medium max-w-2xl mt-1.5 leading-relaxed">
+                எந்தத் துறையைச் சேர்ந்தவராக இருந்தாலும் (IT, Finance, Sales, HR, Engineering), உங்கள் விவரங்களை முன்னணி நிறுவனங்கள் ஏற்கும் வகையில் ஒற்றைப் பக்க ரெஸ்யூமாக மாற்றுங்கள்.
+              </p>
+            </div>
+            
+            <Link
+              href="/resume"
+              className="inline-flex items-center gap-2 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-sm px-6 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
+            >
+              <span>ரெஸ்யூம் உருவாக்க →</span>
+            </Link>
+          </div>
+        </div>
            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950 via-green-900 to-emerald-950 border border-emerald-500/40 shadow-2xl p-6 md:p-8">
   {/* பின்னணி இயற்கை ஒளிவட்டம் */}
   <div className="absolute -top-28 -left-28 w-96 h-96 bg-emerald-500/25 rounded-full blur-3xl pointer-events-none"></div>
