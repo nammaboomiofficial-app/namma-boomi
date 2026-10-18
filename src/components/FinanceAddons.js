@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 import financeAddonsData from '../data/financeAddonsData.json';
 const { bankRates, docChecklist } = financeAddonsData;
+import { SITE_CONFIG } from '../config';
 
 export default function FinanceAddons() {
   const [activeChecklist, setActiveChecklist] = useState('plot');
-  const adminWhatsApp = '919962369131';
+  const adminWhatsApp = SITE_CONFIG.supportWhatsApp;
 
   const sendDocVerificationRequest = () => {
     const text = `வணக்கம் நம்ம பூமி 360! 📄\n\nநான் வங்கிக் கடனுக்காக நில / சொத்து ஆவணங்களைச் சரிபார்க்க விரும்புகிறேன்.\n\nதேர்ந்தெடுத்த பிரிவு: ${

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import courses from '../data/educationData.json';
+import { SITE_CONFIG } from '../config';
 
 
 
@@ -38,7 +39,7 @@ export default function EducationModule() {
 
     // வாட்ஸ்அப் நேரடி இணைப்பு
     const msg = encodeURIComponent(`வணக்கம் நம்ம பூமி 360! எனக்கு "${course}" கோர்ஸ் பற்றிய பாடத்திட்டம் (Syllabus) மற்றும் பயிற்சிக் கட்டண விவரங்கள் தேவை.\nஎன் எண்: ${studentPhone}`);
-    window.open(`https://wa.me/919962369131?text=${msg}`, '_blank');
+    window.open(`https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
     setSubmitted(true);
   };
 

@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 
 import businessData from '../data/businessData.json';
 const { BUSINESS_PRESETS } = businessData;
+import { SITE_CONFIG } from '../config';
 
 export default function BusinessModule({ setCurrentModule }) {
   const [selectedId, setSelectedId] = useState('cold_press_oil');
@@ -88,8 +89,7 @@ export default function BusinessModule({ setCurrentModule }) {
     }
 
     const msg = `வணக்கம் நம்ம பூமி 360! நான் புதிய தொழில் தொடங்க திட்ட அறிக்கை (Project Summary) கோருகிறேன்.\n\n👤 பெயர்: ${leadForm.name || '-'}\n📱 வாட்ஸ்அப்: ${leadForm.phone}\n📍 ஊர்: ${leadForm.location || '-'}\n🏗️ தொழில்: ${activePreset.title}\n💰 திட்ட மதிப்பு: ₹${calculations.totalCost.toLocaleString('en-IN')}\n🎁 எதிர்பார்க்கும் அரசு மானியம்: ₹${calculations.subsidyAmount.toLocaleString('en-IN')} (${calculations.subsidyPct}%)\n🏦 தேவைப்படும் வங்கி கடன்: ₹${calculations.bankLoan.toLocaleString('en-IN')}\n🏡 இட வசதி: ${leadForm.landAvailability}\n\nவங்கி ஒப்புதல் மற்றும் உத்யம் வழிகாட்டலைப் பகிரவும்.`;
-    const waUrl = `https://wa.me/919962369131?text=${encodeURIComponent(msg)}`;
-
+    const waUrl = `https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`;
     setTimeout(() => {
       setLoading(false);
       window.open(waUrl, '_blank');

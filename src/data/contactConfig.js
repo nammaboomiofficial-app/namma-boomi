@@ -1,5 +1,6 @@
+import { SITE_CONFIG } from '../config';
 // உங்கள் அதிகாரப்பூர்வ வாட்ஸ்அப் எண்
-export const OFFICIAL_WHATSAPP_NUMBER = '919962369131';
+export const OFFICIAL_WHATSAPP_NUMBER = SITE_CONFIG.supportWhatsApp;
 
 // வாட்ஸ்அப் இணைப்பு உருவாக்கும் பொதுவான ஃபங்ஷன்
 export const getWhatsAppLink = (message) => {

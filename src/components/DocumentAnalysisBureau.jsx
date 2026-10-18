@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { SITE_CONFIG } from '../config';
 
 export default function DocumentAnalysisBureau() {
   const [surveyType, setSurveyType] = useState('dgps');
-  const whatsappNumber = "919962369131"; // உங்கள் வாட்ஸ்அப் எண்
+  const whatsappNumber = SITE_CONFIG.supportWhatsApp;
 
   // பாப்-அப் மாடல் நிலவரங்கள் (State)
   const [activeModalService, setActiveModalService] = useState(null); // 'legal' அல்லது 'survey'

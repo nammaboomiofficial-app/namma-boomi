@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import spiritualData from '../data/spiritualData.json';
 const { TEMPLE_CIRCUITS, DOSHA_RADAR, KUMB_ITINERARY } = spiritualData;
-
+import { SITE_CONFIG } from '../config';
 
 
 export default function SpiritualModule({ setCurrentModule }) {
@@ -52,8 +52,7 @@ export default function SpiritualModule({ setCurrentModule }) {
     }
 
     const msg = `வணக்கம் நம்ம பூமி 360! நான் ஆன்மிக யாத்திரை & கோவில் தரிசன வழிகாட்டல் பெற விரும்புகிறேன்.\n\n👤 பெயர்: ${leadForm.name || '-'}\n📱 எண்: ${leadForm.phone}\n📍 மாவட்டம்: ${leadForm.district || '-'}\n🎯 தேவை: ${leadForm.need}\n👥 பயணிகள் எண்ணிக்கை: ${leadForm.members}\n📅 திட்டமிடும் தேதி: ${leadForm.date || 'உடனடி'}\n\nபூஜை நேரம், கார் வாடகை மற்றும் தங்கும் விடுதி விவரங்களை அனுப்பவும்.`;
-    const waUrl = `https://wa.me/919962369131?text=${encodeURIComponent(msg)}`;
-
+    const waUrl = `https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`;
     setTimeout(() => {
       setLoading(false);
       window.open(waUrl, '_blank');

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-
+import { SITE_CONFIG } from '../config';
 const LandMap = dynamic(() => import('../components/LandMap'), {
   ssr: false,
   loading: () => (
@@ -36,7 +36,7 @@ export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
     const msg = `வணக்கம் நம்ம பூமி 360, ${loanTitle} பெறுவதற்கான வழிகாட்டல் மற்றும் விண்ணப்ப உதவி தேவை.`;
-    window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
+   window.open(`https://api.whatsapp.com/send?phone=${SITE_CONFIG.supportWhatsApp}&text=${encodeURIComponent(msg)}`, '_blank');
   };
   // பிரதான 9 தூண்கள்
   const [currentModule, setCurrentModule] = useState('home');
@@ -624,7 +624,7 @@ export default function Home() {
                 </p>
               </div>
               <button
-                onClick={() => window.open('https://api.whatsapp.com/send?phone=919962369131&text=' + encodeURIComponent('வணக்கம் நம்ம பூமி 360, நான் உங்களுடன் பார்ட்னராக இணைய விரும்புகிறேன்.'), '_blank')}
+                onClick={() => window.open(`https://api.whatsapp.com/send?phone=${SITE_CONFIG.supportWhatsApp}&text=` + encodeURIComponent('வணக்கம் நம்ம 360, நான் நில உரிமையாளராக இணைய விரும்புகிறேன்'), '_blank')}
                 className="whitespace-nowrap px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center gap-2 border border-emerald-400/30"
               >
                 <span>வாட்ஸ்அப் மூலம் இணைய</span>
@@ -1095,8 +1095,7 @@ export default function Home() {
                         `⏳ *தேர்ந்தெடுத்த காலம்:* ${loanTenure || 10} ஆண்டுகள்\n` +
                         `📊 *மாதத் தவணை (EMI):* ₹${emi.toLocaleString('en-IN')} / மாதம்\n\n` +
                         `✅ எனக்கு இந்த நிலத்திற்கான வங்கி கடன் ஒப்புதல் செயல்முறைக்கு வழிகாட்டவும்.`;
-                      window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(message)}`, '_blank');
-                      setSelectedLoanLand(null);
+                     window.open(`https://api.whatsapp.com/send?phone=${SITE_CONFIG.supportWhatsApp}&text=${encodeURIComponent(message)}`, '_blank');
                     }}
                     className="w-full py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer active:scale-95 transition bg-emerald-600 hover:bg-emerald-500 text-slate-950 mt-1"
                   >
@@ -1118,7 +1117,7 @@ export default function Home() {
                             `🔢 *சர்வே எண்:* ${selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'}\n` +
                             `💰 *ஆய்வுக் கட்டணம்:* ₹1,999\n\n` +
                             `✅ இந்த நிலத்திற்கான தாய் பத்திரங்களை ஆய்வு செய்து 48 மணிநேர சட்ட சான்றிதழ் வழிகாட்டல் தர வேண்டுகிறேன்.`;
-                          window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
+                          window.open(`https://api.whatsapp.com/send?phone=${SITE_CONFIG.supportWhatsApp}&text=${encodeURIComponent(msg)}`, '_blank');
                           setSelectedLoanLand(null);
                         }}
                         className="p-2 bg-slate-800 hover:bg-slate-700/80 border border-cyan-500/30 rounded-lg text-left text-cyan-300 transition"
@@ -1135,7 +1134,7 @@ export default function Home() {
                             `🔢 *சர்வே எண்:* ${selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'}\n` +
                             `🛰️ *வகை:* சாட்லைட் DGPS / எல்லை நிர்ணயம்\n\n` +
                             `✅ இந்த நிலத்தை அளவீடு செய்ய சர்வேயர் வழிகாட்டல் தர வேண்டுகிறேன்.`;
-                          window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
+                          window.open(`https://api.whatsapp.com/send?phone=${SITE_CONFIG.supportWhatsApp}&text=${encodeURIComponent(msg)}`, '_blank');
                           setSelectedLoanLand(null);
                         }}
                         className="p-2 bg-slate-800 hover:bg-slate-700/80 border border-emerald-500/30 rounded-lg text-left text-emerald-300 transition"
@@ -1519,7 +1518,7 @@ export default function Home() {
                       type="button"
                       onClick={() => {
                         const msg = 'வணக்கம் நம்ம பூமி 360, எனது நில ஆவணங்களை A to Z தணிக்கை (Legal Audit) செய்ய விரும்புகிறேன். வழிகாட்டவும்.';
-                        window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${encodeURIComponent(msg)}`, '_blank');
+                        window.open(`https://api.whatsapp.com/send?phone=${SITE_CONFIG.supportWhatsApp}&text=${encodeURIComponent(msg)}`, '_blank');
                       }}
                       className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 whitespace-nowrap active:scale-95 transition-all"
                     >
@@ -2329,7 +2328,7 @@ export default function Home() {
                     tabIndex={0}
                     onClick={() => {
                       const msg = encodeURIComponent(`வணக்கம்! நான் இந்த இடத்தை நேரில் பார்க்க (Site Visit) விரும்புகிறேன்: ${selectedLandDetail.title} (சர்வே எண்: ${selectedLandDetail.surveyNo || ''})`);
-                      window.open(`https://wa.me/919962369131?text=${msg}`, '_blank');
+                      window.open(`https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
                     }}
                     className="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer active:scale-95"
                     style={{ backgroundColor: '#059669', color: '#ffffff' }}
@@ -2461,7 +2460,7 @@ export default function Home() {
                     `🗺️ *மேப் லொகேஷன்:* ${mapLink}%0A%0A` +
                     `✅ இந்த விசிட் பாஸ் மூலம் நேரடி களப்பார்வை மேற்கொள்ள அனுமதி கோரப்படுகிறது.`;
 
-                  window.open(`https://api.whatsapp.com/send?phone=919962369131&text=${message}`, '_blank');
+                  window.open(`https://api.whatsapp.com/send?phone=${SITE_CONFIG.supportWhatsApp}&text=${encodeURIComponent(message)}`, '_blank');
                   setSelectedVisitPassLand(null);
                   setVisitorPhone('');
                   if (typeof setVisitorName === 'function') setVisitorName('');

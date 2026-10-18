@@ -510,7 +510,7 @@ export default function AstrologyModule({ profile }) {
         F: 8, P: 8
       };
       
-      const cleanName = (birthDetails.name || 'udayakumar').toUpperCase().replace(/[^A-Z]/g, '');
+      const cleanName = (birthDetails.name || 'USER').toUpperCase().replace(/[^A-Z]/g, '');
       let nameTotal = 0;
       for (let char of cleanName) {
         nameTotal += chaldeanMap[char] || 0;

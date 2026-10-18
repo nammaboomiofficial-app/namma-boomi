@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import wholesaleData from '../data/wholesaleData.json';
-
+import { SITE_CONFIG } from '../config';
 const { farmLots: FARM_LOTS, groceryMills: GROCERY_MILLS, buyerRequirements: BUYER_REQUIREMENTS } = wholesaleData;
 
 export default function WholesaleModule({ setCurrentModule }) {
@@ -67,7 +67,7 @@ export default function WholesaleModule({ setCurrentModule }) {
     }
 
     const msg = `வணக்கம் நம்ம பூமி 360! நான் B2B மொத்த வர்த்தக மையத்தில் இணைய விரும்புகிறேன்.\n\n👤 பெயர்: ${leadForm.name || '-'}\n📱 எண்: ${leadForm.phone}\n📍 மாவட்டம்: ${leadForm.district || '-'}\n🎯 நோக்கம்: ${leadForm.intent}\n📦 தேவை/விற்பனை விவரம்: ${leadForm.details}\n\nவிலைப்பட்டியல், தர்மகாண்டா எடை சரிபார்ப்பு மற்றும் மாதிரி பார்சல் (Sample Bag) விவரங்களை அனுப்பவும்.`;
-    const waUrl = `https://wa.me/919962369131?text=${encodeURIComponent(msg)}`;
+    const waUrl = `https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`;
 
     setTimeout(() => {
       setLoading(false);

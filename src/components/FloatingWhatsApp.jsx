@@ -1,7 +1,7 @@
 import React from 'react';
-
+import { SITE_CONFIG } from '../config';
 export default function FloatingWhatsApp() {
-  const whatsappNumber = "919962369131";
+  const whatsappNumber = SITE_CONFIG.supportWhatsApp;
   const defaultMessage = "வணக்கம் நம்ம பூமி 360, தளத்தில் உள்ள நிலங்கள் மற்றும் ஆவண சேவைகள் பற்றி பேச விரும்புகிறேன்.";
 
   const handleClick = () => {

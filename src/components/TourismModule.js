@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import circuitsData from '../data/circuitsData.json';
 import districtsDirectory from '../data/districtsData.json';
+import { SITE_CONFIG } from '../config';
 export default function TourismModule({ setCurrentModule }) {
   const [activeTab, setActiveTab] = useState('highway'); // நேரடி பார்வைக்காக 'highway' டேப்
   const [selectedCircuit, setSelectedCircuit] = useState('navagraha');
@@ -543,7 +544,7 @@ export default function TourismModule({ setCurrentModule }) {
 
         <div>
           <a
-            href="https://wa.me/919962369131?text=வணக்கம்,%20நம்ம%20பூமி%20சுற்றுலா%20தளத்தில்%20எங்கள்%20ஹோட்டல்%20/%20வாகனங்களை%20இணைக்க%20விரும்புகிறோம்."
+           href={`https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D%20%E0%AE%A8%E0%AE%AE%E0%AF%8D%E0%AE%AE%20%E0%AE%AA%E0%AF%82%E0%AE%AE%E0%AE%BF%20360%20%E0%AE%9A%E0%AF%81%E0%AE%B1%E0%AF%8D%E0%AE%B1%E0%AF%81%E0%AE%B2%E0%AE%BE%20%E0%AE%86%E0%AE%B2%E0%AF%8B%E0%AE%9A%E0%AE%A9%E0%AF%88%20%E0%AE%A4%E0%AF%87%E0%AE%B5%E0%AF%88`}
             target="_blank"
             rel="noopener noreferrer"
             style={{

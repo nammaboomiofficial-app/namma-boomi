@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 
 import agriData from '../data/agriData.json';
 const { AGRI_MODELS, TIMBER_MODELS } = agriData;
+import { SITE_CONFIG } from '../config';
 
 export default function AgriModule({ setCurrentModule }) {
   const [activeTab, setActiveTab] = useState('crop_roi'); // 'crop_roi', 'soil_water', 'timber', 'subsidies'
@@ -105,8 +106,7 @@ export default function AgriModule({ setCurrentModule }) {
     }
 
     const msg = `வணக்கம் நம்ம பூமி 360! நான் நவீன வேளாண் & பண்ணை ஆலோசனை கோருகிறேன்.\n\n👤 பெயர்: ${leadForm.name || '-'}\n📱 எண்: ${leadForm.phone}\n📍 மாவட்டம்: ${leadForm.district || '-'}\n🌾 தேர்ந்தெடுத்த பயிர்: ${activeCrop.title}\n📐 நில அளவு: ${landAcres} ஏக்கர்\n💧 மண் & TDS: ${soilType} | TDS ${waterTds}\n🎁 சொட்டுநீர் மானிய எதிர்பார்ப்பு: ${dripSubsidy.subsidyPct}% அரசு மானியம்\n📌 சேவை தேவை: ${leadForm.serviceNeed}\n\nஅரசு மானிய வழிகாட்டல் மற்றும் கள திட்ட அறிக்கையைப் பகிரவும்.`;
-    const waUrl = `https://wa.me/919962369131?text=${encodeURIComponent(msg)}`;
-
+    const waUrl = `https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`;
     setTimeout(() => {
       setLoading(false);
       window.open(waUrl, '_blank');

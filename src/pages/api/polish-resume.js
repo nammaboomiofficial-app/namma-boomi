@@ -15,42 +15,40 @@ export default async function handler(req, res) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // தற்போது நிலையான அதிகாரப்பூர்வ மாடல்
-    const model = genAI.getGenerativeModel({ 
+    const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       generationConfig: { responseMimeType: "application/json" }
     });
 
     const prompt = `
 You are an expert ATS Resume Writer.
-Rewrite, translate Tanglish/Tamil inputs into flawless, high-impact corporate English, and fix all grammatical and spelling errors.
+Rewrite, translate Tanglish/Tamil inputs into flawless, high-impact corporate English.
 
 User Input:
 ${JSON.stringify(resumeData)}
 
 Return ONLY valid JSON matching this exact structure:
 {
-  "fullName": "${resumeData.fullName || 'Candidate Name'}",
-  "jobTitle": "${resumeData.jobTitle || 'Branch Operations Manager'}",
-  "email": "${resumeData.email || ''}",
-  "phone": "${resumeData.phone || ''}",
-  "location": "${resumeData.location || ''}",
-  "summary": "Dynamic, results-driven professional with 16+ years of extensive experience in microfinance and branch management. Proven track record in achieving branch disbursement targets, optimizing loan recovery collections, and leading high-performing field teams with a proactive and solution-oriented mindset.",
-  "skills": "Branch Operations Management, Loan Disbursement & Recovery, Portfolio Quality, Team Leadership, Risk Assessment, Customer Relationship Management",
+  "fullName": "${resumeData?.fullName || 'Full Name'}",
+  "jobTitle": "${resumeData?.jobTitle || 'Professional Title'}",
+  "email": "${resumeData?.email || ''}",
+  "phone": "${resumeData?.phone || ''}",
+  "location": "${resumeData?.location || ''}",
+  "summary": "Professional summary highlighting key achievements, core skills, and value proposition.",
+  "skills": "Key Skill 1, Key Skill 2, Key Skill 3, Core Competency",
   "experience": [
     {
-      "role": "Branch Manager",
-      "company": "${resumeData.experience?.[0]?.company || 'Microfinance Institution'}",
-      "period": "${resumeData.experience?.[0]?.period || '2010 - Present'}",
-      "desc": "• Spearheading complete branch operations, managing end-to-end loan disbursement and portfolio management.\\n• Consistently achieving monthly and annual business targets while maintaining strict collection follow-up and zero-tolerance delinquency.\\n• Mentoring and driving a field executive team to ensure regulatory compliance and customer satisfaction."
+      "role": "Job Role / Title",
+      "company": "Company Name",
+      "period": "Start Year - End Year",
+      "desc": "Key responsibility or achievement highlighting measurable impact."
     }
   ],
   "education": [
     {
-      "degree": "Bachelor of Science in Chemistry (B.Sc)",
-      "institution": "Pachaiyappa's College, Chennai",
-      "year": "2001"
+      "degree": "Degree / Certification",
+      "institution": "University / College Name",
+      "year": "Graduation Year"
     }
   ]
 }
@@ -65,26 +63,40 @@ Return ONLY valid JSON matching this exact structure:
   } catch (error) {
     console.error("Gemini API Call Error:", error);
 
-    // ஒருவேளை ஏதேனும் நெட்வொர்க் அல்லது API மாடல் பிழை வந்தால், பயனருக்குத் தடை ஏற்படாமல் தானாகவே சுத்தமான ஆங்கிலத்தில் மாற்றும் ஸ்மார்ட் ஃபால்பேக்:
+    // நெட்வொர்க் அல்லது API பிழை வந்தால் பாதுகாப்பான பொதுவான பேக்கப் டேட்டா
     const fallbackData = {
       ...resumeData,
-      fullName: resumeData.fullName ? resumeData.fullName.toUpperCase() : "UDAYAKUMAR S",
-      jobTitle: "Branch Manager - Microfinance Operations",
-      location: resumeData.location || "Kanchipuram, Tamil Nadu",
-      summary: "Dynamic, results-driven professional with over 16 years of hands-on experience in microfinance and branch management. Proven expertise in consistently surpassing disbursement and collection targets, minimizing portfolio risk, and leading high-performance field teams with a proactive mindset.",
-      skills: "Microfinance Operations, Portfolio Risk Management, Loan Disbursement, Recovery & Collections, Team Leadership, Customer Due Diligence",
-      experience: resumeData.experience.map((exp) => ({
+      fullName: resumeData?.fullName ? resumeData.fullName.toUpperCase() : "APPLICANT NAME",
+      jobTitle: resumeData?.jobTitle || "Professional",
+      location: resumeData?.location || "Tamil Nadu, India",
+      summary: "Results-driven professional with proven experience, dedicated to operational excellence and organizational growth.",
+      skills: "Operations Management, Team Leadership, Process Optimization, Strategic Planning",
+      experience: resumeData?.experience?.length ? resumeData.experience.map((exp) => ({
         ...exp,
-        role: exp.role || "Branch Manager",
-        company: exp.company || "Microfinance Company",
-        desc: "• Spearheading end-to-end branch operations, driving retail microfinance loan disbursements and maintaining portfolio health.\n• Consistently achieving institutional targets through robust collection strategies and proactive customer engagement.\n• Leading and mentoring field operations teams to maintain compliance and operational excellence."
-      })),
-      education: resumeData.education.map((edu) => ({
+        role: exp.role || "Specialist / Lead",
+        company: exp.company || "Enterprise Solutions",
+        period: exp.period || "Past Experience",
+        desc: exp.desc || "Handled core operational responsibilities, improved workflow efficiency, and collaborated across teams."
+      })) : [
+        {
+          role: "Professional",
+          company: "Enterprise Solutions",
+          period: "Recent",
+          desc: "Handled key operational tasks and contributed to business growth."
+        }
+      ],
+      education: resumeData?.education?.length ? resumeData.education.map((edu) => ({
         ...edu,
-        degree: "Bachelor of Science in Chemistry (B.Sc)",
-        institution: "Pachaiyappa's College, Chennai",
-        year: edu.year || "2001"
-      }))
+        degree: edu.degree || "Bachelor's Degree",
+        institution: edu.institution || "Recognized Institution",
+        year: edu.year || "Completed"
+      })) : [
+        {
+          degree: "Bachelor's Degree",
+          institution: "Recognized Institution",
+          year: "Completed"
+        }
+      ]
     };
 
     return res.status(200).json({ data: fallbackData });
