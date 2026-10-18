@@ -15,6 +15,7 @@ export default function ResumeBuilder() {
     certifications: '',
     languages: '',
     experience: [{ role: '', company: '', period: '', desc: '' }],
+    projects: [{ title: '', role: '', techStack: '', desc: '' }],
     education: [{ degree: '', institution: '', year: '' }]
   });
 
@@ -92,6 +93,27 @@ export default function ResumeBuilder() {
     setResumeData({
       ...resumeData,
       education: resumeData.education.filter((_, i) => i !== index)
+    });
+  };
+  const handleProjectChange = (index, field, value) => {
+    const updated = [...resumeData.projects];
+    updated[index][field] = value;
+    setResumeData({ ...resumeData, projects: updated });
+  };
+
+  const addProject = () => {
+    if (resumeData.projects.length < 3) {
+      setResumeData({
+        ...resumeData,
+        projects: [...resumeData.projects, { title: '', role: '', techStack: '', desc: '' }]
+      });
+    }
+  };
+
+  const removeProject = (index) => {
+    setResumeData({
+      ...resumeData,
+      projects: resumeData.projects.filter((_, i) => i !== index)
     });
   };
 
@@ -713,6 +735,78 @@ export default function ResumeBuilder() {
                 </div>
               ))}
             </div>
+            {/* திட்டங்கள் / Projects உள்ளீட்டுப் படிவம் */}
+        <div className="mt-4 pt-4 border-t border-slate-700/60">
+          <div className="flex justify-between items-center mb-3">
+            <label className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+              திட்டங்கள் (Key Projects)
+            </label>
+            <button
+              type="button"
+              onClick={addProject}
+              className="text-xs bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-600/50 px-2.5 py-1 rounded transition-colors"
+            >
+              + திட்டம் சேர்க்க
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {resumeData.projects && resumeData.projects.map((proj, idx) => (
+              <div key={idx} className="bg-slate-900/80 p-3.5 rounded-lg border border-slate-700/80 space-y-2.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-semibold text-slate-400">திட்டம் #{idx + 1}</span>
+                  {resumeData.projects.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeProject(idx)}
+                      className="text-rose-400 hover:text-rose-300 text-xs transition-colors"
+                    >
+                      நீக்கு
+                    </button>
+                  )}
+                </div>
+
+                <div>
+                  <input
+                    type="text"
+                    placeholder="திட்டப் பெயர் (எ.கா: நம்ம பூமி 360 போர்ட்டல்)"
+                    value={proj.title}
+                    onChange={(e) => handleProjectChange(idx, 'title', e.target.value)}
+                    className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    placeholder="பங்கு (எ.கா: Lead Developer / Manager)"
+                    value={proj.role}
+                    onChange={(e) => handleProjectChange(idx, 'role', e.target.value)}
+                    className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="தொழில்நுட்பங்கள் (எ.கா: React, SQL, Power BI)"
+                    value={proj.techStack}
+                    onChange={(e) => handleProjectChange(idx, 'techStack', e.target.value)}
+                    className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+
+                <div>
+                  <textarea
+                    placeholder="திட்டத்தின் சிறப்பம்சங்கள் / முக்கிய சாதனைகள்"
+                    value={proj.desc}
+                    rows={2}
+                    onChange={(e) => handleProjectChange(idx, 'desc', e.target.value)}
+                    className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
             {/* Skills */}
             <div className="pt-2 border-t border-slate-700">
@@ -914,6 +1008,41 @@ export default function ResumeBuilder() {
                   </div>
                 </div>
               )}
+              {/* Projects / திட்டங்கள் பிரிவு - முழுவதும் டைனமிக் */}
+          {resumeData.projects && resumeData.projects.some(p => p.title && p.title.trim() !== '') && (
+            <div className="mb-3">
+              <h2 className={`text-[11px] font-bold uppercase tracking-wider text-slate-900 border-b pb-0.5 mb-1.5 ${
+                selectedTemplate === 'harvard' ? 'border-slate-900' : 'border-emerald-600 text-emerald-800'
+              }`}>
+                Key Projects
+              </h2>
+              <div className="space-y-2">
+                {resumeData.projects.map((proj, idx) => {
+                  if (!proj.title || !proj.title.trim()) return null;
+                  return (
+                    <div key={idx} className="text-slate-800">
+                      <div className="flex justify-between items-baseline">
+                        <span className="text-[10.5px] font-bold text-slate-900">
+                          {proj.title}
+                          {proj.role && <span className="font-semibold text-slate-700"> | {proj.role}</span>}
+                        </span>
+                        {proj.techStack && (
+                          <span className="text-[10px] font-semibold text-emerald-700">
+                            {proj.techStack}
+                          </span>
+                        )}
+                      </div>
+                      {proj.desc && (
+                        <p className="text-[10px] text-slate-700 leading-relaxed mt-0.5 whitespace-pre-line">
+                          {proj.desc}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
               {/* Core Skills */}
               {resumeData.skills && (
