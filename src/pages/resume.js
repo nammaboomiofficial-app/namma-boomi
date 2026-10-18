@@ -1,6 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+// வார்த்தைகளின் முதல் எழுத்தை Capital எழுத்தாக மாற்ற (Title Case)
+const toTitleCase = (str) => {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+// வாக்கியத்தின் முதல் எழுத்தை Capital ஆக்கி, இறுதியில் புள்ளி வைக்க (Sentence Case)
+const formatSentence = (str) => {
+  if (!str) return '';
+  const trimmed = str.trim();
+  const capitalized = trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+  return capitalized.endsWith('.') ? capitalized : capitalized + '.';
+};
 
 export default function ResumeBuilder() {
   const [resumeData, setResumeData] = useState({
@@ -1025,18 +1042,18 @@ export default function ResumeBuilder() {
                     <div key={idx} className="text-slate-800">
                       <div className="flex justify-between items-baseline">
                         <span className="text-[10.5px] font-bold text-slate-900">
-                          {proj.title}
-                          {proj.role && <span className="font-semibold text-slate-700"> | {proj.role}</span>}
+                          {toTitleCase(proj.title)}
+                          {proj.role && <span className="font-semibold text-slate-700"> | {toTitleCase(proj.role)}</span>}
                         </span>
                         {proj.techStack && (
                           <span className="text-[10px] font-semibold text-emerald-700">
-                            {proj.techStack}
+                           {toTitleCase(proj.techStack)}
                           </span>
                         )}
                       </div>
                       {proj.desc && (
                         <p className="text-[10px] text-slate-700 leading-relaxed mt-0.5 whitespace-pre-line">
-                          {proj.desc}
+                          {formatSentence(proj.desc)}
                         </p>
                       )}
                     </div>
