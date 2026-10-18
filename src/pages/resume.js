@@ -21,6 +21,13 @@ export default function ResumeBuilder() {
   const [showAchievements, setShowAchievements] = useState(false);
   const [showCertifications, setShowCertifications] = useState(false);
   const [showLanguages, setShowLanguages] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState('harvard');
+  const handleResetForm = () => {
+    if (window.confirm("படிவத்தில் உள்ள அனைத்து விவரங்களையும் அழித்து புதிய ரெஸ்யூம் உருவாக்க விரும்புகிறீர்களா?")) {
+      localStorage.removeItem('nb360_resume_data');
+      window.location.reload();
+    }
+  };
   // தகவல்களை தானாக மீட்டெடுத்தல் (Load saved data on start)
   useEffect(() => {
     try {
@@ -453,6 +460,40 @@ export default function ResumeBuilder() {
             >
               🖨️ PDF ஆக பதிவிறக்குக (Harvard ATS PDF)
             </button>
+            {/* Template Switcher */}
+              <div className="flex items-center bg-slate-900 border border-slate-700 rounded-lg p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setSelectedTemplate('harvard')}
+                  className={`px-2.5 py-1 text-xs rounded transition-all ${
+                    selectedTemplate === 'harvard'
+                      ? 'bg-emerald-500 text-slate-950 font-bold'
+                      : 'text-slate-300 hover:text-white'
+                  }`}
+                >
+                  Harvard
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedTemplate('modern')}
+                  className={`px-2.5 py-1 text-xs rounded transition-all ${
+                    selectedTemplate === 'modern'
+                      ? 'bg-emerald-500 text-slate-950 font-bold'
+                      : 'text-slate-300 hover:text-white'
+                  }`}
+                >
+                  Modern
+                </button>
+              </div>
+
+              {/* Reset Form Button */}
+              <button
+                type="button"
+                onClick={handleResetForm}
+                className="px-2.5 py-1 text-xs font-semibold text-rose-300 hover:text-rose-100 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 rounded-lg transition-all"
+              >
+                Reset
+              </button>
             <Link href="/" className="text-xs text-slate-400 hover:text-white transition">
               ← முகப்பு
             </Link>
@@ -762,12 +803,18 @@ export default function ResumeBuilder() {
           <div className="lg:col-span-7 print:w-full print:m-0 print:p-0">
             <div
               id="resume-sheet"
-              className="bg-white text-slate-900 rounded-xl shadow-2xl p-7 sm:p-9 font-sans border border-slate-200"
+              className={`bg-white text-slate-900 rounded-xl shadow-2xl p-7 sm:p-9 border border-slate-200 transition-all ${
+  selectedTemplate === 'harvard' ? 'font-serif' : 'font-sans'
+}`}
             >
               
               {/* Header */}
               {(resumeData.fullName || resumeData.jobTitle) && (
-                <div className="border-b-2 border-slate-900 pb-2 mb-3.5 text-center">
+                <div className={`pb-2 mb-3.5 transition-all ${
+  selectedTemplate === 'harvard'
+    ? 'border-b-2 border-slate-900 text-center'
+    : 'border-b-4 border-emerald-600 text-left'
+}`}>
                   <h1 className="text-xl sm:text-2xl font-extrabold tracking-wide text-slate-900 uppercase">
                     {resumeData.fullName}
                   </h1>
