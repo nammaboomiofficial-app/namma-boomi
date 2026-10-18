@@ -964,7 +964,7 @@ export default function Home() {
                             <button
                               onClick={() =>
                                 shareOnWhatsApp(
-                                  `🏡 நம்ம பூமி 360 நிலப் பரிந்துரை:\n${land.title}\n📍 இடம்: ${land.village} (சர்வே #${land.surveyNo})\n💰 விலை: ${land.askingPrice}\nபார்க்க: http://localhost:3000`
+                                  `🏡 நம்ம பூமி 360 நிலப் பரிந்துரை:\n${land.title}\n📍 இடம்: ${land.village} (சர்வே #${land.surveyNo})\n💰 விலை: ${land.askingPrice}\nபார்க்க: ${typeof window !== 'undefined' ? window.location.origin : ''}`
                                 )
                               }
                               className="bg-emerald-950/80 hover:bg-emerald-900 text-emerald-400 text-[11px] font-bold px-2 py-1.5 rounded-lg border border-emerald-800/80 transition flex items-center gap-1"

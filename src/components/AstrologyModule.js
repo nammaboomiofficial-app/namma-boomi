@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import BirthdayCalendar from './BirthdayCalendar';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { SITE_CONFIG } from '../config';
 export default function AstrologyModule({ profile }) {
   const [birthDetails, setBirthDetails] = useState({
     name: profile?.name || '',
@@ -26,7 +27,7 @@ export default function AstrologyModule({ profile }) {
   const [showPayModal, setShowPayModal] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
   const [reportPrice] = useState(49); // அறிக்கை கட்டணம் ₹49
-  const [merchantUpi] = useState('sathiyard@oksbi'); // உங்கள் UPI ஐடியை இங்கே இடவும்
+  const [merchantUpi] = useState(SITE_CONFIG.merchantUpi);
 // UPI கட்டண திட்டங்கள் & வாலட் மேலாண்மை
   const [selectedPlan, setSelectedPlan] = useState(null);
 
@@ -937,7 +938,7 @@ export default function AstrologyModule({ profile }) {
             <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-center mb-3">
               <div className="bg-white p-2 rounded-lg inline-block mb-1.5 shadow">
                 <img 
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi://pay?pa=${merchantUpi || 'sathiyard@oksbi'}&pn=NammaBoomi&am=${selectedPlan?.price || 25}&cu=INR`} 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi://pay?pa=${merchantUpi || SITE_CONFIG.merchantUpi}&pn=NammaBoomi&am=${selectedPlan?.price || 25}&cu=INR`} 
                   alt="UPI QR Code" 
                   className="w-28 h-28 mx-auto"
                 />
