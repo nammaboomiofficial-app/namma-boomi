@@ -102,18 +102,20 @@ export default function ResumeBuilder() {
   };
 
   const addProject = () => {
-    if (resumeData.projects.length < 3) {
+    const currentProjects = resumeData.projects || [];
+    if (currentProjects.length < 3) {
       setResumeData({
         ...resumeData,
-        projects: [...resumeData.projects, { title: '', role: '', techStack: '', desc: '' }]
+        projects: [...currentProjects, { title: '', role: '', techStack: '', desc: '' }]
       });
     }
   };
 
   const removeProject = (index) => {
+    const currentProjects = resumeData.projects || [];
     setResumeData({
       ...resumeData,
-      projects: resumeData.projects.filter((_, i) => i !== index)
+      projects: currentProjects.filter((_, i) => i !== index)
     });
   };
 
