@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+
 // வார்த்தைகளின் முதல் எழுத்தை Capital எழுத்தாக மாற்ற (Title Case)
 const toTitleCase = (str) => {
   if (!str) return '';
@@ -40,12 +41,14 @@ export default function ResumeBuilder() {
   const [showCertifications, setShowCertifications] = useState(false);
   const [showLanguages, setShowLanguages] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState('harvard');
+
   const handleResetForm = () => {
     if (window.confirm("படிவத்தில் உள்ள அனைத்து விவரங்களையும் அழித்து புதிய ரெஸ்யூம் உருவாக்க விரும்புகிறீர்களா?")) {
       localStorage.removeItem('nb360_resume_data');
       window.location.reload();
     }
   };
+
   // தகவல்களை தானாக மீட்டெடுத்தல் (Load saved data on start)
   useEffect(() => {
     try {
@@ -112,6 +115,7 @@ export default function ResumeBuilder() {
       education: resumeData.education.filter((_, i) => i !== index)
     });
   };
+
   const handleProjectChange = (index, field, value) => {
     const updated = [...resumeData.projects];
     updated[index][field] = value;
@@ -138,10 +142,8 @@ export default function ResumeBuilder() {
 
   // ==========================================
   // யுனிவர்சல் பொதுவான ATS டிரான்ஸ்பார்மேஷன் என்ஜின்
-  // (IT, Finance, Sales, HR, Engineering, Admin etc.)
   // ==========================================
   const handleCompleteWorldClassPolish = () => {
-    // 1. உலகளாவிய பொதுவான டைட்டில் கேஸ் & எழுத்துப் பிழை திருத்தி
     const titleCase = (str) => {
       if (!str) return '';
       return str
@@ -165,7 +167,6 @@ export default function ResumeBuilder() {
         .replace(/\bmanagment\b/gi, 'Management');
     };
 
-    // 2. யுனிவர்சல் புல்லட் பாயிண்ட் என்ஜின் (எந்தத் துறையின் வார்த்தைகளையும் கார்ப்பரேட் ஆக்ஷன் வெர்பாக மாற்றும்)
     const polishUniversalBullets = (desc) => {
       if (!desc) return '';
       const lines = desc
@@ -174,12 +175,10 @@ export default function ResumeBuilder() {
         .filter(Boolean);
 
       const universalActionRules = [
-        // சாப்ட்வேர் / ஐடி / தொழில்நுட்பம் (Software, IT, Dev, Code, Data)
         {
           regex: /(code|program|develop|software|build|frontend|backend|fullstack|api|cloud|app|web|database)/i,
           action: 'Architected and implemented end-to-end scalable solutions, driving optimal system reliability, security, and peak performance.'
         },
-        // நிதி / வங்கி / லோன் / அக்கவுண்ட்ஸ் (Finance, Accounts, Banking, Audit)
         {
           regex: /(loan|disbur|credit|disburs|sanction|kadan|finance|banking|fund)/i,
           action: 'Streamlined credit underwriting protocols and disbursement lifecycles, ensuring rigorous statutory compliance and portfolio health.'
@@ -192,17 +191,14 @@ export default function ResumeBuilder() {
           regex: /(account|tally|tax|gst|balance|ledger|bookkeep)/i,
           action: 'Managed comprehensive financial reconciliations, taxation audits, and statutory financial reporting with zero-defect accuracy.'
         },
-        // விற்பனை / வர்த்தக வளர்ச்சி / மார்க்கெட்டிங் (Sales, BD, Growth, Clients)
         {
           regex: /(sales|business\s*dev|market|growth|revenue|client\s*acq|expansion|crm)/i,
           action: 'Drove high-impact business development initiatives and market penetration, consistently expanding client footprint and revenue benchmarks.'
         },
-        // தளம் / சர்வே / ஃபீல்டு ஆபரேஷன்ஸ் (Field Ops, Survey, Catchment, Site)
         {
-          regex: /(survey|field|area|sourcing|catchment|outreach|site|logistic)/i,
-          action: 'Conducted systematic field evaluations and catchment surveys to accelerate client acquisition and territory expansion.'
+          regex: /(survey|field|area|sourcing|catchment|outreach|site|logistic|transport|fleet|driver)/i,
+          action: 'Orchestrated rigorous operational logistics and field workflow strategies, maximizing fleet utilization and on-time service efficiency.'
         },
-        // மனிதவளம் / பயிற்சி / டீம் தலைமை (HR, Team Lead, Training, Recruitment)
         {
           regex: /(train|training|coach|mentor|skill|session|teach)/i,
           action: 'Conducted high-impact training and capability-building programs, elevating cross-functional workforce productivity and domain excellence.'
@@ -211,17 +207,14 @@ export default function ResumeBuilder() {
           regex: /(team|lead|supervis|manage|staff|officer|recruit|hire|talent|hr)/i,
           action: 'Supervised, coached, and empowered cross-functional teams, fostering a high-performance culture, accountability, and seamless execution.'
         },
-        // ஆடிட் / தரக்கட்டுப்பாடு / கம்ப்ளையன்ஸ் (Audit, QA, Policy, Compliance, ISO)
         {
-          regex: /(audit|complian|statutory|quality|qa|qc|iso|rbi|policy|inspection)/i,
-          action: 'Instituted robust governance frameworks and quality audits, ensuring 100% adherence to regulatory benchmarks and SOPs.'
+          regex: /(audit|complian|statutory|quality|qa|qc|iso|rbi|policy|inspection|safety)/i,
+          action: 'Instituted robust governance frameworks and compliance audits, ensuring 100% adherence to industry safety standards and statutory SOPs.'
         },
-        // டேட்டா அனலிட்டிக்ஸ் / ரிப்போர்ட்டிங் (Data, BI, MIS, Excel, Dashboard)
         {
           regex: /(report|mis|data|dashboard|excel|analytics|power\s*bi|metrics)/i,
           action: 'Synthesized complex operational datasets into executive-level MIS reports and interactive dashboards to enable data-backed strategic decisions.'
         },
-        // வாடிக்கையாளர் சேவை / ஆதரவு (Customer Service, Support, Operations)
         {
           regex: /(customer|client|service|support|helpdesk|retention)/i,
           action: 'Delivered customer-centric operational excellence and escalated issue resolution, maximizing client satisfaction ratings and trust.'
@@ -230,21 +223,19 @@ export default function ResumeBuilder() {
 
       const converted = lines.map((line) => {
         const matched = universalActionRules.find((rule) => rule.regex.test(line));
-        if (matched) return `• ${matched.action}`;
+        if (matched) return matched.action;
 
-        // குறிப்பிட்ட விதி இல்லாவிட்டால் - தானாகவே தொழில்முறை Action Verbs கொண்டு வாக்கியத்தை உருவாக்குதல்
         let clean = line.replace(/[.]+$/, '');
         clean = clean.charAt(0).toUpperCase() + clean.slice(1);
         if (clean.split(/\s+/).length <= 2) {
-          return `• Successfully spearheaded end-to-end ${clean.toLowerCase()} initiatives, achieving targeted operational goals.`;
+          return `Successfully spearheaded end-to-end ${clean.toLowerCase()} initiatives, achieving targeted operational goals.`;
         }
-        return `• ${clean}.`;
+        return `${clean}.`;
       });
 
       return Array.from(new Set(converted)).join('\n');
     };
 
-    // 3. யுனிவர்சல் சாதனைகள் (Achievements) என்ஜின் - எந்தத் துறையின் புள்ளிவிவரத்தையும் கார்ப்பரேட்டாக மாற்றும்
     const polishUniversalAchievements = (text) => {
       if (!text) return '';
       const lines = text
@@ -257,46 +248,40 @@ export default function ResumeBuilder() {
       const converted = lines.map((line) => {
         const l = line.toLowerCase();
 
-        // 1. நிதி / விற்பனை அளவுகள் (Crores, Lakhs, Millions, Currency)
         if ((l.includes('cr') || l.includes('crore') || l.includes('lakh') || l.includes('million') || l.includes('disbur') || l.includes('sales')) && !usedCategories.has('volume')) {
           const numMatch = l.match(/(\d+[\.\d]*)\s*(cr|crore|lakh|million|m)?/i);
           const val = numMatch ? `₹${numMatch[1]}+ Crores` : 'multi-million volume';
           usedCategories.add('volume');
-          return `• Spearheaded high-volume operational portfolio, achieving ${val} in annual throughput with exemplary execution discipline.`;
+          return `Spearheaded high-volume operational portfolio, achieving ${val} in annual throughput with exemplary execution discipline.`;
         }
 
-        // 2. உயர் சதவீத சாதனைகள் (90% - 100% Recovery, Quality, SLA, Efficiency)
         if ((l.match(/(9\d|100)\s*(%|percent)/) || l.includes('recovery') || l.includes('sla')) && !usedCategories.has('high_percent')) {
           const numMatch = l.match(/(\d+[\.\d]*)\s*(%|percent)?/i);
           const val = numMatch && numMatch[1] ? `${numMatch[1]}%` : '99%+';
           usedCategories.add('high_percent');
-          return `• Sustained an industry-benchmark ${val}+ efficiency and compliance rating across challenging business cycles through disciplined monitoring.`;
+          return `Sustained an industry-benchmark ${val}+ efficiency and compliance rating across challenging business cycles through disciplined monitoring.`;
         }
 
-        // 3. நடுத்தர சதவீத வளர்ச்சி சாதனைகள் (Growth, Penetration, Target 50% - 89%)
         if ((l.includes('%') || l.includes('percent') || l.includes('growth') || l.includes('target')) && !usedCategories.has('growth')) {
           const numMatch = l.match(/(\d+[\.\d]*)\s*(%|percent)?/i);
           const val = numMatch && numMatch[1] ? `${numMatch[1]}%` : '75%+';
           usedCategories.add('growth');
-          return `• Accelerated core operational metrics and regional penetration by ${val}, consistently outperforming organizational quarterly benchmarks.`;
+          return `Accelerated core operational metrics and regional penetration by ${val}, consistently outperforming organizational quarterly benchmarks.`;
         }
 
-        // 4. டிஜிட்டல் முறை, தானியங்கி, புதுமை (Digital, Tech, Automation, Process)
         if ((l.includes('digital') || l.includes('tech') || l.includes('automati') || l.includes('cashless') || l.includes('online')) && !usedCategories.has('digital')) {
           usedCategories.add('digital');
-          return `• Pioneered digital transformation initiatives, driving seamless digital tool adoption and modern workflow automation across diverse teams.`;
+          return `Pioneered digital transformation initiatives, driving seamless digital tool adoption and modern workflow automation across diverse teams.`;
         }
 
-        // பொதுவான சாதனை வரி
         let clean = line.replace(/[.]+$/, '');
         clean = clean.charAt(0).toUpperCase() + clean.slice(1);
-        return `• Recognized for outstanding contributions in ${clean.toLowerCase()}, delivering measurable organizational impact.`;
+        return `Recognized for outstanding contributions in ${clean.toLowerCase()}, delivering measurable organizational impact.`;
       });
 
       return Array.from(new Set(converted)).join('\n');
     };
 
-    // 4. யுனிவர்சல் சான்றிதழ்கள் (Certifications)
     const polishUniversalCerts = (text) => {
       if (!text) return '';
       return text
@@ -312,16 +297,14 @@ export default function ResumeBuilder() {
             .replace(/\bgcp\b/gi, 'GCP')
             .replace(/\bmadrss\b/gi, 'Madras')
             .replace(/\bmadras\b/gi, 'Madras');
-          return `• ${clean}`;
+          return clean;
         })
         .join('\n');
     };
 
-    // 5. பதவி மற்றும் சுருக்கம் (Summary)
     let job = commonTypoFixer(resumeData.jobTitle) || 'Business Operations Professional';
     let rawSummary = resumeData.summary || '';
     
-    // எந்த மொழியில் வருடங்களை உள்ளீடு செய்தாலும் கண்டறிதல் (எ.கா: 16 years, 5 varudam, 10 aandu)
     const yearsMatch = rawSummary.match(/\b(\d+)\s*(varudam|varusham|aandu|years?|yrs?)\b/i);
     const yearsCount = yearsMatch ? `${yearsMatch[1]}+ years` : '';
 
@@ -334,7 +317,6 @@ export default function ResumeBuilder() {
       polishedSummary = `Strategic and result-oriented ${titleCase(job)} equipped with cross-functional leadership acumen, dedicated to operational excellence and business impact.`;
     }
 
-    // 6. கால அளவு (Period) யுனிவர்சல் திருத்தி (எ.கா: 2010 aug, aug - 2010, 2015 to 2020)
     const fixPeriod = (period) => {
       if (!period) return '';
       let clean = period
@@ -352,7 +334,6 @@ export default function ResumeBuilder() {
         .replace(/\bdecember\b|\bdec\b/gi, 'Dec')
         .trim();
 
-      // "Aug - 2010" அல்லது "2010 Aug" என வந்தால் "Aug 2010" ஆக்குதல்
       clean = clean.replace(/([a-zA-Z]+)\s*-\s*(\d{4})/, '$1 $2');
       const yearMonthMatch = clean.match(/^(\d{4})\s*([a-zA-Z]+)(.*)$/);
       if (yearMonthMatch) {
@@ -365,7 +346,6 @@ export default function ResumeBuilder() {
       return clean.replace(/\s*-\s*/, ' – ');
     };
 
-    // 7. யுனிவர்சல் திறன்கள் (Skills) - எந்தத் துறை திறன்களையும் அழகிய பேட்ஜ்களாக மாற்றுதல்
     let rawSkills = commonTypoFixer(resumeData.skills) || '';
     let skillTokens = rawSkills.includes(',') ? rawSkills.split(',') : rawSkills.split(/\s+/);
     let finalSkills = [];
@@ -391,7 +371,6 @@ export default function ResumeBuilder() {
       }
     }
 
-    // கல்வி திருத்தங்கள்
     const fixEduDegree = (deg) => {
       if (!deg) return '';
       let clean = titleCase(commonTypoFixer(deg));
@@ -402,13 +381,14 @@ export default function ResumeBuilder() {
         .replace(/\bmsc\b|\bm\.sc\b/gi, 'M.Sc')
         .replace(/\bbsc\b|\bb\.sc\b/gi, 'B.Sc')
         .replace(/\bbe\b|\bb\.e\b/gi, 'B.E')
-        .replace(/\bbtech\b|\bb\.tech\b/gi, 'B.Tech');
+        .replace(/\bbtech\b|\bb\.tech\b/gi, 'B.Tech')
+        .replace(/\bba\b|\bb\.a\b/gi, 'B.A');
       return clean;
     };
 
     const fixEduYear = (yr) => {
       if (!yr) return '';
-      let clean = yr.replace(/april/gi, 'Apr').replace(/august/gi, 'Aug').trim();
+      let clean = yr.replace(/april/gi, 'Apr').replace(/august/gi, 'Aug').replace(/\bto\b/gi, '–').trim();
       const match = clean.match(/^(\d{4})\s*([a-zA-Z]+)$/);
       if (match) {
         return `${titleCase(match[2])} ${match[1]}`;
@@ -416,7 +396,6 @@ export default function ResumeBuilder() {
       return titleCase(clean);
     };
 
-    // மொழிகள் திருத்தி
     const fixLanguages = (langStr) => {
       if (!langStr) return '';
       return commonTypoFixer(langStr)
@@ -464,13 +443,15 @@ export default function ResumeBuilder() {
           @media print {
             @page {
               size: A4 portrait;
-              margin: 8mm 12mm 8mm 12mm;
+              margin: 10mm 12mm 10mm 12mm;
             }
             body {
               background: #ffffff !important;
               color: #000000 !important;
               padding: 0 !important;
               margin: 0 !important;
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
             }
             .print\\:hidden {
               display: none !important;
@@ -491,7 +472,7 @@ export default function ResumeBuilder() {
       <header className="border-b border-slate-800 bg-slate-950/80 sticky top-0 z-50 backdrop-blur px-4 py-3 print:hidden">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="bg-emerald-600 text-white font-bold px-3 py-1 rounded text-sm">நம்ம பூமி 360</span>
+            <span className="bg-emerald-600 text-white font-bold px-3 py-1 rounded text-sm shadow-sm">நம்ம பூமி 360</span>
             <span className="text-sm font-semibold text-emerald-400">Universal Harvard ATS Studio</span>
           </Link>
           <div className="flex items-center gap-3">
@@ -501,40 +482,38 @@ export default function ResumeBuilder() {
             >
               🖨️ PDF ஆக பதிவிறக்குக (Harvard ATS PDF)
             </button>
-            {/* Template Switcher */}
-              <div className="flex items-center bg-slate-900 border border-slate-700 rounded-lg p-0.5">
-                <button
-                  type="button"
-                  onClick={() => setSelectedTemplate('harvard')}
-                  className={`px-2.5 py-1 text-xs rounded transition-all ${
-                    selectedTemplate === 'harvard'
-                      ? 'bg-emerald-500 text-slate-950 font-bold'
-                      : 'text-slate-300 hover:text-white'
-                  }`}
-                >
-                  Harvard
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedTemplate('modern')}
-                  className={`px-2.5 py-1 text-xs rounded transition-all ${
-                    selectedTemplate === 'modern'
-                      ? 'bg-emerald-500 text-slate-950 font-bold'
-                      : 'text-slate-300 hover:text-white'
-                  }`}
-                >
-                  Modern
-                </button>
-              </div>
-
-              {/* Reset Form Button */}
+            <div className="flex items-center bg-slate-900 border border-slate-700 rounded-lg p-0.5">
               <button
                 type="button"
-                onClick={handleResetForm}
-                className="px-2.5 py-1 text-xs font-semibold text-rose-300 hover:text-rose-100 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 rounded-lg transition-all"
+                onClick={() => setSelectedTemplate('harvard')}
+                className={`px-2.5 py-1 text-xs rounded transition-all ${
+                  selectedTemplate === 'harvard'
+                    ? 'bg-emerald-500 text-slate-950 font-bold shadow'
+                    : 'text-slate-300 hover:text-white'
+                }`}
               >
-                Reset
+                Harvard
               </button>
+              <button
+                type="button"
+                onClick={() => setSelectedTemplate('modern')}
+                className={`px-2.5 py-1 text-xs rounded transition-all ${
+                  selectedTemplate === 'modern'
+                    ? 'bg-emerald-500 text-slate-950 font-bold shadow'
+                    : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                Modern
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleResetForm}
+              className="px-2.5 py-1 text-xs font-semibold text-rose-300 hover:text-rose-100 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 rounded-lg transition-all"
+            >
+              Reset
+            </button>
             <Link href="/" className="text-xs text-slate-400 hover:text-white transition">
               ← முகப்பு
             </Link>
@@ -582,7 +561,7 @@ export default function ResumeBuilder() {
               <input
                 type="text"
                 name="jobTitle"
-                placeholder="எ.கா: Branch Manager / Software Engineer"
+                placeholder="எ.கா: Transport Manager / Software Engineer"
                 value={resumeData.jobTitle}
                 onChange={handleChange}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500"
@@ -692,7 +671,7 @@ export default function ResumeBuilder() {
                   </div>
                   <textarea
                     rows={4}
-                    placeholder="பொறுப்புகள் (எந்த வரிசையிலும் உள்ளிடலாம்):&#10;sales development&#10;team leadership&#10;customer service&#10;data analytics mis"
+                    placeholder="பொறுப்புகள் (எந்த வரிசையிலும் உள்ளிடலாம்):&#10;sales development&#10;team leadership&#10;fleet maintenance"
                     value={exp.desc}
                     onChange={(e) => handleExpChange(idx, 'desc', e.target.value)}
                     className="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white"
@@ -730,7 +709,7 @@ export default function ResumeBuilder() {
                   </div>
                   <input
                     type="text"
-                    placeholder="படிப்பு / பட்டம் (எ.கா: B.E Computer Science / B.Sc / MBA)"
+                    placeholder="படிப்பு / பட்டம் (எ.கா: B.E Computer Science / B.Sc / MBA / B.A)"
                     value={edu.degree}
                     onChange={(e) => handleEduChange(idx, 'degree', e.target.value)}
                     className="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white"
@@ -745,7 +724,7 @@ export default function ResumeBuilder() {
                     />
                     <input
                       type="text"
-                      placeholder="ஆண்டு (எ.கா: May 2018)"
+                      placeholder="ஆண்டு (எ.கா: 2017 – 2020)"
                       value={edu.year}
                       onChange={(e) => handleEduChange(idx, 'year', e.target.value)}
                       className="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white"
@@ -754,78 +733,79 @@ export default function ResumeBuilder() {
                 </div>
               ))}
             </div>
-            {/* திட்டங்கள் / Projects உள்ளீட்டுப் படிவம் */}
-        <div className="mt-4 pt-4 border-t border-slate-700/60">
-          <div className="flex justify-between items-center mb-3">
-            <label className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-              திட்டங்கள் (Key Projects)
-            </label>
-            <button
-              type="button"
-              onClick={addProject}
-              className="text-xs bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-600/50 px-2.5 py-1 rounded transition-colors"
-            >
-              + திட்டம் சேர்க்க
-            </button>
-          </div>
 
-          <div className="space-y-4">
-            {resumeData.projects && resumeData.projects.map((proj, idx) => (
-              <div key={idx} className="bg-slate-900/80 p-3.5 rounded-lg border border-slate-700/80 space-y-2.5">
-                <div className="flex justify-between items-center">
-                  <span className="text-xs font-semibold text-slate-400">திட்டம் #{idx + 1}</span>
-                  {resumeData.projects.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeProject(idx)}
-                      className="text-rose-400 hover:text-rose-300 text-xs transition-colors"
-                    >
-                      நீக்கு
-                    </button>
-                  )}
-                </div>
-
-                <div>
-                  <input
-                    type="text"
-                    placeholder="திட்டப் பெயர் (எ.கா: நம்ம பூமி 360 போர்ட்டல்)"
-                    value={proj.title}
-                    onChange={(e) => handleProjectChange(idx, 'title', e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <input
-                    type="text"
-                    placeholder="பங்கு (எ.கா: Lead Developer / Manager)"
-                    value={proj.role}
-                    onChange={(e) => handleProjectChange(idx, 'role', e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                  />
-                  <input
-                    type="text"
-                    placeholder="தொழில்நுட்பங்கள் (எ.கா: React, SQL, Power BI)"
-                    value={proj.techStack}
-                    onChange={(e) => handleProjectChange(idx, 'techStack', e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
-
-                <div>
-                  <textarea
-                    placeholder="திட்டத்தின் சிறப்பம்சங்கள் / முக்கிய சாதனைகள்"
-                    value={proj.desc}
-                    rows={2}
-                    onChange={(e) => handleProjectChange(idx, 'desc', e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
+            {/* Projects / திட்டங்கள் */}
+            <div className="mt-4 pt-4 border-t border-slate-700/60">
+              <div className="flex justify-between items-center mb-3">
+                <label className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  திட்டங்கள் (Key Projects)
+                </label>
+                <button
+                  type="button"
+                  onClick={addProject}
+                  className="text-xs bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-600/50 px-2.5 py-1 rounded transition-colors"
+                >
+                  + திட்டம் சேர்க்க
+                </button>
               </div>
-            ))}
-          </div>
-        </div>
+
+              <div className="space-y-4">
+                {resumeData.projects && resumeData.projects.map((proj, idx) => (
+                  <div key={idx} className="bg-slate-900/80 p-3.5 rounded-lg border border-slate-700/80 space-y-2.5">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-semibold text-slate-400">திட்டம் #{idx + 1}</span>
+                      {resumeData.projects.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeProject(idx)}
+                          className="text-rose-400 hover:text-rose-300 text-xs transition-colors"
+                        >
+                          நீக்கு
+                        </button>
+                      )}
+                    </div>
+
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="திட்டப் பெயர் (எ.கா: நம்ம பூமி 360 போர்ட்டல்)"
+                        value={proj.title}
+                        onChange={(e) => handleProjectChange(idx, 'title', e.target.value)}
+                        className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <input
+                        type="text"
+                        placeholder="பங்கு (எ.கா: Lead Developer / Manager)"
+                        value={proj.role}
+                        onChange={(e) => handleProjectChange(idx, 'role', e.target.value)}
+                        className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                      />
+                      <input
+                        type="text"
+                        placeholder="தொழில்நுட்பங்கள் (எ.கா: React, SQL, Power BI)"
+                        value={proj.techStack}
+                        onChange={(e) => handleProjectChange(idx, 'techStack', e.target.value)}
+                        className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                      />
+                    </div>
+
+                    <div>
+                      <textarea
+                        placeholder="திட்டத்தின் சிறப்பம்சங்கள் / முக்கிய சாதனைகள்"
+                        value={proj.desc}
+                        rows={2}
+                        onChange={(e) => handleProjectChange(idx, 'desc', e.target.value)}
+                        className="w-full bg-slate-800 border border-slate-700 rounded px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* Skills */}
             <div className="pt-2 border-t border-slate-700">
@@ -833,7 +813,7 @@ export default function ResumeBuilder() {
               <input
                 type="text"
                 name="skills"
-                placeholder="எ.கா: Python, SQL, Excel, Management, Communication"
+                placeholder="எ.கா: Power BI, Advanced Excel, Team Leadership, Fleet Management"
                 value={resumeData.skills}
                 onChange={handleChange}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500"
@@ -873,7 +853,7 @@ export default function ResumeBuilder() {
                   <textarea
                     name="achievements"
                     rows={2}
-                    placeholder="sales growth 10 cr&#10;99% customer rating&#10;digital process adoption"
+                    placeholder="sales growth 10 cr&#10;99% customer rating&#10;fleet optimization"
                     value={resumeData.achievements}
                     onChange={handleChange}
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
@@ -887,7 +867,7 @@ export default function ResumeBuilder() {
                   <textarea
                     name="certifications"
                     rows={2}
-                    placeholder="Cloud certification google, data analytics iit madras"
+                    placeholder="Power BI Certificate, Supply Chain Management"
                     value={resumeData.certifications}
                     onChange={handleChange}
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white"
@@ -916,42 +896,42 @@ export default function ResumeBuilder() {
           <div className="lg:col-span-7 print:w-full print:m-0 print:p-0">
             <div
               id="resume-sheet"
-              className={`bg-white text-slate-900 rounded-xl shadow-2xl p-7 sm:p-9 border border-slate-200 transition-all ${
-  selectedTemplate === 'harvard' ? 'font-serif' : 'font-sans'
-}`}
+              className={`bg-white text-slate-950 rounded-xl shadow-2xl p-8 sm:p-10 border border-slate-300 transition-all leading-normal ${
+                selectedTemplate === 'harvard' ? 'font-serif' : 'font-sans'
+              }`}
             >
               
               {/* Header */}
               {(resumeData.fullName || resumeData.jobTitle) && (
-                <div className={`pb-2 mb-3.5 transition-all ${
-  selectedTemplate === 'harvard'
-    ? 'border-b-2 border-slate-900 text-center'
-    : 'border-b-4 border-emerald-600 text-left'
-}`}>
-                  <h1 className="text-xl sm:text-2xl font-extrabold tracking-wide text-slate-900 uppercase">
-                    {resumeData.fullName}
+                <div className={`pb-2.5 mb-4 transition-all ${
+                  selectedTemplate === 'harvard'
+                    ? 'border-b-2 border-slate-950 text-center'
+                    : 'border-b-4 border-emerald-600 text-left'
+                }`}>
+                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-wide text-slate-950 uppercase">
+                    {resumeData.fullName || 'YOUR NAME'}
                   </h1>
-                  <p className="text-[11px] font-bold text-emerald-800 tracking-widest uppercase mt-0.5">
-                    {resumeData.jobTitle}
+                  <p className="text-[12px] font-bold text-slate-800 tracking-wider uppercase mt-1">
+                    {resumeData.jobTitle || 'TARGET DESIGNATION'}
                   </p>
                   
-                  <div className="flex flex-wrap items-center justify-center gap-x-2 text-[11px] text-slate-600 mt-1 font-medium">
-                    {resumeData.phone && <span>📱 {resumeData.phone}</span>}
-                    {resumeData.phone && resumeData.email && <span className="text-slate-300">|</span>}
-                    {resumeData.email && <span>✉️ {resumeData.email}</span>}
-                    {(resumeData.phone || resumeData.email) && resumeData.location && <span className="text-slate-300">|</span>}
-                    {resumeData.location && <span>📍 {resumeData.location}</span>}
+                  <div className="flex flex-wrap items-center justify-center gap-x-3 text-[11px] text-slate-700 mt-2 font-medium">
+                    {resumeData.phone && <span>{resumeData.phone}</span>}
+                    {resumeData.phone && resumeData.email && <span className="text-slate-400 font-bold">•</span>}
+                    {resumeData.email && <span>{resumeData.email}</span>}
+                    {(resumeData.phone || resumeData.email) && resumeData.location && <span className="text-slate-400 font-bold">•</span>}
+                    {resumeData.location && <span>{resumeData.location}</span>}
                   </div>
                 </div>
               )}
 
               {/* Executive Summary */}
               {resumeData.summary && (
-                <div className="mb-3">
-                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-0.5 mb-1">
+                <div className="mb-4">
+                  <h2 className="text-[11.5px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-950 pb-0.5 mb-1.5">
                     Executive Summary
                   </h2>
-                  <p className="text-[10.5px] text-slate-800 leading-relaxed text-justify font-normal">
+                  <p className="text-[11px] text-slate-900 leading-relaxed text-justify font-normal">
                     {resumeData.summary}
                   </p>
                 </div>
@@ -959,44 +939,44 @@ export default function ResumeBuilder() {
 
               {/* Key Achievements */}
               {showAchievements && resumeData.achievements && (
-                <div className="mb-3">
-                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-0.5 mb-1">
+                <div className="mb-4">
+                  <h2 className="text-[11.5px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-950 pb-0.5 mb-1.5">
                     Key Career Milestones & Achievements
                   </h2>
-                  <div className="text-[10.5px] text-slate-800 leading-relaxed space-y-1 pl-1">
+                  <ul className="text-[10.5px] text-slate-900 leading-relaxed list-disc list-outside pl-4 space-y-1">
                     {resumeData.achievements.split('\n').map((bullet, idx) => (
-                      bullet.trim() && <p key={idx}>{bullet.trim()}</p>
+                      bullet.trim() && <li key={idx}>{bullet.replace(/^[•\-\*]\s*/, '').trim()}</li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               )}
 
               {/* Work Experience */}
               {resumeData.experience.some((e) => e.role || e.company) && (
-                <div className="mb-3">
-                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-0.5 mb-1.5">
+                <div className="mb-4">
+                  <h2 className="text-[11.5px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-950 pb-0.5 mb-2">
                     Professional Experience
                   </h2>
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
                     {resumeData.experience.map(
                       (exp, idx) =>
                         (exp.role || exp.company) && (
                           <div key={idx}>
                             <div className="flex justify-between items-baseline mb-0.5">
-                              <span className="text-[11px] font-bold text-slate-900">{exp.role}</span>
-                              <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">{exp.period}</span>
+                              <span className="text-[12px] font-bold text-slate-950">{exp.role}</span>
+                              <span className="text-[10.5px] font-bold text-slate-900">{exp.period}</span>
                             </div>
                             {exp.company && (
-                              <div className="text-[10.5px] font-semibold text-emerald-800 italic mb-0.5">
+                              <div className="text-[11px] font-semibold text-slate-800 italic mb-1">
                                 {exp.company}
                               </div>
                             )}
                             {exp.desc && (
-                              <div className="text-[10px] text-slate-800 leading-relaxed space-y-0.5 pl-1">
+                              <ul className="text-[10.5px] text-slate-900 leading-relaxed list-disc list-outside pl-4 space-y-1">
                                 {exp.desc.split('\n').map((bullet, bIdx) => (
-                                  bullet.trim() && <p key={bIdx}>{bullet.trim()}</p>
+                                  bullet.trim() && <li key={bIdx}>{bullet.replace(/^[•\-\*]\s*/, '').trim()}</li>
                                 ))}
-                              </div>
+                              </ul>
                             )}
                           </div>
                         )
@@ -1007,105 +987,114 @@ export default function ResumeBuilder() {
 
               {/* Education */}
               {resumeData.education.some((e) => e.degree || e.institution) && (
-                <div className="mb-3">
-                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-0.5 mb-1">
+                <div className="mb-4">
+                  <h2 className="text-[11.5px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-950 pb-0.5 mb-1.5">
                     Education & Credentials
                   </h2>
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     {resumeData.education.map(
                       (edu, idx) =>
                         (edu.degree || edu.institution) && (
                           <div key={idx} className="flex justify-between items-baseline">
                             <div>
-                              <div className="text-[10.5px] font-bold text-slate-900">{edu.degree}</div>
-                              <div className="text-[10px] text-slate-600 italic">{edu.institution}</div>
+                              <span className="text-[11px] font-bold text-slate-950">{edu.degree}</span>
+                              {edu.institution && (
+                                <span className="text-[10.5px] text-slate-800 italic"> — {edu.institution}</span>
+                              )}
                             </div>
-                            <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">{edu.year}</span>
+                            <span className="text-[10.5px] font-bold text-slate-900">{edu.year}</span>
                           </div>
                         )
                     )}
                   </div>
                 </div>
               )}
-              {/* Projects / திட்டங்கள் பிரிவு - முழுவதும் டைனமிக் */}
-          {resumeData.projects && resumeData.projects.some(p => p.title && p.title.trim() !== '') && (
-            <div className="mb-3">
-              <h2 className={`text-[11px] font-bold uppercase tracking-wider text-slate-900 border-b pb-0.5 mb-1.5 ${
-                selectedTemplate === 'harvard' ? 'border-slate-900' : 'border-emerald-600 text-emerald-800'
-              }`}>
-                Key Projects
-              </h2>
-              <div className="space-y-2">
-                {resumeData.projects.map((proj, idx) => {
-                  if (!proj.title || !proj.title.trim()) return null;
-                  return (
-                    <div key={idx} className="text-slate-800">
-                      <div className="flex justify-between items-baseline">
-                        <span className="text-[10.5px] font-bold text-slate-900">
-                          {toTitleCase(proj.title)}
-                          {proj.role && <span className="font-semibold text-slate-700"> | {toTitleCase(proj.role)}</span>}
-                        </span>
-                        {proj.techStack && (
-                          <span className="text-[10px] font-semibold text-emerald-700">
-                           {toTitleCase(proj.techStack)}
-                          </span>
-                        )}
-                      </div>
-                      {proj.desc && (
-                        <p className="text-[10px] text-slate-700 leading-relaxed mt-0.5 whitespace-pre-line">
-                          {formatSentence(proj.desc)}
-                        </p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+
+              {/* Projects */}
+              {resumeData.projects && resumeData.projects.some(p => p.title && p.title.trim() !== '') && (
+                <div className="mb-4">
+                  <h2 className={`text-[11.5px] font-bold uppercase tracking-wider text-slate-950 border-b pb-0.5 mb-1.5 ${
+                    selectedTemplate === 'harvard' ? 'border-slate-950' : 'border-emerald-600 text-emerald-800'
+                  }`}>
+                    Key Projects
+                  </h2>
+                  <div className="space-y-2">
+                    {resumeData.projects.map((proj, idx) => {
+                      if (!proj.title || !proj.title.trim()) return null;
+                      return (
+                        <div key={idx} className="text-slate-900">
+                          <div className="flex justify-between items-baseline">
+                            <span className="text-[11px] font-bold text-slate-950">
+                              {toTitleCase(proj.title)}
+                              {proj.role && <span className="font-semibold text-slate-800"> | {toTitleCase(proj.role)}</span>}
+                            </span>
+                            {proj.techStack && (
+                              <span className="text-[10.5px] font-semibold text-slate-800">
+                                {toTitleCase(proj.techStack)}
+                              </span>
+                            )}
+                          </div>
+                          {proj.desc && (
+                            <p className="text-[10.5px] text-slate-800 leading-relaxed mt-0.5">
+                              {formatSentence(proj.desc)}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* Core Skills */}
               {resumeData.skills && (
-                <div className="mb-3">
-                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-0.5 mb-1.5">
+                <div className="mb-3.5">
+                  <h2 className="text-[11.5px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-950 pb-0.5 mb-1.5">
                     Core Competencies & Technical Skills
                   </h2>
-                  <div className="flex flex-wrap gap-1.5">
-                    {resumeData.skills
-                      .split(',')
-                      .filter((s) => s.trim())
-                      .map((skill, idx) => (
-                        <span
-                          key={idx}
-                          className="bg-slate-100 text-slate-800 text-[10px] font-semibold px-2 py-0.5 rounded border border-slate-300 shadow-sm"
-                        >
-                          {skill.trim()}
-                        </span>
-                      ))}
-                  </div>
+                  {selectedTemplate === 'harvard' ? (
+                    <p className="text-[10.5px] text-slate-900 leading-relaxed font-medium">
+                      {resumeData.skills.split(',').map(s => s.trim()).filter(Boolean).join('  •  ')}
+                    </p>
+                  ) : (
+                    <div className="flex flex-wrap gap-1.5">
+                      {resumeData.skills
+                        .split(',')
+                        .filter((s) => s.trim())
+                        .map((skill, idx) => (
+                          <span
+                            key={idx}
+                            className="bg-slate-100 text-slate-950 text-[10px] font-bold px-2.5 py-0.5 rounded border border-slate-300 shadow-sm"
+                          >
+                            {skill.trim()}
+                          </span>
+                        ))}
+                    </div>
+                  )}
                 </div>
               )}
 
               {/* Certifications */}
               {showCertifications && resumeData.certifications && (
-                <div className="mb-2.5">
-                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-0.5 mb-1">
+                <div className="mb-3">
+                  <h2 className="text-[11.5px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-950 pb-0.5 mb-1.5">
                     Professional Certifications
                   </h2>
-                  <div className="text-[10px] text-slate-800 leading-relaxed space-y-0.5 pl-1">
+                  <ul className="text-[10.5px] text-slate-900 leading-relaxed list-disc list-outside pl-4 space-y-0.5">
                     {resumeData.certifications.split('\n').map((bullet, idx) => (
-                      bullet.trim() && <p key={idx}>{bullet.trim()}</p>
+                      bullet.trim() && <li key={idx}>{bullet.replace(/^[•\-\*]\s*/, '').trim()}</li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               )}
 
               {/* Languages */}
               {showLanguages && resumeData.languages && (
                 <div>
-                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-0.5 mb-0.5">
+                  <h2 className="text-[11.5px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-950 pb-0.5 mb-1">
                     Languages
                   </h2>
-                  <p className="text-[10.5px] text-slate-800 font-medium">
+                  <p className="text-[10.5px] text-slate-900 font-medium">
                     {resumeData.languages}
                   </p>
                 </div>
