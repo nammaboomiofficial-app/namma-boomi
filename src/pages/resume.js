@@ -2,25 +2,65 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
-// பொதுவான டைட்டில் கேசிங் ஃபங்ஷன் (கல்வி, கம்பெனி, ஊர் பெயர்களுக்கு)
-const toTitleCase = (str) => {
+// தொழில்முறை டைட்டில் கேசிங் (Title Casing Engine)
+const formatTitleCase = (str) => {
   if (!str) return '';
-  const acronyms = ['IT', 'HR', 'MBA', 'BSC', 'B.SC', 'BE', 'B.E', 'B.TECH', 'BTECH', 'MCA', 'BCA', 'SQL', 'AWS', 'GCP', 'IIT', 'IIM', 'NIT'];
+  const acronyms = ['IT', 'HR', 'MBA', 'BSC', 'B.SC', 'BE', 'B.E', 'B.TECH', 'BTECH', 'MCA', 'BCA', 'SQL', 'AWS', 'GCP', 'IIT', 'IIM', 'NIT', 'AI', 'ML', 'ATS', 'UI', 'UX', 'BI'];
+  const minorWords = ['in', 'at', 'of', 'and', 'for', 'the', 'on', 'with', 'to', 'by'];
+  
   return str
     .trim()
     .split(/\s+/)
-    .map((word) => {
-      const cleanUpper = word.replace(/[^a-zA-Z]/g, '').toUpperCase();
-      if (acronyms.includes(cleanUpper)) return word.toUpperCase();
-      const minor = ['in', 'at', 'of', 'and', 'for', 'the', 'on', 'with', 'to'];
-      if (minor.includes(word.toLowerCase())) return word.toLowerCase();
-      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    .map((word, idx) => {
+      const cleanWord = word.replace(/[^a-zA-Z0-9]/g, '');
+      if (acronyms.includes(cleanWord.toUpperCase())) {
+        return word.toUpperCase();
+      }
+      const lower = word.toLowerCase();
+      if (idx !== 0 && minorWords.includes(lower)) {
+        return lower;
+      }
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
     })
     .join(' ');
 };
 
+// பயனரின் உண்மைத் தகவலை மட்டும் தொழில்முறை புல்லட்டுகளாக மாற்றும் என்ஜின் (No Duplicates, No Fake Text)
+const polishUserBullets = (rawText) => {
+  if (!rawText) return [];
+  const lines = rawText
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean);
+
+  const seen = new Set();
+  const result = [];
+
+  for (let line of lines) {
+    // பயனரின் சிறப்பு எழுத்துக்கள், எண்கள், புல்லட்களை மட்டும் தொடக்கத்தில் இருந்து நீக்குதல்
+    let clean = line.replace(/^[•\-\*\d\.\)\%\:\;]+\s*/, '').trim();
+    clean = clean.replace(/[.]+$/, ''); // கடைசியில் உள்ள முற்றுப்புள்ளியை நீக்கி சீரமைத்தல்
+
+    if (!clean) continue;
+
+    // முதல் எழுத்தை மட்டும் பெரியதாக்குதல்
+    let formatted = clean.charAt(0).toUpperCase() + clean.slice(1);
+
+    // முற்றுப்புள்ளி அமைத்தல்
+    formatted = `${formatted}.`;
+
+    // ஒரே வரி மீண்டும் மீண்டும் வருவதைத் தடுத்தல் (Deduplication)
+    if (!seen.has(formatted.toLowerCase())) {
+      seen.add(formatted.toLowerCase());
+      result.push(formatted);
+    }
+  }
+
+  return result;
+};
+
 export default function ResumeBuilder() {
-  const [template, setTemplate] = useState('harvard'); // 'harvard' | 'modern'
+  const [template, setTemplate] = useState('harvard');
 
   const emptyForm = {
     fullName: '',
@@ -46,7 +86,6 @@ export default function ResumeBuilder() {
 
   const [resumeData, setResumeData] = useState(emptyForm);
 
-  // பயனர் சேமித்த விவரங்கள் இருந்தால் மட்டும் மீட்டெடுக்கும்
   useEffect(() => {
     try {
       const saved = localStorage.getItem('nb_resume_user_data');
@@ -66,7 +105,6 @@ export default function ResumeBuilder() {
     } catch (e) {}
   };
 
-  // பணி அனுபவம்
   const addExperience = () => {
     setResumeData((prev) => ({
       ...prev,
@@ -91,7 +129,6 @@ export default function ResumeBuilder() {
     }));
   };
 
-  // கல்வி
   const addEducation = () => {
     setResumeData((prev) => ({
       ...prev,
@@ -116,7 +153,6 @@ export default function ResumeBuilder() {
     }));
   };
 
-  // திட்டங்கள்
   const addProject = () => {
     setResumeData((prev) => ({
       ...prev,
@@ -141,101 +177,47 @@ export default function ResumeBuilder() {
     }));
   };
 
-  // உலகத்தரம் வாய்ந்த ஸ்மார்ட் பார்ச்சூன்-500 ஆக்ஷன் வெர்ப் என்ஜின் (Context-Aware Action Verbs)
-  const transformToWorldClass = () => {
-    const roleContext = (resumeData.jobTitle || '').toLowerCase();
-    const isTech = /software|developer|engineer|tech|it|frontend|backend|fullstack|data|ai/i.test(roleContext);
-    const isFinance = /finance|bank|account|audit|credit|microfinance|cashier/i.test(roleContext);
-    const isLogistics = /transit|transport|driver|logistics|fleet|route|delivery/i.test(roleContext);
-
-    // பயனர் உள்ளீட்டின் அடிப்படையில் கார்ப்பரேட் புல்லட்டுகளை உருவாக்கும் ஃபங்ஷன்
-    const polishBullets = (rawText, isExp = false) => {
-      if (!rawText) return '';
-      return rawText
-        .split('\n')
-        .map((l) => l.trim().replace(/^[•\-\*\d\.\)]+\s*/, ''))
-        .filter(Boolean)
-        .map((line) => {
-          const l = line.toLowerCase();
-          
-          // ஏற்கனவே கார்ப்பரேட் ஸ்டைலில் இருந்தால் அப்படியே வைத்தல்
-          if (/^(spearheaded|orchestrated|engineered|championed|directed|executed|designed|formulated|accelerated|delivered)\b/i.test(l)) {
-            return line.charAt(0).toUpperCase() + line.slice(1).replace(/[.]+$/, '') + '.';
-          }
-
-          // உள்ளீட்டின் சூழலைப் புரிந்து மாற்றும் எக்ஸிகியூட்டிவ் ஃபார்முலா
-          if (l.includes('develop') || l.includes('software') || l.includes('code') || l.includes('build')) {
-            return `Architected and developed mission-critical solutions, improving overall operational performance and delivery speed.`;
-          }
-          if (l.includes('manage') || l.includes('lead') || l.includes('team') || l.includes('handle')) {
-            return `Orchestrated end-to-end project workflows, coordinating cross-functional teams to consistently achieve deliverables on schedule.`;
-          }
-          if (l.includes('sale') || l.includes('revenue') || l.includes('growth') || l.includes('target')) {
-            return `Accelerated pipeline performance and client acquisition, outperforming organizational milestones and target metrics.`;
-          }
-          if (l.includes('customer') || l.includes('client') || l.includes('service') || l.includes('support')) {
-            return `Cultivated key stakeholder partnerships and optimized client-facing workflows to elevate service excellence ratings.`;
-          }
-
-          // துறை சார்ந்த தனிப்பயனாக்கம் (Role Specific)
-          if (isLogistics) {
-            return `Executed fleet management and route optimization protocols, maintaining an exemplary transit safety record.`;
-          }
-          if (isFinance) {
-            return `Spearheaded rigorous financial auditing and portfolio governance, upholding 100% regulatory compliance.`;
-          }
-          if (isTech) {
-            return `Spearheaded technical development and system architecture, ensuring scalable and resilient platform performance.`;
-          }
-
-          // பொதுவான தொழில்முறை வாக்கிய அமைப்பு
-          return `Spearheaded key initiatives in ${line.toLowerCase().replace(/[.]+$/, '')}, driving measurable organizational excellence.`;
-        })
-        .join('\n');
-    };
-
-    // சுருக்கக் குறிப்பை (Summary) பார்ச்சூன்-500 தரத்தில் மாற்றுதல்
-    let polishedSummary = resumeData.summary;
-    if (resumeData.summary && resumeData.summary.length > 5) {
-      const yearsMatch = resumeData.summary.match(/\b(\d+)\+?\s*(years|ஆண்டு|வருட|yrs)/i);
-      const yearsText = yearsMatch ? `with ${yearsMatch[1]}+ years of proven track record` : 'with an extensive track record';
-      const roleDisplay = resumeData.jobTitle ? toTitleCase(resumeData.jobTitle) : 'Accomplished Professional';
-      
-      polishedSummary = `${roleDisplay} ${yearsText} in driving operational efficiency, strategic execution, and sustainable organizational growth. Adept at cross-functional leadership, high-impact problem solving, and delivering measurable performance metrics.`;
-    }
-
+  // 100% தூய்மையான உலகத்தரம் வாய்ந்த ஃபார்மேட்டர் (பயனர் உள்ளீடு மட்டுமே, எந்த போலி வரியும் சேர்க்காது)
+  const formatAllToExecutiveStandard = () => {
     const updated = {
       ...resumeData,
-      fullName: resumeData.fullName.toUpperCase(),
-      jobTitle: toTitleCase(resumeData.jobTitle),
-      summary: polishedSummary,
-      achievements: polishBullets(resumeData.achievements),
+      fullName: resumeData.fullName.toUpperCase().trim(),
+      jobTitle: formatTitleCase(resumeData.jobTitle),
+      summary: resumeData.summary.trim(),
+      achievements: polishUserBullets(resumeData.achievements).join('\n'),
       experience: resumeData.experience.map((exp) => ({
         ...exp,
-        title: toTitleCase(exp.title),
-        company: toTitleCase(exp.company),
-        location: toTitleCase(exp.location),
-        period: exp.period ? toTitleCase(exp.period) : '',
-        responsibilities: polishBullets(exp.responsibilities, true)
+        title: formatTitleCase(exp.title),
+        company: formatTitleCase(exp.company),
+        location: formatTitleCase(exp.location),
+        period: exp.period ? exp.period.trim() : '',
+        responsibilities: polishUserBullets(exp.responsibilities).join('\n')
       })),
       education: resumeData.education.map((edu) => ({
         ...edu,
-        degree: toTitleCase(edu.degree),
-        institution: toTitleCase(edu.institution),
-        location: toTitleCase(edu.location),
+        degree: formatTitleCase(edu.degree),
+        institution: formatTitleCase(edu.institution),
+        location: formatTitleCase(edu.location),
+        year: edu.year ? edu.year.trim() : ''
       })),
       projects: resumeData.projects.map((proj) => ({
         ...proj,
-        name: toTitleCase(proj.name),
-        role: toTitleCase(proj.role),
-        description: proj.description ? `Architected and deployed an integrated platform for ${proj.name}, enhancing user workflows and system capability.` : ''
+        name: formatTitleCase(proj.name),
+        role: formatTitleCase(proj.role),
+        technologies: proj.technologies
+          ? proj.technologies.split(/[,|]/).map(t => formatTitleCase(t.trim())).filter(Boolean).join(', ')
+          : '',
+        description: proj.description ? proj.description.trim() : ''
       })),
+      skills: resumeData.skills
+        ? resumeData.skills.split(',').map(s => formatTitleCase(s.trim())).filter(Boolean).join(', ')
+        : '',
       certifications: resumeData.certifications
-        .split('\n')
-        .map(c => toTitleCase(c.trim()))
-        .filter(Boolean)
-        .join('\n'),
-      languages: toTitleCase(resumeData.languages)
+        ? resumeData.certifications.split('\n').map(c => formatTitleCase(c.trim())).filter(Boolean).join('\n')
+        : '',
+      languages: resumeData.languages
+        ? resumeData.languages.split(/[,/]/).map(l => formatTitleCase(l.trim())).filter(Boolean).join(', ')
+        : ''
     };
 
     setResumeData(updated);
@@ -261,7 +243,7 @@ export default function ResumeBuilder() {
     <>
       <Head>
         <title>Universal ATS Resume Studio | நம்ம பூமி 360</title>
-        <meta name="description" content="Fortune-500 Harvard Style Single Page ATS Resume Builder" />
+        <meta name="description" content="100% துல்லியமான சர்வதேச Fortune-500 ஒற்றைப் பக்க ATS ரெஸ்யூம் பில்டர்" />
         <style dangerouslySetInnerHTML={{
           __html: `
             @media print {
@@ -273,7 +255,7 @@ export default function ResumeBuilder() {
                 top: 0;
                 width: 100% !important;
                 margin: 0 !important;
-                padding: 8mm 14mm !important;
+                padding: 10mm 15mm !important;
                 box-shadow: none !important;
                 border: none !important;
               }
@@ -286,7 +268,7 @@ export default function ResumeBuilder() {
         }} />
       </Head>
 
-      {/* ஹெடர் பார் (Header Bar) */}
+      {/* ஹெடர் பார் */}
       <header className="w-full bg-slate-900 border-b border-slate-800 px-4 py-3 sticky top-0 z-50 shadow-md print:hidden">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
@@ -335,30 +317,30 @@ export default function ResumeBuilder() {
         </div>
       </header>
 
-      {/* பிரதான தளம் */}
+      {/* பிரதான பக்கம் */}
       <main className="min-h-screen bg-slate-950 text-slate-100 p-3 sm:p-6 print:p-0">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
           {/* இடதுபுறம்: உள்ளீட்டுப் படிவம் */}
           <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-4 print:hidden shadow-xl">
             
-            {/* மேஜிக் ஆக்ஷன் பட்டன் */}
-            <div className="bg-gradient-to-r from-emerald-950 to-slate-900 p-3 rounded-lg border border-emerald-600/40 flex items-center justify-between">
+            {/* உலகத்தரம் வாய்ந்த தூய்மையான வடிவமைப்பு பட்டன் */}
+            <div className="bg-slate-800/80 p-3 rounded-lg border border-emerald-500/30 flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold text-emerald-400 block">✨ Fortune-500 Smart Polisher</span>
-                <span className="text-[11px] text-slate-400">எளிய வரிகளை சர்வதேச ATS ஆக்ஷன் வெர்ப்ஸாக மாற்றும்</span>
+                <span className="text-xs font-bold text-emerald-400 block">360° Executive Formatter</span>
+                <span className="text-[11px] text-slate-400">எழுத்து வடிவமைப்பு, தலைப்புகள் மற்றும் புல்லட்களைச் சீரமைக்கும்</span>
               </div>
               <button
                 type="button"
-                onClick={transformToWorldClass}
+                onClick={formatAllToExecutiveStandard}
                 className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1.5 rounded shadow transition whitespace-nowrap"
               >
-                🪄 உலகத் தரமாக மாற்று
+                🪄 நேர்த்தியாக ஒழுங்குபடுத்து
               </button>
             </div>
 
             <div>
-              <h2 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">1. தனிநபர் & தொடர்பு விவரங்கள்</h2>
+              <h2 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">1. தனிநபர் விவரங்கள்</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                 <input
                   type="text"
@@ -369,7 +351,7 @@ export default function ResumeBuilder() {
                 />
                 <input
                   type="text"
-                  placeholder="பணிப் பதவி (Target Job Title)"
+                  placeholder="பணிப் பதவி (Job Title)"
                   value={resumeData.jobTitle}
                   onChange={(e) => handleChange('jobTitle', e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-xs text-white"
@@ -383,14 +365,14 @@ export default function ResumeBuilder() {
                 />
                 <input
                   type="email"
-                  placeholder="மின்னஞ்சல்"
+                  placeholder="மின்னஞ்சல் முகவரி"
                   value={resumeData.email}
                   onChange={(e) => handleChange('email', e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-xs text-white"
                 />
                 <input
                   type="text"
-                  placeholder="இருப்பிடம் (City, State / Country)"
+                  placeholder="இருப்பிடம் (City, Country)"
                   value={resumeData.location}
                   onChange={(e) => handleChange('location', e.target.value)}
                   className="w-full sm:col-span-2 bg-slate-800 border border-slate-700 rounded p-1.5 text-xs text-white"
@@ -402,7 +384,7 @@ export default function ResumeBuilder() {
               <h2 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">2. சுருக்கக் குறிப்பு (Executive Summary)</h2>
               <textarea
                 rows="2"
-                placeholder="எ.கா: 10 years work experience in IT management..."
+                placeholder="உங்கள் அனுபவம் மற்றும் பணிகளைப் பற்றிய சுருக்கம்..."
                 value={resumeData.summary}
                 onChange={(e) => handleChange('summary', e.target.value)}
                 className="w-full mt-1.5 bg-slate-800 border border-slate-700 rounded p-1.5 text-xs text-white"
@@ -413,7 +395,7 @@ export default function ResumeBuilder() {
               <h2 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">3. முக்கிய சாதனைகள் (Achievements)</h2>
               <textarea
                 rows="2"
-                placeholder="எ.கா: new software develop&#10;project handle"
+                placeholder="சாதனை 1&#10;சாதனை 2 (தனித்தனி வரியில் எழுதவும்)"
                 value={resumeData.achievements}
                 onChange={(e) => handleChange('achievements', e.target.value)}
                 className="w-full mt-1.5 bg-slate-800 border border-slate-700 rounded p-1.5 text-xs text-white"
@@ -458,7 +440,7 @@ export default function ResumeBuilder() {
                     />
                     <input
                       type="text"
-                      placeholder="கால அளவு (எ.கா: 2020 - Present)"
+                      placeholder="கால அளவு (Period)"
                       value={exp.period}
                       onChange={(e) => updateExperience(exp.id, 'period', e.target.value)}
                       className="bg-slate-800 border border-slate-700 rounded p-1 text-xs text-white"
@@ -506,14 +488,14 @@ export default function ResumeBuilder() {
                   <div className="grid grid-cols-2 gap-1.5">
                     <input
                       type="text"
-                      placeholder="படிப்பு / பட்டம் (எ.கா: MBA)"
+                      placeholder="படிப்பு / பட்டம் (Degree)"
                       value={edu.degree}
                       onChange={(e) => updateEducation(edu.id, 'degree', e.target.value)}
                       className="bg-slate-800 border border-slate-700 rounded p-1 text-xs text-white"
                     />
                     <input
                       type="text"
-                      placeholder="கல்லூரி / பல்கலைக்கழகம்"
+                      placeholder="கல்லூரி / பள்ளி (Institution)"
                       value={edu.institution}
                       onChange={(e) => updateEducation(edu.id, 'institution', e.target.value)}
                       className="bg-slate-800 border border-slate-700 rounded p-1 text-xs text-white"
@@ -578,7 +560,7 @@ export default function ResumeBuilder() {
                     type="text"
                     placeholder="தொழில்நுட்பங்கள்"
                     value={proj.technologies}
-                    onChange={(e) => updateProject(proj.id, 'technologies', e.target.value)}
+                    onChange={(e) => updateProject(proj.technologies, 'technologies', e.target.value)}
                     className="w-full bg-slate-800 border border-slate-700 rounded p-1 text-xs text-white"
                   />
                   <textarea
@@ -621,7 +603,7 @@ export default function ResumeBuilder() {
 
           </div>
 
-          {/* வலதுபுறம்: பார்ச்சூன்-500 ஹார்வர்ட் ஒற்றைப் பக்க தாள் */}
+          {/* வலதுபுறம்: ஒற்றைப் பக்க A4 பிரிவியூ */}
           <div className="lg:col-span-7 flex justify-center w-full overflow-x-auto">
             <div
               id="resume-sheet"
@@ -632,7 +614,7 @@ export default function ResumeBuilder() {
               {!resumeData.fullName && !resumeData.jobTitle && !resumeData.summary && (
                 <div className="text-center py-20 text-slate-400 italic">
                   <p className="text-base font-semibold text-slate-500">Universal Harvard ATS Studio</p>
-                  <p className="text-xs mt-1">விவரங்களைத் தட்டச்சு செய்து 'உலகத் தரமாக மாற்று' பட்டனை அழுத்தவும்.</p>
+                  <p className="text-xs mt-1">இடதுபுறப் படிவத்தில் உங்கள் விவரங்களை உள்ளிடவும்.</p>
                 </div>
               )}
 
@@ -674,19 +656,19 @@ export default function ResumeBuilder() {
                 </div>
               )}
 
-              {/* எக்ஸிகியூட்டிவ் சுருக்கம் (Executive Summary) */}
+              {/* எக்ஸிகியூட்டிவ் சுருக்கம் */}
               {resumeData.summary && (
                 <div className="mt-2">
                   <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1">
                     Executive Summary
                   </h2>
-                  <p className="text-slate-800 text-justify leading-relaxed">
+                  <p className="text-slate-800 text-justify leading-relaxed whitespace-pre-line">
                     {resumeData.summary}
                   </p>
                 </div>
               )}
 
-              {/* முக்கிய சாதனைகள் (Achievements) */}
+              {/* முக்கிய சாதனைகள் */}
               {resumeData.achievements && (
                 <div className="mt-2">
                   <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1">
@@ -700,7 +682,7 @@ export default function ResumeBuilder() {
                 </div>
               )}
 
-              {/* பணி அனுபவம் (Experience) */}
+              {/* பணி அனுபவம் */}
               {resumeData.experience.some(e => e.title || e.company) && (
                 <div className="mt-2">
                   <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1">
@@ -734,7 +716,7 @@ export default function ResumeBuilder() {
                 </div>
               )}
 
-              {/* கல்வி விவரம் (Education) - பல்கலைக்கழகப் பெயர் உடையாத வடிவம் */}
+              {/* கல்வி விவரம் */}
               {resumeData.education.some(e => e.degree || e.institution) && (
                 <div className="mt-2">
                   <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1">
@@ -765,7 +747,7 @@ export default function ResumeBuilder() {
                 </div>
               )}
 
-              {/* திட்டங்கள் (Projects) */}
+              {/* திட்டங்கள் */}
               {resumeData.projects.some(p => p.name) && (
                 <div className="mt-2">
                   <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1">
@@ -795,7 +777,7 @@ export default function ResumeBuilder() {
                 </div>
               )}
 
-              {/* திறன்கள் (Skills) */}
+              {/* திறன்கள் */}
               {resumeData.skills && (
                 <div className="mt-2">
                   <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1">
@@ -819,7 +801,7 @@ export default function ResumeBuilder() {
                 </div>
               )}
 
-              {/* சான்றிதழ்கள் (Certifications) */}
+              {/* சான்றிதழ்கள் */}
               {resumeData.certifications && (
                 <div className="mt-2">
                   <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1">
@@ -833,7 +815,7 @@ export default function ResumeBuilder() {
                 </div>
               )}
 
-              {/* மொழிகள் (Languages) */}
+              {/* மொழிகள் */}
               {resumeData.languages && (
                 <div className="mt-2">
                   <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1">
