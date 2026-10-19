@@ -530,12 +530,12 @@ export default function ResumeBuilder() {
       </Head>
 
       <header className="border-b border-slate-800 bg-slate-950/80 sticky top-0 z-50 backdrop-blur px-4 py-3 print:hidden">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 px-2 sm:px-0">
           <Link href="/" className="flex items-center gap-2">
             <span className="bg-emerald-600 text-white font-bold px-3 py-1 rounded text-sm shadow-sm">நம்ம பூமி 360</span>
             <span className="text-sm font-semibold text-emerald-400">Universal Harvard ATS Studio</span>
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             <button
               onClick={handlePrint}
               className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-md transition flex items-center gap-1.5"
