@@ -2137,6 +2137,26 @@ export default function Home() {
         {/* 8. தொழில் & MSME (Business Hub) */}
         {currentModule === 'business' && (
           <div className="space-y-6">
+            {/* MSME Bank DPR Banner */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 p-4 rounded-xl border border-indigo-500/40 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+          <div>
+            <span className="text-[11px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-0.5 rounded-full font-bold">
+              PMEGP • UYEGP • MUDRA • NEEDS
+            </span>
+            <h3 className="text-base sm:text-lg font-bold text-white mt-1.5">
+              வங்கி கடன் திட்ட அறிக்கை (Bank Project Report DPR Studio)
+            </h3>
+            <p className="text-xs text-slate-300 mt-0.5">
+              அரசு மானியத் திட்டங்களுக்குத் தகுதியான விரிவான திட்ட அறிக்கையை (DPR) நொடியில் உருவாக்குங்கள்.
+            </p>
+          </div>
+          <Link 
+            href="/msme-project" 
+            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-lg whitespace-nowrap shadow transition"
+          >
+            அறிக்கை உருவாக்க →
+          </Link>
+        </div>
             <BusinessModule setCurrentModule={setCurrentModule} />
           </div>
         )}
