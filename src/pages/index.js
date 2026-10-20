@@ -31,7 +31,47 @@ import SpiritualModule from '../components/SpiritualModule';
 import AstrologyModule from '../components/AstrologyModule';
 import TourismModule from '../components/TourismModule';
 import landsData from '../data/landsData.json';
-
+const DIGITAL_STUDIOS = [
+  {
+    id: 'resume',
+    icon: '💼',
+    badge: 'Harvard ATS 1-Page',
+    title: 'ATS Resume Studio',
+    desc: 'முன்னணி நிறுவனங்கள் ஏற்கும் வகையில் உலகத்தரம் வாய்ந்த ஒற்றைப் பக்க ரெஸ்யூம்களை நொடியில் உருவாக்கலாம்.',
+    link: '/resume',
+    btnText: 'ரெஸ்யூம் உருவாக்குக',
+    borderHover: 'hover:border-emerald-500/50',
+    badgeStyle: 'text-emerald-400 bg-emerald-950/70 border-emerald-500/20',
+    iconBg: 'bg-emerald-500/10 border-emerald-500/30',
+    btnBg: 'bg-emerald-600 hover:bg-emerald-500'
+  },
+  {
+    id: 'dpr',
+    icon: '📊',
+    badge: 'PMEGP • UYEGP • MUDRA',
+    title: 'வங்கி கடன் திட்ட அறிக்கை (DPR)',
+    desc: 'அரசு மானியக் கடன்களுக்கு வங்கிகள் ஏற்கும் விரிவான தொழில் திட்ட அறிக்கைகளைத் தயார் செய்யலாம்.',
+    link: '/msme-project',
+    btnText: 'அறிக்கை உருவாக்குக',
+    borderHover: 'hover:border-indigo-500/50',
+    badgeStyle: 'text-indigo-400 bg-indigo-950/70 border-indigo-500/20',
+    iconBg: 'bg-indigo-500/10 border-indigo-500/30',
+    btnBg: 'bg-indigo-600 hover:bg-indigo-500'
+  },
+  {
+    id: 'applications',
+    icon: '🏛️',
+    badge: 'Revenue • EB • Bank • NOC',
+    title: 'அரசு & வங்கி விண்ணப்ப மையம்',
+    desc: 'பட்டா பெயர் மாற்றம், EB இணைப்பு, வங்கி வாரிசுரிமை, RTI மனு & வாரிசுகளின் NOC பத்திரம்.',
+    link: '/applications',
+    btnText: 'விண்ணப்பம் உருவாக்குக',
+    borderHover: 'hover:border-teal-500/50',
+    badgeStyle: 'text-teal-400 bg-teal-950/70 border-teal-500/20',
+    iconBg: 'bg-teal-500/10 border-teal-500/30',
+    btnBg: 'bg-teal-600 hover:bg-teal-500'
+  }
+];
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -463,7 +503,7 @@ export default function Home() {
         {currentModule === 'home' && (
           <div className="space-y-8">
            {/* Fortune-500 ATS Resume Studio கார்டு */}
-        {/* ==================== 3-IN-1 DIGITAL STUDIOS HUB ==================== */}
+        {/* ==================== 3-IN-1 DIGITAL STUDIOS HUB (DYNAMIC) ==================== */}
               <div className="w-full my-4">
                 <div className="flex items-center justify-between mb-3 px-1">
                   <div className="flex items-center gap-2">
@@ -473,99 +513,43 @@ export default function Home() {
                     </h2>
                   </div>
                   <span className="text-[11px] text-slate-400 hidden sm:inline-block">
-                    3 முதன்மை இலவச சேவைகள்
+                    {DIGITAL_STUDIOS.length} முதன்மை இலவச சேவைகள்
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-                  
-                  {/* 1. Resume Studio Card */}
-                  <div className="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-4 shadow-xl transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2.5">
-                        <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-lg">
-                          💼
+                  {DIGITAL_STUDIOS.map((studio) => (
+                    <div
+                      key={studio.id}
+                      className={`bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 ${studio.borderHover} rounded-2xl p-4 shadow-xl transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-2.5">
+                          <div className={`w-9 h-9 rounded-xl border flex items-center justify-center text-lg ${studio.iconBg}`}>
+                            {studio.icon}
+                          </div>
+                          <span className={`text-[9.5px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${studio.badgeStyle}`}>
+                            {studio.badge}
+                          </span>
                         </div>
-                        <span className="text-[9.5px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/70 px-2 py-0.5 rounded border border-emerald-500/20">
-                          Harvard ATS 1-Page
-                        </span>
+                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
+                          {studio.title}
+                        </h3>
+                        <p className="text-[11.5px] text-slate-300 leading-relaxed line-clamp-2">
+                          {studio.desc}
+                        </p>
                       </div>
-                      <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                        ATS Resume Studio
-                      </h3>
-                      <p className="text-[11.5px] text-slate-300 leading-relaxed line-clamp-2">
-                        முன்னணி நிறுவனங்கள் ஏற்கும் வகையில் உலகத்தரம் வாய்ந்த ஒற்றைப் பக்க ரெஸ்யூம்களை நொடியில் உருவாக்கலாம்.
-                      </p>
-                    </div>
-                    <div className="mt-3.5 pt-2.5 border-t border-slate-800/80">
-                      <Link
-                        href="/resume"
-                        className="w-full inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 px-3 rounded-xl shadow transition"
-                      >
-                        <span>ரெஸ்யூம் உருவாக்குக</span>
-                        <span>→</span>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* 2. MSME / Bank DPR Studio Card */}
-                  <div className="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-4 shadow-xl transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2.5">
-                        <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-lg">
-                          📊
-                        </div>
-                        <span className="text-[9.5px] font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/70 px-2 py-0.5 rounded border border-indigo-500/20">
-                          PMEGP • UYEGP • MUDRA
-                        </span>
+                      <div className="mt-3.5 pt-2.5 border-t border-slate-800/80">
+                        <Link
+                          href={studio.link}
+                          className={`w-full inline-flex items-center justify-center gap-1.5 ${studio.btnBg} text-white text-xs font-bold py-2 px-3 rounded-xl shadow transition`}
+                        >
+                          <span>{studio.btnText}</span>
+                          <span>→</span>
+                        </Link>
                       </div>
-                      <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                        வங்கி கடன் திட்ட அறிக்கை (DPR)
-                      </h3>
-                      <p className="text-[11.5px] text-slate-300 leading-relaxed line-clamp-2">
-                        அரசு மானியக் கடன்களுக்கு வங்கிகள் ஏற்கும் விரிவான தொழில் திட்ட அறிக்கைகளைத் தயார் செய்யலாம்.
-                      </p>
                     </div>
-                    <div className="mt-3.5 pt-2.5 border-t border-slate-800/80">
-                      <Link
-                        href="/msme-project"
-                        className="w-full inline-flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 px-3 rounded-xl shadow transition"
-                      >
-                        <span>அறிக்கை உருவாக்குக</span>
-                        <span>→</span>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* 3. Universal Applications Hub Card */}
-                  <div className="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 hover:border-teal-500/50 rounded-2xl p-4 shadow-xl transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-2.5">
-                        <div className="w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-lg">
-                          🏛️
-                        </div>
-                        <span className="text-[9.5px] font-bold uppercase tracking-wider text-teal-400 bg-teal-950/70 px-2 py-0.5 rounded border border-teal-500/20">
-                          Revenue • EB • Bank • NOC
-                        </span>
-                      </div>
-                      <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                        அரசு & வங்கி விண்ணப்ப மையம்
-                      </h3>
-                      <p className="text-[11.5px] text-slate-300 leading-relaxed line-clamp-2">
-                        பட்டா பெயர் மாற்றம், EB இணைப்பு, வங்கி வாரிசுரிமை, RTI மனு & வாரிசுகளின் NOC பத்திரம்.
-                      </p>
-                    </div>
-                    <div className="mt-3.5 pt-2.5 border-t border-slate-800/80">
-                      <Link
-                        href="/applications"
-                        className="w-full inline-flex items-center justify-center gap-1.5 bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold py-2 px-3 rounded-xl shadow transition"
-                      >
-                        <span>விண்ணப்பம் உருவாக்குக</span>
-                        <span>→</span>
-                      </Link>
-                    </div>
-                  </div>
-
+                  ))}
                 </div>
               </div>
            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950 via-green-900 to-emerald-950 border border-emerald-500/40 shadow-2xl p-6 md:p-8">
