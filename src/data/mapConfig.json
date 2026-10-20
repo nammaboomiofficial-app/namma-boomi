@@ -1,48 +1,59 @@
 {
   "mapDefaults": {
     "center": [12.75, 80.1],
-    "zoom": 9,
+    "zoom": 10,
     "focusedZoom": 16,
     "districtZoom": 11,
     "earthRadiusMeters": 6371000,
+    "earthRadiusKm": 6371,
     "metersToFeet": 3.28084,
     "sqMetersToSqFt": 10.7639104,
-    "boundaryOffset": 0.0018
+    "boundaryOffset": 0.0018,
+    "flyDuration": 1.5,
+    "tileLayerStreet": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "tileLayerSatellite": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    "googleMapsDirUrl": "https://www.google.com/maps/dir/?api=1",
+    "pinIconRetina": "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+    "pinIcon": "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+    "pinShadow": "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png"
   },
   "districtCenters": {
     "செங்கல்பட்டு": [12.6939, 79.9757],
-    "காஞ்சிபுரம்": [12.8342, 79.7036],
-    "திருவள்ளூர்": [13.1437, 79.9079],
-    "சென்னை": [13.0827, 80.2707]
+    "காஞ்சிபுரம்": [12.8342, 79.7036]
   },
   "defaultLocations": [
-    { "lat": 12.7480, "lng": 80.1980 },
-    { "lat": 12.6840, "lng": 79.9830 },
-    { "lat": 12.7880, "lng": 80.2220 },
-    { "lat": 11.0168, "lng": 76.9558 },
-    { "lat": 9.9252, "lng": 78.1198 }
+    { "lat": 12.6939, "lng": 79.9757 }
   ],
   "uiLabels": {
-    "title": "📍 நேரலை நில அமைவிடம் & எல்லை வரைபடம் (GPS Boundary Map)",
-    "locateMe": "📍 என் இருப்பிடம் (Live GPS)",
-    "locating": "⏳ கண்டறிகிறது...",
+    "title": "நேரலை நில அமைவிடம் & எல்லை வரைபடம் (GPS Boundary Map)",
+    "locateMe": "என் இருப்பிடம் (Live GPS)",
+    "locating": "இருப்பிடம் தேடப்படுகிறது...",
     "satelliteBadge": "செயற்கைக்கோள் வசதியுடன்",
-    "boundaryInfo": "📐 நில எல்லைத் தகவல்:",
-    "perimeterLabel": "சுற்றளவு:",
-    "areaLabel": "பரப்பளவு:",
+    "boundaryInfo": "நில எல்லைத் தகவல்:",
+    "perimeterLabel": "சுற்றளவு",
+    "areaLabel": "பரப்பளவு",
     "feetUnit": "அடி",
     "meterUnit": "மீ",
     "centsUnit": "சென்ட்",
     "sqftUnit": "ச.அடி",
     "kmUnit": "கி.மீ",
-    "distanceFromYou": "🚗 உங்கள் இடத்திலிருந்து:",
-    "visitPassBtn": "🎫 விசிட் பாஸ் பெறுக",
-    "userLocationTitle": "📍 உங்கள் தற்போதைய இருப்பிடம்",
-    "defaultTag": "விவசாய நிலம்",
-    "defaultTitle": "பிரீமியம் நிலம்",
-    "defaultLocation": "தமிழ்நாடு",
+    "distanceFromYou": "உங்கள் இடத்திலிருந்து",
+    "visitPassBtn": "பாஸ் பெறுக",
+    "directionsBtn": "🧭 வழித்தடம்",
+    "streetMapLayer": "🗺️ வரைபடம் (Map)",
+    "satelliteMapLayer": "🛰️ செயற்கைக்கோள் (Satellite)",
+    "userPinLiveTitle": "📍 உங்கள் நேரலை இருப்பிடம்",
+    "userPinManualTitle": "📍 நீங்கள் தேர்ந்தெடுத்த இடம்",
+    "userPinLiveSubtitle": "நேரலை ஜிபிஎஸ்",
+    "userPinManualSubtitle": "தேர்ந்தெடுக்கப்பட்ட புள்ளி",
+    "accuracyLabel": "துல்லியம்: ±",
+    "defaultTag": "விற்பனைக்கு",
+    "defaultTitle": "நில விவரம்",
     "defaultPrice": "விலை தகவல்",
-    "gpsError": "இருப்பிட அனுமதி மறுக்கப்பட்டது அல்லது பிழை ஏற்பட்டது.",
-    "gpsUnsupported": "உங்கள் உலாவியில் GPS வசதி ஆதரிக்கப்படவில்லை."
+    "allFilter": "அனைத்தும்",
+    "searchPlaceholder": "ஊர் பெயர் அல்லது லொகேஷன் தேடுக...",
+    "searchBtn": "தேடு",
+    "searching": "தேடப்படுகிறது...",
+    "pinDropHint": "வரைபடத்தில் உங்கள் நிலத்தின் இடத்தை விரலால் தொட்டுத் தேர்ந்தெடுக்கலாம்"
   }
 }

@@ -37,10 +37,15 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
   };
 
   const handleMapClick = (prop) => {
-    if (onSelectMapLocation && prop.coordinates) {
-      onSelectMapLocation(prop.coordinates);
+    // மேலே உள்ள லீஃப்லெட் வரைபடத்திற்கு நகர்த்த
+    if (onSelectMapLocation) {
+      onSelectMapLocation(prop.id || prop._id);
     } else {
-      const mapUrl = `https://www.google.com/maps/search/?api=1&query=${prop.coordinates?.lat || 12.6939},${prop.coordinates?.lng || 79.9757}`;
+      // கூகுள் மேப்ஸ் நேரடி வழித்தடம்
+      const destination = (prop.lat && prop.lng)
+        ? `${prop.lat},${prop.lng}`
+        : encodeURIComponent(`${prop.village || ''}, ${prop.taluk || ''}, ${prop.district || ''}, Tamil Nadu`);
+      const mapUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`;
       window.open(mapUrl, '_blank');
     }
   };
