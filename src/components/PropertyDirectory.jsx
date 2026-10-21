@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import propertiesData from '../data/propertiesData.json';
+import propertiesData from '../data/landsData.json';
 import { getWhatsAppLink } from '../data/contactConfig';
 
 export default function PropertyDirectory({ onSelectMapLocation }) {
@@ -7,7 +7,7 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
   const [selectedType, setSelectedType] = useState('all');
   const [activeMedia, setActiveMedia] = useState(null);
 
-  const filteredProperties = propertiesData.filter((prop) => {
+  const filteredProperties = (propertiesData || []).filter((prop) => {
     const matchCategory = selectedCategory === 'all' || prop.category === selectedCategory;
     const matchType = selectedType === 'all' || prop.listingType === selectedType;
     return matchCategory && matchType;
@@ -15,8 +15,10 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
 
   const getListingBadge = (type) => {
     switch (type) {
+      case 'விற்பனை':
       case 'sale':
         return <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] px-2 py-0.5 rounded-full font-bold">🏷️ விற்பனைக்கு</span>;
+      case 'வாடகை':
       case 'rent':
         return <span className="bg-blue-500/20 text-blue-300 border border-blue-500/40 text-[10px] px-2 py-0.5 rounded-full font-bold">🔑 வாடகைக்கு</span>;
       case 'lease':
@@ -27,27 +29,23 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
   };
 
   const handleVisitPass = (prop) => {
-    const message = `வணக்கம் நம்ம பூமி 360! 🏡\nநான் விசிட் பாஸ் மற்றும் உரிமையாளர் எண் பெற விரும்புகிறேன்:\n\n📌 சொத்து: ${prop.title}\n📍 இடம்: ${prop.location}, ${prop.district}\n🆔 சர்வே எண்: ${prop.surveyNo || 'N/A'}\n💰 விலை: ${prop.price} ${prop.priceUnit || ''}`;
+    const message = `வணக்கம் நம்ம பூமி 360! 🏡\nநான் விசிட் பாஸ் மற்றும் உரிமையாளர் எண் பெற விரும்புகிறேன்:\n\n📌 சொத்து: ${prop.title}\n📍 இடம்: ${prop.village || ''}, ${prop.taluk || ''}, ${prop.district || ''}\n🆔 நில ஐடி: ${prop.id || 'N/A'}\n💰 கேட்கும் விலை: ${prop.askingPrice || prop.price || ''}`;
     window.open(getWhatsAppLink(message), '_blank');
   };
 
   const handleLoanGuidance = (prop) => {
-    const message = `வணக்கம் நம்ம பூமி 360! 📑\nஇந்த சொத்திற்கான கடன் (Loan), EMI மற்றும் ஆவண வழிகாட்டல் (DAB) தேவைப்படுகிறது:\n\n📌 சொத்து: ${prop.title}\n📍 இடம்: ${prop.location}, ${prop.district}\n💰 மதிப்பு: ${prop.totalPrice || prop.price}`;
+    const message = `வணக்கம் நம்ம பூமி 360! 📑\nஇந்த சொத்திற்கான கடன் (Loan), EMI மற்றும் ஆவண வழிகாட்டல் (DAB) தேவைப்படுகிறது:\n\n📌 சொத்து: ${prop.title}\n📍 இடம்: ${prop.village || ''}, ${prop.district || ''}\n💰 மதிப்பு: ₹${(prop.approxValue || 0).toLocaleString('en-IN')}`;
     window.open(getWhatsAppLink(message), '_blank');
   };
 
-  const handleMapClick = (prop) => {
-    // மேலே உள்ள லீஃப்லெட் வரைபடத்திற்கு நகர்த்த
-    if (onSelectMapLocation) {
-      onSelectMapLocation(prop.id || prop._id);
-    } else {
-      // கூகுள் மேப்ஸ் நேரடி வழித்தடம்
-      const destination = (prop.lat && prop.lng)
-        ? `${prop.lat},${prop.lng}`
-        : encodeURIComponent(`${prop.village || ''}, ${prop.taluk || ''}, ${prop.district || ''}, Tamil Nadu`);
-      const mapUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`;
-      window.open(mapUrl, '_blank');
-    }
+  const handleGetDirections = (prop) => {
+    const destination = (prop.lat && prop.lng)
+      ? `${prop.lat},${prop.lng}`
+      : encodeURIComponent(`${prop.village || ''}, ${prop.taluk || ''}, ${prop.district || ''}, Tamil Nadu`);
+    
+    // எந்தத் தடையுமின்றி நேரடியாகக் கூகுள் மேப்ஸ் நேவிகேஷனைத் திறக்கும்
+    const mapUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`;
+    window.open(mapUrl, '_blank');
   };
 
   return (
@@ -59,7 +57,7 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
             🌐 360° நேரலை நில & சொத்து சந்தை
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
-            சரிபார்க்கப்பட்ட <span className="text-emerald-400">நிலங்கள், வீடுகள் & கடைகள்</span>
+            சரிபார்க்கப்பட்ட <span className="text-emerald-400">நிலங்கள் & மனைகள்</span>
           </h2>
         </div>
         <div className="text-xs text-slate-300 bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl">
@@ -72,9 +70,9 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
           {[
             { id: 'all', label: 'அனைத்தும்' },
-            { id: 'land', label: '🌾 நிலங்கள்' },
-            { id: 'house', label: '🏠 வீடுகள்' },
-            { id: 'commercial', label: '🏢 கடைகள்' }
+            { id: 'விவசாய பூமி', label: '🌾 விவசாய பூமி' },
+            { id: 'DTCP மனைகள்', label: '📐 DTCP மனைகள்' },
+            { id: 'மெயின் ரோடு பேசிங்', label: '🛣️ மெயின் ரோடு' }
           ].map((cat) => (
             <button
               key={cat.id}
@@ -93,9 +91,7 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
         <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
           {[
             { id: 'all', label: 'அனைத்து வகை' },
-            { id: 'sale', label: 'விற்பனை' },
-            { id: 'rent', label: 'வாடகை' },
-            { id: 'lease', label: 'லீஸ்' }
+            { id: 'விற்பனை', label: 'விற்பனை' }
           ].map((type) => (
             <button
               key={type.id}
@@ -123,7 +119,7 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
               {/* படம், பேட்ஜ்கள் & வீடியோ பட்டன் */}
               <div className="relative h-48 w-full overflow-hidden bg-slate-950">
                 <img
-                  src={prop.media?.featured}
+                  src={prop.image || prop.media?.featured || 'https://images.unsplash.com/photo-1500382017468-9049fed747ef'}
                   alt={prop.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -131,14 +127,14 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
                 {/* மேல் இடது பேட்ஜ்கள் */}
                 <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 items-start">
                   <div className="flex items-center gap-1.5">
-                    {prop.badgePrimary && (
+                    {prop.badge && (
                       <span className="bg-slate-950/80 backdrop-blur-sm text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded">
-                        {prop.badgePrimary}
+                        {prop.badge}
                       </span>
                     )}
                     {getListingBadge(prop.listingType)}
                   </div>
-                  {prop.verified && (
+                  {prop.verifiedBoundary && (
                     <span className="bg-blue-950/80 backdrop-blur-sm text-blue-300 text-[10px] px-2 py-0.5 rounded border border-blue-500/30 font-medium">
                       ✓ எல்லை சரிபார்க்கப்பட்டது
                     </span>
@@ -147,9 +143,9 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
 
                 {/* மேல் வலது ஸ்கோர் & 360 பேட்ஜ் */}
                 <div className="absolute top-2.5 right-2.5 flex flex-col items-end gap-1">
-                  {prop.score && (
+                  {prop.trustScore && (
                     <span className="bg-emerald-500/90 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded shadow">
-                      {prop.score}
+                      ஸ்கோர்: {prop.trustScore}
                     </span>
                   )}
                   {prop.has360 && (
@@ -160,9 +156,9 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
                 </div>
 
                 {/* நேரலை வீடியோ பொத்தான் */}
-                {prop.media?.videoUrl && (
+                {prop.videoUrl && (
                   <button
-                    onClick={() => setActiveMedia({ type: 'video', url: prop.media.videoUrl, title: prop.title })}
+                    onClick={() => setActiveMedia({ type: 'video', url: prop.videoUrl, title: prop.title })}
                     className="absolute bottom-2.5 right-2.5 bg-red-600 hover:bg-red-500 text-white text-[11px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg font-bold cursor-pointer transition-all"
                   >
                     <span>▶</span> நேரலை வீடியோ
@@ -177,29 +173,32 @@ export default function PropertyDirectory({ onSelectMapLocation }) {
                 </h3>
 
                 <div className="text-[11px] text-slate-300 flex items-center gap-1 truncate">
-                  <span className="text-red-400">📍</span> {prop.location}, {prop.district}
+                  <span className="text-red-400">📍</span> {prop.village}, {prop.taluk}, {prop.district}
                 </div>
 
-                <div className="text-[11px] text-slate-300 flex items-center gap-1 truncate">
-                  <span className="text-amber-400">📄</span> சர்வே எண்: {prop.surveyNo || 'சரிபார்க்கப்பட்டது'} • {prop.specs?.area || ''}
+                <div className="text-[11px] text-slate-300 flex items-center justify-between">
+                  <span><span className="text-amber-400">📄</span> சர்வே: {prop.surveyNo || 'சரிபார்க்கப்பட்டது'}</span>
+                  <span className="text-emerald-400 font-semibold">{prop.extent}</span>
                 </div>
 
-                {/* விலை மற்றும் மேப் பட்டன் */}
+                {/* விலை மற்றும் கெட் டைரக்ஷன்ஸ் பட்டன் */}
                 <div className="pt-2 flex items-center justify-between border-t border-slate-800">
                   <div>
-                    <span className="text-[10px] text-slate-300 block">கேட்கும் விலை:</span>
+                    <span className="text-[10px] text-slate-400 block">கேட்கும் விலை:</span>
                     <strong className="text-base font-extrabold text-white">
-                      {prop.price} <span className="text-xs font-normal text-slate-300">{prop.priceUnit}</span>
+                      {prop.askingPrice}
                     </strong>
                   </div>
 
-                  {/* பழைய மேப் பட்டன் */}
-                  <button
-                    onClick={() => handleMapClick(prop)}
-                    className="bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-500/40 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    <span>🗺️</span> மேப்
-                  </button>
+                  {/* கூகுள் மேப்ஸ் நேரடி வழித்தடப் பட்டன் */}
+                 <a
+  href={`https://www.google.com/maps/dir/?api=1&destination=${prop.lat},${prop.lng}&travelmode=driving`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="bg-blue-600 hover:bg-blue-500 text-white shadow-md px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all inline-flex cursor-pointer no-underline"
+>
+  <span>🧭</span> வழித்தடம் (Route)
+</a>
                 </div>
               </div>
             </div>

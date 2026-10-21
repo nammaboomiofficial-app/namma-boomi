@@ -10,14 +10,7 @@ import {
   FINANCE_CONFIG, 
   generateMockLandSurvey 
 } from '../config';
-const LandMap = dynamic(() => import('../components/LandMap'), {
-  ssr: false,
-  loading: () => (
-    <div className="h-[360px] w-full rounded-2xl bg-slate-800/50 animate-pulse flex items-center justify-center text-slate-100">
-      வரைபடம் ஏற்றப்படுகிறது...
-    </div>
-  ),
-});
+
 import LandGovtServices from '../components/LandGovtServices';
 import LandCalculator from '../components/LandCalculator';
 import SellLandModal from '../components/SellLandModal';
@@ -567,9 +560,7 @@ export default function Home() {
 
               </div>
             </div>
-            <div className="w-full my-6">
-              <LandMap />
-            </div>
+            
             {/* கீழே தமிழ்நாடு வணிகக் கூட்டமைப்பு கார்டு */}
             <div className="rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/40 to-slate-900 border border-emerald-500/30 p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
               <div className="space-y-1.5 text-center md:text-left">
@@ -743,13 +734,7 @@ export default function Home() {
                     </button>
                   ))}
                 </div>
-                <div id="master-land-map" className="w-full my-4">
-  <LandMap 
-    onSelectVisitPass={(land) => setSelectedVisitPassLand(land)}
-    focusedLandId={focusedLandId}
-    filterDistrict={filterDistrict} 
-  />
-</div>
+                
                 <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-lg">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
                     <span>🔍 மாவட்ட வடிகட்டி:</span>
@@ -929,12 +914,19 @@ export default function Home() {
                             >
                               <span>📲</span>
                             </button>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); setFocusedLandId(land.id || land._id); document.getElementById('master-land-map')?.scrollIntoView({ behavior: 'smooth' }); }}
-                              className="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1"
-                            >
-                              <span>🗺️</span> மேப்
-                            </button>
+                            <a
+  href={
+    land.lat && land.lng
+      ? `https://www.google.com/maps/search/?api=1&query=${land.lat},${land.lng}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((land.village || '') + ', ' + (land.district || '') + ', Tamil Nadu')}`
+  }
+  target="_blank"
+  rel="noopener noreferrer"
+  onClick={(e) => e.stopPropagation()}
+  className="bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-md transition-all no-underline"
+>
+  <span>📍</span> மேப் பார்வை
+</a>
                           </div>
                         </div>
 
