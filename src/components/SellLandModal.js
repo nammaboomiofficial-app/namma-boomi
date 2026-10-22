@@ -28,8 +28,45 @@ export default function SellLandModal({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 1. PostgreSQL டேட்டாபேஸில் சேமித்தல்
+    try {
+      const payload = {
+        seller_name: formData.name || 'நில உரிமையாளர்',
+        seller_phone: formData.phone || '',
+        seller_type: 'நேரடி உரிமையாளர்',
+        title: `${formData.category || 'நிலம்'} - ${formData.district || ''}`,
+        category: formData.category || 'விவசாய நிலம்',
+        listing_type: formData.purpose || 'விற்பனை',
+        district: formData.district || '',
+        taluk: '',
+        village: formData.location || '',
+        survey_number: '',
+        land_area: formData.area || '',
+        total_price: Number(formData.price) || 0,
+        features: [],
+        images: []
+      };
+
+      const res = await fetch('/api/lands', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (!data.success) {
+        alert('டேட்டாபேஸ் பிழை: ' + data.error);
+        console.error('டேட்டாபேஸ் பிழை:', data.error);
+        return;
+      }
+    } catch (err) {
+      console.error('API அழைப்பில் பிழை:', err);
+    }
+
+    // 2. வாட்ஸ்அப் மெசேஜ் அனுப்பும் பழைய பகுதி
 
     const message = `${whatsAppTemplate.greeting || 'வணக்கம் நம்ம பூமி 360, புதிய சொத்து விவரங்களை பதிவிட விரும்புகிறேன்:'}
 ${whatsAppTemplate.purposeLabel || '🎯 நோக்கம்:'} ${formData.purpose}

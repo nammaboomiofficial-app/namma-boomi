@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { 
@@ -14,6 +14,7 @@ import {
 import LandGovtServices from '../components/LandGovtServices';
 import LandCalculator from '../components/LandCalculator';
 import SellLandModal from '../components/SellLandModal';
+import BuyerRequirementModal from '../components/BuyerRequirementModal';
 import contactConfig from '../data/contactConfig';
 import TamilHeritageModule from '../components/TamilHeritageModule';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
@@ -49,6 +50,7 @@ export default function Home() {
   const [quickFilter, setQuickFilter] = useState('all');
   const [activeMapModalLand, setActiveMapModalLand] = useState(null);
   const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+  const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
   const [selectedLandDetail, setSelectedLandDetail] = useState(null);
   const [selectedVisitPassLand, setSelectedVisitPassLand] = useState(null);
   const [visitorName, setVisitorName] = useState('');
@@ -59,7 +61,20 @@ export default function Home() {
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterListingType, setFilterListingType] = useState('all');
   const [isHeritageModalOpen, setIsHeritageModalOpen] = useState(false);
-  
+  useEffect(() => {
+    async function loadDatabaseLands() {
+      try {
+        const res = await fetch('/api/lands');
+        const data = await res.json();
+        if (data.success && data.lands && data.lands.length > 0) {
+          setListedLands(prev => [...data.lands, ...prev]);
+        }
+      } catch (err) {
+        console.error('டேட்டாபேஸ் தகவல் எடுப்பதில் பிழை:', err);
+      }
+    }
+    loadDatabaseLands();
+  }, []);
 
   // விவசாயம் சப்-டேப்கள்
   const [agriSubTab, setAgriSubTab] = useState('crops');
@@ -705,6 +720,12 @@ export default function Home() {
                 >
                   + நிலத்தை விற்க
                 </button>
+                <button
+  onClick={() => setIsBuyerModalOpen(true)}
+  className="px-3 py-1.5 bg-teal-600 hover:bg-teal-500 text-white rounded-lg text-xs font-bold shadow flex items-center gap-1 transition"
+>
+  + தேவை பதிவு
+</button>
               </div>
             </div>
 
@@ -836,11 +857,17 @@ export default function Home() {
                     >
                       <div className="relative h-40 w-full overflow-hidden bg-slate-950">
                         <img
-                          src={land.image}
+                          src={
+  (land.images && land.images[0]) || 
+  land.image || 
+  (land.category?.includes('வீடு') || land.title?.includes('வீடு')
+    ? 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80'
+    : 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=80')
+}
                           alt={land.title}
                           className="w-full h-full object-cover hover:scale-105 transition duration-500"
                         />
-                        {land.videoUrl && (
+                        {(land.videoUrl || land.video_url || true) && (
   <button
     type="button"
     onClick={(e) => {
@@ -854,7 +881,7 @@ export default function Home() {
 )}
                         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
                           <span className="bg-slate-950/90 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded">
-                            {land.badge}
+                            {land.seller_type || land.badge || 'நேரடி உரிமையாளர்'}
                           </span>
                           {land.verifiedBoundary && (
                             <span className="bg-blue-950/90 text-sky-300 border border-sky-500/30 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
@@ -865,7 +892,7 @@ export default function Home() {
 
                         <div className="absolute top-2.5 right-2.5 flex flex-col items-end gap-1">
                           <span className="bg-emerald-500 text-slate-950 text-[11px] font-black px-2 py-0.5 rounded shadow">
-                            {land.trustScore}/100 {land.trustGrade}
+                            {(land.verification_score || land.trustScore || 100)}/100 {land.trustGrade || 'A+'}
                           </span>
                           {land.droneView && (
                             <span className="bg-purple-950/90 text-purple-300 border border-purple-500/40 text-[9px] font-bold px-1.5 py-0.5 rounded">
@@ -884,11 +911,11 @@ export default function Home() {
                           <div className="text-[11px] text-slate-100 space-y-1">
                             <div className="flex items-center gap-1">
                               <span className="text-emerald-400">📍</span>
-                              <span>{land.village}, {land.taluk}</span>
+                              <span>{land.district ? `${land.district}, ` : ''}{land.village || land.taluk || 'இடம் குறிப்பிடப்படவில்லை'}</span>
                             </div>
                             <div className="flex items-center gap-1">
                               <span className="text-emerald-400">📜</span>
-                              <span>சர்வே எண்: <strong className="text-slate-200">#{land.surveyNo}</strong> • {land.extent}</span>
+                              <span>சர்வே எண்: <strong className="text-slate-200">#{land.survey_number || land.surveyNo || '-'}</strong></span>
                             </div>
                             <div className="flex items-center gap-1">
                               <span className="text-sky-400">💧</span>
@@ -900,7 +927,7 @@ export default function Home() {
                         <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800/80 flex items-center justify-between">
                           <div>
                             <div className="text-[9px] text-slate-100">கேட்கும் விலை:</div>
-                            <div className="text-base font-black text-emerald-400">{land.askingPrice}</div>
+                           <div className="text-base font-black text-emerald-400">{land.askingPrice || (land.total_price ? `₹${Number(land.total_price).toLocaleString('en-IN')}` : 'விலை விவரம் இல்லை')}</div>
                           </div>
                           <div className="flex gap-1">
                             <button
@@ -1144,7 +1171,10 @@ export default function Home() {
                   isOpen={isSellModalOpen}
                   onClose={() => setIsSellModalOpen(false)}
                 />
-
+<BuyerRequirementModal 
+  isOpen={isBuyerModalOpen} 
+  onClose={() => setIsBuyerModalOpen(false)} 
+/>
               </div>
             )}
 
