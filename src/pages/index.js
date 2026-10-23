@@ -33,6 +33,8 @@ import SpiritualModule from '../components/SpiritualModule';
 import AstrologyModule from '../components/AstrologyModule';
 import TourismModule from '../components/TourismModule';
 import landsData from '../data/landsData.json';
+import ModuleAdsSection from '@/components/ModuleAdsSection';
+import PostAdModal from '@/components/PostAdModal';
 
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
@@ -61,6 +63,7 @@ export default function Home() {
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterListingType, setFilterListingType] = useState('all');
   const [isHeritageModalOpen, setIsHeritageModalOpen] = useState(false);
+  const [isPostAdModalOpen, setIsPostAdModalOpen] = useState(false);
   useEffect(() => {
     async function loadDatabaseLands() {
       try {
@@ -175,7 +178,7 @@ export default function Home() {
 
   const filteredLands = (listedLands || landsData).filter((l) => {
     // 1. மாவட்ட வடிகட்டி
-    const matchesDistrict = filterDistrict === 'அனைத்தும்' || l.district === filterDistrict;
+    const matchesDistrict = filterDistrict === 'அனைத்தும்' || (l.district && l.district.trim() === filterDistrict.trim());
     if (!matchesDistrict) return false;
 
     // 2. சொத்து வகை வடிகட்டி (நிலம், வீடு, வணிக கடை)
@@ -787,6 +790,17 @@ export default function Home() {
                       காஞ்சிபுரம்
                     </button>
                   </div>
+                  {/* விளம்பரம் சேர்க்கும் பொத்தான் */}
+      <div className="flex justify-end my-2">
+        <button
+          onClick={() => setIsPostAdModalOpen(true)}
+          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center space-x-1 shadow-sm"
+        >
+          <span>+ விளம்பரம் சேர்க்க</span>
+        </button>
+      </div>
+                  {/* உள்ளூர் மாட்யூல் விளம்பரங்கள் பகுதி */}
+<ModuleAdsSection selectedDistrict={filterDistrict} />
 
                   <span className="text-[11px] text-slate-100">
                     மொத்தம் {filteredLands.length} சரிபார்க்கப்பட்ட நிலங்கள்
@@ -1175,6 +1189,12 @@ export default function Home() {
   isOpen={isBuyerModalOpen} 
   onClose={() => setIsBuyerModalOpen(false)} 
 />
+{/* விளம்பரம் சேர்க்கும் பாப்-அப் படிவம் */}
+      <PostAdModal
+        isOpen={isPostAdModalOpen}
+        onClose={() => setIsPostAdModalOpen(false)}
+        currentDistrict={filterDistrict}
+      />
               </div>
             )}
 
