@@ -401,7 +401,204 @@ export default function Home() {
       </header>
 
       {/* பிரதான பக்கம் */}
-      <main className="max-w-6xl mx-auto p-4 md:p-8 space-y-8">
+      <main className="max-w-6xl mx-auto p-4 md:p-8 space-y-8 pb-28 md:pb-12">
+        {/* === அந்தந்த மாட்யூலுக்கு ஏற்ற தனித்துவமான விளம்பரப் பலகை === */}
+        {(() => {
+          const mod = currentModule;
+        if (!mod || mod === 'home') return null; // ஹோம் பேஜில் விளம்பரப் பலகை வராமல் தடுக்கும்
+          const config = {
+            
+            land: {
+              title: 'பூமி & நிலம் நேரடி விளம்பரங்கள்',
+              desc: 'டிடிசிபி மனைகள், விவசாய நிலங்கள், வீடுகள் & குத்தகைத் தொடர்புகள்',
+              icon: '🏡',
+              bg: 'from-amber-950/40 via-slate-900 to-slate-900',
+              border: 'border-amber-500/30',
+              accent: 'text-amber-400',
+              btn: 'bg-amber-600 hover:bg-amber-500',
+              badge: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
+              tags: ['மனைகள்', 'விவசாய பூமி', 'வீடு / வாடகை', 'வணிக இடம்']
+            },
+            finance: {
+              title: 'நிதி & கடன் சேவை விளம்பரங்கள்',
+              desc: 'வங்கி கடன்கள், தனிநபர் கடன், தொழில் நிதி & அடமானத் தீர்வுகள்',
+              icon: '💰',
+              bg: 'from-blue-950/40 via-slate-900 to-slate-900',
+              border: 'border-blue-500/30',
+              accent: 'text-blue-400',
+              btn: 'bg-blue-600 hover:bg-blue-500',
+              badge: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
+              tags: ['Mudra கடன்', 'MSME நிதி', 'வீட்டுக் கடன்', 'வாகனக் கடன்']
+            },
+            insurance: {
+              title: 'காப்பீடு & பாதுகாப்பு விளம்பரங்கள்',
+              desc: 'ஆயுள் காப்பீடு, வாகனக் காப்பீடு, பயிர்க் காப்பீடு & ஆரோக்கிய நலன்கள்',
+              icon: '🛡️',
+              bg: 'from-cyan-950/40 via-slate-900 to-slate-900',
+              border: 'border-cyan-500/30',
+              accent: 'text-cyan-400',
+              btn: 'bg-cyan-600 hover:bg-cyan-500',
+              badge: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20',
+              tags: ['ஆயுள் காப்பீடு', 'பயிர் காப்பீடு', 'வாகன பாலிசி', 'கிளைம் உதவி']
+            },
+            agri: {
+              title: 'விவசாய & பண்ணை வணிக விளம்பரங்கள்',
+              desc: 'நாட்டு விதைகள், இயற்கை உரம், டிராக்டர் வாடகை, ஆடு/மாடு விற்பனை',
+              icon: '🌾',
+              bg: 'from-emerald-950/40 via-slate-900 to-slate-900',
+              border: 'border-emerald-500/30',
+              accent: 'text-emerald-400',
+              btn: 'bg-emerald-600 hover:bg-emerald-500',
+              badge: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
+              tags: ['இயற்கை உரம்', 'டிராக்டர் வாடகை', 'விளைபொருட்கள்', 'கால்நடைகள்']
+            },
+            jobs: {
+              title: 'உள்ளூர் & நிறுவன வேலைவாய்ப்பு விளம்பரங்கள்',
+              desc: 'நிறுவன ஆள்தேர்வு, பகுதிநேரப் பணிகள், அலுவலக வேலைகள் & திறன் தேர்வுகள்',
+              icon: '💼',
+              bg: 'from-violet-950/40 via-slate-900 to-slate-900',
+              border: 'border-violet-500/30',
+              accent: 'text-violet-400',
+              btn: 'bg-violet-600 hover:bg-violet-500',
+              badge: 'bg-violet-500/10 text-violet-300 border-violet-500/20',
+              tags: ['ஆட்கள் தேவை', 'டிரைவர் பணி', 'அலுவலக வேலை', 'விற்பனை பிரதிநிதி']
+            },
+            wholesale: {
+              title: 'மொத்த விற்பனை & ஆலை நேரடி விளம்பரங்கள்',
+              desc: 'அரிசி ஆலைகள், மளிகைப் பொருட்கள், பேக்கிங் & மொத்தக் கொள்முதல் தொடர்புகள்',
+              icon: '📦',
+              bg: 'from-orange-950/40 via-slate-900 to-slate-900',
+              border: 'border-orange-500/30',
+              accent: 'text-orange-400',
+              btn: 'bg-orange-600 hover:bg-orange-500',
+              badge: 'bg-orange-500/10 text-orange-300 border-orange-500/20',
+              tags: ['ஆலை நேரடி அரிசி', 'பருப்பு வகைகள்', 'எண்ணெய் மொத்த விற்பனை', 'லாரி வாடகை']
+            },
+            business: {
+              title: 'MSME & தொழில் வணிக விளம்பரங்கள்',
+              desc: 'தொழில் கூட்டாண்மை, இயந்திரங்கள் விற்பனை, ஜிஎஸ்டி & உரிமச் சேவைகள்',
+              icon: '🏭',
+              bg: 'from-rose-950/40 via-slate-900 to-slate-900',
+              border: 'border-rose-500/30',
+              accent: 'text-rose-400',
+              btn: 'bg-rose-600 hover:bg-rose-500',
+              badge: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
+              tags: ['இயந்திரங்கள்', 'தொழில் முதலீடு', 'டிபிஆர் அறிக்கை', 'விநியோகஸ்தர் தேவை']
+            },
+            education: {
+              title: 'கல்வி, பயிற்சி & திறன் மேம்பாட்டு விளம்பரங்கள்',
+              desc: 'கணினிப் பயிற்சிகள், போட்டித் தேர்வுப் பயிற்சிகள் & பள்ளி/கல்லூரி சேர்க்கை',
+              icon: '🎓',
+              bg: 'from-teal-950/40 via-slate-900 to-slate-900',
+              border: 'border-teal-500/30',
+              accent: 'text-teal-400',
+              btn: 'bg-teal-600 hover:bg-teal-500',
+              badge: 'bg-teal-500/10 text-teal-300 border-teal-500/20',
+              tags: ['TNPSC பயிற்சி', 'கம்ப்யூட்டர் கோர்ஸ்', 'ட்யூஷன் மையம்', 'ஸ்போக்கன் இங்கிலீஷ்']
+            },
+            spiritual: {
+              title: 'ஆன்மீகம், கோவில் & வழிபாட்டு விளம்பரங்கள்',
+              desc: 'கோவில் விசேஷங்கள், பூஜைப் பொருட்கள், வாஸ்து & யாத்திரைச் சேவைகள்',
+              icon: '🛕',
+              bg: 'from-yellow-950/40 via-slate-900 to-slate-900',
+              border: 'border-yellow-500/30',
+              accent: 'text-yellow-400',
+              btn: 'bg-yellow-600 hover:bg-yellow-500 text-slate-950',
+              badge: 'bg-yellow-500/10 text-yellow-300 border-yellow-500/20',
+              tags: ['பூஜைப் பொருட்கள்', 'யாத்திரை வேன்', 'திருவிழா அறிவிப்பு', 'வாஸ்து']
+            },
+            tourism: {
+              title: 'சுற்றுலா & பயண சேவை விளம்பரங்கள்',
+              desc: 'டூர் பேக்கேஜ்கள், ரிசார்ட் முன்பதிவு, கால் டாக்ஸி & தங்குமிடங்கள்',
+              icon: '🚗',
+              bg: 'from-sky-950/40 via-slate-900 to-slate-900',
+              border: 'border-sky-500/30',
+              accent: 'text-sky-400',
+              btn: 'bg-sky-600 hover:bg-sky-500',
+              badge: 'bg-sky-500/10 text-sky-300 border-sky-500/20',
+              tags: ['டூர் பேக்கேஜ்', 'கால் டாக்ஸி', 'ஹோட்டல் ரூம்கள்', 'ஹில் ஸ்டேஷன் ட்ரிப்']
+            },
+            astro: {
+              title: 'ஜோதிடம் & பரிகார விளம்பரங்கள்',
+              desc: 'ஜாதகக் கணிப்பு, திருமணப் பொருத்தம், நவரத்தினக் கற்கள் & எண்கணிதம்',
+              icon: '🔮',
+              bg: 'from-indigo-950/40 via-slate-900 to-slate-900',
+              border: 'border-indigo-500/30',
+              accent: 'text-indigo-400',
+              btn: 'bg-indigo-600 hover:bg-indigo-500',
+              badge: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/20',
+              tags: ['ஜாதகப் பொருத்தம்', 'ராசிக் கற்கள்', 'பரிகார ஹோமம்', 'நியூமராலஜி']
+            },
+            heritage: {
+              title: 'தமிழர் மரபு & வாழ்வியல் விளம்பரங்கள்',
+              desc: 'பாரம்பரிய கைவினைப் பொருட்கள், நாட்டு மருந்துகள், மரபுச் சிற்பங்கள் & ஆடைகள்',
+              icon: '🏛️',
+              bg: 'from-amber-950/50 via-slate-900 to-slate-900',
+              border: 'border-amber-600/30',
+              accent: 'text-amber-300',
+              btn: 'bg-amber-700 hover:bg-amber-600',
+              badge: 'bg-amber-600/10 text-amber-200 border-amber-600/20',
+              tags: ['கைவினைப் பொருட்கள்', 'பாரம்பரிய நெல்', 'மண்பாண்டங்கள்', 'மரபு உணவுகள்']
+            }
+          };
+
+          const active = config[mod] || config.home;
+
+          return (
+            <div className="w-full mb-4">
+              <div className={`p-4 rounded-2xl bg-gradient-to-r ${active.bg} border ${active.border} shadow-xl backdrop-blur-sm`}>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">{active.icon}</span>
+                      <h3 className={`text-base font-extrabold ${active.accent} tracking-wide`}>
+                        {active.title}
+                      </h3>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full border ${active.badge} font-semibold hidden sm:inline-block`}>
+                        நேரடி வர்த்தகம்
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300 mt-1">
+                      {active.desc}
+                    </p>
+                    
+                    {/* துறை சார்ந்த குறிச்சொற்கள் (Tags) */}
+                    <div className="flex flex-wrap gap-1.5 mt-2.5">
+                      {active.tags.map((tag, idx) => (
+                        <span key={idx} className="text-[10px] bg-slate-800/80 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700/60">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* + விளம்பரம் சேர்க்க பட்டன் */}
+                  <button
+                    onClick={() => setIsPostAdModalOpen(true)}
+                    className={`px-4 py-2 ${active.btn} text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-lg whitespace-nowrap self-end md:self-center`}
+                  >
+                    <span>+</span> விளம்பரம் சேர்க்க
+                  </button>
+                </div>
+              </div>
+
+              {/* குறிப்பிட்ட மாட்யூலில் மட்டும் தெரியும் விளம்பர அட்டைகள் */}
+          {currentModule && currentModule !== 'home' && (
+            <div className="mt-3">
+              <ModuleAdsSection
+                selectedDistrict={filterDistrict}
+                moduleKey={
+                  currentModule === 'land' ? 'realestate' :
+                  currentModule === 'agri' ? 'agriculture' :
+                  currentModule || 'general'
+                }
+                title=""
+              />
+            </div>
+          )}
+            </div>
+          );
+        })()}
         {/* நம்ம பூமி 360 - அல்ட்ரா பிரீமியம் சூப்பர் ஆப் ஹீரோ பிரிவு */}
         {currentModule === 'home' && (
           <div className="space-y-8">
@@ -759,12 +956,12 @@ export default function Home() {
                   ))}
                 </div>
                 
-                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-lg">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                    <span>🔍 மாவட்ட வடிகட்டி:</span>
+                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl overflow-hidden">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-300 overflow-x-auto whitespace-nowrap pb-1 scrollbar-none">
+                    <span className="shrink-0">🔍 மாவட்ட வடிகட்டி:</span>
                     <button
                       onClick={() => setFilterDistrict('அனைத்தும்')}
-                      className={`px-3 py-1 rounded-lg transition ${filterDistrict === 'அனைத்தும்'
+                      className={`shrink-0 px-3 py-1 rounded-lg transition ${filterDistrict === 'அனைத்தும்'
                           ? 'bg-emerald-500 text-slate-950 font-bold'
                           : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                         }`}
@@ -773,7 +970,7 @@ export default function Home() {
                     </button>
                     <button
                       onClick={() => setFilterDistrict('செங்கல்பட்டு')}
-                      className={`px-3 py-1 rounded-lg transition ${filterDistrict === 'செங்கல்பட்டு'
+                      className={`shrink-0 px-3 py-1 rounded-lg transition ${filterDistrict === 'செங்கல்பட்டு'
                           ? 'bg-emerald-500 text-slate-950 font-bold'
                           : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                         }`}
@@ -782,7 +979,7 @@ export default function Home() {
                     </button>
                     <button
                       onClick={() => setFilterDistrict('காஞ்சிபுரம்')}
-                      className={`px-3 py-1 rounded-lg transition ${filterDistrict === 'காஞ்சிபுரம்'
+                     className={`shrink-0 px-3 py-1 rounded-lg transition ${filterDistrict === 'காஞ்சிபுரம்'
                           ? 'bg-emerald-500 text-slate-950 font-bold'
                           : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                         }`}
@@ -790,17 +987,7 @@ export default function Home() {
                       காஞ்சிபுரம்
                     </button>
                   </div>
-                  {/* விளம்பரம் சேர்க்கும் பொத்தான் */}
-      <div className="flex justify-end my-2">
-        <button
-          onClick={() => setIsPostAdModalOpen(true)}
-          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center space-x-1 shadow-sm"
-        >
-          <span>+ விளம்பரம் சேர்க்க</span>
-        </button>
-      </div>
-                  {/* உள்ளூர் மாட்யூல் விளம்பரங்கள் பகுதி */}
-<ModuleAdsSection selectedDistrict={filterDistrict} />
+                  
 
                   <span className="text-[11px] text-slate-100">
                     மொத்தம் {filteredLands.length} சரிபார்க்கப்பட்ட நிலங்கள்
@@ -1189,12 +1376,8 @@ export default function Home() {
   isOpen={isBuyerModalOpen} 
   onClose={() => setIsBuyerModalOpen(false)} 
 />
-{/* விளம்பரம் சேர்க்கும் பாப்-அப் படிவம் */}
-      <PostAdModal
-        isOpen={isPostAdModalOpen}
-        onClose={() => setIsPostAdModalOpen(false)}
-        currentDistrict={filterDistrict}
-      />
+
+
               </div>
             )}
 
@@ -2516,10 +2699,21 @@ export default function Home() {
         </div>
       )}  
       </main>
+      {/* விளம்பரம் சேர்க்கும் பாப்-அப் படிவம் */}
+      <PostAdModal
+        isOpen={isPostAdModalOpen}
+        onClose={() => setIsPostAdModalOpen(false)}
+        currentDistrict={filterDistrict}
+        defaultModule={
+          (currentModule === 'home' || currentModule === 'land') ? 'realestate' :
+          currentModule === 'agri' ? 'agriculture' :
+          currentModule || 'general'
+        }
+      />
 
-      {/* 📱 மொபைல் பாட்டம் நேவிகேஷன் பார் (Mobile Only App Bar) */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#080e1a]/95 backdrop-blur-xl border-t border-slate-800/80 px-2 py-1.5 shadow-[0_-10px_25px_rgba(0,0,0,0.5)]">
-        <div className="flex items-center justify-around">
+      {/* மொபைல் பாட்டம் நேவிகேஷன் பார் - Full Width Fix */}
+<div className="fixed bottom-0 inset-x-0 w-full z-50 md:hidden bg-[#080e1a]/95 backdrop-blur-md border-t border-slate-800/80 shadow-2xl">
+        <div className="flex items-center justify-around w-full max-w-md mx-auto px-2">
           {/* 1. நிலங்கள் */}
           <button
             onClick={() => setCurrentModule('land')}
@@ -2585,7 +2779,9 @@ export default function Home() {
       
       {/* ₹499 லீகல் ஆடிட் முன்பதிவு பிரிவு */}
 {(currentModule === 'land' || currentModule === 'patta') && <LegalAuditPromo />}
-<FloatingWhatsApp />
+<div className="fixed bottom-20 md:bottom-6 right-4 z-40">
+  <FloatingWhatsApp />
+</div>
 {/* நேரலை வீடியோ பாப்-அப் பிளேயர் */}
         {activeVideo && (
           <div

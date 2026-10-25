@@ -53,8 +53,13 @@ export default function ModuleAdsSection({ selectedDistrict, moduleKey, title = 
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </span>
-          <h4 className="text-sm font-bold text-slate-100">
-            {selectedDistrict && selectedDistrict !== 'அனைத்தும்' ? `${selectedDistrict} - ` : ''}{title}
+          <h4 className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+            <span>📍</span>
+            <span>
+              {selectedDistrict && selectedDistrict !== 'அனைத்தும்'
+                ? `${selectedDistrict} மாவட்ட விளம்பரங்கள்`
+                : 'தமிழ்நாடு - அனைத்து மாவட்ட விளம்பரங்கள்'}
+            </span>
           </h4>
         </div>
         <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-medium">
@@ -90,7 +95,25 @@ export default function ModuleAdsSection({ selectedDistrict, moduleKey, title = 
               <p className="text-xs font-semibold text-emerald-400 mb-1">
                 {ad.ad_title}
               </p>
-
+{ad.extra_details && (
+                <div className="flex flex-wrap gap-1.5 my-2">
+                  {ad.extra_details.subCategory && (
+                    <span className="px-2 py-0.5 text-[10px] bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 rounded font-medium">
+                      🏷️ {ad.extra_details.subCategory}
+                    </span>
+                  )}
+                  {ad.extra_details.unitOrRole && (
+                    <span className="px-2 py-0.5 text-[10px] bg-slate-800 border border-slate-600 text-slate-300 rounded">
+                      📐 {ad.extra_details.unitOrRole}
+                    </span>
+                  )}
+                  {ad.extra_details.priceOrSalary && (
+                    <span className="px-2 py-0.5 text-[10px] bg-amber-900/60 border border-amber-500/40 text-amber-300 rounded font-semibold">
+                      💰 {ad.extra_details.priceOrSalary}
+                    </span>
+                  )}
+                </div>
+              )}
               <p className="text-[11px] text-slate-300 mb-3 line-clamp-2 leading-relaxed">
                 {ad.ad_description}
               </p>

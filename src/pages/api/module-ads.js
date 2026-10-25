@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     try {
       const { module_key, district, pincode } = req.query;
 
-      let queryText = 'SELECT * FROM public.module_advertisements WHERE is_active = true';
+      let queryText = 'SELECT * FROM public.module_advertisements WHERE 1=1';
       const queryParams = [];
       let paramIndex = 1;
 
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         paramIndex++;
       }
 
-      queryText += ' ORDER BY ad_tier = \'featured\' DESC, created_at DESC';
+      queryText += ' ORDER BY id DESC';
 
       const result = await pool.query(queryText, queryParams);
 
@@ -55,20 +55,22 @@ export default async function handler(req, res) {
         ad_description,
         location_address,
         image_url,
-        ad_tier
+        ad_tier,
+        extra_details
       } = req.body;
 
       if (!business_name || !ad_title || !phone_number) {
         return res.status(400).json({ success: false, error: 'கட்டாய விவரங்களைப் பூர்த்தி செய்யவும்' });
       }
 
+      // extra_details-ஐ 14-வது வேல்யூவாக டேட்டாபேஸில் சேர்க்கிறோம்
       const insertText = `
         INSERT INTO public.module_advertisements (
           module_key, district, taluk, pincode, business_name, contact_person,
           phone_number, whatsapp_number, ad_title, ad_description,
-          location_address, image_url, ad_tier
+          location_address, image_url, ad_tier, extra_details
         ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
         ) RETURNING *;
       `;
 
@@ -85,7 +87,8 @@ export default async function handler(req, res) {
         ad_description || null,
         location_address || null,
         image_url || null,
-        ad_tier || 'basic'
+        ad_tier || 'basic',
+        extra_details ? JSON.stringify(extra_details) : null
       ];
 
       const result = await pool.query(insertText, values);
