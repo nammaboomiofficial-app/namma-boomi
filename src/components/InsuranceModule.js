@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import insuranceData from '../data/insuranceData.json';
 const { TERM_PLANS, VEHICLE_MODELS } = insuranceData;
-import { SITE_CONFIG } from '../config';
+import { getWhatsAppUrl } from '../config';
 
 
 export default function InsuranceModule({ setCurrentModule }) {
@@ -74,7 +74,7 @@ export default function InsuranceModule({ setCurrentModule }) {
     }
 
     const msg = `வணக்கம் நம்ம பூமி 360! நான் காப்பீட்டு ஆலோசனை மற்றும் அரசு திட்ட வழிகாட்டல் கோருகிறேன்.\n\n👤 பெயர்: ${leadForm.name || '-'}\n📱 எண்: ${leadForm.phone}\n📍 மாவட்டம்: ${leadForm.district || '-'}\n🛡️ தேவை: ${leadForm.insuranceNeed}\n🎯 பிரிவு: ${activeTab.toUpperCase()}\n\nதகுதியான பாலிசிகள், அரசு மானிய சலுகைகள் மற்றும் கிளைம் வழிகாட்டலை அனுப்பவும்.`;
-    const waUrl = `https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`;
+   const waUrl = getWhatsAppUrl(msg);
 
     setTimeout(() => {
       setLoading(false);

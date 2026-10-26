@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import circuitsData from '../data/circuitsData.json';
 import districtsDirectory from '../data/districtsData.json';
-import { SITE_CONFIG } from '../config';
+import { getWhatsAppUrl } from '../config';
 export default function TourismModule({ setCurrentModule }) {
   const [activeTab, setActiveTab] = useState('highway'); // நேரடி பார்வைக்காக 'highway' டேப்
   const [selectedCircuit, setSelectedCircuit] = useState('navagraha');
@@ -177,7 +177,7 @@ export default function TourismModule({ setCurrentModule }) {
       `💰 *மொத்த திட்ட மதிப்பீடு:* ₹${grandTotalBudget.toLocaleString()} (${travelersCount} நபர்கள்)\n` +
       `👤 *ஒரு நபருக்கான பங்கு:* ₹${Math.round(grandTotalBudget / travelersCount).toLocaleString()}\n\n` +
       `நம்ம பூமி தமிழ்நாடு முழுமையான சுற்றுலா வழிகாட்டி மூலம் உருவாக்கப்பட்டது! 🌿🚗`;
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(getWhatsAppUrl(text, ''), '_blank');
   };
 
  const handleGoogleMapsRoute = () => {
@@ -544,7 +544,7 @@ export default function TourismModule({ setCurrentModule }) {
 
         <div>
           <a
-           href={`https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D%20%E0%AE%A8%E0%AE%AE%E0%AF%8D%E0%AE%AE%20%E0%AE%AA%E0%AF%82%E0%AE%AE%E0%AE%BF%20360%20%E0%AE%9A%E0%AF%81%E0%AE%B1%E0%AF%8D%E0%AE%B1%E0%AF%81%E0%AE%B2%E0%AE%BE%20%E0%AE%86%E0%AE%B2%E0%AF%8B%E0%AE%9A%E0%AE%A9%E0%AF%88%20%E0%AE%A4%E0%AF%87%E0%AE%B5%E0%AF%88`}
+           href={getWhatsAppUrl("வணக்கம் நம்ம பூமி 360, எனது ஹோட்டல் / பண்ணை இல்லம் (Farmstay) அல்லது சுற்றுலா வாகனங்களை தளத்தில் இணைக்க விரும்புகிறேன்.")}
             target="_blank"
             rel="noopener noreferrer"
             style={{

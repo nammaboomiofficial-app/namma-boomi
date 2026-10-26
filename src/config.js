@@ -5,6 +5,11 @@ export const SITE_CONFIG = {
   supportEmail: 'contact@nammaboomi360.com',
   merchantUpi: process.env.NEXT_PUBLIC_MERCHANT_UPI || 'business@upi',
 };
+// வாட்ஸ்அப் URL உருவாக்கும் மையச் செயல்பாடு
+export const getWhatsAppUrl = (message = '', phone = SITE_CONFIG.supportWhatsApp) => {
+  const cleanPhone = String(phone).replace(/[^0-9]/g, '');
+  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+};
 // 1. 12 முதன்மை வாழ்வியல் மெனுக்கள் (அசல் ID அமைப்பில்)
 export const LIFE_SERVICES_NAV = [
   // 1. நிலம் & நிதிப் பிரிவு

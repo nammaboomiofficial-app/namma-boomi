@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import reportsData from '../data/reportsData.json';
-import { SITE_CONFIG } from '../config';
+import { getWhatsAppUrl } from '../config';
 export default function ReportsHub({ profile, onOpenChatWithTopic }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedPreview, setSelectedPreview] = useState(null);
@@ -108,9 +108,8 @@ export default function ReportsHub({ profile, onOpenChatWithTopic }) {
                 </button>
                 <button
  onClick={() => {
-  const adminPhone = SITE_CONFIG.supportWhatsApp;
-  const msg = `வணக்கம் நம்ம பூமி 360, நான் "${report.tamilTitle} (${report.title})" முழு அறிக்கையைப் பெற விரும்புகிறேன். கட்டணம்: ${report.price}. என்னை வழிகாட்டவும்.`;
-  window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+  const msg = `வணக்கம் நம்ம பூமி 360, நான் "${report.tamilTitle} (${report.title})" முழு அறிக்கையைப் பெற விரும்புகிறேன். கட்டணம்: ${report.price}. என்ன செய்ய வேண்டும்?`;
+window.open(getWhatsAppUrl(msg), '_blank');
 }}
   style={{
     backgroundColor: '#db2777',

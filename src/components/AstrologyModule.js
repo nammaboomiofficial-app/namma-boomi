@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import BirthdayCalendar from './BirthdayCalendar';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { SITE_CONFIG } from '../config';
+import { getWhatsAppUrl } from '../config';
 export default function AstrologyModule({ profile }) {
   const [birthDetails, setBirthDetails] = useState({
     name: profile?.name || '',
@@ -581,7 +581,7 @@ export default function AstrologyModule({ profile }) {
       + `----------------------------------%0A`
       + `_முழு வண்ண 2-பக்க PDF ஜாதகம் வெற்றிகரமாக பதிவிறக்கப்பட்டது!_`;
 
-    const url = phone ? `https://wa.me/91${phone}?text=${message}` : `https://wa.me/?text=${message}`;
+    const url = getWhatsAppUrl(message, phone);
     window.open(url, '_blank');
   };
 

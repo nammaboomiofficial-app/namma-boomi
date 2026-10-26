@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef } from 'react';
 import checklistData from '../data/documentChecklistData.json';
-
+import { getWhatsAppUrl } from '../config';
 export default function DocumentChecklist() {
   const [selectedLoanId, setSelectedLoanId] = useState(checklistData.loanCategories[0].id);
   const [checkedDocs, setCheckedDocs] = useState({});
@@ -68,8 +68,7 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
 
 இதை சரிபார்த்து அடுத்தகட்ட கடன் அனுமதிக்கு உதவவும்.`;
 
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+    window.open(getWhatsAppUrl(message, ''), '_blank');
   };
 
   return (

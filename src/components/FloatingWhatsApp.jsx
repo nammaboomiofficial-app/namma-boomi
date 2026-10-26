@@ -1,12 +1,9 @@
 import React from 'react';
-import { SITE_CONFIG } from '../config';
+import { getWhatsAppUrl } from '../config';
 
 export default function FloatingWhatsApp() {
-  const whatsappNumber = SITE_CONFIG.supportWhatsApp;
-  const defaultMessage = "வணக்கம் நம்ம பூமி 360, தளத்தில் உள்ள நிலங்கள் மற்றும் ஆவண சேவைகள் பற்றி பேச விரும்புகிறேன்.";
-
   const handleClick = () => {
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(defaultMessage)}`;
+    const url = getWhatsAppUrl("வணக்கம் நம்ம பூமி 360, தளத்தில் உள்ள நிலங்கள் மற்றும் ஆவண சேவைகள் பற்றி பேச விரும்புகிறேன்.");
     window.open(url, '_blank');
   };
 

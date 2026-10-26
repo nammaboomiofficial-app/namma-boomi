@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SITE_CONFIG } from '../config';
+import { getWhatsAppUrl } from '../config';
 import ECOSYSTEM_JOBS from '../data/jobsData.json';
 
 export default function JobModule() {
@@ -54,7 +54,7 @@ export default function JobModule() {
     }
 
     const msg = `வணக்கம் நம்ம பூமி 360! நான் வேலைவாய்ப்பிற்கு விண்ணப்பிக்க விரும்புகிறேன்.\n\n👤 பெயர்: ${seekerData.name || '-'}\n📱 வாட்ஸ்அப்: ${seekerData.phone}\n📍 இருப்பிடம்: ${seekerData.location || '-'}\n🎓 கல்வி: ${seekerData.qualification}\n🎯 விரும்பும் பணி: ${seekerData.jobRole}\n\nஅடுத்தகட்ட நேர்காணல் வழிகாட்டலை பகிரவும்.`;
-    const waUrl = `https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`;
+    const waUrl = getWhatsAppUrl(msg);
     setTimeout(() => {
       setLoading(false);
       window.open(waUrl, '_blank');
@@ -90,8 +90,7 @@ export default function JobModule() {
     }
 
     const msg = `வணக்கம் நம்ம பூமி 360! எங்கள் நிறுவனத்திற்கு தகுதியான ஆட்கள் தேவைப்படுகிறார்கள்.\n\n🏢 நிறுவனம்: ${employerData.companyName}\n👤 தொடர்பாளர்: ${employerData.contactPerson}\n📱 எண்: ${employerData.phone}\n📍 இடம்: ${employerData.location}\n👥 தேவைப்படும் பணி: ${employerData.staffNeeded}\n\nதகுதியான நபர்களை ஒருங்கிணைக்க உதவவும்.`;
-    const waUrl = `https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`;
-
+    const waUrl = getWhatsAppUrl(msg);
     setTimeout(() => {
       setLoading(false);
       window.open(waUrl, '_blank');
@@ -311,7 +310,8 @@ export default function JobModule() {
         </div>
         <button
           onClick={() => {
-            const wa = `https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent('வணக்கம்! எனக்கு எக்செல் பயிற்சி மற்றும் வேலைவாய்ப்பு விவரங்கள் தேவை.')}`;
+            // புதிய வரி:
+const wa = getWhatsAppUrl('வணக்கம்! எனக்கு எக்செல் பயிற்சி மற்றும் வேலைவாய்ப்பு விவரங்கள் தேவை.');
           }}
           className="w-full sm:w-auto px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs whitespace-nowrap transition-all"
         >

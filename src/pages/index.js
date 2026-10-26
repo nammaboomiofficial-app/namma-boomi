@@ -959,33 +959,19 @@ export default function Home() {
                 <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl overflow-hidden">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-300 overflow-x-auto whitespace-nowrap pb-1 scrollbar-none">
                     <span className="shrink-0">🔍 மாவட்ட வடிகட்டி:</span>
-                    <button
-                      onClick={() => setFilterDistrict('அனைத்தும்')}
-                      className={`shrink-0 px-3 py-1 rounded-lg transition ${filterDistrict === 'அனைத்தும்'
-                          ? 'bg-emerald-500 text-slate-950 font-bold'
-                          : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                        }`}
-                    >
-                      அனைத்தும்
-                    </button>
-                    <button
-                      onClick={() => setFilterDistrict('செங்கல்பட்டு')}
-                      className={`shrink-0 px-3 py-1 rounded-lg transition ${filterDistrict === 'செங்கல்பட்டு'
-                          ? 'bg-emerald-500 text-slate-950 font-bold'
-                          : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                        }`}
-                    >
-                      செங்கல்பட்டு
-                    </button>
-                    <button
-                      onClick={() => setFilterDistrict('காஞ்சிபுரம்')}
-                     className={`shrink-0 px-3 py-1 rounded-lg transition ${filterDistrict === 'காஞ்சிபுரம்'
-                          ? 'bg-emerald-500 text-slate-950 font-bold'
-                          : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                        }`}
-                    >
-                      காஞ்சிபுரம்
-                    </button>
+                    {['அனைத்தும்', 'செங்கல்பட்டு', 'காஞ்சிபுரம்'].map((dist) => (
+              <button
+                key={dist}
+                onClick={() => setFilterDistrict(dist)}
+                className={`shrink-0 px-3 py-1 rounded-lg transition ${
+                  filterDistrict === dist
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                {dist}
+              </button>
+            ))}
                   </div>
                   
 

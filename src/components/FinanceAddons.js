@@ -6,13 +6,13 @@ import { SITE_CONFIG } from '../config';
 
 export default function FinanceAddons() {
   const [activeChecklist, setActiveChecklist] = useState('plot');
-  const adminWhatsApp = SITE_CONFIG.supportWhatsApp;
+  
 
   const sendDocVerificationRequest = () => {
     const text = `வணக்கம் நம்ம பூமி 360! 📄\n\nநான் வங்கிக் கடனுக்காக நில / சொத்து ஆவணங்களைச் சரிபார்க்க விரும்புகிறேன்.\n\nதேர்ந்தெடுத்த பிரிவு: ${
       activeChecklist === 'plot' ? 'மனை வாங்கும் கடன்' : activeChecklist === 'housing' ? 'வீட்டுக் கடன்' : 'தொழில் / MSME கடன்'
     }\n\nஎன் ஆவணங்களை ஆய்வு செய்து வழிகாட்டவும். நன்றி!`;
-    window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(getWhatsAppUrl(text), '_blank');
   };
 
   return (
