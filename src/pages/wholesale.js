@@ -2,6 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { wholesaleHubs, wholesaleCategories } from '../data/wholesaleData';
+import { getWhatsAppUrl } from '../config';
 
 export default function WholesalePage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -151,7 +152,7 @@ export default function WholesalePage() {
               {/* Action Buttons */}
               <div className="mt-4 pt-3 border-t border-slate-700/60 flex items-center gap-2">
                 <a
-                  href={`https://wa.me/${hub.whatsapp}?text=${encodeURIComponent(`வணக்கம், நம்ம பூமி 360 தளம் மூலம் தொடர்பு கொள்கிறேன். உங்கள் ${hub.name} மொத்த விலை விவரங்கள் மற்றும் இருப்பு விவரம் தேவை.`)}`}
+                  href={getWhatsAppUrl(`வணக்கம், நம்ம பூமி 360 மூலம் ${hub.title || ''} ஆர்டர் செய்ய விரும்புகிறேன்.`, hub.whatsapp)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-2 px-3 rounded-lg text-center flex items-center justify-center gap-1.5 transition-colors shadow"
@@ -196,7 +197,7 @@ export default function WholesalePage() {
               </p>
             </div>
             <a
-              href={`https://wa.me/919443123456?text=${encodeURIComponent('வணக்கம் நம்ம பூமி 360 நிர்வாகி, எனக்குத் தேவையான குறிப்பிட்ட மண்டி விவரங்கள் மற்றும் கொள்முதல் உதவி தேவைப்படுகிறது.')}`}
+              href={getWhatsAppUrl('வணக்கம் நம்ம பூமி 360 நிர்வாகம், எனக்கு கூடுதல் விவரங்கள் தேவைப்படுகிறது.')}
               target="_blank"
               rel="noopener noreferrer"
               className="whitespace-nowrap bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold py-2.5 px-4 rounded-xl shadow-lg transition-all flex items-center gap-2"

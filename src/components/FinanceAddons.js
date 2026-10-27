@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import financeAddonsData from '../data/financeAddonsData.json';
 const { bankRates, docChecklist } = financeAddonsData;
-import { SITE_CONFIG } from '../config';
+import { getWhatsAppUrl } from '../config';
 
 export default function FinanceAddons() {
   const [activeChecklist, setActiveChecklist] = useState('plot');

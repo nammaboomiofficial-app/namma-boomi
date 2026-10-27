@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import loansData from '../data/loansData.json';
 import LoanModule360 from './LoanModule360';
-import { SITE_CONFIG } from '../config';
+import { getWhatsAppUrl } from '../config';
 
 const { loanCards: LOAN_CARDS, bankRates: BANK_RATES } = loansData;
 
@@ -39,7 +39,7 @@ export default function FinanceModule() {
     }
 
     const msg = `வணக்கம் நம்ம பூமி 360! எனக்கு "${loanToApply}" கடன் வழிகாட்டல் மற்றும் தகுதி விவரங்கள் தேவை.\n\n📱 எனது எண்: ${applicantPhone}\nஉடனடி வழிகாட்டலை எதிர்பார்க்கிறேன்.`;
-    const waUrl = `https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`;
+    const waUrl = getWhatsAppUrl(msg);
     
     setTimeout(() => {
       setLoading(false);

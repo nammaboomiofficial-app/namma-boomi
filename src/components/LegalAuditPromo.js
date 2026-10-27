@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import auditConfigData from '../data/legalAuditData.json';
-
+import { getWhatsAppUrl } from '../config';
 export default function LegalAuditPromo() {
   const {
     config = {},
@@ -50,7 +50,7 @@ export default function LegalAuditPromo() {
 
     const message = `வணக்கம் நம்ம பூமி 360! 🛡️\n\nஎனது நிலத்திற்கான ₹${config.priceDiscounted} டிஜிட்டல் ஆவண தணிக்கை பெற விரும்புகிறேன்.\n\n👤 பெயர்: ${formData.name}\n📞 எண்: ${formData.phone}\n📍 இடம்: ${formData.district}, ${formData.taluk}, ${formData.village}\n📑 சர்வே எண்: ${formData.surveyNo}/${formData.subDivision}`;
 
-    window.open(`https://wa.me/${config.adminWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(getWhatsAppUrl(message, config.adminWhatsApp), '_blank');
   };
 
   // சுத்தமாக 1 பக்கம் மட்டும் அச்சிட புதிய விண்டோ முறை

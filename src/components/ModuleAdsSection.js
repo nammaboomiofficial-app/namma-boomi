@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getWhatsAppUrl } from '../config';
 
 export default function ModuleAdsSection({ selectedDistrict, moduleKey, title = "உள்ளூர் வர்த்தக விளம்பரங்கள்" }) {
   const [ads, setAds] = useState([]);
@@ -127,7 +128,7 @@ export default function ModuleAdsSection({ selectedDistrict, moduleKey, title = 
               <div className="flex space-x-1.5">
                 {ad.whatsapp_number && (
                   <a
-                    href={`https://wa.me/91${ad.whatsapp_number.replace(/\D/g, '')}?text=${encodeURIComponent(`வணக்கம், உங்கள் "${ad.ad_title}" விளம்பரம் குறித்து பேச விரும்புகிறேன்.`)}`}
+                    href={getWhatsAppUrl('வணக்கம், உங்கள் விளம்பரம் பார்த்து தொடர்பு கொள்கிறேன்.', ad.whatsapp_number)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-medium px-2.5 py-1 rounded-md transition"

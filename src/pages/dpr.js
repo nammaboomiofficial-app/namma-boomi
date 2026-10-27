@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { getWhatsAppUrl } from '../config';
 
 export default function BankDPR() {
   const [formData, setFormData] = useState({
@@ -78,7 +79,7 @@ export default function BankDPR() {
       `--------------------------------%0A` +
       `வங்கி ஏற்புத் தகுதியுள்ள முழுமையான திட்ட அறிக்கை (DPR PDF) தயாரித்துத் தரக் கோருகிறேன்.`;
     
-    window.open(`https://wa.me/919940000000?text=${msg}`, '_blank');
+    window.open(getWhatsAppUrl(msg), '_blank');
   };
 
   return (

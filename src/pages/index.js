@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { 
-  SITE_CONFIG, 
-  DIGITAL_STUDIOS, 
-  LIFE_SERVICES_NAV, 
-  LOCATION_DATA, 
+import {
+  SITE_CONFIG,
+  DIGITAL_STUDIOS,
+  LIFE_SERVICES_NAV,
+  LOCATION_DATA,
   FULL_LAND_DATABASE,
-  FINANCE_CONFIG, 
-  generateMockLandSurvey 
+  FINANCE_CONFIG,
+  generateMockLandSurvey,
+  getWhatsAppUrl
 } from '../config';
 
 import LandGovtServices from '../components/LandGovtServices';
@@ -40,7 +41,7 @@ export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
     const msg = `வணக்கம் நம்ம பூமி 360, ${loanTitle} பெறுவதற்கான வழிகாட்டல் மற்றும் விண்ணப்ப உதவி தேவை.`;
-   window.open(`https://api.whatsapp.com/send?phone=${SITE_CONFIG.supportWhatsApp}&text=${encodeURIComponent(msg)}`, '_blank');
+   window.open(getWhatsAppUrl(msg), '_blank');
   };
   // பிரதான 9 தூண்கள்
   const [currentModule, setCurrentModule] = useState('home');
@@ -203,8 +204,8 @@ export default function Home() {
   });
 
   const shareOnWhatsApp = (text) => {
-    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank');
+    const url = getWhatsAppUrl(text, '');
+window.open(url, '_blank');
   };
 
   const handleDistrictChange = (e) => {
@@ -2440,7 +2441,7 @@ export default function Home() {
                           <div
                             role="button"
                             tabIndex={0}
-                            onClick={() => window.open(`https://wa.me/${selectedLandDetail.phone.replace(/[^0-9]/g, '')}`, '_blank')}
+                            onClick={() => window.open(getWhatsAppUrl('', selectedLandDetail.phone), '_blank')}
                             className="px-2.5 py-1.5 rounded-lg font-bold text-[10px] flex items-center gap-1 shadow cursor-pointer active:scale-95"
                             style={{ backgroundColor: '#16a34a', color: '#ffffff' }}
                           >
@@ -2516,8 +2517,8 @@ export default function Home() {
                     role="button"
                     tabIndex={0}
                     onClick={() => {
-                      const msg = encodeURIComponent(`வணக்கம்! நான் இந்த இடத்தை நேரில் பார்க்க (Site Visit) விரும்புகிறேன்: ${selectedLandDetail.title} (சர்வே எண்: ${selectedLandDetail.surveyNo || ''})`);
-                      window.open(`https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
+                      const msg = `வணக்கம்! நான் இந்த இடத்தை நேரில் பார்க்க (Site Visit) விரும்புகிறேன்.`;
+window.open(getWhatsAppUrl(msg), '_blank');
                     }}
                     className="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer active:scale-95"
                     style={{ backgroundColor: '#059669', color: '#ffffff' }}
@@ -2649,7 +2650,7 @@ export default function Home() {
                     `🗺️ *மேப் லொகேஷன்:* ${mapLink}%0A%0A` +
                     `✅ இந்த விசிட் பாஸ் மூலம் நேரடி களப்பார்வை மேற்கொள்ள அனுமதி கோரப்படுகிறது.`;
 
-                  window.open(`https://api.whatsapp.com/send?phone=${SITE_CONFIG.supportWhatsApp}&text=${encodeURIComponent(message)}`, '_blank');
+                 window.open(getWhatsAppUrl(message), '_blank');
                   setSelectedVisitPassLand(null);
                   setVisitorPhone('');
                   if (typeof setVisitorName === 'function') setVisitorName('');
@@ -2750,9 +2751,7 @@ export default function Home() {
 
           {/* 5. வாட்ஸ்அப் உதவி */}
           <a
-            href={`https://wa.me/${contactConfig.whatsappNumber}?text=${encodeURIComponent(
-              "வணக்கம் நம்ம பூமி 360, எனக்கு உடனடி வழிகாட்டல் தேவைப்படுகிறது."
-            )}`}
+            href={getWhatsAppUrl("வணக்கம் நம்ம பூமி 360, எனக்கு உடனடி வழிகாட்டல் தேவைப்படுகிறது.", contactConfig.whatsappNumber)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-col items-center justify-center py-1 px-2 text-emerald-400 active:scale-95 transition-all"

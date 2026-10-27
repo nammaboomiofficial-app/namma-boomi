@@ -1,10 +1,10 @@
 import React from 'react';
 import landServicesData from '../data/landServices.json';
-import { SITE_CONFIG } from '../config';
+import { getWhatsAppUrl } from '../config';
 export default function LandGovtServices() {
   const handleHelpClick = (service) => {
-    const text = encodeURIComponent(`${service.queryTemplate}\n(சேவை: ${service.title})`);
-    window.open(`https://wa.me/${SITE_CONFIG.supportWhatsApp}?text=${encodeURIComponent(text)}`, '_blank');
+    const msg = `${service.queryTemplate}\n(சேவை: ${service.title})`;
+window.open(getWhatsAppUrl(msg), '_blank');
   };
 
   return (
