@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SITE_CONFIG } from '../config';
+import { SITE_CONFIG, getWhatsAppUrl } from '../config';
 
 export default function DocumentAnalysisBureau() {
   const [surveyType, setSurveyType] = useState('dgps');
@@ -63,7 +63,7 @@ export default function DocumentAnalysisBureau() {
       `🔢 *சர்வே எண்:* ${surveyNumber || 'சரிபார்க்கப்பட வேண்டும்'}\n\n` +
       `✅ எனது நிலத்திற்கான ஆவணங்களைச் சரிபார்த்து அடுத்தகட்ட வழிகாட்டலைத் தர வேண்டுகிறேன்.`;
 
-    window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent(text)}`, '_blank');
+    window.open(getWhatsAppUrl(text, whatsappNumber), '_blank');
     setActiveModalService(null);
   };
 
