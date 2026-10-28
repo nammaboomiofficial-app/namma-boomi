@@ -38,17 +38,21 @@ export default async function handler(req, res) {
         ) RETURNING *;
       `;
 
-      const values = [
-        buyer_name,
-        buyer_phone,
-        preferred_district,
-        preferred_location || '',
-        land_category,
-        area_required,
-        budget_range,
-        specific_demands || [],
-        additional_notes || ''
-      ];
+      const formattedDemands = Array.isArray(specific_demands)
+          ? specific_demands
+          : (specific_demands ? [specific_demands] : []);
+
+        const values = [
+          buyer_name,
+          buyer_phone,
+          preferred_district,
+          preferred_location || '',
+          land_category,
+          area_required,
+          budget_range,
+          formattedDemands,
+          additional_notes || ''
+        ];
 
       const result = await query(insertQuery, values);
       return res.status(201).json({

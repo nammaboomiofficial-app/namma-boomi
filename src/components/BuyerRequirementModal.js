@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export default function BuyerRequirementModal({ isOpen, onClose }) {
-  const [formData, setFormData] = useState({
+  const initialFormState = {
     buyer_name: '',
     buyer_phone: '',
     preferred_district: 'செங்கல்பட்டு',
@@ -11,13 +11,20 @@ export default function BuyerRequirementModal({ isOpen, onClose }) {
     budget_range: '',
     specific_demands: '',
     additional_notes: ''
-  });
+  };
 
+  const [formData, setFormData] = useState(initialFormState);
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   if (!isOpen) return null;
+
+  const handleClose = () => {
+    setErrorMsg('');
+    setSuccessMsg('');
+    onClose();
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,6 +36,14 @@ export default function BuyerRequirementModal({ isOpen, onClose }) {
     setErrorMsg('');
     setSuccessMsg('');
 
+    // 10 இலக்க போன் எண் சரிபார்ப்பு
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(formData.buyer_phone.trim())) {
+      setErrorMsg('தயவுசெய்து சரியான 10 இலக்க வாட்ஸ்அப் எண்ணை உள்ளிடவும்.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch('/api/buyer-requirements', {
         method: 'POST',
@@ -39,9 +54,9 @@ export default function BuyerRequirementModal({ isOpen, onClose }) {
       const data = await res.json();
       if (data.success) {
         setSuccessMsg('உங்கள் சொத்துத் தேவை வெற்றிகரமாகப் பதிவு செய்யப்பட்டது!');
+        setFormData(initialFormState); // படிவத்தை மீட்டமைத்தல்
         setTimeout(() => {
-          onClose();
-          setSuccessMsg('');
+          handleClose();
         }, 2000);
       } else {
         setErrorMsg(data.error || 'பதிவு செய்வதில் பிழை ஏற்பட்டது.');
@@ -55,10 +70,11 @@ export default function BuyerRequirementModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg p-6 text-slate-100 shadow-2xl relative">
+      <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg p-6 text-slate-100 shadow-2xl relative my-8">
         <button 
-          onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold"
+          onClick={handleClose}
+          className="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold p-1"
+          type="button"
         >
           ✕
         </button>
@@ -78,7 +94,7 @@ export default function BuyerRequirementModal({ isOpen, onClose }) {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-slate-300 mb-1 block">உங்கள் பெயர் *</label>
               <input
@@ -97,6 +113,7 @@ export default function BuyerRequirementModal({ isOpen, onClose }) {
                 type="tel"
                 name="buyer_phone"
                 required
+                maxLength={10}
                 value={formData.buyer_phone}
                 onChange={handleChange}
                 placeholder="10 இலக்க எண்"
@@ -105,7 +122,7 @@ export default function BuyerRequirementModal({ isOpen, onClose }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-slate-300 mb-1 block">விரும்பும் மாவட்டம்</label>
               <select
@@ -133,7 +150,7 @@ export default function BuyerRequirementModal({ isOpen, onClose }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-slate-300 mb-1 block">சொத்து வகை</label>
               <select
@@ -188,7 +205,7 @@ export default function BuyerRequirementModal({ isOpen, onClose }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-2.5 rounded-lg shadow-lg mt-2 transition duration-200"
+            className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-2.5 rounded-lg shadow-lg mt-2 transition duration-200 disabled:opacity-50"
           >
             {loading ? 'பதிவாகிறது...' : 'தேவையைச் சமர்ப்பிக்கவும்'}
           </button>
