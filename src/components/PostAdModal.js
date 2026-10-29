@@ -26,6 +26,25 @@ const MODULE_OPTIONS = [
   { key: 'heritage', label: 'தமிழர் மரபு (Tamil Heritage)', icon: '🏛️' }
 ];
 
+const REAL_ESTATE_PRESETS = {
+  'தனி வீடு / வில்லா': {
+    title: 'புதிய தனி வீடு / சொகுசு வில்லா உடனடி விற்பனைக்கு',
+    desc: 'அழகிய குடியிருப்பு பகுதி, கார் பார்க்கிங், குடிநீர் வசதி மற்றும் சுத்தமான காற்றுடன் கூடிய பிரத்யேக தனி வீடு.'
+  },
+  'DTCP மனை': {
+    title: 'உடனடி விற்பனைக்கு DTCP அங்கீகாரம் பெற்ற மனை',
+    desc: 'தெளிவான தாய் பத்திரம், பட்டா மாறுதல் உடனடி வசதி, தார் சாலை மற்றும் குடிநீர் வசதியுடன் கூடிய சிறந்த மனை.'
+  },
+  'விவசாய பூமி': {
+    title: 'வளமான விவசாய பூமி / பண்ணை நிலம் நேரடி விற்பனைக்கு',
+    desc: 'வளமான மண் வளம், தடையற்ற போர்வெல் குடிநீர் மற்றும் மின் இணைப்புடன் கூடிய சிறந்த விவசாய நிலம்.'
+  },
+  'வணிக இடம் / கடை': {
+    title: 'மெயின் ரோடு வணிக இடம் / தனி கட்டடம் விற்பனை அல்லது வாடகைக்கு',
+    desc: 'அனைத்து அடிப்படை வசதிகளுடன் கூடிய வணிக பயன்பாட்டிற்கான கட்டடம் வாடகை மற்றும் குத்தகைக்கு உண்டு.'
+  }
+};
+
 const QUICK_TEMPLATES = {
   realestate: [
     { title: 'உடனடி விற்பனைக்கு DTCP மனை / விவசாய பூமி', desc: 'தெளிவான தாய் பத்திரம், பட்டா மாறுதல் உடனடி வசதி, தார் சாலை மற்றும் குடிநீர் வசதியுடன் கூடிய சிறந்த இடம்.' },
@@ -36,35 +55,44 @@ const QUICK_TEMPLATES = {
     { title: 'வங்கி கடன் திட்ட அறிக்கை (DPR) தயாரிப்பு சேவை', desc: 'அனைத்து வங்கிகளாலும் அங்கீகரிக்கப்படும் முறையான திட்ட அறிக்கை 24 மணி நேரத்தில் தயார் செய்து தரப்படும்.' }
   ],
   insurance: [
-    { title: 'முழு குடும்பத்திற்கான மருத்துவ மற்றும் ஆயுள் காப்பீடு', desc: 'குறைந்த பிரீமியத்தில் அதிக பணமில்லா மருத்துவ கவரேஜ்; உடனடி கிளைம் உதவி மற்றும் ஆலோசனைகள்.' }
+    { title: 'முழு குடும்பத்திற்கான மருத்துவ மற்றும் ஆயுள் காப்பீடு', desc: 'குறைந்த பிரீமியத்தில் அதிக பணமில்லா மருத்துவ கவரேஜ்; உடனடி கிளைம் உதவி மற்றும் ஆலோசனைகள்.' },
+    { title: 'வாகனம் மற்றும் வணிக நிறுவனங்களுக்கான பொது காப்பீடு', desc: 'இருசக்கர மற்றும் நான்கு சக்கர வாகனங்களுக்கான உடனடி பாலிசி புதுப்பித்தல் சேவை.' }
   ],
   agriculture: [
     { title: 'தரமான இயற்கை உரம் மற்றும் பண்ணை விளைபொருட்கள்', desc: 'ஆர்கானிக் முறையில் விளைவிக்கப்பட்ட பொருட்கள், மண்புழு உரம் மற்றும் மாட்டுச் சாணம் மொத்த விலையில் கிடைக்கும்.' },
     { title: 'டிராக்டர் மற்றும் நவீன உழவு உபகரணங்கள் வாடகைக்கு', desc: 'விவசாயப் பணிகளுக்கு அனுபவம் வாய்ந்த ஓட்டுநர்களுடன் உழவு இயந்திரங்கள் நியாயமான வாடகைக்குக் கிடைக்கும்.' }
   ],
   education: [
-    { title: 'அரசுத் தேர்வுகள் மற்றும் கணினிப் பயிற்சி நேரடி வகுப்புகள்', desc: 'அனுபவமிக்க ஆசிரியர்களால் எளிய முறையில் பாடத்திட்டம் மற்றும் வாராந்திர மாதிரித் தேர்வுகள் நடத்தப்படும்.' }
+    { title: 'அரசுத் தேர்வுகள் (TNPSC / TET) நேரடி பயிற்சி வகுப்புகள்', desc: 'அனுபவமிக்க ஆசிரியர்களால் எளிய முறையில் பாடத்திட்டம் மற்றும் வாராந்திர மாதிரித் தேர்வுகள் நடத்தப்படும்.' },
+    { title: 'குழந்தைகளுக்கான கணினி மற்றும் ஸ்போக்கன் இங்கிலீஷ் பயிற்சி', desc: 'நடைமுறைப் பயிற்சிகள், சான்றிதழ் மற்றும் வேலைவாய்ப்பு வழிகாட்டுதலுடன் கூடிய சிறப்பு வகுப்புகள்.' }
   ],
   jobs: [
-    { title: 'அலுவலகப் பணிக்கு ஆண் / பெண் பணியாளர்கள் தேவை', desc: 'தகுதிக்கேற்ற சிறந்த மாத ஊதியம், உணவு மற்றும் இருப்பிட வசதிகளுடன் கூடிய உடனடி வேலைவாய்ப்பு.' }
+    { title: 'அலுவலகப் பணிக்கு ஆண் / பெண் பணியாளர்கள் உடனடி தேவை', desc: 'தகுதிக்கேற்ற சிறந்த மாத ஊதியம், உணவு மற்றும் இருப்பிட வசதிகளுடன் கூடிய உடனடி வேலைவாய்ப்பு.' },
+    { title: 'ஓட்டுநர் / விற்பனை பிரதிநிதி தேவை (அனுபவம் உள்ளவர்கள்)', desc: 'நல்ல ஊக்கத்தொகை (Incentives) மற்றும் நிரந்தரப் பணிக்கான உடனடி ஆட்கள் சேர்க்கை.' }
   ],
   business: [
-    { title: 'தொழில் கூட்டாண்மை / உற்பத்திக்கான இயந்திரங்கள் விற்பனை', desc: 'புதிய தொழில் தொடங்குவதற்கான இயந்திரங்கள், ஜிஎஸ்டி பதிவு மற்றும் தொழில் உரிம ஆலோசனைகள்.' }
+    { title: 'தொழில் கூட்டாண்மை / உற்பத்திக்கான இயந்திரங்கள் விற்பனை', desc: 'புதிய தொழில் தொடங்குவதற்கான நவீன இயந்திரங்கள், நேரடிப் பயிற்சி மற்றும் சந்தைப்படுத்தல் வழிகாட்டுதல்.' },
+    { title: 'புதிய வணிக பதிவு (GST, MSME, FSSAI) உடனடி சேவை', desc: 'அனைத்து அரசு தொழில் உரிமங்கள் மற்றும் வரி ஆலோசனைகள் குறைந்த கட்டணத்தில் துரிதமாக செய்து தரப்படும்.' }
   ],
   wholesale: [
-    { title: 'மொத்த விற்பனை: ஆலை நேரடி கொள்முதல் விலை', desc: 'தரமான வணிகப் பொருட்கள் குறைந்தபட்ச ஆர்டரில் தமிழ்நாடு முழுவதும் பாதுகாப்பாக டோர் டெலிவரி செய்யப்படும்.' }
+    { title: 'மொத்த விற்பனை: ஆலை நேரடி கொள்முதல் விலை சப்ளை', desc: 'தரமான வணிகப் பொருட்கள் குறைந்தபட்ச ஆர்டரில் தமிழ்நாடு முழுவதும் பாதுகாப்பாக டோர் டெலிவரி செய்யப்படும்.' },
+    { title: 'மளிகை & நுகர்வோர் பொருட்கள் நேரடி மொத்த விநியோகம்', desc: 'சில்லறை வணிகர்களுக்கான சிறந்த கமிஷன் மற்றும் தினசரி டெலிவரி வசதி உண்டு.' }
   ],
   spiritual: [
-    { title: 'இல்ல விசேஷங்களுக்கான வாஸ்து, ஹோமம் & வேத பூஜைகள்', desc: 'முறைப்படி பூஜைப் பொருட்கள் மற்றும் அனுபவமிக்க புரோகிதர்கள் மூலம் பூஜைகள் சிறப்பாகச் செய்து தரப்படும்.' }
+    { title: 'இல்ல விசேஷங்களுக்கான வாஸ்து, கணபதி ஹோமம் & பூஜைகள்', desc: 'முறைப்படி பூஜைப் பொருட்கள் மற்றும் அனுபவமிக்க புரோகிதர்கள் மூலம் பூஜைகள் சிறப்பாகச் செய்து தரப்படும்.' },
+    { title: 'பிரசித்தி பெற்ற திருத்தலங்களுக்கான ஆன்மிக யாத்திரை பேக்கேஜ்', desc: 'பாதுகாப்பான போக்குவரத்து, தங்குமிடம் மற்றும் தரிசன ஏற்பாடுகளுடன் கூடிய ஆன்மிகப் பயணம்.' }
   ],
   tourism: [
-    { title: 'பாதுகாப்பான டூர் பேக்கேஜ் & கால் டாக்ஸி சேவை', desc: 'தமிழ்நாடு முழுவதும் அனுபவமிக்க ஓட்டுநர்களுடன் நியாயமான கி.மீ வாடகைக் கட்டணத்தில் சிறந்த வாகன சேவை.' }
+    { title: 'பாதுகாப்பான டூர் பேக்கேஜ் & 24 மணி நேர கால் டாக்ஸி சேவை', desc: 'தமிழ்நாடு முழுவதும் அனுபவமிக்க ஓட்டுநர்களுடன் நியாயமான கி.மீ வாடகைக் கட்டணத்தில் சிறந்த வாகன சேவை.' },
+    { title: 'ஹில் ஸ்டேஷன் (ஊட்டி, கொடைக்கானல்) குடும்ப சுற்றுலா பேக்கேஜ்', desc: 'சொகுசு தங்குமிடம், உணவு மற்றும் உள்ளூர் சுற்றிப் பார்க்கும் வசதிகளுடன் கூடிய சுற்றுலாக் குழு.' }
   ],
   astro: [
-    { title: 'துல்லியமான ஜாதகக் கணிப்பு மற்றும் எளிய பரிகாரங்கள்', desc: 'பாரம்பரிய முறைப்படி திருமணப் பொருத்தம், வாஸ்து ஆலோசனைகள் மற்றும் பெயர் எண் கணிதம் சிறந்த முறையில் பார்க்கப்படும்.' }
+    { title: 'துல்லியமான ஜாதகக் கணிப்பு மற்றும் எளிய பரிகாரங்கள்', desc: 'பாரம்பரிய முறைப்படி திருமணப் பொருத்தம், வாஸ்து ஆலோசனைகள் மற்றும் பெயர் எண் கணிதம் சிறந்த முறையில் பார்க்கப்படும்.' },
+    { title: 'தொழில் முன்னேற்றம் & குடும்ப அமைதிக்கான பிரத்யேக ஜோதிட ஆலோசனை', desc: 'நேரிலும் தொலைபேசி வழியிலும் தெளிவான ஆலோசனைகள் மற்றும் வழிகாட்டுதல் வழங்கப்படும்.' }
   ],
   heritage: [
-    { title: 'பாரம்பரிய கைவினைப் பொருட்கள் & நாட்டு விதைகள்', desc: 'மரபு மாறாத கைவினை அழகுப் பொருட்கள் மற்றும் ஆரோக்கியமான பாரம்பரிய உணவு, மருத்துவப் பொருட்கள்.' }
+    { title: 'மரபு மாறாத சுத்தமான மரச்செக்கு எண்ணெய் & நாட்டு சர்க்கரை', desc: 'ரசாயனம் கலக்காத பாரம்பரிய செக்கு நல்லெண்ணெய், தேங்காய் எண்ணெய் மற்றும் ஆரோக்கியமான உணவுப் பொருட்கள்.' },
+    { title: 'பாரம்பரிய கைவினை கலைப் பொருட்கள் & மூலிகை தயாரிப்புகள்', desc: 'வீட்டு அலங்கார பாரம்பரிய மண்பாண்டங்கள், கைத்தறி ஆடைகள் மற்றும் அரிய நாட்டு மருந்துகள் விற்பனைக்கு.' }
   ]
 };
 
@@ -74,6 +102,8 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
     district: (!currentDistrict || currentDistrict === 'அனைத்தும்') ? 'செங்கல்பட்டு' : currentDistrict,
     taluk: '',
     pincode: '',
+    map_link: '',
+    image_url: '',
     business_name: '',
     contact_person: '',
     phone_number: '',
@@ -110,7 +140,32 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
   };
 
   const handleModuleFieldChange = (e) => {
-    setModuleFields({ ...moduleFields, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setModuleFields(prev => ({ ...prev, [name]: value }));
+
+    // பூமி & நிலத்தில் சொத்து வகை மாறும்போது தானாகப் பொருந்தும் தலைப்பு மற்றும் விவரம்
+    if (formData.module_key === 'realestate' && name === 'subCategory' && REAL_ESTATE_PRESETS[value]) {
+      setFormData(prev => ({
+        ...prev,
+        ad_title: REAL_ESTATE_PRESETS[value].title,
+        ad_description: REAL_ESTATE_PRESETS[value].desc
+      }));
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert('படத்தின் அளவு 2MB-க்குள் இருக்க வேண்டும்.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({ ...prev, image_url: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const applyTemplate = (tmpl) => {
@@ -128,7 +183,10 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
 
     const payload = {
       ...formData,
-      extra_details: moduleFields
+      extra_details: {
+        ...moduleFields,
+        map_link: formData.map_link
+      }
     };
 
     try {
@@ -171,9 +229,9 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-amber-500"
                 >
                   <option value="">தேர்வு செய்க</option>
-                  <option value="விவசாய பூமி">விவசாய பூமி</option>
                   <option value="DTCP மனை">DTCP மனை</option>
                   <option value="தனி வீடு / வில்லா">தனி வீடு / வில்லா</option>
+                  <option value="விவசாய பூமி">விவசாய பூமி</option>
                   <option value="வணிக இடம் / கடை">வணிக இடம் / கடை</option>
                 </select>
               </div>
@@ -207,7 +265,7 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
         return (
           <div className="p-3 bg-blue-950/20 border border-blue-500/30 rounded-xl space-y-3">
             <span className="text-[11px] font-bold text-blue-400 block">💰 நிதி & கடன்கள் பிரத்யேக விவரங்கள்:</span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               <div>
                 <label className="block mb-1 text-slate-300">கடன் / நிதிச் சேவை</label>
                 <select
@@ -217,20 +275,31 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500"
                 >
                   <option value="">தேர்வு செய்க</option>
-                  <option value="MUDRA / சிறுதொழில் கடன்">MUDRA / சிறுதொழில் கடன்</option>
-                  <option value="வீட்டு வசதிக் கடன் (Home Loan)">வீட்டு வசதிக் கடன் (Home Loan)</option>
-                  <option value="அடமானக் கடன் (Mortgage)">அடமானக் கடன் (Mortgage)</option>
-                  <option value="தனிநபர் கடன் (Personal)">தனிநபர் கடன் (Personal)</option>
+                  <option value="MUDRA / MSME கடன்">MUDRA / MSME கடன்</option>
+                  <option value="வீட்டு வசதிக் கடன்">வீட்டு வசதிக் கடன்</option>
+                  <option value="சொத்து அடமானக் கடன்">சொத்து அடமானக் கடன்</option>
+                  <option value="திட்ட அறிக்கை (DPR)">திட்ட அறிக்கை (DPR)</option>
                 </select>
               </div>
               <div>
-                <label className="block mb-1 text-slate-300">கடன் வரம்பு / விவரம்</label>
+                <label className="block mb-1 text-slate-300">வட்டி விகிதம் / கால அளவு</label>
+                <input
+                  type="text"
+                  name="unitOrRole"
+                  value={moduleFields.unitOrRole}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: ஆண்டுக்கு 8.5% முதல்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">கடன் வரம்பு</label>
                 <input
                   type="text"
                   name="priceOrSalary"
                   value={moduleFields.priceOrSalary}
                   onChange={handleModuleFieldChange}
-                  placeholder="எ.கா: ₹50,000 முதல் ₹25 லட்சம் வரை"
+                  placeholder="எ.கா: ₹1 லட்சம் - ₹50 லட்சம்"
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
@@ -242,7 +311,7 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
         return (
           <div className="p-3 bg-cyan-950/20 border border-cyan-500/30 rounded-xl space-y-3">
             <span className="text-[11px] font-bold text-cyan-400 block">🛡️ காப்பீடு பிரத்யேக விவரங்கள்:</span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               <div>
                 <label className="block mb-1 text-slate-300">காப்பீட்டு வகை</label>
                 <select
@@ -252,20 +321,31 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-cyan-500"
                 >
                   <option value="">தேர்வு செய்க</option>
-                  <option value="ஆயுள் காப்பீடு (Life / Term)">ஆயுள் காப்பீடு (Life / Term)</option>
                   <option value="மருத்துவக் காப்பீடு (Health)">மருத்துவக் காப்பீடு (Health)</option>
+                  <option value="ஆயுள் / Term Insurance">ஆயுள் / Term Insurance</option>
                   <option value="வாகனக் காப்பீடு (Motor)">வாகனக் காப்பீடு (Motor)</option>
-                  <option value="பயிர் & கால்நடை காப்பீடு">பயிர் & கால்நடை காப்பீடு</option>
+                  <option value="விவசாயம் & கால்நடை">விவசாயம் & கால்நடை</option>
                 </select>
               </div>
               <div>
-                <label className="block mb-1 text-slate-300">கவரேஜ் / பிரீமியம் விவரம்</label>
+                <label className="block mb-1 text-slate-300">பிரீமியம் / திட்டம்</label>
+                <input
+                  type="text"
+                  name="unitOrRole"
+                  value={moduleFields.unitOrRole}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: மாதம் ₹500 முதல்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">கவரேஜ் தொகை</label>
                 <input
                   type="text"
                   name="priceOrSalary"
                   value={moduleFields.priceOrSalary}
                   onChange={handleModuleFieldChange}
-                  placeholder="எ.கா: ₹1 கோடி கவரேஜ் / ஆண்டு ₹6,000"
+                  placeholder="எ.கா: ₹5 லட்சம் முதல் ₹1 கோடி"
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-cyan-500"
                 />
               </div>
@@ -319,6 +399,52 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
           </div>
         );
 
+      case 'education':
+        return (
+          <div className="p-3 bg-teal-950/20 border border-teal-500/30 rounded-xl space-y-3">
+            <span className="text-[11px] font-bold text-teal-400 block">🎓 கல்வி & பயிற்சி பிரத்யேக விவரங்கள்:</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label className="block mb-1 text-slate-300">பயிற்சிப் பிரிவு</label>
+                <select
+                  name="subCategory"
+                  value={moduleFields.subCategory}
+                  onChange={handleModuleFieldChange}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-teal-500"
+                >
+                  <option value="">தேர்வு செய்க</option>
+                  <option value="போட்டித் தேர்வு (TNPSC/TET)">போட்டித் தேர்வு (TNPSC/TET)</option>
+                  <option value="கணினி & மென்பொருள்">கணினி & மென்பொருள்</option>
+                  <option value="பள்ளி டியூஷன் / NEET">பள்ளி டியூஷன் / NEET</option>
+                  <option value="ஸ்போக்கன் இங்கிலீஷ் / ஹிந்தி">ஸ்போக்கன் இங்கிலீஷ் / ஹிந்தி</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">பயிற்சிக் காலம் / முறை</label>
+                <input
+                  type="text"
+                  name="unitOrRole"
+                  value={moduleFields.unitOrRole}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: 3 மாதங்கள் / நேரடி & ஆன்லைன்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-teal-500"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">பயிற்சிக் கட்டணம்</label>
+                <input
+                  type="text"
+                  name="priceOrSalary"
+                  value={moduleFields.priceOrSalary}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: ₹1,500 / மாதம்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-teal-500"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
       case 'jobs':
         return (
           <div className="p-3 bg-violet-950/20 border border-violet-500/30 rounded-xl space-y-3">
@@ -363,6 +489,190 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
           </div>
         );
 
+      case 'business':
+        return (
+          <div className="p-3 bg-orange-950/20 border border-orange-500/30 rounded-xl space-y-3">
+            <span className="text-[11px] font-bold text-orange-400 block">🏭 தொழில் & MSME பிரத்யேக விவரங்கள்:</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label className="block mb-1 text-slate-300">வணிக வகை</label>
+                <select
+                  name="subCategory"
+                  value={moduleFields.subCategory}
+                  onChange={handleModuleFieldChange}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-orange-500"
+                >
+                  <option value="">தேர்வு செய்க</option>
+                  <option value="தொழில் கூட்டாண்மை (Partnership)">தொழில் கூட்டாண்மை (Partnership)</option>
+                  <option value="உற்பத்தி இயந்திரங்கள்">உற்பத்தி இயந்திரங்கள்</option>
+                  <option value="GST & தொழில் உரிமங்கள்">GST & தொழில் உரிமங்கள்</option>
+                  <option value="பிரான்சைசி வாய்ப்பு">பிரான்சைசி வாய்ப்பு</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">திறன் / விவரம்</label>
+                <input
+                  type="text"
+                  name="unitOrRole"
+                  value={moduleFields.unitOrRole}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: நாள் ஒன்றுக்கு 500 யூனிட்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-orange-500"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">முதலீடு / கட்டணம்</label>
+                <input
+                  type="text"
+                  name="priceOrSalary"
+                  value={moduleFields.priceOrSalary}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: ₹2 லட்சம் முதலீடு"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-orange-500"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'wholesale':
+        return (
+          <div className="p-3 bg-yellow-950/20 border border-yellow-500/30 rounded-xl space-y-3">
+            <span className="text-[11px] font-bold text-yellow-400 block">📦 மொத்த விற்பனை பிரத்யேக விவரங்கள்:</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label className="block mb-1 text-slate-300">சரக்கு வகை</label>
+                <select
+                  name="subCategory"
+                  value={moduleFields.subCategory}
+                  onChange={handleModuleFieldChange}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-yellow-500"
+                >
+                  <option value="">தேர்வு செய்க</option>
+                  <option value="ஜவுளி & ஆயத்த ஆடைகள்">ஜவுளி & ஆயத்த ஆடைகள்</option>
+                  <option value="மளிகைப் பொருட்கள்">மளிகைப் பொருட்கள்</option>
+                  <option value="எலக்ட்ரானிக்ஸ் & உபகரணங்கள்">எலக்ட்ரானிக்ஸ் & உபகரணங்கள்</option>
+                  <option value="கட்டுமானப் பொருட்கள்">கட்டுமானப் பொருட்கள்</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">குறைந்தபட்ச ஆர்டர் (MOQ)</label>
+                <input
+                  type="text"
+                  name="unitOrRole"
+                  value={moduleFields.unitOrRole}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: 50 எண்ணிக்கை / 100 கிலோ"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-yellow-500"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">மொத்த விலை</label>
+                <input
+                  type="text"
+                  name="priceOrSalary"
+                  value={moduleFields.priceOrSalary}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: ₹120 / பீஸ் (ஆலை விலை)"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-yellow-500"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'spiritual':
+        return (
+          <div className="p-3 bg-rose-950/20 border border-rose-500/30 rounded-xl space-y-3">
+            <span className="text-[11px] font-bold text-rose-400 block">🛕 ஆன்மீகம் பிரத்யேக விவரங்கள்:</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label className="block mb-1 text-slate-300">ஆன்மீக சேவை</label>
+                <select
+                  name="subCategory"
+                  value={moduleFields.subCategory}
+                  onChange={handleModuleFieldChange}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-rose-500"
+                >
+                  <option value="">தேர்வு செய்க</option>
+                  <option value="வாஸ்து & கிரகப்பிரவேசம்">வாஸ்து & கிரகப்பிரவேசம்</option>
+                  <option value="கணபதி & நவகிரக ஹோமம்">கணபதி & நவகிரக ஹோமம்</option>
+                  <option value="கோயில் டூர் & யாத்திரை">கோயில் டூர் & யாத்திரை</option>
+                  <option value="பூஜைப் பொருட்கள்">பூஜைப் பொருட்கள்</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">புரோகிதர் / ஏற்பாடு</label>
+                <input
+                  type="text"
+                  name="unitOrRole"
+                  value={moduleFields.unitOrRole}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: வேத விற்பன்னர்கள் சேவை"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-rose-500"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">தட்சிணை / கட்டணம்</label>
+                <input
+                  type="text"
+                  name="priceOrSalary"
+                  value={moduleFields.priceOrSalary}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: முறைப்படி தட்சிணை"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-rose-500"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'tourism':
+        return (
+          <div className="p-3 bg-sky-950/20 border border-sky-500/30 rounded-xl space-y-3">
+            <span className="text-[11px] font-bold text-sky-400 block">🚗 சுற்றுலா & டாக்ஸி பிரத்யேக விவரங்கள்:</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label className="block mb-1 text-slate-300">வாகனம் / சேவை வகை</label>
+                <select
+                  name="subCategory"
+                  value={moduleFields.subCategory}
+                  onChange={handleModuleFieldChange}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-sky-500"
+                >
+                  <option value="">தேர்வு செய்க</option>
+                  <option value="24/7 கால் டாக்ஸி">24/7 கால் டாக்ஸி</option>
+                  <option value="இன்னோவா / சொகுசு கார்">இன்னோவா / சொகுசு கார்</option>
+                  <option value="டெம்போ டிராவலர்">டெம்போ டிராவலர்</option>
+                  <option value="சுற்றுலா பேக்கேஜ்">சுற்றுலா பேக்கேஜ்</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">ஆசன வசதி / வழித்தடம்</label>
+                <input
+                  type="text"
+                  name="unitOrRole"
+                  value={moduleFields.unitOrRole}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: 7 சீட்டர் / தமிழ்நாடு முழுவதும்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-sky-500"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">வாடகைக் கட்டணம்</label>
+                <input
+                  type="text"
+                  name="priceOrSalary"
+                  value={moduleFields.priceOrSalary}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: ₹13 / கி.மீ அல்லது ₹2500 / நாள்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-sky-500"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
       case 'astro':
       case 'astrology':
         return (
@@ -381,6 +691,7 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
                   <option value="ஜாதகம் கணித்தல் & பலன்">ஜாதகம் கணித்தல் & பலன்</option>
                   <option value="திருமணப் பொருத்தம்">திருமணப் பொருத்தம்</option>
                   <option value="வாஸ்து & பரிகாரங்கள்">வாஸ்து & பரிகாரங்கள்</option>
+                  <option value="பெயர் எண் கணிதம் (Numerology)">பெயர் எண் கணிதம் (Numerology)</option>
                 </select>
               </div>
               <div>
@@ -392,6 +703,52 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
                   onChange={handleModuleFieldChange}
                   placeholder="எ.கா: ₹500 / ஜாதகம்"
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'heritage':
+        return (
+          <div className="p-3 bg-lime-950/20 border border-lime-500/30 rounded-xl space-y-3">
+            <span className="text-[11px] font-bold text-lime-400 block">🏛️ தமிழர் மரபு பிரத்யேக விவரங்கள்:</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label className="block mb-1 text-slate-300">மரபுப் பொருள் வகை</label>
+                <select
+                  name="subCategory"
+                  value={moduleFields.subCategory}
+                  onChange={handleModuleFieldChange}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-lime-500"
+                >
+                  <option value="">தேர்வு செய்க</option>
+                  <option value="மரச்செக்கு எண்ணெய்">மரச்செக்கு எண்ணெய்</option>
+                  <option value="பாரம்பரிய அரிசி & சிறுதானியம்">பாரம்பரிய அரிசி & சிறுதானியம்</option>
+                  <option value="நாட்டு சர்க்கரை & பனைவெல்லம்">நாட்டு சர்க்கரை & பனைவெல்லம்</option>
+                  <option value="மண்பாண்டம் & கைவினைப் பொருட்கள்">மண்பாண்டம் & கைவினைப் பொருட்கள்</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">அளவு / எடை</label>
+                <input
+                  type="text"
+                  name="unitOrRole"
+                  value={moduleFields.unitOrRole}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: 1 லிட்டர் / 5 கிலோ"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-lime-500"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-slate-300">விலை விவரம்</label>
+                <input
+                  type="text"
+                  name="priceOrSalary"
+                  value={moduleFields.priceOrSalary}
+                  onChange={handleModuleFieldChange}
+                  placeholder="எ.கா: ₹320 / லிட்டர்"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-lime-500"
                 />
               </div>
             </div>
@@ -463,7 +820,7 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
 
           {renderDynamicFields()}
 
-          {/* விரைவுத் தேர்வு வார்ப்புருக்கள் (Quick Suggestion Buttons) */}
+          {/* விரைவுத் தேர்வு வார்ப்புருக்கள் (12 மாட்யூல்களுக்கும் உரியது) */}
           {currentModuleTemplates.length > 0 && (
             <div className="p-2.5 bg-slate-800/80 border border-amber-500/30 rounded-xl space-y-1.5">
               <span className="text-[11px] text-amber-300 font-bold block">⚡ விரைவு வாசகப் பரிந்துரை (கிளிக் செய்தால் உடனே நிரம்பும்):</span>
@@ -524,6 +881,55 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
             </div>
           </div>
 
+          {/* பூமி & நிலம் (realestate) பிரிவுக்கு மட்டுமே கூகுள் மேப் மற்றும் போட்டோ அப்லோடு தோன்றும் */}
+          {formData.module_key === 'realestate' && (
+            <div className="space-y-3 p-3 bg-amber-950/20 border border-amber-500/30 rounded-xl">
+              <div>
+                <label className="block mb-1 text-slate-300 font-medium flex justify-between items-center">
+                  <span>Google Maps லிங்க் (விருப்பமிருந்தால் மட்டும்)</span>
+                  <span className="text-[10px] text-amber-400">துல்லிய இருப்பிட பார்வைக்கு</span>
+                </label>
+                <input
+                  type="url"
+                  name="map_link"
+                  value={formData.map_link}
+                  onChange={handleChange}
+                  placeholder="https://maps.app.goo.gl/... (Google Map Link)"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-1 text-slate-300 font-medium flex justify-between items-center">
+                  <span>📷 நிலம் / மனை / வில்லா புகைப்படம்</span>
+                  <span className="text-[10px] text-slate-400">அதிகபட்சம் 2MB</span>
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-600 file:text-white hover:file:bg-amber-500 cursor-pointer"
+                />
+                {formData.image_url && (
+                  <div className="relative inline-block mt-2">
+                    <img
+                      src={formData.image_url}
+                      alt="Uploaded Preview"
+                      className="h-20 w-32 object-cover rounded-lg border border-amber-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, image_url: '' }))}
+                      className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           <div>
             <label className="block mb-1 text-slate-300 font-medium">விளம்பரத் தலைப்பு *</label>
             <input
@@ -533,7 +939,7 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
               value={formData.ad_title}
               onChange={handleChange}
               placeholder="விளம்பரத் தலைப்பு"
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500 font-medium"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500 font-semibold"
             />
           </div>
 
