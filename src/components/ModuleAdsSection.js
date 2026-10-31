@@ -69,111 +69,117 @@ export default function ModuleAdsSection({ selectedDistrict, moduleKey, title = 
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {ads.map((ad) => (
-          <div 
-            key={ad.id} 
-            className="relative bg-slate-800/90 hover:bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-all flex flex-col justify-between shadow-md"
-          >
-            {ad.ad_tier === 'featured' && (
-              <span className="absolute top-2 right-3 z-10 bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded shadow">
-                ★ FEATURED
-              </span>
-            )}
+        {ads.map((ad) => {
+          // மேப் லிங்க்கை ad.map_link அல்லது ad.extra_details.map_link இரண்டிலும் தேடும் அமைப்பு
+          const mapUrl = ad.map_link || (ad.extra_details && ad.extra_details.map_link);
 
-            {/* பூமி & நிலம் (realestate) பிரிவுக்கு மட்டுமே நிலப் புகைப்படம் தோன்றும் */}
-            {ad.module_key === 'realestate' && ad.image_url && (
-              <div className="w-full h-40 bg-slate-900 border-b border-slate-700 overflow-hidden">
-                <img
-                  src={ad.image_url}
-                  alt={ad.ad_title || ad.business_name}
-                  className="w-full h-full object-cover hover:scale-105 transition duration-300"
-                />
-              </div>
-            )}
-
-            <div className="p-4 flex-1">
-              <div className="flex items-center space-x-2 mb-1.5 flex-wrap gap-1">
-                {/* பகுதி மற்றும் பின்கோட் காட்டும் பேட்ஜ் */}
-                <span className="text-[10px] bg-slate-700 text-emerald-300 font-semibold px-2 py-0.5 rounded flex items-center space-x-1">
-                  <span>📍 {ad.taluk || ad.district}</span>
-                  {ad.pincode && <span className="text-slate-300 font-mono">({ad.pincode})</span>}
+          return (
+            <div 
+              key={ad.id} 
+              className="relative bg-slate-800/90 hover:bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-all flex flex-col justify-between shadow-md"
+            >
+              {ad.ad_tier === 'featured' && (
+                <span className="absolute top-2 right-3 z-10 bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded shadow">
+                  ★ FEATURED
                 </span>
-              </div>
+              )}
 
-              <h5 className="font-bold text-white text-sm mb-1 line-clamp-1">
-                {ad.business_name}
-              </h5>
-              
-              <p className="text-xs font-semibold text-emerald-400 mb-1">
-                {ad.ad_title}
-              </p>
-
-              {ad.extra_details && (
-                <div className="flex flex-wrap gap-1.5 my-2">
-                  {ad.extra_details.subCategory && (
-                    <span className="px-2 py-0.5 text-[10px] bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 rounded font-medium">
-                      🏷️ {ad.extra_details.subCategory}
-                    </span>
-                  )}
-                  {ad.extra_details.unitOrRole && (
-                    <span className="px-2 py-0.5 text-[10px] bg-slate-800 border border-slate-600 text-slate-300 rounded">
-                      📐 {ad.extra_details.unitOrRole}
-                    </span>
-                  )}
-                  {ad.extra_details.priceOrSalary && (
-                    <span className="px-2 py-0.5 text-[10px] bg-amber-900/60 border border-amber-500/40 text-amber-300 rounded font-semibold">
-                      💰 {ad.extra_details.priceOrSalary}
-                    </span>
-                  )}
+              {/* பூமி & நிலம் (realestate) பிரிவுக்கு மட்டுமே நிலப் புகைப்படம் தோன்றும் */}
+              {ad.module_key === 'realestate' && ad.image_url && (
+                <div className="w-full h-40 bg-slate-900 border-b border-slate-700 overflow-hidden">
+                  <img
+                    src={ad.image_url}
+                    alt={ad.ad_title || ad.business_name}
+                    className="w-full h-full object-cover hover:scale-105 transition duration-300"
+                  />
                 </div>
               )}
 
-              <p className="text-[11px] text-slate-300 mb-3 line-clamp-2 leading-relaxed">
-                {ad.ad_description}
-              </p>
-            </div>
+              <div className="p-4 flex-1">
+                <div className="flex items-center space-x-2 mb-1.5 flex-wrap gap-1">
+                  {/* பகுதி மற்றும் பின்கோட் காட்டும் பேட்ஜ் */}
+                  <span className="text-[10px] bg-slate-700 text-emerald-300 font-semibold px-2 py-0.5 rounded flex items-center space-x-1">
+                    <span>📍 {ad.taluk || ad.district}</span>
+                    {ad.pincode && <span className="text-slate-300 font-mono">({ad.pincode})</span>}
+                  </span>
+                </div>
 
-            <div className="p-4 pt-2 border-t border-slate-700/80 flex items-center justify-between text-xs mt-auto">
-              <span className="text-[11px] text-slate-400">
-                {ad.contact_person || 'தொடர்புக்கு'}
-              </span>
+                <h5 className="font-bold text-white text-sm mb-1 line-clamp-1">
+                  {ad.business_name}
+                </h5>
+                
+                <p className="text-xs font-semibold text-emerald-400 mb-1">
+                  {ad.ad_title}
+                </p>
 
-              <div className="flex space-x-1.5">
-                {/* பூமி & நிலம் பிரிவுக்கு மட்டுமே மேப் பட்டன் தோன்றும் */}
-                {ad.module_key === 'realestate' && ad.map_link && (
-                  <a
-                    href={ad.map_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-amber-600 hover:bg-amber-500 text-white text-[11px] font-medium px-2.5 py-1 rounded-md transition flex items-center gap-1"
-                  >
-                    <span>🗺️</span>
-                    <span>மேப்</span>
-                  </a>
+                {ad.extra_details && (
+                  <div className="flex flex-wrap gap-1.5 my-2">
+                    {ad.extra_details.subCategory && (
+                      <span className="px-2 py-0.5 text-[10px] bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 rounded font-medium">
+                        🏷️ {ad.extra_details.subCategory}
+                      </span>
+                    )}
+                    {ad.extra_details.unitOrRole && (
+                      <span className="px-2 py-0.5 text-[10px] bg-slate-800 border border-slate-600 text-slate-300 rounded">
+                        📐 {ad.extra_details.unitOrRole}
+                      </span>
+                    )}
+                    {ad.extra_details.priceOrSalary && (
+                      <span className="px-2 py-0.5 text-[10px] bg-amber-900/60 border border-amber-500/40 text-amber-300 rounded font-semibold">
+                        💰 {ad.extra_details.priceOrSalary}
+                      </span>
+                    )}
+                  </div>
                 )}
 
-                {ad.whatsapp_number && (
-                  <a
-                    href={getWhatsAppUrl('வணக்கம், உங்கள் விளம்பரம் பார்த்து தொடர்பு கொள்கிறேன்.', ad.whatsapp_number)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-medium px-2.5 py-1 rounded-md transition"
-                  >
-                    WhatsApp
-                  </a>
-                )}
-                {ad.phone_number && (
-                  <a
-                    href={`tel:${ad.phone_number}`}
-                    className="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-medium px-2.5 py-1 rounded-md transition"
-                  >
-                    அழைக்க
-                  </a>
-                )}
+                <p className="text-[11px] text-slate-300 mb-3 line-clamp-2 leading-relaxed">
+                  {ad.ad_description}
+                </p>
+              </div>
+
+              <div className="p-4 pt-2 border-t border-slate-700/80 flex items-center justify-between text-xs mt-auto">
+                <span className="text-[11px] text-slate-400">
+                  {ad.contact_person || 'தொடர்புக்கு'}
+                </span>
+
+                <div className="flex space-x-1.5">
+                  {/* பூமி & நிலம் பிரிவுக்கு மேப் லிங்க் பட்டன் */}
+                  {ad.module_key === 'realestate' && mapUrl && (
+                    <a
+                      href={mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-amber-600 hover:bg-amber-500 text-white text-[11px] font-medium px-2.5 py-1 rounded-md transition flex items-center gap-1"
+                      title="கூகுள் மேப்பில் பார்க்க"
+                    >
+                      <span>🗺️</span>
+                      <span>மேப்</span>
+                    </a>
+                  )}
+
+                  {ad.whatsapp_number && (
+                    <a
+                      href={getWhatsAppUrl('வணக்கம், உங்கள் விளம்பரம் பார்த்து தொடர்பு கொள்கிறேன்.', ad.whatsapp_number)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-medium px-2.5 py-1 rounded-md transition"
+                    >
+                      WhatsApp
+                    </a>
+                  )}
+                  {ad.phone_number && (
+                    <a
+                      href={`tel:${ad.phone_number}`}
+                      className="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-medium px-2.5 py-1 rounded-md transition"
+                    >
+                      அழைக்க
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
