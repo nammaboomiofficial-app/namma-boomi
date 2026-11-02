@@ -586,7 +586,8 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
     ad_title: '',
     ad_description: '',
     location_address: '',
-    ad_tier: 'basic'
+    ad_tier: 'basic',
+    transaction_ref: ''
   });
 
   const [moduleFields, setModuleFields] = useState({
@@ -621,6 +622,8 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
         ...prev,
         module_key: initialMod,
         district: initialDistrict,
+        ad_tier: 'basic',
+        transaction_ref: '',
         ad_title: initialConfig?.templates[initialSub]?.title || '',
         ad_description: initialConfig?.templates[initialSub]?.desc || ''
       }));
@@ -681,11 +684,18 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.ad_tier === 'featured' && !formData.transaction_ref.trim()) {
+      alert('தயவுசெய்து UPI பரிவர்த்தனை எண் (UTR / Ref Number) உள்ளிடவும்.');
+      return;
+    }
+
     setLoading(true);
     setMessage(null);
 
     const payload = {
       ...formData,
+      payment_status: formData.ad_tier === 'featured' ? 'pending_verification' : 'unpaid',
       extra_details: {
         ...moduleFields,
         map_link: formData.map_link
@@ -701,11 +711,16 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
       const data = await res.json();
 
       if (data.success) {
-        setMessage({ type: 'success', text: 'விளம்பரம் வெற்றிகரமாகப் பதிவு செய்யப்பட்டது!' });
+        setMessage({ 
+          type: 'success', 
+          text: formData.ad_tier === 'featured'
+            ? 'பிரீமியம் விளம்பரம் பதிவாகிவிட்டது! பணம் சரிபார்க்கப்பட்டதும் Featured நிலைக்கு மாற்றப்படும்.'
+            : 'விளம்பரம் வெற்றிகரமாகப் பதிவு செய்யப்பட்டது!'
+        });
         setTimeout(() => {
           onClose();
           window.location.reload();
-        }, 1200);
+        }, 1500);
       } else {
         setMessage({ type: 'error', text: data.error || 'பதிவு செய்வதில் பிழை ஏற்பட்டது.' });
       }
@@ -717,6 +732,11 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
   };
 
   const currentConfig = MODULE_DATA_PRESETS[formData.module_key] || { options: [], templates: {} };
+
+  // UPI கட்டண QR Code URL (PhonePe/GPay/Paytm ஸ்கேன் செய்யும் வண்ணம் தானாக உருவாகிறது)
+  const upiId = 'sathiyard@oksbi'; // உங்கள் UPI ID-யை இங்கு மாற்றிக் கொள்ளலாம்
+  const upiPayLink = `upi://pay?pa=${upiId}&pn=NammaBoomi360&am=99&cu=INR&tn=Featured_Ad`;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiPayLink)}`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
@@ -745,6 +765,93 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-3.5 text-xs">
           
+          {/* விளம்பரத் திட்டம் (Tier Selection: Free vs Featured) */}
+          <div className="p-3 bg-slate-800/80 border border-slate-700 rounded-xl space-y-2">
+            <label className="block text-slate-200 font-bold text-xs">விளம்பரத் திட்டம் தேர்வு செய்க *</label>
+            <div className="grid grid-cols-2 gap-3">
+              <label 
+                className={`flex items-center justify-between p-2.5 rounded-lg border cursor-pointer transition ${
+                  formData.ad_tier === 'basic' 
+                    ? 'border-emerald-500 bg-emerald-950/40 text-emerald-300 font-bold' 
+                    : 'border-slate-700 bg-slate-800/60 text-slate-300 hover:border-slate-500'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="ad_tier"
+                    value="basic"
+                    checked={formData.ad_tier === 'basic'}
+                    onChange={handleChange}
+                    className="accent-emerald-500"
+                  />
+                  <span>இலவச விளம்பரம்</span>
+                </div>
+                <span className="text-xs font-mono font-bold">₹0</span>
+              </label>
+
+              <label 
+                className={`flex items-center justify-between p-2.5 rounded-lg border cursor-pointer transition ${
+                  formData.ad_tier === 'featured' 
+                    ? 'border-amber-400 bg-amber-950/40 text-amber-300 font-bold' 
+                    : 'border-slate-700 bg-slate-800/60 text-slate-300 hover:border-amber-500/50'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="ad_tier"
+                    value="featured"
+                    checked={formData.ad_tier === 'featured'}
+                    onChange={handleChange}
+                    className="accent-amber-500"
+                  />
+                  <span>★ Featured</span>
+                </div>
+                <span className="text-xs font-mono font-bold text-amber-400">₹99</span>
+              </label>
+            </div>
+
+            {/* Featured தேர்ந்தெடுத்தால் தோன்றும் UPI QR Code பெட்டி */}
+            {formData.ad_tier === 'featured' && (
+              <div className="mt-3 p-3 bg-amber-950/30 border border-amber-500/40 rounded-xl space-y-2.5">
+                <div className="flex flex-col sm:flex-row items-center gap-3">
+                  <img
+                    src={qrCodeUrl}
+                    alt="UPI QR Code"
+                    className="w-28 h-28 bg-white p-1 rounded-lg border border-amber-400 shrink-0"
+                  />
+                  <div className="text-[11px] text-slate-300 space-y-1 text-center sm:text-left">
+                    <p className="font-bold text-amber-300 text-xs">
+                      ⚡ Google Pay / PhonePe / Paytm மூலம் ₹99 ஸ்கேன் செய்து செலுத்தவும்
+                    </p>
+                    <p>
+                      UPI ID: <strong className="text-white font-mono bg-slate-900 px-1.5 py-0.5 rounded border border-slate-700">{upiId}</strong>
+                    </p>
+                    <p className="text-slate-400 text-[10px]">
+                      பணம் செலுத்தியதும் ரசீதில் உள்ள 12 இலக்க UTR / Transaction ID-யை கீழே உள்ளிடவும்.
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block mb-1 text-amber-200 font-semibold">
+                    UPI பரிவர்த்தனை எண் (UTR / Ref Number) *
+                  </label>
+                  <input
+                    type="text"
+                    name="transaction_ref"
+                    required={formData.ad_tier === 'featured'}
+                    value={formData.transaction_ref}
+                    onChange={handleChange}
+                    placeholder="எ.கா: 4235XXXXXXXX (12 இலக்க UTR எண்)"
+                    className="w-full bg-slate-900 border border-amber-500/60 rounded-lg p-2 text-white font-mono placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block mb-1 text-slate-300 font-medium">பிரிவு (12 மாட்யூல்கள்) *</label>
@@ -998,9 +1105,17 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
             <button
               type="submit"
               disabled={loading}
-              className="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition disabled:opacity-50"
+              className={`px-5 py-2 rounded-lg font-bold transition disabled:opacity-50 ${
+                formData.ad_tier === 'featured'
+                  ? 'bg-amber-500 hover:bg-amber-400 text-slate-950'
+                  : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+              }`}
             >
-              {loading ? 'பதிவாகிறது...' : 'விளம்பரம் வெளியிடு'}
+              {loading 
+                ? 'பதிவாகிறது...' 
+                : formData.ad_tier === 'featured' 
+                  ? '₹99 செலுத்தி Featured ஆக்குக' 
+                  : 'இலவசமாக விளம்பரம் வெளியிடு'}
             </button>
           </div>
         </form>
