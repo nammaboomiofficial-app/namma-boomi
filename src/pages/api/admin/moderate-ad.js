@@ -14,16 +14,54 @@ export default async function handler(req, res) {
 
   try {
     let updateQuery = '';
-    let params = [];
+    let params = [ad_id];
 
-    if (action === 'approve') {
-      updateQuery = "UPDATE public.module_advertisements SET status = 'active' WHERE id = $1 RETURNING *;";
-      params = [ad_id];
-    } else if (action === 'reject') {
-      updateQuery = "UPDATE public.module_advertisements SET status = 'rejected' WHERE id = $1 RETURNING *;";
-      params = [ad_id];
-    } else {
-      return res.status(400).json({ success: false, error: 'தவறான செயல்பாடு' });
+    switch (action) {
+      // 1. கட்டணத்தை உறுதி செய்து Featured நிலைக்கு மாற்றுதல்
+      case 'approve_payment':
+        updateQuery = `
+          UPDATE public.module_advertisements 
+          SET status = 'active',
+              payment_status = 'paid', 
+              ad_tier = 'featured'
+          WHERE id = $1 
+          RETURNING *;
+        `;
+        break;
+
+      // 2. தவறான UTR எனில் Basic ஆக மாற்றுதல்
+      case 'reject_payment':
+        updateQuery = `
+          UPDATE public.module_advertisements 
+          SET payment_status = 'failed', 
+              ad_tier = 'basic'
+          WHERE id = $1 
+          RETURNING *;
+        `;
+        break;
+
+      // 3. வழக்கமான விளம்பர அனுமதி
+      case 'approve':
+        updateQuery = `
+          UPDATE public.module_advertisements 
+          SET status = 'active'
+          WHERE id = $1 
+          RETURNING *;
+        `;
+        break;
+
+      // 4. விளம்பரத்தை நிராகரித்தல்
+      case 'reject':
+        updateQuery = `
+          UPDATE public.module_advertisements 
+          SET status = 'rejected'
+          WHERE id = $1 
+          RETURNING *;
+        `;
+        break;
+
+      default:
+        return res.status(400).json({ success: false, error: 'தவறான செயல்பாடு' });
     }
 
     const result = await pool.query(updateQuery, params);

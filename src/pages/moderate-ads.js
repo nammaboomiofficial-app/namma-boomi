@@ -27,6 +27,12 @@ export default function ModerateAds() {
   }, []);
 
   const handleAction = async (ad_id, action) => {
+    if (action === 'approve_payment') {
+      if (!window.confirm('வங்கிக் கணக்கில் ₹99 கட்டணம் பெறப்பட்டதை உறுதி செய்து Featured விளம்பரமாக வெளியிடவா?')) return;
+    } else if (action === 'reject_payment') {
+      if (!window.confirm('கட்டணத்தை நிராகரித்து இதை இலவச (Basic) விளம்பரமாக மாற்றவா?')) return;
+    }
+
     setProcessingId(ad_id);
     try {
       const res = await fetch('/api/admin/moderate-ad', {
@@ -60,7 +66,7 @@ export default function ModerateAds() {
               🛡️ விளம்பர ஆய்வு மையம் (Admin Moderation)
             </h1>
             <p className="text-xs text-slate-400 mt-1">
-              ஸ்பேம் வடிகட்டியால் நிறுத்தி வைக்கப்பட்டுள்ள விளம்பரங்களை ஆய்வு செய்து அனுமதியளிக்கவும்
+              ஸ்பேம் வடிகட்டி மற்றும் Featured கட்டணச் சரிபார்ப்புக்குக் காத்திருக்கும் விளம்பரங்களை ஆய்வு செய்யவும்
             </p>
           </div>
           <button
@@ -87,62 +93,123 @@ export default function ModerateAds() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4">
-            {ads.map((ad) => (
-              <div
-                key={ad.id}
-                className="bg-slate-800 border border-amber-500/40 rounded-xl p-4 md:p-5 flex flex-col md:flex-row justify-between gap-4 shadow-lg"
-              >
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded">
-                      ⚠️ ஆய்வு தேவை (Pending)
-                    </span>
-                    <span className="bg-slate-700 text-slate-300 text-[10px] px-2 py-0.5 rounded">
-                      பிரிவு: {ad.module_key}
-                    </span>
-                    <span className="bg-slate-700 text-slate-300 text-[10px] px-2 py-0.5 rounded">
-                      மாவட்டம்: {ad.district} {ad.taluk ? `(${ad.taluk})` : ''}
-                    </span>
+            {ads.map((ad) => {
+              const isFeatured = ad.ad_tier === 'featured';
+
+              return (
+                <div
+                  key={ad.id}
+                  className={`bg-slate-800 rounded-xl p-4 md:p-5 flex flex-col md:flex-row justify-between gap-4 shadow-lg border ${
+                    isFeatured ? 'border-amber-400/70 bg-gradient-to-br from-slate-800 to-amber-950/20' : 'border-slate-700'
+                  }`}
+                >
+                  <div className="flex-1 space-y-2.5">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {isFeatured ? (
+                        <span className="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded shadow">
+                          ★ FEATURED விளம்பரம் (₹99)
+                        </span>
+                      ) : (
+                        <span className="bg-slate-700 text-slate-300 text-[10px] font-semibold px-2 py-0.5 rounded">
+                          இலவச விளம்பரம் (Basic)
+                        </span>
+                      )}
+
+                      <span className="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded">
+                        ⚠️ ஆய்வு தேவை (Pending)
+                      </span>
+                      <span className="bg-slate-700 text-slate-300 text-[10px] px-2 py-0.5 rounded">
+                        பிரிவு: {ad.module_key}
+                      </span>
+                      <span className="bg-slate-700 text-slate-300 text-[10px] px-2 py-0.5 rounded">
+                        மாவட்டம்: {ad.district} {ad.taluk ? `(${ad.taluk})` : ''}
+                      </span>
+                    </div>
+
+                    <h3 className="font-bold text-white text-base">
+                      {ad.ad_title}
+                    </h3>
+
+                    <p className="text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/60 leading-relaxed">
+                      {ad.ad_description || 'விளக்க விவரம் இல்லை'}
+                    </p>
+
+                    {/* Featured கட்டண சரிபார்ப்பு பெட்டி */}
+                    {isFeatured && (
+                      <div className="p-3 bg-amber-950/40 border border-amber-500/40 rounded-xl text-xs space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-amber-300">
+                            💰 UPI கட்டண விவரம்:
+                          </span>
+                          <span className="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-500/40">
+                            சரிபார்ப்பு நிலுவை (Pending Verification)
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-slate-400">UTR / Ref எண்:</span>
+                          <span className="font-mono font-bold text-white bg-slate-900 px-2 py-0.5 rounded border border-slate-700">
+                            {ad.transaction_ref || 'UTR எண் உள்ளிடப்படவில்லை'}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-400">
+                          வங்கி அல்லது GPay/PhonePe செயலியில் இந்த UTR எண்ணுக்கு ₹99 வந்துள்ளதா எனச் சரிபார்க்கவும்.
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-4 text-xs text-slate-400 pt-1">
+                      <span>வணிகம்: <strong className="text-slate-200">{ad.business_name}</strong></span>
+                      <span>தொடர்புக்கு: <strong className="text-slate-200">{ad.phone_number}</strong></span>
+                    </div>
                   </div>
 
-                  <h3 className="font-bold text-white text-base">
-                    {ad.ad_title}
-                  </h3>
+                  {/* நிர்வாகி செயல்பாட்டு பட்டன்கள் */}
+                  <div className="flex md:flex-col justify-end gap-2 shrink-0 md:w-44">
+                    {isFeatured ? (
+                      <>
+                        <button
+                          disabled={processingId === ad.id}
+                          onClick={() => handleAction(ad.id, 'approve_payment')}
+                          className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs py-2 px-3 rounded-lg transition text-center shadow"
+                        >
+                          {processingId === ad.id ? '...' : '✓ பணம் வந்தது (Featured)'}
+                        </button>
+                        <button
+                          disabled={processingId === ad.id}
+                          onClick={() => handleAction(ad.id, 'reject_payment')}
+                          className="bg-amber-600/80 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-xs py-2 px-3 rounded-lg transition text-center"
+                        >
+                          {processingId === ad.id ? '...' : '✕ தவறு (Basic ஆக்கு)'}
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        disabled={processingId === ad.id}
+                        onClick={() => handleAction(ad.id, 'approve')}
+                        className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold text-xs py-2 px-3 rounded-lg transition text-center"
+                      >
+                        {processingId === ad.id ? '...' : '✅ விளம்பரம் அனுமதி'}
+                      </button>
+                    )}
 
-                  <p className="text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/60">
-                    {ad.ad_description || 'விளக்க விவரம் இல்லை'}
-                  </p>
+                    <button
+                      disabled={processingId === ad.id}
+                      onClick={() => handleAction(ad.id, 'reject')}
+                      className="bg-red-600/80 hover:bg-red-600 disabled:opacity-50 text-white font-semibold text-xs py-2 px-3 rounded-lg transition text-center"
+                    >
+                      {processingId === ad.id ? '...' : '❌ விளம்பரம் நிராகரி'}
+                    </button>
 
-                  <div className="flex items-center gap-4 text-xs text-slate-400 pt-1">
-                    <span>வணிகம்: <strong className="text-slate-200">{ad.business_name}</strong></span>
-                    <span>தொடர்புக்கு: <strong className="text-slate-200">{ad.phone_number}</strong></span>
+                    <a
+                      href={`tel:${ad.phone_number}`}
+                      className="hidden md:block bg-slate-700 hover:bg-slate-600 text-slate-200 text-center text-xs py-1.5 px-3 rounded-lg transition"
+                    >
+                      📞 அழைக்க
+                    </a>
                   </div>
                 </div>
-
-                <div className="flex md:flex-col justify-end gap-2 shrink-0 md:w-36">
-                  <button
-                    disabled={processingId === ad.id}
-                    onClick={() => handleAction(ad.id, 'approve')}
-                    className="flex-1 md:flex-initial bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold text-xs py-2 px-3 rounded-lg transition text-center"
-                  >
-                    {processingId === ad.id ? '...' : '✅ Approve'}
-                  </button>
-                  <button
-                    disabled={processingId === ad.id}
-                    onClick={() => handleAction(ad.id, 'reject')}
-                    className="flex-1 md:flex-initial bg-red-600/80 hover:bg-red-600 disabled:opacity-50 text-white font-semibold text-xs py-2 px-3 rounded-lg transition text-center"
-                  >
-                    {processingId === ad.id ? '...' : '❌ Reject'}
-                  </button>
-                  <a
-                    href={`tel:${ad.phone_number}`}
-                    className="hidden md:block bg-slate-700 hover:bg-slate-600 text-slate-200 text-center text-xs py-1.5 px-3 rounded-lg transition"
-                  >
-                    📞 அழைக்க
-                  </a>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

@@ -70,7 +70,8 @@ export default async function handler(req, res) {
         location_address,
         image_url,
         ad_tier,
-        extra_details
+        extra_details,
+        transaction_ref // பயனர் உள்ளிட்ட UTR எண்
       } = req.body;
 
       if (!business_name || !ad_title || !phone_number) {
@@ -98,7 +99,6 @@ export default async function handler(req, res) {
           });
         }
       } catch (limitErr) {
-        // ஒருவேளை டேட்டாபேஸில் created_at நிரல் இல்லை எனில் பிழை வராமல் தவிர்க்கப்படுகிறது
         console.warn('Daily limit check bypassed (created_at column might be missing):', limitErr.message);
       }
 
@@ -106,17 +106,21 @@ export default async function handler(req, res) {
       const combinedContent = `${business_name} ${ad_title} ${ad_description || ''}`.toLowerCase();
       const containsSpam = SPAM_KEYWORDS.some(kw => combinedContent.includes(kw.toLowerCase()));
 
-      // ஸ்பேம் வார்த்தை இருந்தால் 'pending', இல்லையெனில் உடனே 'active'
-      const adStatus = containsSpam ? 'pending' : 'active';
+      const isFeatured = ad_tier === 'featured';
 
-      // 3. தரவுத்தளத்தில் விளம்பரத்தைச் சேமித்தல்
+      // Featured விளம்பரம் அல்லது ஸ்பேம் இருந்தால் கண்டிப்பாக 'pending' நிலையில் வைக்கப்படும்
+      const adStatus = (isFeatured || containsSpam) ? 'pending' : 'active';
+      const paymentStatus = isFeatured ? 'pending_verification' : 'free';
+
+      // 3. தரவுத்தளத்தில் விளம்பரத்தைச் சேமித்தல் (payment_status மற்றும் transaction_ref உடன்)
       const insertText = `
         INSERT INTO public.module_advertisements (
           module_key, district, taluk, pincode, business_name, contact_person,
           phone_number, whatsapp_number, ad_title, ad_description,
-          location_address, image_url, ad_tier, extra_details, status
+          location_address, image_url, ad_tier, extra_details, status,
+          payment_status, transaction_ref
         ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17
         ) RETURNING *;
       `;
 
@@ -135,17 +139,23 @@ export default async function handler(req, res) {
         image_url || null,
         ad_tier || 'basic',
         extra_details ? JSON.stringify(extra_details) : null,
-        adStatus
+        adStatus,
+        paymentStatus,
+        transaction_ref ? transaction_ref.trim() : null
       ];
 
       const result = await pool.query(insertText, values);
 
-      // ஸ்பேம் வார்த்தை இருந்திருந்தால் பயனருக்குத் தகவல் தெரிவித்தல்
+      // நிலுவையில் வைக்கப்பட்ட விளம்பரங்களுக்கான அறிவிப்பு
       if (adStatus === 'pending') {
+        const warningMsg = isFeatured 
+          ? 'உங்கள் Featured விளம்பரம் மற்றும் கட்டண UTR பெறப்பட்டது. நிர்வாகி சரிபார்த்ததும் (Admin Review) நேரலையாகும்.'
+          : 'உங்கள் விளம்பரம் ஆய்வுக்குப் பின் (Admin Review) நேரலையாகும்.';
+
         return res.status(201).json({
           success: true,
           data: result.rows[0],
-          warning: 'உங்கள் விளம்பரம் ஆய்வுக்குப் பின் (Admin Review) நேரலையாகும்.'
+          warning: warningMsg
         });
       }
 
