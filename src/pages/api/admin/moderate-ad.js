@@ -17,13 +17,14 @@ export default async function handler(req, res) {
     let params = [ad_id];
 
     switch (action) {
-      // 1. கட்டணத்தை உறுதி செய்து Featured நிலைக்கு மாற்றுதல்
+      // 1. கட்டணத்தை உறுதி செய்து 30 நாட்களுக்கு Featured நிலைக்கு மாற்றுதல்
       case 'approve_payment':
         updateQuery = `
           UPDATE public.module_advertisements 
           SET status = 'active',
               payment_status = 'paid', 
-              ad_tier = 'featured'
+              ad_tier = 'featured',
+              featured_until = NOW() + INTERVAL '30 days'
           WHERE id = $1 
           RETURNING *;
         `;

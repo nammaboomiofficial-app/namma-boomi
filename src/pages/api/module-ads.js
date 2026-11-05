@@ -12,22 +12,67 @@ export default async function handler(req, res) {
 
   if (method === 'GET') {
     try {
-      const { module_key, district, pincode, include_pending } = req.query;
+      const { module_key, district, taluk, pincode, include_pending, user_lat, user_lng, radius = 30, taluk_en } = req.query;
 
-      // அடிப்படை விதியில் 'active' விளம்பரங்கள் மட்டுமே பொதுமக்களுக்குத் தெரியும்
-      let queryText = "SELECT * FROM public.module_advertisements WHERE (status = 'active' OR status IS NULL)";
       const queryParams = [];
       let paramIndex = 1;
+      let distanceSelect = '';
+      let distanceWhere = '';
+
+      // 1. பயனர் லொகேஷன் இருந்தால் தூரத்தைக் கணக்கிட்டு distance_km ஆக எடுத்தல்
+      if (user_lat && user_lng) {
+        distanceSelect = `, (6371 * acos(
+          least(1.0, greatest(-1.0, 
+            cos(radians($${paramIndex})) * cos(radians(latitude)) * 
+            cos(radians(longitude) - radians($${paramIndex + 1})) + 
+            sin(radians($${paramIndex})) * sin(radians(latitude))
+          ))
+        )) AS distance_km`;
+
+        distanceWhere = ` AND (
+          latitude IS NOT NULL AND longitude IS NOT NULL AND
+          (6371 * acos(
+            least(1.0, greatest(-1.0, 
+              cos(radians($${paramIndex})) * cos(radians(latitude)) * 
+              cos(radians(longitude) - radians($${paramIndex + 1})) + 
+              sin(radians($${paramIndex})) * sin(radians(latitude))
+            ))
+          )) <= $${paramIndex + 2}
+        )`;
+
+        queryParams.push(parseFloat(user_lat), parseFloat(user_lng), parseFloat(radius));
+        paramIndex += 3;
+      }
+
+      // அடிப்படை விதியில் 'active' விளம்பரங்கள் மட்டுமே பொதுமக்களுக்குத் தெரியும்
+      let queryText = `SELECT * ${distanceSelect} FROM public.module_advertisements WHERE (status = 'active' OR status IS NULL)`;
 
       // அட்மின் பேனல் தேவைப்பட்டால் மட்டும் pending விளம்பரங்களை எடுக்கலாம்
       if (include_pending === 'true') {
-        queryText = 'SELECT * FROM public.module_advertisements WHERE 1=1';
+        queryText = `SELECT * ${distanceSelect} FROM public.module_advertisements WHERE 1=1`;
+      }
+
+      // லொகேஷன் சுற்றளவு வடிகட்டல்
+      if (distanceWhere) {
+        queryText += distanceWhere;
       }
 
       if (district && district !== 'அனைத்தும்') {
         queryText += ` AND district = $${paramIndex}`;
         queryParams.push(district);
         paramIndex++;
+      }
+
+      if (taluk && taluk !== 'அனைத்தும்' && taluk !== 'all') {
+        if (taluk_en && taluk_en !== taluk) {
+          queryText += ` AND (taluk ILIKE $${paramIndex} OR taluk ILIKE $${paramIndex + 1})`;
+          queryParams.push(`%${taluk}%`, `%${taluk_en}%`);
+          paramIndex += 2;
+        } else {
+          queryText += ` AND taluk ILIKE $${paramIndex}`;
+          queryParams.push(`%${taluk}%`);
+          paramIndex++;
+        }
       }
 
       if (module_key && module_key !== 'all') {
@@ -42,11 +87,16 @@ export default async function handler(req, res) {
         paramIndex++;
       }
 
-      // பிரீமியம் (featured) விளம்பரங்கள் முதலில் வரவும், பின் புதிய விளம்பரங்கள் வரவும் வரிசைப்படுத்தப்படுகிறது
-      queryText += " ORDER BY CASE WHEN ad_tier = 'featured' THEN 0 ELSE 1 END, id DESC";
+      // பிரீமியம் (featured) விளம்பரங்கள் முதலில், பின் மிக அருகில் உள்ளவை, பின் புதிய விளம்பரங்கள்
+      let orderByClause = " ORDER BY CASE WHEN ad_tier = 'featured' AND (featured_until IS NULL OR featured_until > NOW()) THEN 0 ELSE 1 END";
+      if (user_lat && user_lng) {
+        orderByClause += ", distance_km ASC";
+      }
+      orderByClause += ", id DESC";
+
+      queryText += orderByClause;
 
       const result = await pool.query(queryText, queryParams);
-
       return res.status(200).json({ success: true, data: result.rows });
     } catch (error) {
       console.error('API Error fetching ads:', error);

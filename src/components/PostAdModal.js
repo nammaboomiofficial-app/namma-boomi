@@ -578,6 +578,8 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
     taluk: '',
     pincode: '',
     map_link: '',
+    latitude: '',
+    longitude: '',
     image_url: '',
     business_name: '',
     contact_person: '',
@@ -589,6 +591,8 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
     ad_tier: 'basic',
     transaction_ref: ''
   });
+  const [fetchingGps, setFetchingGps] = useState(false);
+  const [gpsStatus, setGpsStatus] = useState('');
 
   const [moduleFields, setModuleFields] = useState({
     subCategory: '',
@@ -637,6 +641,35 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
   }, [defaultModule, currentDistrict, isOpen]);
 
   if (!isOpen) return null;
+  const handleFetchCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      alert('உங்கள் உலாவியில் GPS வசதி இல்லை.');
+      return;
+    }
+    setFetchingGps(true);
+    setGpsStatus('இடம் கண்டறியப்படுகிறது...');
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        setFormData((prev) => ({
+          ...prev,
+          latitude: lat,
+          longitude: lng,
+          map_link: prev.map_link || `https://www.google.com/maps?q=${lat},${lng}`
+        }));
+        setFetchingGps(false);
+        setGpsStatus('✅ ஜிபிஎஸ் இடம் பெறப்பட்டது!');
+      },
+      (err) => {
+        console.error(err);
+        setFetchingGps(false);
+        setGpsStatus('❌ GPS எடுக்க முடியவில்லை. அனுமதி உள்ளதா எனப் பார்க்கவும்.');
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -866,7 +899,31 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
                 ))}
               </select>
             </div>
-
+{/* நேரடி ஜிபிஎஸ் பட்டன் */}
+          <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 flex flex-col gap-2 mb-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-300">
+                📍 சரியான தூரம் காட்ட ஜிபிஎஸ் சேர்க்கவும்:
+              </span>
+              <button
+                type="button"
+                onClick={handleFetchCurrentLocation}
+                disabled={fetchingGps}
+                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 text-slate-950 font-bold text-xs rounded-lg transition-all shadow flex items-center gap-1.5 cursor-pointer"
+              >
+                {fetchingGps ? (
+                  <>⏳ கண்டறிகிறது...</>
+                ) : (
+                  <>🎯 தற்போதைய இடத்தை எடு (GPS)</>
+                )}
+              </button>
+            </div>
+            {gpsStatus && (
+              <span className={`text-[11px] font-medium ${gpsStatus.includes('✅') ? 'text-emerald-400' : 'text-amber-400'}`}>
+                {gpsStatus} {formData.latitude && `(${Number(formData.latitude).toFixed(4)}, ${Number(formData.longitude).toFixed(4)})`}
+              </span>
+            )}
+          </div>
             <div>
               <label className="block mb-1 text-slate-300 font-medium">மாவட்டம் *</label>
               <select

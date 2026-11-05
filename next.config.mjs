@@ -35,7 +35,7 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()', // அனுமதியின்றி கேமரா, மைக், இருப்பிடம் அணுகுவதைத் தடுக்கும்
+            value: 'camera=(), microphone=(), geolocation=(self)', // அனுமதியின்றி கேமரா, மைக், இருப்பிடம் அணுகுவதைத் தடுக்கும்
           },
         ],
       },

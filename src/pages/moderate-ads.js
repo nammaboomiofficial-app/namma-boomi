@@ -26,7 +26,9 @@ export default function ModerateAds() {
     fetchPendingAds();
   }, []);
 
-  const handleAction = async (ad_id, action) => {
+  const handleAction = async (ad, action) => {
+    const ad_id = ad.id;
+
     if (action === 'approve_payment') {
       if (!window.confirm('வங்கிக் கணக்கில் ₹99 கட்டணம் பெறப்பட்டதை உறுதி செய்து Featured விளம்பரமாக வெளியிடவா?')) return;
     } else if (action === 'reject_payment') {
@@ -42,7 +44,23 @@ export default function ModerateAds() {
       });
       const result = await res.json();
       if (result.success) {
-        setAds(prev => prev.filter(ad => ad.id !== ad_id));
+        setAds(prev => prev.filter(item => item.id !== ad_id));
+
+        // Featured விளம்பரம் அங்கீகரிக்கப்பட்டதும் பயனருக்கு WhatsApp செய்தி அனுப்புதல்
+        if (action === 'approve_payment' && ad.phone_number) {
+          const rawPhone = (ad.whatsapp_number || ad.phone_number).replace(/\D/g, '');
+          const targetPhone = rawPhone.startsWith('91') ? rawPhone : `91${rawPhone}`;
+          
+          const textMsg = encodeURIComponent(
+            `வணக்கம் ${ad.contact_person || ad.business_name}!\n\n` +
+            `நம்ம பூமி 360 தளத்தில் நீங்கள் சமர்ப்பித்த விளம்பரம்: *${ad.ad_title}*\n\n` +
+            `உங்கள் UPI கட்டணம் ₹99 சரிபார்க்கப்பட்டு, உங்கள் விளம்பரம் அடுத்த 30 நாட்களுக்கு *★ Featured* முன்னுரிமையுடன் வெற்றிகரமாக நேரலையாக்கப்பட்டுள்ளது!\n\n` +
+            `விளம்பரத்தைக் காண: https://nammaboomiofficial-app.vercel.app\n\n` +
+            `நன்றி!\nநம்ம பூமி 360 குழு`
+          );
+
+          window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${textMsg}`, '_blank');
+        }
       } else {
         alert(result.error || 'செயல்பாட்டில் பிழை ஏற்பட்டது');
       }
@@ -169,14 +187,14 @@ export default function ModerateAds() {
                       <>
                         <button
                           disabled={processingId === ad.id}
-                          onClick={() => handleAction(ad.id, 'approve_payment')}
+                          onClick={() => handleAction(ad, 'approve_payment')}
                           className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs py-2 px-3 rounded-lg transition text-center shadow"
                         >
                           {processingId === ad.id ? '...' : '✓ பணம் வந்தது (Featured)'}
                         </button>
                         <button
                           disabled={processingId === ad.id}
-                          onClick={() => handleAction(ad.id, 'reject_payment')}
+                          onClick={() => handleAction(ad, 'reject_payment')}
                           className="bg-amber-600/80 hover:bg-amber-600 disabled:opacity-50 text-white font-semibold text-xs py-2 px-3 rounded-lg transition text-center"
                         >
                           {processingId === ad.id ? '...' : '✕ தவறு (Basic ஆக்கு)'}
@@ -185,7 +203,7 @@ export default function ModerateAds() {
                     ) : (
                       <button
                         disabled={processingId === ad.id}
-                        onClick={() => handleAction(ad.id, 'approve')}
+                        onClick={() => handleAction(ad, 'approve')}
                         className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold text-xs py-2 px-3 rounded-lg transition text-center"
                       >
                         {processingId === ad.id ? '...' : '✅ விளம்பரம் அனுமதி'}
@@ -194,11 +212,20 @@ export default function ModerateAds() {
 
                     <button
                       disabled={processingId === ad.id}
-                      onClick={() => handleAction(ad.id, 'reject')}
+                      onClick={() => handleAction(ad, 'reject')}
                       className="bg-red-600/80 hover:bg-red-600 disabled:opacity-50 text-white font-semibold text-xs py-2 px-3 rounded-lg transition text-center"
                     >
                       {processingId === ad.id ? '...' : '❌ விளம்பரம் நிராகரி'}
                     </button>
+
+                    <a
+                      href={`https://api.whatsapp.com/send?phone=${(ad.whatsapp_number || ad.phone_number || '').replace(/\D/g, '')}&text=${encodeURIComponent(`வணக்கம், உங்கள் விளம்பரம் (${ad.ad_title}) தொடர்பாக நம்ம பூமி 360 நிர்வாகத்திலிருந்து தொடர்பு கொள்கிறோம்.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-emerald-700/70 hover:bg-emerald-600 text-white text-center text-xs py-1.5 px-3 rounded-lg transition flex items-center justify-center gap-1"
+                    >
+                      💬 WhatsApp
+                    </a>
 
                     <a
                       href={`tel:${ad.phone_number}`}
