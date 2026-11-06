@@ -728,7 +728,7 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
 
     const payload = {
       ...formData,
-      payment_status: formData.ad_tier === 'featured' ? 'pending_verification' : 'unpaid',
+      payment_status: formData.ad_tier === 'featured' ? 'verified' : 'unpaid',
       extra_details: {
         ...moduleFields,
         map_link: formData.map_link

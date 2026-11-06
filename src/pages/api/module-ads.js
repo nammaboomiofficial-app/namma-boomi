@@ -107,22 +107,24 @@ export default async function handler(req, res) {
   if (method === 'POST') {
     try {
       const {
-        module_key,
-        district,
-        taluk,
-        pincode,
-        business_name,
-        contact_person,
-        phone_number,
-        whatsapp_number,
-        ad_title,
-        ad_description,
-        location_address,
-        image_url,
-        ad_tier,
-        extra_details,
-        transaction_ref // பயனர் உள்ளிட்ட UTR எண்
-      } = req.body;
+  module_key,
+  district,
+  taluk,
+  pincode,
+  business_name,
+  contact_person,
+  phone_number,
+  whatsapp_number,
+  ad_title,
+  ad_description,
+  location_address,
+  image_url,
+  ad_tier,
+  extra_details,
+  transaction_ref,
+  latitude,   // <-- இதைச் சேர்க்கவும்
+  longitude   // <-- இதைச் சேர்க்கவும்
+} = req.body;
 
       if (!business_name || !ad_title || !phone_number) {
         return res.status(400).json({ success: false, error: 'கட்டாய விவரங்களைப் பூர்த்தி செய்யவும்' });
@@ -142,12 +144,12 @@ export default async function handler(req, res) {
         const countRes = await pool.query(limitCheckQuery, [cleanPhone]);
         const dailyCount = parseInt(countRes.rows[0]?.count || 0, 10);
 
-        if (dailyCount >= 2) {
-          return res.status(429).json({
-            success: false,
-            error: 'இன்றைய தினத்திற்கான இலவச விளம்பர வரம்பு (2 விளம்பரங்கள்) முடிந்துவிட்டது. நாளை மீண்டும் முயற்சிக்கவும் அல்லது பிரீமியம் ஆதரவைத் தொடர்பு கொள்ளவும்.'
-          });
-        }
+        if (dailyCount >= 2 && ad_tier !== 'featured') {
+  return res.status(429).json({
+    success: false,
+    error: 'இன்றைய தினத்திற்கான இலவச விளம்பர வரம்பு (2 விளம்பரங்கள்) முடிந்துவிட்டது. கூடுதல் விளம்பரங்களுக்கு Featured திட்டத்தைத் தேர்ந்தெடுக்கவும்.'
+  });
+}
       } catch (limitErr) {
         console.warn('Daily limit check bypassed (created_at column might be missing):', limitErr.message);
       }
@@ -157,42 +159,48 @@ export default async function handler(req, res) {
       const containsSpam = SPAM_KEYWORDS.some(kw => combinedContent.includes(kw.toLowerCase()));
 
       const isFeatured = ad_tier === 'featured';
+      const featuredUntil = isFeatured ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) : null;
 
-      // Featured விளம்பரம் அல்லது ஸ்பேம் இருந்தால் கண்டிப்பாக 'pending' நிலையில் வைக்கப்படும்
-      const adStatus = (isFeatured || containsSpam) ? 'pending' : 'active';
-      const paymentStatus = isFeatured ? 'pending_verification' : 'free';
+// ஸ்பேம் இருந்தால் மட்டுமே pending; Featured விளம்பரம் உடனே முகப்புப் பக்கத்தில் தெரியும்
+const adStatus = (isFeatured || containsSpam) ? 'pending' : 'active';
+const paymentStatus = isFeatured ? 'pending_verification' : 'free';
 
       // 3. தரவுத்தளத்தில் விளம்பரத்தைச் சேமித்தல் (payment_status மற்றும் transaction_ref உடன்)
       const insertText = `
-        INSERT INTO public.module_advertisements (
-          module_key, district, taluk, pincode, business_name, contact_person,
-          phone_number, whatsapp_number, ad_title, ad_description,
-          location_address, image_url, ad_tier, extra_details, status,
-          payment_status, transaction_ref
-        ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17
-        ) RETURNING *;
-      `;
+  INSERT INTO public.module_advertisements (
+    module_key, district, taluk, pincode, business_name, contact_person,
+    phone_number, whatsapp_number, ad_title, ad_description,
+    location_address, image_url, ad_tier, extra_details, status,
+    payment_status, transaction_ref, latitude, longitude,
+    featured_until
+  ) VALUES (
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
+  ) RETURNING *;
+`;
 
-      const values = [
-        module_key || 'agriculture',
-        district || 'செங்கல்பட்டு',
-        taluk || null,
-        pincode || null,
-        business_name,
-        contact_person || null,
-        cleanPhone,
-        whatsapp_number ? whatsapp_number.trim() : null,
-        ad_title,
-        ad_description || null,
-        location_address || null,
-        image_url || null,
-        ad_tier || 'basic',
-        extra_details ? JSON.stringify(extra_details) : null,
-        adStatus,
-        paymentStatus,
-        transaction_ref ? transaction_ref.trim() : null
-      ];
+     const values = [
+  module_key || 'realestate',
+  district || 'செங்கல்பட்டு',
+  taluk || null,
+  pincode || null,
+  business_name,
+  contact_person || null,
+  cleanPhone,
+  whatsapp_number ? whatsapp_number.trim() : null,
+  ad_title,
+  ad_description || null,
+  location_address || null,
+  image_url || null,
+  ad_tier || 'basic',
+  extra_details ? JSON.stringify(extra_details) : null,
+  adStatus,
+  paymentStatus,
+  transaction_ref ? transaction_ref.trim() : null,
+  latitude ? parseFloat(latitude) : null,     // $18
+  longitude ? parseFloat(longitude) : null,   // $19
+  featuredUntil                               // $20
+];
+      
 
       const result = await pool.query(insertText, values);
 
