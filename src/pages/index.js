@@ -386,8 +386,12 @@ window.open(url, '_blank');
               <button
                 key={mod.id}
                 onClick={() => {
-                  setCurrentModule(mod.id);
-                }}
+                setCurrentModule(mod.id);
+                if (mod.id === 'land') {
+                  if (typeof setActiveMainTab === 'function') setActiveMainTab('marketplace');
+                  if (typeof setQuickFilter === 'function') setQuickFilter('all');
+                }
+              }}
                 className={`flex flex-col items-center justify-center p-2 rounded-xl text-center transition-all ${currentModule === mod.id
                     ? 'bg-emerald-600 text-white font-bold shadow-md border border-emerald-400'
                     : 'bg-slate-900 border border-slate-800 text-slate-200 hover:bg-slate-800'

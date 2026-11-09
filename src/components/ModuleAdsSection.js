@@ -18,7 +18,14 @@ const MODULE_CATEGORIES = [
   { key: 'food', label: 'உணவு & தானியங்கள்', icon: '🍲' },
   { key: 'education', label: 'கல்வி', icon: '📚' }
 ];
-
+// நிலப் பிரிவுக்கான பிரத்யேக உட்பிரிவு ஃபில்டர்கள்
+const LAND_SUB_CATEGORIES = [
+  { key: 'realestate', label: 'அனைத்து நிலங்கள்', icon: '🌐' },
+  { key: 'plots', label: 'DTCP மனைகள்', icon: '📐' },
+  { key: 'agri_land', label: 'விவசாய பூமி', icon: '🌾' },
+  { key: 'villa', label: 'வீடு / வில்லா', icon: '🏡' },
+  { key: 'commercial', label: 'வணிக இடங்கள்', icon: '🏢' },
+];
 
 
 // 38 மாவட்டங்களின் பட்டியல்
@@ -259,7 +266,7 @@ export default function ModuleAdsSection({
 
       {/* பிரிவு வடிகட்டி (Category Pills Bar) */}
       <div className="flex items-center gap-1.5 overflow-x-auto py-3 no-scrollbar">
-        {MODULE_CATEGORIES.map((cat) => (
+        {(moduleKey === 'realestate' ? LAND_SUB_CATEGORIES : MODULE_CATEGORIES).map((cat) => (
           <button
             key={cat.key}
             onClick={() => setActiveCategory(cat.key)}
