@@ -431,15 +431,27 @@ export default function ModuleAdsSection({
                   </span>
                 )}
 
-                {ad.module_key === 'realestate' && ad.image_url && (
-                  <div className="w-full h-40 bg-slate-900 border-b border-slate-700 overflow-hidden">
-                    <img
-                      src={ad.image_url}
-                      alt={ad.ad_title || ad.business_name}
-                      className="w-full h-full object-cover hover:scale-105 transition duration-300"
-                    />
-                  </div>
-                )}
+                {ad.image_url ? (
+  <div className="w-full h-40 bg-slate-900 border-b border-slate-700 overflow-hidden relative">
+    <img
+      src={ad.image_url}
+      alt={ad.ad_title || ad.business_name}
+      className="w-full h-full object-cover hover:scale-105 transition duration-300"
+    />
+  </div>
+) : (
+  <div className="w-full h-36 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 border-b border-slate-700/60 flex flex-col items-center justify-center p-3 text-center relative select-none">
+    <div className="w-10 h-10 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center text-xl mb-1 shadow-inner">
+      🏷️
+    </div>
+    <span className="text-[11px] font-semibold text-emerald-400/90 tracking-wide">
+      நம்ம பூமி 360
+    </span>
+    <span className="text-[10px] text-slate-400">
+      சரிபார்க்கப்பட்ட விளம்பரம்
+    </span>
+  </div>
+)}
 
                 <div className={`p-4 flex-1 flex flex-col justify-between ${!ad.image_url ? 'pt-10' : ''}`}>
                   <div className="flex items-center space-x-2 mb-1.5 flex-wrap gap-1">
