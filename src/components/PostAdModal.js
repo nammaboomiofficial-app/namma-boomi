@@ -26,6 +26,61 @@ const MODULE_OPTIONS = [
   { key: 'heritage', label: 'தமிழர் மரபு (Tamil Heritage)', icon: '🏛️' }
 ];
 
+const MODULE_FIELD_HINTS = {
+  realestate: {
+    unit: 'எ.கா: 1200 ச.அடி / 10 சென்ட்',
+    price: 'எ.கா: ₹45 லட்சம் / ₹15,000'
+  },
+  finance: {
+    unit: 'எ.கா: அதிகபட்ச கடன் வரம்பு ₹10 லட்சம்',
+    price: 'எ.கா: வட்டி 9.5% முதல் / கட்டணம் ₹0'
+  },
+  insurance: {
+    unit: 'எ.கா: கவரேஜ் ₹5 லட்சம் வரை',
+    price: 'எ.கா: ஆண்டு பிரீமியம் ₹3,500'
+  },
+  agriculture: {
+    unit: 'எ.கா: 100 கிலோ / 1 டன் / 1 மணி நேரம்',
+    price: 'எ.கா: ₹1,200 / வாடகை மணி ₹800'
+  },
+  education: {
+    unit: 'எ.கா: கால அளவு (3 மாதம் / 1 வருடம்)',
+    price: 'எ.கா: பயிற்சிக் கட்டணம் ₹15,000'
+  },
+  jobs: {
+    unit: 'எ.கா: கல்வித் தகுதி (Any Degree / ITI)',
+    price: 'எ.கா: மாதச் சம்பளம் ₹18,000 - ₹25,000'
+  },
+  business: {
+    unit: 'எ.கா: உற்பத்தித் திறன் / அளவு',
+    price: 'எ.கா: இயந்திர விலை ₹2.5 லட்சம்'
+  },
+  wholesale: {
+    unit: 'எ.கா: குறைந்தபட்ச ஆர்டர் (MOQ 500 கிலோ)',
+    price: 'எ.கா: மொத்த விலை கிலோ ₹45'
+  },
+  spiritual: {
+    unit: 'எ.கா: பூஜை நேரம் / சேவை விவரம்',
+    price: 'எ.கா: காணிக்கை / கட்டணம் ₹500'
+  },
+  tourism: {
+    unit: 'எ.கா: நபர் எண்ணிக்கை / நாட்கள் (2D/1N)',
+    price: 'எ.கா: பேக்கேஜ் ₹4,999 / நாள் வாடகை'
+  },
+  astrology: {
+    unit: 'எ.கா: நேரடி / தொலைபேசி ஆலோசனை',
+    price: 'எ.கா: தட்சிணை ₹300'
+  },
+  astro: {
+    unit: 'எ.கா: நேரடி / தொலைபேசி ஆலோசனை',
+    price: 'எ.கா: தட்சிணை ₹300'
+  },
+  heritage: {
+    unit: 'எ.கா: அளவு / கைவினைப் பொருள் வகை',
+    price: 'எ.கா: விலை ₹750'
+  }
+};
+
 const MODULE_DATA_PRESETS = {
   realestate: {
     options: ['தனி வீடு / வில்லா', 'DTCP மனை', 'விவசாய பூமி', 'வணிக இடம் / கடை'],
@@ -965,7 +1020,7 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
                   name="unitOrRole"
                   value={moduleFields.unitOrRole}
                   onChange={(e) => setModuleFields({ ...moduleFields, unitOrRole: e.target.value })}
-                  placeholder="எ.கா: 1200 ச.அடி / 10 மூட்டை"
+                  placeholder={MODULE_FIELD_HINTS[formData?.module_key]?.unit || 'எ.கா: 1200 ச.அடி / 10 சென்ட்'}
                   className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
@@ -977,7 +1032,7 @@ export default function PostAdModal({ isOpen, onClose, currentDistrict = 'செ
                   name="priceOrSalary"
                   value={moduleFields.priceOrSalary}
                   onChange={(e) => setModuleFields({ ...moduleFields, priceOrSalary: e.target.value })}
-                  placeholder="எ.கா: ₹45 லட்சம் / ₹500"
+                  placeholder={MODULE_FIELD_HINTS[formData?.module_key]?.price || 'எ.கா: ₹45 லட்சம் / ₹500'}
                   className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
