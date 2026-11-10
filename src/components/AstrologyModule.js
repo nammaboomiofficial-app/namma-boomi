@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import BirthdayCalendar from './BirthdayCalendar';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { getWhatsAppUrl } from '../config';
+import { getWhatsAppUrl,SITE_CONFIG } from '../config';
 export default function AstrologyModule({ profile }) {
   const [birthDetails, setBirthDetails] = useState({
     name: profile?.name || '',

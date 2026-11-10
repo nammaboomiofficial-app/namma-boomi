@@ -18,14 +18,117 @@ const MODULE_CATEGORIES = [
   { key: 'food', label: 'உணவு & தானியங்கள்', icon: '🍲' },
   { key: 'education', label: 'கல்வி', icon: '📚' }
 ];
-// நிலப் பிரிவுக்கான பிரத்யேக உட்பிரிவு ஃபில்டர்கள்
-const LAND_SUB_CATEGORIES = [
-  { key: 'realestate', label: 'அனைத்து நிலங்கள்', icon: '🌐' },
-  { key: 'plots', label: 'DTCP மனைகள்', icon: '📐' },
-  { key: 'agri_land', label: 'விவசாய பூமி', icon: '🌾' },
-  { key: 'villa', label: 'வீடு / வில்லா', icon: '🏡' },
-  { key: 'commercial', label: 'வணிக இடங்கள்', icon: '🏢' },
-];
+
+// அனைத்து 12 மாட்யூல்களுக்கான பிரத்யேக உட்பிரிவு ஃபில்டர்கள்
+const MODULE_SUB_CATEGORIES_MAP = {
+  // 1. பூமி & நிலம்
+  realestate: [
+    { key: 'realestate', label: 'அனைத்து நிலங்கள்', icon: '📍' },
+    { key: 'plots', label: 'DTCP மனைகள்', icon: '📐' },
+    { key: 'agri_land', label: 'விவசாய பூமி', icon: '🌾' },
+    { key: 'villa', label: 'வீடு / வில்லா', icon: '🏠' },
+    { key: 'commercial', label: 'வணிக இடங்கள்', icon: '🏢' },
+  ],
+  // 2. நிதி & கடன்கள்
+  finance: [
+    { key: 'all', label: 'அனைத்து நிதி', icon: '💰' },
+    { key: 'land_loan', label: 'நிலக்கடன்', icon: '🏡' },
+    { key: 'business_loan', label: 'தொழில் கடன்', icon: '💼' },
+    { key: 'personal_loan', label: 'தனிநபர் கடன்', icon: '👤' },
+    { key: 'msme', label: 'MSME மானியம்', icon: '📜' },
+  ],
+  // 3. காப்பீடு & பாதுகாப்பு
+  insurance: [
+    { key: 'all', label: 'அனைத்துக் காப்பீடு', icon: '🛡️' },
+    { key: 'crop_insurance', label: 'பயிர் காப்பீடு', icon: '🌾' },
+    { key: 'livestock_insurance', label: 'கால்நடை காப்பீடு', icon: '🐄' },
+    { key: 'health_insurance', label: 'மருத்துவக் காப்பீடு', icon: '🏥' },
+    { key: 'vehicle_insurance', label: 'வாகனக் காப்பீடு', icon: '🚗' },
+  ],
+  // 4. இயற்கை விவசாயம்
+  agriculture: [
+    { key: 'all', label: 'அனைத்து விவசாயம்', icon: '🌾' },
+    { key: 'seeds', label: 'நாட்டு விதைகள் & நாற்று', icon: '🌱' },
+    { key: 'organic_fertilizer', label: 'இயற்கை உரம்', icon: '🧪' },
+    { key: 'machinery', label: 'டிராக்டர் / வாடகை', icon: '🚜' },
+    { key: 'livestock', label: 'கால்நடைகள்', icon: '🐄' },
+  ],
+  // 5. கல்வி & படிப்பு
+  education: [
+    { key: 'all', label: 'அனைத்துக் கல்வி', icon: '🎓' },
+    { key: 'schools_colleges', label: 'பள்ளிகள் & கல்லூரிகள்', icon: '🏫' },
+    { key: 'coaching_tuition', label: 'டியூஷன் & பயிற்சி', icon: '📚' },
+    { key: 'skill_courses', label: 'தொழில்நுட்பப் படிப்பு', icon: '💻' },
+    { key: 'study_abroad', label: 'வெளிநாட்டுக் கல்வி', icon: '✈️' },
+  ],
+  // 6. வேலைவாய்ப்பு & மனிதவளம்
+  jobs: [
+    { key: 'all', label: 'அனைத்து வேலைகள்', icon: '💼' },
+    { key: 'field_work', label: 'களப்பணி & மார்க்கெட்டிங்', icon: '🛵' },
+    { key: 'driver_operator', label: 'ஓட்டுநர் / ஆபரேட்டர்', icon: '🚚' },
+    { key: 'office_admin', label: 'அலுவலகப் பணி / டேட்டா', icon: '🖥️' },
+    { key: 'technical_trade', label: 'தொழில்நுட்ப வல்லுநர்', icon: '🔧' },
+  ],
+  // 7. தொழில் & MSME
+  business_msme: [
+    { key: 'all', label: 'அனைத்து MSME', icon: '🏭' },
+    { key: 'raw_materials', label: 'மூலப்பொருட்கள்', icon: '📦' },
+    { key: 'machinery_tools', label: 'தொழில் இயந்திரங்கள்', icon: '⚙️' },
+    { key: 'packaging_logistics', label: 'பேக்கிங் & சரக்கு', icon: '🚛' },
+    { key: 'iso_licensing', label: 'பதிவு & உரிமங்கள்', icon: '📑' },
+  ],
+  // 8. மொத்த விற்பனை (Wholesale B2B)
+  wholesale: [
+    { key: 'all', label: 'அனைத்து B2B', icon: '🏬' },
+    { key: 'grains_pulses', label: 'தானியங்கள் & பருப்பு', icon: '🌾' },
+    { key: 'spices_oil', label: 'மளிகை & எண்ணெய்', icon: '🧂' },
+    { key: 'fruits_veg', label: 'மொத்த காய்கறி & பழங்கள்', icon: '🥭' },
+    { key: 'fmcg_supplies', label: 'FMCG மொத்த விநியோகம்', icon: '🛒' },
+  ],
+  // 9. ஆன்மிகம் & அறப்பணி
+  spiritual: [
+    { key: 'all', label: 'அனைத்து ஆன்மிகம்', icon: '🛕' },
+    { key: 'temple_pooja', label: 'கோயில் பூஜா பொருட்கள்', icon: '🪔' },
+    { key: 'priest_services', label: 'புரோகிதர் சேவைகள்', icon: '🙏' },
+    { key: 'annadhanam_trust', label: 'அன்னதான அறக்கட்டளை', icon: '🍲' },
+    { key: 'spiritual_tours', label: 'ஆன்மிக யாத்திரை', icon: '🚌' },
+  ],
+  // 10. சுற்றுலா & விருந்தோம்பல்
+  tourism: [
+    { key: 'all', label: 'அனைத்து சுற்றுலா', icon: '🏖️' },
+    { key: 'heritage_sites', label: 'பாரம்பரிய தளங்கள்', icon: '🏛️' },
+    { key: 'resorts_homestay', label: 'ரிசார்ட் & ஹோம்ஸ்டே', icon: '🏡' },
+    { key: 'cabs_travels', label: 'டிராவல்ஸ் & வேன் வாடகை', icon: '🚐' },
+    { key: 'tour_packages', label: 'டூர் பேக்கேஜ்கள்', icon: '🗺️' },
+  ],
+  // 11. AI ஜோதிடம் & வாஸ்து
+  astrology: [
+    { key: 'all', label: 'அனைத்து ஜோதிடம்', icon: '🔮' },
+    { key: 'horoscope_matching', label: 'ஜாதகம் & பொருத்தம்', icon: '📜' },
+    { key: 'vaastu_land_home', label: 'மனை / வீடு வாஸ்து', icon: '🧭' },
+    { key: 'numerology_names', label: 'எண் கணிதம் & பெயர்கள்', icon: '🔢' },
+    { key: 'gemstones', label: 'ராசிக் கற்கள் & பரிகாரம்', icon: '💎' },
+  ],
+  astro: [
+    { key: 'all', label: 'அனைத்து ஜோதிடம்', icon: '🔮' },
+    { key: 'horoscope_matching', label: 'ஜாதகம் & பொருத்தம்', icon: '📜' },
+    { key: 'vaastu_land_home', label: 'மனை / வீடு வாஸ்து', icon: '🧭' },
+    { key: 'numerology_names', label: 'எண் கணிதம் & பெயர்கள்', icon: '🔢' },
+    { key: 'gemstones', label: 'ராசிக் கற்கள் & பரிகாரம்', icon: '💎' },
+  ],
+  // 12. தமிழர் மரபு & வாழ்வியல்
+  heritage: [
+    { key: 'all', label: 'அனைத்து மரபு', icon: '🏛️' },
+    { key: 'traditional_foods', label: 'பாரம்பரிய உணவு', icon: '🥣' },
+    { key: 'siddha_herbal', label: 'நாட்டு மருத்துவம் & மூலிகை', icon: '🌿' },
+    { key: 'handicrafts', label: 'கைவினைப் பொருட்கள்', icon: '🏺' },
+    { key: 'martial_arts', label: 'சிலம்பம் & கலைகள்', icon: '🥋' },
+  ],
+};
+
+const getSubCategoriesForModule = (currentKey) => {
+  return MODULE_SUB_CATEGORIES_MAP[currentKey] || MODULE_CATEGORIES;
+};
 
 
 // 38 மாவட்டங்களின் பட்டியல்
@@ -266,7 +369,7 @@ export default function ModuleAdsSection({
 
       {/* பிரிவு வடிகட்டி (Category Pills Bar) */}
       <div className="flex items-center gap-1.5 overflow-x-auto py-3 no-scrollbar">
-        {(moduleKey === 'realestate' ? LAND_SUB_CATEGORIES : MODULE_CATEGORIES).map((cat) => (
+        {getSubCategoriesForModule(moduleKey).map((cat) => (
           <button
             key={cat.key}
             onClick={() => setActiveCategory(cat.key)}
@@ -304,9 +407,9 @@ export default function ModuleAdsSection({
             const isRevealed = revealedNumbers[ad.id];
 
             return (
-              <div 
-                key={ad.id} 
-                className="relative bg-slate-800/90 hover:bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/50 transition-all flex flex-col justify-between shadow-md"
+              <div
+  key={ad.id}
+  className="relative bg-slate-800/90 hover:bg-slate-800 rounded-xl overflow-hidden flex flex-col h-full border border-slate-700/60 transition-all duration-200"
               >
                 {/* டைனமிக் தூரக் குறிப்பான் (Featured மோதல் தவிர்ப்பு) */}
         {(ad.distance_km != null || ad.distance != null) && (
@@ -338,7 +441,7 @@ export default function ModuleAdsSection({
                   </div>
                 )}
 
-                <div className={`p-4 flex-1 ${!ad.image_url ? 'pt-10' : ''}`}>
+                <div className={`p-4 flex-1 flex flex-col justify-between ${!ad.image_url ? 'pt-10' : ''}`}>
                   <div className="flex items-center space-x-2 mb-1.5 flex-wrap gap-1">
                     <span className="text-[10px] bg-slate-700 text-emerald-300 font-semibold px-2 py-0.5 rounded flex items-center space-x-1">
                       <span>📍 {ad.taluk || ad.district}</span>
