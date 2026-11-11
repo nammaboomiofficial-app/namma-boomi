@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getWhatsAppUrl } from '../config';
 import PostAdModal from './PostAdModal';
 import DISTRICT_TALUKS from '../data/tnTaluksData.json';
+import BulkUploadModal from './BulkUploadModal';
 
 // 12 முக்கிய வணிகப் பிரிவுகள்
 const MODULE_CATEGORIES = [
@@ -150,6 +151,7 @@ export default function ModuleAdsSection({
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [selectedRadius, setSelectedRadius] = useState(30);
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [isBulkOpen, setIsBulkOpen] = useState(false);
 
   // பயனர் செயலியைத் திறக்கும்போது லொகேஷன் அனுமதி கோருதல்
   useEffect(() => {
@@ -216,9 +218,19 @@ export default function ModuleAdsSection({
 
         const res = await fetch(`/api/module-ads?${params.toString()}`);
         const result = await res.json();
-        if (result.success) {
-          setAds(result.data || []);
-        }
+       // LocalStorage-ல் நாம் Bulk Upload செய்த விளம்பரங்களை எடுத்தல்
+        const localAds = typeof window !== 'undefined' 
+          ? JSON.parse(localStorage.getItem('namma_boomi_ads') || '[]') 
+          : [];
+
+        // தற்போது தேர்ந்தெடுக்கப்பட்டுள்ள மாட்யூலுக்கு ஏற்ப வடிகட்டுதல்
+        const filteredLocal = activeCategory === 'all' 
+          ? localAds 
+          : localAds.filter(ad => ad.module_key === activeCategory);
+
+        // API தரவுகளையும், நாம் அப்லோட் செய்த விளம்பரங்களையும் இணைத்துக் காட்டுதல்
+        const apiAds = (result && result.success && Array.isArray(result.data)) ? result.data : [];
+        setAds([...filteredLocal, ...apiAds]);
       } catch (err) {
         console.error('விளம்பரங்கள் பெறுவதில் பிழை:', err);
       } finally {
@@ -274,7 +286,14 @@ export default function ModuleAdsSection({
 
         
       </div>
-      
+      <div className="flex justify-end mb-2">
+  <button
+    onClick={() => setIsBulkOpen(true)}
+    className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg font-semibold shadow-md transition flex items-center gap-1.5"
+  >
+    📊 Bulk CSV Upload
+  </button>
+</div>
       {/* 🏛️ 38 மாவட்டங்கள் & 📍 தொடர்புடைய தாலுகா வடிகட்டி பகுதி */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3 pt-3 border-t border-slate-700/60">
         <div className="flex flex-wrap items-center gap-3">
@@ -567,6 +586,13 @@ export default function ModuleAdsSection({
           defaultModule="realestate"
         />
       )}
+      <BulkUploadModal
+        isOpen={isBulkOpen}
+        onClose={() => setIsBulkOpen(false)}
+        onUploadSuccess={() => {
+          window.location.reload();
+        }}
+      />
     </div>
   );
 }
