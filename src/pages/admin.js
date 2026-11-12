@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import BulkUploadModal from '../components/BulkUploadModal';
 
 export default function AdminDashboard() {
   const [pin, setPin] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [error, setError] = useState('');
+  const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
 
   // உங்கள் அட்மின் ரகசிய PIN (தேவைப்பட்டால் மாற்றிக் கொள்ளலாம்)
   const ADMIN_PIN = '3600'; 
@@ -36,7 +38,7 @@ export default function AdminDashboard() {
           <span className="w-9 h-9 rounded-xl bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-lg shadow-lg shadow-emerald-500/20">360</span>
           <div>
             <h1 className="text-base font-bold text-white tracking-wide">நம்ம பூமி 360 - அட்மின் சிஆர்எம்</h1>
-            <p className="text-xs text-slate-100">லீட்ஸ் & தணிக்கை மேலாண்மை தளம்</p>
+            <p className="text-xs text-slate-100">லீட்ஸ் & விளம்பர மேலாண்மை தளம்</p>
           </div>
         </div>
         <Link href="/" className="text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-lg transition-colors">
@@ -54,7 +56,7 @@ export default function AdminDashboard() {
                 🔒
               </div>
               <h2 className="text-lg font-bold text-white mb-1">அட்மின் உள்நுழைவு</h2>
-              <p className="text-xs text-slate-100 mb-6">லீட்களைப் பார்க்க உங்கள் 4 இலக்க PIN உள்ளிடவும்</p>
+              <p className="text-xs text-slate-100 mb-6">தொடர உங்கள் 4 இலக்க PIN உள்ளிடவும்</p>
 
               <form onSubmit={handleLogin} className="space-y-4">
                 <input
@@ -62,7 +64,7 @@ export default function AdminDashboard() {
                   maxLength={4}
                   value={pin}
                   onChange={(e) => setPin(e.target.value)}
-                  placeholder="PIN உள்ளிடவும் (3600)"
+                  placeholder="PIN உள்ளிடவும்"
                   className="w-full text-center text-2xl tracking-widest px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-500 text-white placeholder:text-slate-600 font-mono"
                   autoFocus
                 />
@@ -85,7 +87,13 @@ export default function AdminDashboard() {
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span className="text-sm font-semibold text-emerald-400">கூகுள் ஷீட் நேரலை இணைப்பு இயங்குகிறது</span>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setIsBulkModalOpen(true)}
+                  className="text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 shadow-md"
+                >
+                  <span>📊 Bulk CSV விளம்பரங்கள் ஏற்று</span>
+                </button>
                 <a
                   href={DIRECT_SHEET_LINK}
                   target="_blank"
@@ -108,6 +116,15 @@ export default function AdminDashboard() {
           </div>
         )}
       </main>
+
+      {/* Bulk CSV Upload Modal */}
+      <BulkUploadModal
+        isOpen={isBulkModalOpen}
+        onClose={() => setIsBulkModalOpen(false)}
+        onUploadSuccess={() => {
+          alert('✅ விளம்பரங்கள் வெற்றிகரமாக ஏற்றப்பட்டன! முகப்புப் பக்கத்தில் (Home) சென்று பார்க்கலாம்.');
+        }}
+      />
     </div>
   );
 }

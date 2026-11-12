@@ -286,14 +286,7 @@ export default function ModuleAdsSection({
 
         
       </div>
-      <div className="flex justify-end mb-2">
-  <button
-    onClick={() => setIsBulkOpen(true)}
-    className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg font-semibold shadow-md transition flex items-center gap-1.5"
-  >
-    📊 Bulk CSV Upload
-  </button>
-</div>
+      
       {/* 🏛️ 38 மாவட்டங்கள் & 📍 தொடர்புடைய தாலுகா வடிகட்டி பகுதி */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3 pt-3 border-t border-slate-700/60">
         <div className="flex flex-wrap items-center gap-3">
