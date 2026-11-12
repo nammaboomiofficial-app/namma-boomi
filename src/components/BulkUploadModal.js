@@ -7,7 +7,7 @@ export default function BulkUploadModal({ isOpen, onClose, onUploadSuccess }) {
 
   if (!isOpen) return null;
 
-  // எளிய CSV Parser லாஜிக்
+  // CSV வரிகளை கார்டு டிசைனுக்கு ஏற்ற பெயர்களில் மாற்றும் லாஜிக்
   const parseCSV = (text) => {
     const lines = text.split('\n').filter(line => line.trim() !== '');
     if (lines.length < 2) return [];
@@ -21,11 +21,26 @@ export default function BulkUploadModal({ isOpen, onClose, onUploadSuccess }) {
       headers.forEach((header, index) => {
         obj[header] = values[index] || '';
       });
+
       return {
         ...obj,
         id: Date.now() + Math.random().toString(36).substr(2, 9),
-        created_at: new Date().toISOString(),
-        is_featured: obj.is_featured === 'true'
+        module_key: obj.module_key || 'realestate',
+        ad_title: obj.ad_title || obj.title || '',
+        ad_description: obj.ad_description || obj.description || '',
+        business_name: obj.business_name || '',
+        taluk: obj.taluk || '',
+        district: obj.district || '',
+        contact_person: obj.contact_person || obj.contact_name || '',
+        phone_number: obj.phone_number || obj.phone || '',
+        whatsapp_number: obj.whatsapp_number || obj.whatsapp || obj.phone || '',
+        is_featured: obj.is_featured === 'true',
+        extra_details: {
+          subCategory: obj.sub_category || obj.subCategory || '',
+          unitOrRole: obj.unit_role || obj.unitOrRole || '',
+          priceOrSalary: obj.price || obj.priceOrSalary || '',
+        },
+        created_at: new Date().toISOString()
       };
     });
   };
@@ -49,15 +64,13 @@ export default function BulkUploadModal({ isOpen, onClose, onUploadSuccess }) {
           throw new Error('கோப்பில் தரவுகள் எதுவும் இல்லை!');
         }
 
-        // உள்ளூர் சேமிப்பகத்தில் அல்லது டேட்டாபேஸில் ஏற்றுதல்
-        const existingAds = JSON.parse(localStorage.getItem('namma_boomi_ads') || '[]');
-        const updatedAds = [...newAds, ...existingAds];
-        localStorage.setItem('namma_boomi_ads', JSON.stringify(updatedAds));
+        // பழைய குழப்பமான டேட்டாவை நீக்கிவிட்டு புதிய சரியான டேட்டாவை ஏற்றுதல்
+        localStorage.setItem('namma_boomi_ads', JSON.stringify(newAds));
 
         setStatusMessage(`${newAds.length} விளம்பரங்கள் வெற்றிகரமாக ஏற்றப்பட்டன!`);
         setTimeout(() => {
           setIsProcessing(false);
-          if (onUploadSuccess) onUploadSuccess(updatedAds);
+          if (onUploadSuccess) onUploadSuccess(newAds);
           onClose();
         }, 1200);
       } catch (err) {
