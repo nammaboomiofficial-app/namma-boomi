@@ -1006,13 +1006,7 @@ window.open(url, '_blank');
                 {cat.label}
               </button>
             ))}
-            <button
-  type="button"
-  onClick={() => setIsHeritageModalOpen(true)}
-  className="px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 flex items-center gap-1 shadow-sm"
->
-  🏛️ தமிழர் மரபு & வாழ்வியல்
-</button>
+            
           </div>
 
           {/* பரிவர்த்தனை: விற்பனை, வாடகை, லீஸ் */}

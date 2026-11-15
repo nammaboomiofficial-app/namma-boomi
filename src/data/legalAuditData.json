@@ -6,12 +6,12 @@
     "googleSheetUrl": "https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZB0YKKBNNT3f_Wk_2K_w/exec"
   },
   "uiLabels": {
-    "badge": "🛡️ பிரத்யேக சட்டத் தணிக்கைச் சேவை",
+    "badge": "🛡️ பிரத்யேக நில ஆய்வுச் சேவை",
     "mainTitle": "நீங்கள் வாங்கும் நிலம்",
     "mainTitleHighlight": "100% பாதுகாப்பானதா?",
     "subtitle": "பத்திரம் பதிவு செய்வதற்கு முன் அரசு ஆவணங்களை (Tnreginet & e-Services) முழுமையாக ஆய்வு செய்து, 6-அடுக்கு டிஜிட்டல் லீகல் ஆடிட் அறிக்கையை உங்கள் வாட்ஸ்அப்பிற்கே பெறுங்கள்!",
-    "viewSampleBtn": "👁️ மாதிரி ஆடிட் அறிக்கையைப் பார்க்க (View Sample Report)",
-    "formTitle": "ஆடிட் அறிக்கை முன்பதிவு",
+    "viewSampleBtn": "👁️ மாதிரி ஆய்வு அறிக்கையைப் பார்க்க (View Sample Report)",
+    "formTitle": "நில ஆய்வு அறிக்கை முன்பதிவு",
     "formSubtitle": "உடனடி சரிபார்ப்பு & வாட்ஸ்அப் டெலிவரி",
     "nameLabel": "உங்கள் பெயர்",
     "namePlaceholder": "உதாரணம்: குமார்",
@@ -27,7 +27,7 @@
     "surveyNoPlaceholder": "சர்வே எண்",
     "subDivLabel": "உட்பிரிவு (Sub-Div)",
     "subDivPlaceholder": "உட்பிரிவு எண்",
-    "submitBtn": "🛡️ ₹{price}-ல் தணிக்கை கோருங்கள் (WhatsApp)",
+    "submitBtn": "🛡️ ₹{price}-ல் ஆய்வு கோருங்கள் (WhatsApp)",
     "securityNote": "🔒 100% பாதுகாப்பானது • உங்கள் தகவல்கள் ரகசியமாக வைக்கப்படும்",
     "requiredAlert": "தயவுசெய்து வாட்ஸ்அப் எண், மாவட்டம் மற்றும் சர்வே எண்ணை உள்ளிடவும்"
   },
