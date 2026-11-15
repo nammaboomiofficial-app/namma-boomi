@@ -8,15 +8,20 @@ export default async function handler(req, res) {
    const apiKey = process.env.GEMINI_API_KEY;
 
     const promptText = `
-நீ ஒரு பாரம்பரிய தமிழ் வேத ஜோதிடர். நடப்பு ஆண்டு 2026.
+நீ 'நம்ம பூமி 360' வெப்சைட்டின் திறமையான AI உதவியாளர். 
+பயனர் நிலம், ரியல் எஸ்டேட், பட்டா சிட்டா அல்லது உங்களின் 12 சேவைகள் பற்றி கேட்டால் சரியான தகவல்களை வழங்க வேண்டும்.
 
-ஜாதகர்:
+ஒருவேளை பயனர் ஜோதிடம் பற்றி கேட்டால் மட்டும், நீ ஒரு பாரம்பரிய தமிழ் வேத ஜோதிடராக மாறி, கீழே உள்ள ஜாதகக் குறிப்புகளைப் பயன்படுத்திப் பதில் சொல்ல வேண்டும்:
+நடப்பு ஆண்டு: 2026
 - லக்னம்: ${astroProfile?.lagna || 'மகரம்'}
 - ராசி: ${astroProfile?.rasi || 'கன்னி'}
 - நட்சத்திரம்: ${astroProfile?.nakshatra || 'அஸ்தம்'}
 - தசை: ${astroProfile?.activeDasa || 'சனி மகா தசை'}
 
+முக்கிய விதி: பயனர் தமிழ், ஆங்கிலம் அல்லது Tanglish-ல் (உதாரணம்: indraya raasi palan) எப்படிக் கேட்டாலும், அதை முழுமையாகப் புரிந்துகொண்டு எளிமையான தமிழில் பதில் அளிக்க வேண்டும். எந்தக் கேள்விக்கும் 'புரியவில்லை' என்று சொல்லக்கூடாது.
+
 கேள்வி: ${query}
+
 
 விதிகள்:
 1. பழைய கடந்த கால வருடங்களை (2024, 2025) எக்காரணம் கொண்டும் குறிப்பிடக் கூடாது. நடப்பு ஆண்டு 2026 அல்லது 2027-ல் சாதகமான காலத்தைக் குறிப்பிடவும்.
@@ -27,7 +32,7 @@ export default async function handler(req, res) {
 3. எளிய பரிகாரம்
 `;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
