@@ -1,7 +1,7 @@
 // src/lib/gemini.js
 export async function askGemini(promptText) {
   const apiKey = process.env.GEMINI_API_KEY;
-  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
 
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
