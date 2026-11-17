@@ -36,7 +36,7 @@ import TourismModule from '../components/TourismModule';
 import landsData from '../data/landsData.json';
 import ModuleAdsSection from '@/components/ModuleAdsSection';
 import PostAdModal from '@/components/PostAdModal';
-
+import HeroOrbitBanner from '../components/HeroOrbitBanner';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -657,129 +657,7 @@ window.open(url, '_blank');
                   ))}
                 </div>
               </div>
-           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950 via-green-900 to-emerald-950 border border-emerald-500/40 shadow-2xl p-6 md:p-8">
-  {/* பின்னணி இயற்கை ஒளிவட்டம் */}
-  <div className="absolute -top-28 -left-28 w-96 h-96 bg-emerald-500/25 rounded-full blur-3xl pointer-events-none"></div>
-  <div className="absolute -bottom-28 -right-28 w-96 h-96 bg-green-500/20 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-
-                {/* இடதுபுறம்: தாத்பரியம், விளக்கம் & 4 சிறப்பம்ச பேட்ஜ்கள் */}
-                <div className="lg:col-span-7 space-y-6 text-left">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-400/40 text-emerald-300 text-xs md:text-sm font-semibold shadow-inner">
-                    <span className="text-amber-400">✨</span> தமிழ்நாடு முழுமைக்குமான 12 முதன்மை வாழ்வியல் & டிஜிட்டல் சேவைகள்
-                  </div>
-
-                  <div className="space-y-2">
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-wide text-white drop-shadow-md">
-                      நம்ம பூமி 360
-                    </h1>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-emerald-300 via-teal-200 to-amber-300 bg-clip-text text-transparent">
-                      உழவும் நிலமும் தமிழரின் வாழ்வியலும்
-                    </h2>
-                  </div>
-
-                  <p className="text-slate-200 text-sm md:text-base leading-relaxed bg-black/25 p-4 rounded-2xl border border-emerald-500/20 backdrop-blur-sm">
-                    பாரம்பரிய இயற்கை விவசாயம், பாதுகாப்பான நிலப் பரிவர்த்தனை வழிகாட்டல்கள், அரசு சேவைகள் மற்றும் அதிநவீன AI தொழில்நுட்ப வழிகாட்டல்களை ஒரே இடத்தில் இணைக்கும் டிஜிட்டல் தளம்.
-                  </p>
-
-                  {/* 4 பிரீமியம் சூப்பர் ஆப் பேட்ஜ்கள் */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
-                    <div className="bg-emerald-950/60 border border-emerald-500/30 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1 shadow-sm hover:border-emerald-400/60 transition-all">
-                      <span className="text-xl">🛡️</span>
-                      <span className="text-[11px] text-slate-200 font-medium">பாதுகாப்பான பரிவர்த்தனை</span>
-                    </div>
-                    <div className="bg-emerald-950/60 border border-emerald-500/30 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1 shadow-sm hover:border-emerald-400/60 transition-all">
-                      <span className="text-xl">📈</span>
-                      <span className="text-[11px] text-slate-200 font-medium">சரியான AI மதிப்பீடு</span>
-                    </div>
-                    <div className="bg-emerald-950/60 border border-emerald-500/30 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1 shadow-sm hover:border-emerald-400/60 transition-all">
-                      <span className="text-xl">⚡</span>
-                      <span className="text-[11px] text-slate-200 font-medium">வேகமான சேவைகள்</span>
-                    </div>
-                    <div className="bg-emerald-950/60 border border-emerald-500/30 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1 shadow-sm hover:border-emerald-400/60 transition-all">
-                      <span className="text-xl">🎧</span>
-                      <span className="text-[11px] text-slate-200 font-medium">24x7 தமிழ் ஆதரவு</span>
-                    </div>
-                  </div>
-
-                  {/* வழிகாட்டும் குறிப்பு */}
-                  <div className="pt-1 flex items-center gap-2 text-amber-300 text-xs md:text-sm font-semibold">
-                    <span className="text-base inline-block animate-bounce">👆</span>
-                    <span>மேலே உள்ள 12 பிரிவுகளில் நீங்கள் விரும்பும் சேவையைத் தொட்டுப் பயன்படுத்தலாம்</span>
-                  </div>
-                </div>
-
-                {/* வலதுபுறம்: சுழலும் 3D நியான் குளோப் + லொகேஷன் பின் & நில வலைப்பின்னல் */}
-                <div className="lg:col-span-5 flex justify-center">
-                  <div className="relative w-full max-w-[340px] md:max-w-[380px] aspect-[4/5] rounded-3xl bg-gradient-to-b from-[#021812] via-[#010f0b] to-[#000806] border border-cyan-500/30 p-5 shadow-[0_0_50px_rgba(6,182,212,0.2)] flex flex-col items-center justify-between overflow-hidden">
-
-                    {/* மேல் தலைப்பு டேக் */}
-                    <div className="w-full flex items-center justify-between px-2 py-1 text-[11px] font-bold text-cyan-300 border-b border-cyan-500/20 z-10">
-                      <span className="flex items-center gap-1.5">
-                        <span className="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                        தமிழ்நாடு இயற்கை 360°
-                      </span>
-                      <span className="text-amber-400 font-extrabold tracking-wider">NAMMA BHOOMI</span>
-                    </div>
-
-                    {/* 3D நியான் குளோப் & லொகேஷன் பின் */}
-                    <div className="relative w-full h-[270px] flex items-center justify-center my-auto">
-
-                      {/* மெதுவாகச் சுழலும் நியான் பூமி வளையம் */}
-                      <div className="w-56 h-56 rounded-full border border-cyan-500/30 bg-gradient-to-tr from-cyan-950/60 via-emerald-950/50 to-slate-950/90 shadow-[inset_0_0_40px_rgba(6,182,212,0.3)] animate-[spin_25s_linear_infinite] flex items-center justify-center relative">
-                        <div className="absolute inset-0 rounded-full border border-dashed border-cyan-400/25"></div>
-                        <div className="w-full h-28 border-y border-cyan-400/20 rounded-[50%]"></div>
-                        <div className="h-full w-28 border-x border-cyan-400/20 rounded-[50%]"></div>
-                      </div>
-
-                      {/* வெளிப்பக்க நீல ஒளிவட்டம் */}
-                      <div className="absolute w-60 h-60 rounded-full border border-cyan-400/20 shadow-[0_0_35px_rgba(6,182,212,0.25)] pointer-events-none"></div>
-
-                      {/* மையத்தில் மிளிரும் ஹைடெக் லொகேஷன் பின் & உழவு வேர்கள் */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                        <div className="relative flex items-center justify-center">
-                          {/* நீல நியான் பேக் டிராப் குளோவ் */}
-                          <div className="absolute w-24 h-24 rounded-full bg-cyan-400/20 blur-xl animate-pulse"></div>
-
-                          {/* ஹைடெக் லொகேஷன் பின் SVG */}
-                          <svg className="w-20 h-24 drop-shadow-[0_0_16px_rgba(6,182,212,0.85)] z-10" viewBox="0 0 100 120" fill="none">
-                            <defs>
-                              <linearGradient id="pinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#38bdf8" />
-                                <stop offset="60%" stopColor="#06b6d4" />
-                                <stop offset="100%" stopColor="#0d9488" />
-                              </linearGradient>
-                            </defs>
-                            {/* பின் வடிவம் */}
-                            <path
-                              d="M50 5 C25 5 10 25 10 48 C10 75 50 115 50 115 C50 115 90 75 90 48 C90 25 75 5 50 5 Z"
-                              fill="url(#pinGrad)"
-                              stroke="#a5f3fc"
-                              strokeWidth="2.5"
-                            />
-                            {/* உள்ளே இருக்கும் வட்ட ஒளி */}
-                            <circle cx="50" cy="45" r="14" fill="#042f2e" stroke="#38bdf8" strokeWidth="2" />
-                            {/* மையத்தில் உழவுத் துளிர் */}
-                            <path d="M50 38 C50 48 44 50 42 51 C44 49 45 47 45 44 C46 45 48 45 50 38 Z" fill="#34d399" />
-                            <path d="M50 38 C50 48 56 50 58 51 C56 49 55 47 55 44 C54 45 52 45 50 38 Z" fill="#fde047" />
-                          </svg>
-                        </div>
-
-                        {/* நிலம் & உழவு டிஜிட்டல் வலைப்பின்னல் கோடுகள் */}
-                        <div className="w-28 h-5 -mt-2 border-b-2 border-cyan-400/40 rounded-full blur-[0.5px]"></div>
-                      </div>
-
-                    </div>
-
-                    {/* அடியில் பொன் வாசகம் */}
-                    <div className="w-full text-center py-2 bg-gradient-to-r from-emerald-950/70 via-teal-950/80 to-emerald-950/70 rounded-xl border border-cyan-500/30 text-xs text-cyan-200 font-bold tracking-wide shadow-md z-10">
-                      நிலம் • விவசாயம் • AI • நிதி சொத்து
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
+           <HeroOrbitBanner />
             
             {/* கீழே தமிழ்நாடு வணிகக் கூட்டமைப்பு கார்டு */}
             <div className="rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/40 to-slate-900 border border-emerald-500/30 p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
