@@ -345,7 +345,11 @@ window.open(url, '_blank');
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-black text-2xl tracking-wide" style={{
+                <h1
+  onClick={() => setCurrentModule('home')}
+  title="முகப்புப் பக்கத்திற்குச் செல்லவும்"
+  className="font-black text-2xl tracking-wide cursor-pointer"
+  style={{
                   background: 'linear-gradient(to right, #34d399, #fbbf24)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
@@ -382,6 +386,17 @@ window.open(url, '_blank');
         {/* 9 பெருந்தூண்களுக்கான நேவிகேஷன் மெனு பார் */}
         <div className="border-t border-slate-800/80 bg-slate-950/80 overflow-x-auto no-scrollbar">
           <div className="max-w-7xl mx-auto px-2 sm:px-4 grid grid-cols-4 md:flex md:items-center gap-2 py-2">
+            <button
+  onClick={() => setCurrentModule('home')}
+  className={`flex flex-col items-center justify-center p-2 rounded-xl text-center transition-all ${
+    currentModule === 'home'
+      ? 'bg-emerald-600 text-white font-bold shadow-md border border-emerald-400'
+      : 'bg-slate-900 border border-slate-800 text-slate-200 hover:bg-slate-800'
+  }`}
+>
+  <span className="text-xl mb-1">🏠</span>
+  <span className="text-[11px] font-semibold leading-tight text-white">முகப்பு</span>
+</button>
             {LIFE_SERVICES_NAV.map((mod) => (
               <button
                 key={mod.id}
