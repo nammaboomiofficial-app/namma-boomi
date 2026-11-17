@@ -657,7 +657,29 @@ window.open(url, '_blank');
                   ))}
                 </div>
               </div>
-           <HeroOrbitBanner />
+           <HeroOrbitBanner
+  onSelectModule={(modName) => {
+    const moduleMap = {
+      'பூமி & நிலம்': 'land',
+      'நிதி & கடன்கள்': 'finance',
+      'காப்பீடு': 'insurance',
+      'விவசாயம்': 'agri',
+      'கல்வி & படிப்பு': 'education',
+      'வேலைவாய்ப்பு': 'jobs',
+      'தொழில் & MSME': 'business',
+      'மொத்த விற்பனை': 'wholesale',
+      'ஆன்மிகம்': 'spiritual',
+      'சுற்றுலா': 'tourism',
+      'AI ஜோதிடம்': 'astro',
+      'தமிழர் மரபு': 'heritage',
+    };
+    const targetId = moduleMap[modName];
+    if (targetId) {
+      setCurrentModule(targetId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }}
+/>
             
             {/* கீழே தமிழ்நாடு வணிகக் கூட்டமைப்பு கார்டு */}
             <div className="rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/40 to-slate-900 border border-emerald-500/30 p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
