@@ -3,10 +3,10 @@
 // பயனரின் கேள்வியின் தன்மைக்கேற்ப சரியான Gemini மாடலைத் தேர்ந்தெடுக்கும் Smart Router
 function selectBestModel(queryText, requestedMode = 'auto') {
   if (requestedMode === 'pro' || requestedMode === 'deep') {
-    return { model: 'gemini-3.5-flash', maxTokens: 3500, temp: 0.6 };
+    return { model: 'gemini-3.5-flash', maxTokens: 8192, temp: 0.6 };
   }
   if (requestedMode === 'fast') {
-    return { model: 'gemini-3.5-flash-lite', maxTokens: 700, temp: 0.7 };
+    return { model: 'gemini-3.5-flash-lite', maxTokens: 1500, temp: 0.7 };
   }
 
   const text = (queryText || '').toLowerCase();
@@ -23,10 +23,10 @@ function selectBestModel(queryText, requestedMode = 'auto') {
   const needsDeepAnalysis = deepKeywords.some(keyword => text.includes(keyword));
 
   if (needsDeepAnalysis) {
-    return { model: 'gemini-3.5-flash', maxTokens: 3500, temp: 0.6 };
+    return { model: 'gemini-3.5-flash', maxTokens: 8192, temp: 0.6 };
   }
 
-  return { model: 'gemini-3.5-flash-lite', maxTokens: 2200, temp: 0.7 };
+  return { model: 'gemini-3.5-flash-lite', maxTokens: 4096, temp: 0.7 };
 }
 
 export async function askGemini(promptText, mode = 'auto', userQuery = '') {
@@ -37,7 +37,7 @@ export async function askGemini(promptText, mode = 'auto', userQuery = '') {
   let currentModel = model;
 
   for (let attempt = 1; attempt <= 3; attempt++) {
-    const url = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
 
     try {
       const response = await fetch(url, {
@@ -47,7 +47,10 @@ export async function askGemini(promptText, mode = 'auto', userQuery = '') {
           contents: [{ parts: [{ text: promptText }] }],
           generationConfig: {
             maxOutputTokens: maxTokens,
-            temperature: temp
+            temperature: temp,
+            thinkingConfig: {
+              thinkingBudget: 0
+            }
           }
         })
       });

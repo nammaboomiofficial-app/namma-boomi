@@ -105,7 +105,7 @@ export default function BankDPR() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 font-sans pb-16">
+    <div className="min-h-screen bg-slate-900 text-slate-100 font-sans pb-16 print:min-h-0 print:bg-white print:pb-0">
       <Head>
         <title>வங்கி திட்ட அறிக்கை தயாரிப்பு மையம் (Bank DPR) | நம்ம பூமி 360</title>
       </Head>
