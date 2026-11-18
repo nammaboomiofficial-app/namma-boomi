@@ -3,7 +3,7 @@ from pydantic import BaseModel
 import ephem
 import math
 import uvicorn
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = FastAPI(title="Vedic Astrology Real Math Microservice")
 
@@ -33,8 +33,8 @@ class ChartRequest(BaseModel):
     day: int
     hour: int = 12
     minute: int = 0
-    lat: float = 13.0827   # ஊரின் அட்சரேகை (Default: தமிழ்நாடு)
-    lon: float = 80.2707   # ஊரின் தீர்க்கரேகை
+    lat: float = 13.0827
+    lon: float = 80.2707
 
 def get_lahiri_ayanamsha(dt: datetime) -> float:
     epoch2000 = datetime(2000, 1, 1, 12, 0, 0)
@@ -42,33 +42,40 @@ def get_lahiri_ayanamsha(dt: datetime) -> float:
     diff_years = diff_days / 365.25
     return 23.85 + (diff_years * (50.29 / 3600.0))
 
+def get_mean_rahu_tropical(dt: datetime) -> float:
+    epoch2000 = datetime(2000, 1, 1, 12, 0, 0)
+    d = (dt - epoch2000).total_seconds() / 86400.0
+    # Mean Longitude of Ascending Lunar Node (Rahu)
+    omega = (125.04452 - 0.0529537648 * d) % 360.0
+    return omega
+
 def to_sidereal(tropical_deg: float, ayanamsha: float):
     sidereal = (tropical_deg - ayanamsha) % 360.0
     r_idx = int(sidereal // 30)
     deg_in_r = round(sidereal % 30, 2)
-    nak_idx = int(sidereal // (360.0 / 27.0))
-    nak_deg = sidereal % (360.0 / 27.0)
+    nak_span = 360.0 / 27.0
+    nak_idx = int(sidereal // nak_span)
+    nak_deg = sidereal % nak_span
+    pada = int(nak_deg // (nak_span / 4.0)) + 1
     return {
         "rasiIndex": r_idx,
         "rasiName": RASHIS[r_idx],
+        "rasiLord": RASHI_LORDS[r_idx],
         "degreeInRasi": deg_in_r,
         "totalDegree": round(sidereal, 2),
         "nakshatraIndex": nak_idx,
         "nakshatraName": NAKSHATRAS[nak_idx],
+        "pada": pada,
         "nakshatraDegree": round(nak_deg, 2)
     }
 
 @app.post("/calculate-chart")
 def calculate_chart(req: ChartRequest):
-    # IST (+5:30) நேரத்தை UTC நேரமாக மாற்றுதல்
-    total_minutes = (req.hour * 60 + req.minute) - 330
-    utc_hours = total_minutes // 60
-    utc_mins = total_minutes % 60
-    dt_utc = datetime(req.year, req.month, req.day, utc_hours, utc_mins)
+    dt_ist = datetime(req.year, req.month, req.day, req.hour, req.minute)
+    dt_utc = dt_ist - timedelta(hours=5, minutes=30)
 
     ayanamsha = get_lahiri_ayanamsha(dt_utc)
 
-    # வானியல் அவதானிப்பு (Ephem Observer)
     obs = ephem.Observer()
     obs.lat = str(req.lat)
     obs.lon = str(req.lon)
@@ -84,7 +91,7 @@ def calculate_chart(req: ChartRequest):
     asc_deg = (math.atan2(y, x) * (180.0 / math.pi) + 90.0) % 360.0
     lagna_info = to_sidereal(asc_deg, ayanamsha)
 
-    # கிரகங்கள் கணக்கீடு
+    # கிரகங்கள் கணக்கீடு (9 கிரகங்கள்)
     bodies = {
         "சூரியன்": ephem.Sun(obs),
         "சந்திரன்": ephem.Moon(obs),
@@ -100,6 +107,11 @@ def calculate_chart(req: ChartRequest):
         ecl = ephem.Ecliptic(body)
         lon_deg = math.degrees(float(ecl.lon))
         planets_data[name] = to_sidereal(lon_deg, ayanamsha)
+
+    rahu_trop = get_mean_rahu_tropical(dt_utc)
+    ketu_trop = (rahu_trop + 180.0) % 360.0
+    planets_data["ராகு"] = to_sidereal(rahu_trop, ayanamsha)
+    planets_data["கேது"] = to_sidereal(ketu_trop, ayanamsha)
 
     return {
         "lagna": lagna_info,
