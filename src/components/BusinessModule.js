@@ -1,13 +1,18 @@
 import React, { useState, useMemo } from 'react';
-
+import Link from 'next/link';
 import businessData from '../data/businessData.json';
 const { BUSINESS_PRESETS } = businessData;
 import { getWhatsAppUrl } from '../config';
+
 export default function BusinessModule({ setCurrentModule }) {
   const [selectedId, setSelectedId] = useState('cold_press_oil');
   const [applicantType, setApplicantType] = useState('rural_special'); // 'rural_special' (35%), 'rural_general' (25%), 'urban' (15%)
   const [customInvestment, setCustomInvestment] = useState(600000);
   const [loading, setLoading] = useState(false);
+
+  // AI தொழில் ஆலோசகர் state
+  const [aiAdvice, setAiAdvice] = useState('');
+  const [isAiLoading, setIsAiLoading] = useState(false);
 
   // படிவத் தரவுகள்
   const [leadForm, setLeadForm] = useState({
@@ -55,8 +60,39 @@ export default function BusinessModule({ setCurrentModule }) {
 
   const handlePresetChange = (presetId) => {
     setSelectedId(presetId);
+    setAiAdvice('');
     const found = BUSINESS_PRESETS.find((p) => p.id === presetId);
     if (found) setCustomInvestment(found.baseCost);
+  };
+
+  const handleGetAiBusinessAdvice = async () => {
+    setIsAiLoading(true);
+    setAiAdvice('');
+    try {
+      const res = await fetch('/api/polish-petition', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formData: {
+            applicantName: leadForm.name || 'தொழில் முனைவோர்',
+            taluk: leadForm.location || 'தமிழ்நாடு',
+            district: leadForm.location || 'தமிழ்நாடு',
+            subject: `${activePreset.title} (முதலீடு: ₹${calculations.totalCost.toLocaleString('en-IN')}, மானியம்: ${calculations.subsidyPct}%)`
+          },
+          selectedForm: 'MSME Business Launch & Subsidy Strategy',
+          applicationMode: applicantType,
+          customNote: `இந்தத் தொழிலுக்கான 1) சந்தை வாய்ப்பு & வாடிக்கையாளர் உத்தி, 2) இயந்திரம் & மூலப்பொருள் கொள்முதல் குறிப்பு, 3) PMEGP/NEEDS வங்கி மானியம் விரைந்து பெறும் வழிமுறை ஆகியவற்றை 3 சுருக்கமான பத்திகளில் தமிழ்நாடு தொழில் முனைவோருக்கு வழிகாட்டு.`
+        })
+      });
+      const data = await res.json();
+      if (data.polishedText) {
+        setAiAdvice(data.polishedText);
+      }
+    } catch (err) {
+      console.error('AI Business Advice Error:', err);
+    } finally {
+      setIsAiLoading(false);
+    }
   };
 
   const handleFormSubmit = (e) => {
@@ -108,7 +144,7 @@ export default function BusinessModule({ setCurrentModule }) {
               ஸ்மார்ட் தொழில் துவக்க தளம் (Business Launchpad & DPR)
             </h2>
             <p className="text-slate-300 text-xs md:text-sm mt-1 max-w-2xl">
-              தொழில் யோசனை, 25% முதல் 35% வரை நேரடி அரசு மானியம், வங்கி கடன் மற்றும் சட்டப்பூர்வ உரிமங்களுக்கான ஒருங்கிணைந்த வழிகாட்டி.
+              தொழில் யோசனை, 15% முதல் 35% வரை நேரடி அரசு மானியம், வங்கி கடன் மற்றும் சட்டப்பூர்வ உரிமங்களுக்கான ஒருங்கிணைந்த வழிகாட்டி.
             </p>
           </div>
           <div className="flex items-center gap-3 self-start md:self-auto bg-slate-950 px-4 py-2 rounded-xl border border-amber-500/30">
@@ -127,12 +163,13 @@ export default function BusinessModule({ setCurrentModule }) {
             <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
               1. தொழில் வகையைத் தேர்ந்தெடுங்கள்:
             </label>
-            <div className="space-y-2">
+            <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
               {BUSINESS_PRESETS.map((item) => (
                 <button
                   key={item.id}
+                  type="button"
                   onClick={() => handlePresetChange(item.id)}
-                  className={`w-full text-left p-3 rounded-xl border transition-all ${
+                  className={`w-full text-left p-3 rounded-xl border transition-all cursor-pointer ${
                     selectedId === item.id
                       ? 'bg-amber-500/15 border-amber-500 text-white shadow-lg shadow-amber-950/40'
                       : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:bg-slate-850 hover:border-slate-700'
@@ -149,10 +186,25 @@ export default function BusinessModule({ setCurrentModule }) {
               ))}
             </div>
 
+            {/* திட்ட மதிப்பை மாற்றும் வசதி */}
+            <div className="pt-1">
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                2. உத்தேச மொத்த முதலீடு (ரூபாயில்):
+              </label>
+              <input
+                type="number"
+                min="50000"
+                step="50000"
+                value={customInvestment}
+                onChange={(e) => setCustomInvestment(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-amber-300 font-bold focus:outline-none focus:border-amber-500"
+              />
+            </div>
+
             {/* முதலீட்டாளர் வகை & மானிய ஸ்விட்ச் */}
-            <div className="pt-2">
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                2. விண்ணப்பதாரர் வகை & மானியப் பிரிவு:
+            <div>
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                3. விண்ணப்பதாரர் வகை & மானியப் பிரிவு:
               </label>
               <select
                 value={applicantType}
@@ -227,12 +279,32 @@ export default function BusinessModule({ setCurrentModule }) {
                   </ul>
                 </div>
               </div>
+
+              {/* AI தொழில் & மானிய ஆலோசனை பகுதி */}
+              <div className="mt-4 bg-indigo-950/30 border border-indigo-500/30 rounded-xl p-3 space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs font-bold text-indigo-300">🤖 AI தொழில் & மானிய வெற்றி உத்தி</span>
+                  <button
+                    type="button"
+                    onClick={handleGetAiBusinessAdvice}
+                    disabled={isAiLoading}
+                    className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-bold transition cursor-pointer"
+                  >
+                    {isAiLoading ? 'AI ஆய்வு செய்கிறது... ⚡' : '✨ AI தொழில் ஆலோசனை பெறுக'}
+                  </button>
+                </div>
+                {aiAdvice && (
+                  <div className="text-xs text-slate-200 whitespace-pre-line leading-relaxed pt-2 border-t border-indigo-500/20">
+                    {aiAdvice}
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* வாட்ஸ்அப் / சிஆர்எம் திட்ட அறிக்கை படிவம் */}
+            {/* வாட்ஸ்அப் / சிஆர்எம் திட்ட அறிக்கை படிவம் + 4-Page Bank DPR இணைப்பு */}
             <form onSubmit={handleFormSubmit} className="mt-4 pt-3 border-t border-slate-800">
               <div className="text-xs font-bold text-slate-200 mb-2">
-                🚀 இந்தத் தொழிலுக்கான இலவச வங்கி திட்ட அறிக்கை (DPR Summary) பெற:
+                🚀 இந்தத் தொழிலுக்கான வங்கி திட்ட அறிக்கை (4-Page Bank DPR & 5-Year CMA) பெற:
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <input
@@ -260,7 +332,7 @@ export default function BusinessModule({ setCurrentModule }) {
                 />
               </div>
 
-              <div className="mt-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
                 <select
                   value={leadForm.landAvailability}
                   onChange={(e) => setLeadForm({ ...leadForm, landAvailability: e.target.value })}
@@ -271,13 +343,21 @@ export default function BusinessModule({ setCurrentModule }) {
                   <option value="நம்ம பூமி 360 நிலம் வாங்க விருப்பம்">🎯 நம்ம பூமி மூலம் இடம் வேண்டும்</option>
                 </select>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full sm:w-auto px-5 py-2 rounded-lg bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs shadow-lg shadow-amber-950/40 transition-all flex items-center justify-center gap-1.5 whitespace-nowrap"
-                >
-                  {loading ? 'தயாராகிறது...' : 'DPR திட்ட சுருக்கம் பெற (WhatsApp) ↗'}
-                </button>
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                  <Link
+                    href="/dpr"
+                    className="flex-1 sm:flex-initial px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg transition-all text-center"
+                  >
+                    📊 4-பக்க Bank DPR PDF →
+                  </Link>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="flex-1 sm:flex-initial px-4 py-2 rounded-lg bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs shadow-lg shadow-amber-950/40 transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer"
+                  >
+                    {loading ? 'தயாராகிறது...' : 'WhatsApp ஆலோசனை ↗'}
+                  </button>
+                </div>
               </div>
             </form>
           </div>
@@ -286,7 +366,7 @@ export default function BusinessModule({ setCurrentModule }) {
 
       {/* 3. நம்ம பூமி 360° எகோசிஸ்டம் பாலம் (Interactive Links) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-        <div 
+        <div
           onClick={() => {
             if (setCurrentModule) setCurrentModule('land');
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -301,7 +381,7 @@ export default function BusinessModule({ setCurrentModule }) {
           <span className="text-[11px] text-blue-400 font-bold block pt-1 underline">நம்ம பூமி நிலப்பிரிவு செல்ல ↗</span>
         </div>
 
-        <div 
+        <div
           onClick={() => {
             if (setCurrentModule) setCurrentModule('jobs');
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -316,7 +396,7 @@ export default function BusinessModule({ setCurrentModule }) {
           <span className="text-[11px] text-emerald-400 font-bold block pt-1 underline">நம்ம பூமி Jobs Hub செல்ல ↗</span>
         </div>
 
-        <div 
+        <div
           onClick={() => {
             if (setCurrentModule) setCurrentModule('education');
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -331,6 +411,6 @@ export default function BusinessModule({ setCurrentModule }) {
           <span className="text-[11px] text-amber-400 font-bold block pt-1 underline">கல்வி மாடியூல் செல்ல ↗</span>
         </div>
       </div>
-      </div>
+    </div>
   );
 }

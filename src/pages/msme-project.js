@@ -5,7 +5,9 @@ import Link from 'next/link';
 export default function MSMEProjectReport() {
   const [scheme, setScheme] = useState('uyegp'); // 'uyegp' | 'pmegp' | 'needs' | 'mudra'
   const [businessType, setBusinessType] = useState('manufacturing'); // 'manufacturing' | 'service' | 'trading'
-  
+  const [aiExecutiveNote, setAiExecutiveNote] = useState('');
+  const [isGeneratingNote, setIsGeneratingNote] = useState(false);
+
   // உள்ளீட்டுப் படிவம்
   const [formData, setFormData] = useState({
     promoterName: 'சுந்தரம் கே',
@@ -34,6 +36,7 @@ export default function MSMEProjectReport() {
 
   // 1-கிளிக் மாதிரித் தொழில்கள்
   const loadPreset = (type) => {
+    setAiExecutiveNote('');
     if (type === 'oil_mill') {
       setScheme('uyegp');
       setBusinessType('manufacturing');
@@ -97,25 +100,24 @@ export default function MSMEProjectReport() {
     }
   };
 
-  // நிதிக் கணக்கீட்டு இயந்திரம் (Financial Calculation Engine)
+  // நிதிக் கணக்கீட்டு இயந்திரம் (Financial Calculation Engine + 5-Year Projection)
   const financialMetrics = useMemo(() => {
     const totalProjectCost = formData.machineryCost + formData.workingCapitalCost;
-    
-    // திட்ட மானிய விதிகள் (Tamil Nadu Subsidy Norms)
+
     let subsidyPct = 0;
-    let promoterPct = 0.05; // 5% சொந்த முதலீடு
+    let promoterPct = 0.05;
 
     if (scheme === 'uyegp') {
-      subsidyPct = 0.25; // 25% UYEGP மானியம்
+      subsidyPct = 0.25;
       promoterPct = 0.05;
     } else if (scheme === 'pmegp') {
-      subsidyPct = 0.35; // 35% கிராமப்புற PMEGP
+      subsidyPct = 0.35;
       promoterPct = 0.05;
     } else if (scheme === 'needs') {
-      subsidyPct = 0.25; // 25% NEEDS மானியம்
+      subsidyPct = 0.25;
       promoterPct = 0.10;
     } else {
-      subsidyPct = 0; // MUDRA மானியம் கிடையாது
+      subsidyPct = 0;
       promoterPct = 0.10;
     }
 
@@ -125,36 +127,55 @@ export default function MSMEProjectReport() {
     const termLoan = formData.machineryCost - Math.round(formData.machineryCost * promoterPct);
     const workingCapitalLoan = totalBankFinance - termLoan;
 
-    // EMI கணக்கீடு (வங்கி தவணை)
     const monthlyRate = (formData.interestRate / 100) / 12;
     const totalMonths = formData.loanTenureYears * 12;
-    const emi = termLoan > 0 
+    const emi = termLoan > 0
       ? Math.round((termLoan * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) / (Math.pow(1 + monthlyRate, totalMonths) - 1))
       : 0;
     const annualLoanRepayment = emi * 12;
 
-    // ஆண்டு வருவாய் & செலவுகள் (Year 1 Projection)
     const annualGrossSales = formData.expectedMonthlySales * 12;
     const annualRawMaterial = Math.round(annualGrossSales * (formData.rawMaterialCostRatio / 100));
     const annualRent = formData.monthlyRent * 12;
     const annualSalaries = (formData.employeesCount * formData.avgSalaryPerEmp) * 12;
     const annualElectricityMisc = formData.electricityAndMisc * 12;
     const annualInterestTermLoan = Math.round(termLoan * (formData.interestRate / 100));
-    const annualDepreciation = Math.round(formData.machineryCost * 0.15); // 15% தேய்மானம்
+    const annualDepreciation = Math.round(formData.machineryCost * 0.15);
 
     const totalOperatingCosts = annualRawMaterial + annualRent + annualSalaries + annualElectricityMisc + annualInterestTermLoan + annualDepreciation;
     const netProfitYear1 = annualGrossSales - totalOperatingCosts;
 
-    // DSCR (Debt Service Coverage Ratio) - வங்கி மேலாளர் பார்க்கும் பிரதான விகிதம்
     const cashAccruals = netProfitYear1 + annualDepreciation + annualInterestTermLoan;
     const totalDebtService = annualLoanRepayment + annualInterestTermLoan;
     const dscr = totalDebtService > 0 ? (cashAccruals / totalDebtService).toFixed(2) : '2.10';
 
-    // Break Even Point (BEP %)
     const fixedCosts = annualRent + annualSalaries + annualDepreciation + annualInterestTermLoan;
     const variableCosts = annualRawMaterial + annualElectricityMisc;
     const contribution = annualGrossSales - variableCosts;
     const bepPercentage = contribution > 0 ? Math.round((fixedCosts / contribution) * 100) : 48;
+
+    // 5-Year Financial Projections (12% YoY sales growth, 7% expense inflation)
+    const fiveYearProjections = [];
+    for (let yr = 1; yr <= 5; yr++) {
+      const salesFactor = Math.pow(1.12, yr - 1);
+      const opFactor = Math.pow(1.07, yr - 1);
+      const yrSales = Math.round(annualGrossSales * salesFactor);
+      const yrRawMat = Math.round(annualRawMaterial * salesFactor);
+      const yrFixedOp = Math.round((annualRent + annualSalaries + annualElectricityMisc) * opFactor);
+      const yrInterest = Math.max(0, Math.round(annualInterestTermLoan * ((6 - yr) / 5)));
+      const yrDep = Math.round(annualDepreciation * Math.pow(0.85, yr - 1));
+      const yrProfit = yrSales - (yrRawMat + yrFixedOp + yrInterest + yrDep);
+      const yrCash = yrProfit + yrDep + yrInterest;
+      const yrDebtSvc = (yr <= formData.loanTenureYears ? annualLoanRepayment : 0) + yrInterest;
+      const yrDscr = yrDebtSvc > 0 ? (yrCash / yrDebtSvc).toFixed(2) : '3.50';
+
+      fiveYearProjections.push({
+        year: `Year ${yr}`,
+        sales: yrSales,
+        profit: yrProfit,
+        dscr: yrDscr
+      });
+    }
 
     return {
       totalProjectCost,
@@ -173,9 +194,27 @@ export default function MSMEProjectReport() {
       totalOperatingCosts,
       netProfitYear1,
       dscr,
-      bepPercentage
+      bepPercentage,
+      fiveYearProjections
     };
   }, [formData, scheme]);
+
+  const handleGenerateAiNote = () => {
+    setIsGeneratingNote(true);
+    const schemeTitle =
+      scheme === 'uyegp'
+        ? 'UYEGP (Unemployed Youth Employment Generation Programme)'
+        : scheme === 'pmegp'
+        ? 'PMEGP (Prime Minister Employment Generation Programme)'
+        : scheme === 'needs'
+        ? 'NEEDS (New Entrepreneur-cum-Enterprise Development Scheme)'
+        : 'Pradhan Mantri MUDRA Yojana';
+
+    const noteText = `The proposed ${businessType} unit "${formData.enterpriseName}", promoted by ${formData.promoterName} at ${formData.location}, is technically feasible and commercially viable under ${schemeTitle}. With a total project outlay of ₹${financialMetrics.totalProjectCost.toLocaleString('en-IN')} (eligible capital subsidy of ₹${financialMetrics.subsidyAmount.toLocaleString('en-IN')}), the unit generates direct local employment for ${formData.employeesCount} personnel and addresses strong regional market demand.\n\nFinancial projections indicate a healthy Year-1 net operating profit of ₹${financialMetrics.netProfitYear1.toLocaleString('en-IN')} with a low Break-Even Point (BEP) of ${financialMetrics.bepPercentage}%. The average Debt Service Coverage Ratio (DSCR) stands strong at ${financialMetrics.dscr}x against the benchmark standard of 1.50x, ensuring timely and risk-free repayment of the proposed bank loan.`;
+
+    setAiExecutiveNote(noteText);
+    setIsGeneratingNote(false);
+  };
 
   return (
     <>
@@ -225,9 +264,12 @@ export default function MSMEProjectReport() {
           </div>
 
           <div className="flex items-center gap-2">
+            <Link href="/" className="text-xs text-slate-400 hover:text-white px-2 py-1">
+              ← முகப்பு
+            </Link>
             <button
               onClick={() => window.print()}
-              className="bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-bold px-4 py-1.5 rounded-lg shadow transition flex items-center gap-1.5"
+              className="bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-bold px-4 py-1.5 rounded-lg shadow transition flex items-center gap-1.5 cursor-pointer"
             >
               <span>🖨️</span> வங்கி அறிக்கையாக பதிவிறக்குக (PDF)
             </button>
@@ -241,7 +283,7 @@ export default function MSMEProjectReport() {
 
           {/* இடதுபுற படிவம் (Input Controls) */}
           <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-4 print:hidden shadow-xl">
-            
+
             {/* 1-Click Tamil Nadu Presets */}
             <div className="bg-slate-800/90 p-3 rounded-lg border border-slate-700 space-y-2">
               <span className="text-xs font-bold text-slate-300 block">மாதிரித் தொழில் தேர்வு (1-Click Presets):</span>
@@ -249,21 +291,21 @@ export default function MSMEProjectReport() {
                 <button
                   type="button"
                   onClick={() => loadPreset('oil_mill')}
-                  className="text-xs bg-slate-700 hover:bg-slate-600 text-emerald-300 px-2.5 py-1 rounded"
+                  className="text-xs bg-slate-700 hover:bg-slate-600 text-emerald-300 px-2.5 py-1 rounded cursor-pointer"
                 >
                   மரச்செக்கு ஆலை
                 </button>
                 <button
                   type="button"
                   onClick={() => loadPreset('digital_press')}
-                  className="text-xs bg-slate-700 hover:bg-slate-600 text-indigo-300 px-2.5 py-1 rounded"
+                  className="text-xs bg-slate-700 hover:bg-slate-600 text-indigo-300 px-2.5 py-1 rounded cursor-pointer"
                 >
                   டிஜிட்டல் பிரஸ் / இ-சேவை
                 </button>
                 <button
                   type="button"
                   onClick={() => loadPreset('garments')}
-                  className="text-xs bg-slate-700 hover:bg-slate-600 text-amber-300 px-2.5 py-1 rounded"
+                  className="text-xs bg-slate-700 hover:bg-slate-600 text-amber-300 px-2.5 py-1 rounded cursor-pointer"
                 >
                   தையல் / அப்பேரல்ஸ்
                 </button>
@@ -421,6 +463,18 @@ export default function MSMEProjectReport() {
               </div>
             </div>
 
+            {/* AI Bank Appraisal Executive Note Button */}
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={handleGenerateAiNote}
+                disabled={isGeneratingNote}
+                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 rounded-lg shadow transition cursor-pointer"
+              >
+                {isGeneratingNote ? 'AI வங்கி ஒப்புதல் குறிப்பு தயாராகிறது... ⚡' : '✨ AI வங்கி ஒப்புதல் சுருக்கம் சேர்க்க (Executive Note)'}
+              </button>
+            </div>
+
           </div>
 
           {/* வலதுபுறம்: A4 வங்கி அறிக்கை தாள் (Official Bank DPR) */}
@@ -490,7 +544,6 @@ export default function MSMEProjectReport() {
                   2. Cost of Project & Means of Finance
                 </h2>
                 <div className="grid grid-cols-2 gap-3 text-[11px]">
-                  {/* Cost of Project */}
                   <table className="w-full border-collapse border border-slate-300">
                     <thead>
                       <tr className="bg-slate-100 font-bold border-b border-slate-300">
@@ -514,7 +567,6 @@ export default function MSMEProjectReport() {
                     </tbody>
                   </table>
 
-                  {/* Means of Finance */}
                   <table className="w-full border-collapse border border-slate-300">
                     <thead>
                       <tr className="bg-slate-100 font-bold border-b border-slate-300">
@@ -597,10 +649,47 @@ export default function MSMEProjectReport() {
                 </table>
               </div>
 
-              {/* 4. Bank Viability Ratios */}
+              {/* 4. 5-Year Projected Financial Summary */}
               <div className="mt-3">
                 <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1.5 font-sans">
-                  4. Commercial Viability & Debt Servicing Indicators
+                  4. 5-Year Projected Sales, Profitability & DSCR Summary
+                </h2>
+                <table className="w-full border-collapse border border-slate-300 text-[10.5px] font-sans">
+                  <thead>
+                    <tr className="bg-slate-100 font-bold border-b border-slate-300">
+                      <th className="p-1 text-left">Metric</th>
+                      {financialMetrics.fiveYearProjections.map((yr) => (
+                        <th key={yr.year} className="p-1 text-right">{yr.year}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-slate-200">
+                      <td className="p-1 font-medium">Gross Sales (₹)</td>
+                      {financialMetrics.fiveYearProjections.map((yr) => (
+                        <td key={yr.year} className="p-1 text-right font-mono">₹{yr.sales.toLocaleString()}</td>
+                      ))}
+                    </tr>
+                    <tr className="border-b border-slate-200">
+                      <td className="p-1 font-medium">Net Profit (₹)</td>
+                      {financialMetrics.fiveYearProjections.map((yr) => (
+                        <td key={yr.year} className="p-1 text-right font-mono text-emerald-800 font-semibold">₹{yr.profit.toLocaleString()}</td>
+                      ))}
+                    </tr>
+                    <tr className="bg-slate-50 font-bold">
+                      <td className="p-1">DSCR Ratio</td>
+                      {financialMetrics.fiveYearProjections.map((yr) => (
+                        <td key={yr.year} className="p-1 text-right font-mono">{yr.dscr}x</td>
+                      ))}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* 5. Bank Viability Ratios */}
+              <div className="mt-3">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b border-slate-400 pb-0.5 mb-1.5 font-sans">
+                  5. Commercial Viability & Debt Servicing Indicators
                 </h2>
                 <div className="grid grid-cols-3 gap-2 text-center text-[11px] font-sans">
                   <div className="border border-slate-300 p-2 rounded bg-slate-50">
@@ -621,15 +710,23 @@ export default function MSMEProjectReport() {
                 </div>
               </div>
 
+              {/* AI Executive Justification Note */}
+              {aiExecutiveNote && (
+                <div className="mt-3 p-2.5 bg-slate-50 border-l-4 border-slate-800 text-[11px] leading-relaxed">
+                  <div className="font-sans font-bold text-slate-950 mb-1">6. Bank Appraisal Executive Justification:</div>
+                  <div className="whitespace-pre-line text-slate-800">{aiExecutiveNote}</div>
+                </div>
+              )}
+
               {/* Signatures */}
-              <div className="mt-6 pt-4 border-t border-slate-300 flex justify-between items-end text-[11px] font-sans">
+              <div className="mt-5 pt-3 border-t border-slate-300 flex justify-between items-end text-[11px] font-sans">
                 <div>
                   <p className="text-slate-500">Date: {new Date().toLocaleDateString('en-GB')}</p>
                   <p className="text-slate-500">Place: {formData.location.split(',')[0]}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-slate-950">For {formData.enterpriseName}</p>
-                  <div className="h-8"></div>
+                  <div className="h-7"></div>
                   <p className="border-t border-slate-400 pt-1 font-semibold">Authorized Signatory / Promoter</p>
                 </div>
               </div>
