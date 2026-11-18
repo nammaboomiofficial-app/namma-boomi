@@ -844,13 +844,65 @@ export default function AstrologyModule({ profile }) {
       நேரம் தெரியாது
     </label>
   </div>
-  <input
-    type="time"
-    disabled={birthDetails.isTimeUnknown}
-    value={birthDetails.birthTime || ""}
-    onChange={(e) => setBirthDetails({ ...birthDetails, birthTime: e.target.value })}
-    className={`w-full bg-slate-800/80 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-amber-500 ${birthDetails.isTimeUnknown ? 'opacity-40 cursor-not-allowed' : ''}`}
-  />
+  {(() => {
+                        const [rawH, rawM] = (birthDetails.birthTime || '').split(':');
+                        const hNum = rawH ? parseInt(rawH, 10) : null;
+                        const currentPeriod = hNum !== null && hNum >= 12 ? 'PM' : 'AM';
+                        const currentHour12 = hNum !== null
+                          ? String(hNum % 12 === 0 ? 12 : hNum % 12).padStart(2, '0')
+                          : '';
+                        const currentMin = rawM || '';
+
+                        const updateTime12 = (newH12, newMin, newPeriod) => {
+                          if (!newH12 && !newMin) {
+                            setBirthDetails({ ...birthDetails, birthTime: '' });
+                            return;
+                          }
+                          let h24 = parseInt(newH12 || '12', 10);
+                          if (newPeriod === 'PM' && h24 < 12) h24 += 12;
+                          if (newPeriod === 'AM' && h24 === 12) h24 = 0;
+                          const formatted = `${String(h24).padStart(2, '0')}:${newMin || '00'}`;
+                          setBirthDetails({ ...birthDetails, birthTime: formatted });
+                        };
+
+                        return (
+                          <div className="grid grid-cols-3 gap-1 min-w-[165px]">
+                            <select
+                              disabled={birthDetails.isTimeUnknown}
+                              value={currentHour12}
+                              onChange={(e) => updateTime12(e.target.value, currentMin, currentPeriod)}
+                              className="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-1.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500 disabled:opacity-50"
+                            >
+                              <option value="">மணி</option>
+                              {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0')).map((hr) => (
+                                <option key={hr} value={hr}>{hr}</option>
+                              ))}
+                            </select>
+
+                            <select
+                              disabled={birthDetails.isTimeUnknown}
+                              value={currentMin}
+                              onChange={(e) => updateTime12(currentHour12, e.target.value, currentPeriod)}
+                              className="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-1.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500 disabled:opacity-50"
+                            >
+                              <option value="">நிமி</option>
+                              {Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0')).map((mn) => (
+                                <option key={mn} value={mn}>{mn}</option>
+                              ))}
+                            </select>
+
+                            <select
+                              disabled={birthDetails.isTimeUnknown}
+                              value={currentPeriod}
+                              onChange={(e) => updateTime12(currentHour12, currentMin, e.target.value)}
+                              className="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-1.5 py-2 text-xs font-bold text-amber-400 focus:outline-none focus:border-amber-500 disabled:opacity-50"
+                            >
+                              <option value="AM">AM</option>
+                              <option value="PM">PM</option>
+                            </select>
+                          </div>
+                        );
+                      })()}
 </div>
           <div>
             <label className="text-xs text-slate-100 block mb-1 font-medium">பிறந்த ஊர்</label>

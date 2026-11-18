@@ -6,7 +6,7 @@ function selectBestModel(queryText, requestedMode = 'auto') {
     return { model: 'gemini-3.5-flash', maxTokens: 8192, temp: 0.6 };
   }
   if (requestedMode === 'fast') {
-    return { model: 'gemini-3.5-flash-lite', maxTokens: 1500, temp: 0.7 };
+    return { model: 'gemini-3.5-flash-lite', maxTokens: 4096, temp: 0.7 };
   }
 
   const text = (queryText || '').toLowerCase();
@@ -33,11 +33,21 @@ export async function askGemini(promptText, mode = 'auto', userQuery = '') {
   const apiKey = process.env.GEMINI_API_KEY;
   const textToAnalyze = userQuery || promptText;
   const { model, maxTokens, temp } = selectBestModel(textToAnalyze, mode);
-  
+
   let currentModel = model;
 
   for (let attempt = 1; attempt <= 3; attempt++) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
+
+    const genConfig = {
+      maxOutputTokens: maxTokens,
+      temperature: temp
+    };
+
+    // gemini-3.5-flash மாடலுக்கு மட்டுமே thinkingConfig பொருந்தும்
+    if (currentModel === 'gemini-3.5-flash') {
+      genConfig.thinkingConfig = { thinkingBudget: 0 };
+    }
 
     try {
       const response = await fetch(url, {
@@ -45,13 +55,7 @@ export async function askGemini(promptText, mode = 'auto', userQuery = '') {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: promptText }] }],
-          generationConfig: {
-            maxOutputTokens: maxTokens,
-            temperature: temp,
-            thinkingConfig: {
-              thinkingBudget: 0
-            }
-          }
+          generationConfig: genConfig
         })
       });
 
@@ -64,13 +68,15 @@ export async function askGemini(promptText, mode = 'auto', userQuery = '') {
       const isHighDemand = data.error?.message?.includes('high demand') || response.status === 503 || response.status === 429;
       if (isHighDemand && attempt < 3) {
         currentModel = 'gemini-3.5-flash-lite';
-        await new Promise(r => setTimeout(r, 1500));
+        await new Promise(r => setTimeout(r, 1000));
         continue;
       }
 
       throw new Error(data.error?.message || 'Gemini API Error');
     } catch (err) {
-      if (attempt === 3) throw err;
+      if (attempt === 3 || !err.message.includes('high demand')) {
+        throw err;
+      }
     }
   }
 }

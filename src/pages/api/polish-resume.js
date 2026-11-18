@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { askGemini } from '@/lib/gemini';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -7,46 +7,39 @@ export default async function handler(req, res) {
 
   const { resumeData } = req.body;
 
+  if (!resumeData) {
+    return res.status(400).json({ error: 'Resume data is required' });
+  }
+
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      console.error("GEMINI_API_KEY is not defined");
-      return res.status(500).json({ error: "API Key missing" });
-    }
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-      generationConfig: { responseMimeType: "application/json" }
-    });
-
     const prompt = `
-You are an expert ATS Resume Writer.
-Rewrite, translate Tanglish/Tamil inputs into flawless, high-impact corporate English.
+You are an Executive ATS Resume Writer & Career Strategist.
+Rewrite, refine, and translate any Tamil or Tanglish inputs into flawless, high-impact corporate English optimized for modern Applicant Tracking Systems (ATS).
+Use strong action verbs (e.g., Spearheaded, Optimized, Executed, Streamlined, Managed) and professional phrasing.
 
 User Input:
 ${JSON.stringify(resumeData)}
 
-Return ONLY valid JSON matching this exact structure:
+Return ONLY valid JSON matching this exact structure (no markdown fences, no extra commentary):
 {
   "fullName": "${resumeData?.fullName || 'Full Name'}",
-  "jobTitle": "${resumeData?.jobTitle || 'Professional Title'}",
+  "jobTitle": "Refined Executive Job Title",
   "email": "${resumeData?.email || ''}",
   "phone": "${resumeData?.phone || ''}",
   "location": "${resumeData?.location || ''}",
-  "summary": "Professional summary highlighting key achievements, core skills, and value proposition.",
-  "skills": "Key Skill 1, Key Skill 2, Key Skill 3, Core Competency",
+  "summary": "Compelling 3-line ATS-optimized executive summary highlighting domain expertise, key achievements, and core value proposition.",
+  "skills": "Skill 1, Skill 2, Skill 3, Skill 4, Skill 5, Skill 6",
   "experience": [
     {
-      "role": "Job Role / Title",
+      "role": "Refined Job Role / Title",
       "company": "Company Name",
       "period": "Start Year - End Year",
-      "desc": "Key responsibility or achievement highlighting measurable impact."
+      "desc": "High-impact bullet points separated by periods highlighting measurable outcomes, leadership, and operational excellence."
     }
   ],
   "education": [
     {
-      "degree": "Degree / Certification",
+      "degree": "Refined Degree / Certification Name",
       "institution": "University / College Name",
       "year": "Graduation Year"
     }
@@ -54,35 +47,42 @@ Return ONLY valid JSON matching this exact structure:
 }
 `;
 
-    const result = await model.generateContent(prompt);
-    const responseText = result.response.text();
-    const parsed = JSON.parse(responseText);
+    // வேகமான & துல்லியமான gemini-3.5-flash (pro mode) + நேரடி JSON வெளியீடு
+    const responseText = await askGemini(prompt, {
+      mode: 'pro',
+      jsonMode: true,
+      maxTokens: 2048,
+      temperature: 0.4,
+    });
+
+    const cleanJson = responseText.replace(/```json|```/gi, '').trim();
+    const parsed = JSON.parse(cleanJson);
 
     return res.status(200).json({ data: parsed });
 
   } catch (error) {
-    console.error("Gemini API Call Error:", error);
+    console.error("ATS Resume AI Error:", error);
 
-    // நெட்வொர்க் அல்லது API பிழை வந்தால் பாதுகாப்பான பொதுவான பேக்கப் டேட்டா
+    // நெட்வொர்க் அல்லது API பிழை வந்தால் பாதுகாப்பான பேக்கப் டேட்டா
     const fallbackData = {
       ...resumeData,
       fullName: resumeData?.fullName ? resumeData.fullName.toUpperCase() : "APPLICANT NAME",
       jobTitle: resumeData?.jobTitle || "Professional",
       location: resumeData?.location || "Tamil Nadu, India",
-      summary: "Results-driven professional with proven experience, dedicated to operational excellence and organizational growth.",
-      skills: "Operations Management, Team Leadership, Process Optimization, Strategic Planning",
+      summary: "Results-driven professional with proven experience, dedicated to operational excellence, process optimization, and sustainable organizational growth.",
+      skills: "Operations Management, Team Leadership, Process Optimization, Strategic Planning, Stakeholder Management",
       experience: resumeData?.experience?.length ? resumeData.experience.map((exp) => ({
         ...exp,
         role: exp.role || "Specialist / Lead",
         company: exp.company || "Enterprise Solutions",
         period: exp.period || "Past Experience",
-        desc: exp.desc || "Handled core operational responsibilities, improved workflow efficiency, and collaborated across teams."
+        desc: exp.desc || "Handled core operational responsibilities, improved workflow efficiency, and collaborated across cross-functional teams."
       })) : [
         {
           role: "Professional",
           company: "Enterprise Solutions",
           period: "Recent",
-          desc: "Handled key operational tasks and contributed to business growth."
+          desc: "Handled key operational tasks and contributed to measurable business growth."
         }
       ],
       education: resumeData?.education?.length ? resumeData.education.map((edu) => ({
