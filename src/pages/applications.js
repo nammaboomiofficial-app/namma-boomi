@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -6,6 +6,9 @@ export default function UniversalApplicationsHub() {
   const [selectedForm, setSelectedForm] = useState('patta_transfer');
   // 'direct' = நேரடி விண்ணப்பம், 'legal_heir' = வாரிசுரிமை மனு, 'noc_affidavit' = வாரிசுகளின் NOC பிரமாணப் பத்திரம்
   const [applicationMode, setApplicationMode] = useState('direct');
+  const [customNote, setCustomNote] = useState('');
+  const [aiPolishedBody, setAiPolishedBody] = useState('');
+  const [isPolishing, setIsPolishing] = useState(false);
 
   // முதன்மைத் தரவுகள் (100% Dynamic)
   const [formData, setFormData] = useState({
@@ -66,8 +69,8 @@ export default function UniversalApplicationsHub() {
     grievanceNature: 'மழைநீர் வடிகால் அடைப்பு மற்றும் சேதமடைந்த தெருவிளக்குகளைச் சீரமைத்தல்',
 
     // பொதுத் தகவல்கள்
-    subject: '',
-    enclosures: ''
+    subject: 'செங்கல்பட்டு வட்டம், மறைமலை நகர் கிராமம், சர்வே எண்: 124/2B நிலத்திற்கு கிரையப் பட்டா பெயர் மாற்றம் வேண்டி விண்ணப்பம்.',
+    enclosures: '1. பதிவு செய்யப்பட்ட கிரையப் பத்திர நகல்\n2. முந்தைய பட்டா / சிட்டா நகல்\n3. வில்லங்கச் சான்றிதழ் (EC) நகல்\n4. மனை வரைபட நகல்\n5. மனுதாரரின் ஆதார் அடையாள அட்டை நகல்'
   });
 
   const handleInputChange = (field, value) => {
@@ -77,6 +80,7 @@ export default function UniversalApplicationsHub() {
   // துறை சார்ந்த டெம்ப்ளேட்களை மாற்றுதல்
   const loadPresetTemplate = (type, mode = applicationMode) => {
     setSelectedForm(type);
+    setAiPolishedBody('');
 
     if (type === 'patta_transfer') {
       const isNoc = mode === 'noc_affidavit';
@@ -88,7 +92,7 @@ export default function UniversalApplicationsHub() {
         recipientPlace: `${prev.taluk} வட்டம், ${prev.district} மாவட்டம்`,
         subject: isNoc
           ? `புல எண்: ${prev.surveyNumber}-ல் உள்ள காலஞ்சென்ற ${prev.deceasedName} அவர்களின் நிலத்தை ${prev.applicantName} பெயருக்குப் பட்டா மாற்றம் செய்ய இதர வாரிசுகளின் ஆட்சேபனையின்மை இசைவுக் கடிதம் (NOC).`
-          : isHeir 
+          : isHeir
           ? `${prev.taluk} வட்டம், ${prev.revenueVillage}, சர்வே எண்: ${prev.surveyNumber}-ல் உள்ள சொத்திற்கு உரிமையாளர் ${prev.deceasedName} மறைவிற்குப் பின் வாரிசுரிமை பட்டா பெயர் மாற்றம் செய்யக் கோருதல்.`
           : `${prev.taluk} வட்டம், ${prev.revenueVillage}, சர்வே எண்: ${prev.surveyNumber} நிலத்திற்கு கிரையப் பட்டா பெயர் மாற்றம் வேண்டி விண்ணப்பம்.`,
         enclosures: isNoc
@@ -158,9 +162,39 @@ export default function UniversalApplicationsHub() {
     }
   };
 
+  useEffect(() => {
+    loadPresetTemplate('patta_transfer', 'direct');
+  }, []);
+
   const handleModeChange = (mode) => {
     setApplicationMode(mode);
     loadPresetTemplate(selectedForm, mode);
+  };
+
+  const handleAiLegalPolish = async () => {
+    setIsPolishing(true);
+    try {
+      const res = await fetch('/api/polish-petition', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formData,
+          selectedForm,
+          applicationMode,
+          customNote
+        })
+      });
+      const data = await res.json();
+      if (data.polishedText) {
+        setAiPolishedBody(data.polishedText);
+      } else if (data.error) {
+        alert(data.error);
+      }
+    } catch (err) {
+      console.error('AI Petition Error:', err);
+    } finally {
+      setIsPolishing(false);
+    }
   };
 
   return (
@@ -205,9 +239,12 @@ export default function UniversalApplicationsHub() {
           </div>
 
           <div className="flex items-center gap-2">
+            <Link href="/" className="text-xs text-slate-400 hover:text-white px-2 py-1">
+              ← முகப்பு
+            </Link>
             <button
               onClick={() => window.print()}
-              className="bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-bold px-4 py-1.5 rounded-lg shadow transition flex items-center gap-1.5"
+              className="bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-bold px-4 py-1.5 rounded-lg shadow transition flex items-center gap-1.5 cursor-pointer"
             >
               <span>🖨️</span> {applicationMode === 'noc_affidavit' ? 'NOC பத்திரம் பதிவிறக்குக (PDF)' : 'PDF மனுவாகப் பதிவிறக்குக'}
             </button>
@@ -229,7 +266,7 @@ export default function UniversalApplicationsHub() {
                 <button
                   type="button"
                   onClick={() => handleModeChange('direct')}
-                  className={`text-[11px] py-1.5 px-1 rounded-lg font-bold transition ${
+                  className={`text-[11px] py-1.5 px-1 rounded-lg font-bold transition cursor-pointer ${
                     applicationMode === 'direct'
                       ? 'bg-emerald-600 text-white shadow'
                       : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
@@ -240,7 +277,7 @@ export default function UniversalApplicationsHub() {
                 <button
                   type="button"
                   onClick={() => handleModeChange('legal_heir')}
-                  className={`text-[11px] py-1.5 px-1 rounded-lg font-bold transition ${
+                  className={`text-[11px] py-1.5 px-1 rounded-lg font-bold transition cursor-pointer ${
                     applicationMode === 'legal_heir'
                       ? 'bg-amber-600 text-white shadow'
                       : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
@@ -251,7 +288,7 @@ export default function UniversalApplicationsHub() {
                 <button
                   type="button"
                   onClick={() => handleModeChange('noc_affidavit')}
-                  className={`text-[11px] py-1.5 px-1 rounded-lg font-bold transition ${
+                  className={`text-[11px] py-1.5 px-1 rounded-lg font-bold transition cursor-pointer ${
                     applicationMode === 'noc_affidavit'
                       ? 'bg-purple-600 text-white shadow ring-2 ring-purple-400'
                       : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
@@ -269,14 +306,14 @@ export default function UniversalApplicationsHub() {
                 <button
                   type="button"
                   onClick={() => loadPresetTemplate('patta_transfer')}
-                  className={`text-xs px-2.5 py-1 rounded transition ${selectedForm === 'patta_transfer' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                  className={`text-xs px-2.5 py-1 rounded transition cursor-pointer ${selectedForm === 'patta_transfer' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
                 >
                   பட்டா பெயர் மாற்றம்
                 </button>
                 <button
                   type="button"
                   onClick={() => loadPresetTemplate('eb_name_transfer')}
-                  className={`text-xs px-2.5 py-1 rounded transition ${selectedForm === 'eb_name_transfer' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                  className={`text-xs px-2.5 py-1 rounded transition cursor-pointer ${selectedForm === 'eb_name_transfer' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
                 >
                   EB மின் இணைப்பு மாற்றம்
                 </button>
@@ -284,7 +321,7 @@ export default function UniversalApplicationsHub() {
                   <button
                     type="button"
                     onClick={() => loadPresetTemplate('bank_settlement')}
-                    className={`text-xs px-2.5 py-1 rounded transition ${selectedForm === 'bank_settlement' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                    className={`text-xs px-2.5 py-1 rounded transition cursor-pointer ${selectedForm === 'bank_settlement' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
                   >
                     வங்கி வாரிசுத் தொகை விடுவிப்பு
                   </button>
@@ -293,7 +330,7 @@ export default function UniversalApplicationsHub() {
                   <button
                     type="button"
                     onClick={() => loadPresetTemplate('bank_cibil_dispute')}
-                    className={`text-xs px-2.5 py-1 rounded transition ${selectedForm === 'bank_cibil_dispute' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                    className={`text-xs px-2.5 py-1 rounded transition cursor-pointer ${selectedForm === 'bank_cibil_dispute' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
                   >
                     வங்கி CIBIL திருத்த மனு
                   </button>
@@ -301,14 +338,14 @@ export default function UniversalApplicationsHub() {
                 <button
                   type="button"
                   onClick={() => loadPresetTemplate('rti_application')}
-                  className={`text-xs px-2.5 py-1 rounded transition ${selectedForm === 'rti_application' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                  className={`text-xs px-2.5 py-1 rounded transition cursor-pointer ${selectedForm === 'rti_application' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
                 >
                   RTI தகவல் அறியும் மனு
                 </button>
                 <button
                   type="button"
                   onClick={() => loadPresetTemplate('collector_grievance')}
-                  className={`text-xs px-2.5 py-1 rounded transition ${selectedForm === 'collector_grievance' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                  className={`text-xs px-2.5 py-1 rounded transition cursor-pointer ${selectedForm === 'collector_grievance' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
                 >
                   ஆட்சியர் குறைதீர்ப்பு முகாம் மனு
                 </button>
@@ -328,7 +365,7 @@ export default function UniversalApplicationsHub() {
                       type="text"
                       value={formData.deceasedName}
                       onChange={(e) => handleInputChange('deceasedName', e.target.value)}
-                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white font-bold text-amber-200"
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-amber-200 font-bold"
                     />
                   </div>
                   <div>
@@ -394,7 +431,7 @@ export default function UniversalApplicationsHub() {
                       type="text"
                       value={formData.surveyNumber}
                       onChange={(e) => handleInputChange('surveyNumber', e.target.value)}
-                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white font-bold text-emerald-300"
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-emerald-300 font-bold"
                     />
                   </div>
                   <div>
@@ -444,7 +481,7 @@ export default function UniversalApplicationsHub() {
                       type="text"
                       value={formData.ebConsumerNo}
                       onChange={(e) => handleInputChange('ebConsumerNo', e.target.value)}
-                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white font-bold text-amber-300"
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-amber-300 font-bold"
                     />
                   </div>
                   <div>
@@ -477,6 +514,102 @@ export default function UniversalApplicationsHub() {
                       value={formData.bankSavingAccNo}
                       onChange={(e) => handleInputChange('bankSavingAccNo', e.target.value)}
                       className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white font-mono"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {selectedForm === 'bank_cibil_dispute' && (
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <label className="text-[10px] text-slate-300 block mb-0.5">வங்கியின் பெயர்:</label>
+                    <input
+                      type="text"
+                      value={formData.bankName}
+                      onChange={(e) => handleInputChange('bankName', e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-slate-300 block mb-0.5">கடன் கணக்கு எண்:</label>
+                    <input
+                      type="text"
+                      value={formData.bankLoanAccNo}
+                      onChange={(e) => handleInputChange('bankLoanAccNo', e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-slate-300 block mb-0.5">கடன் முடித்த தேதி:</label>
+                    <input
+                      type="text"
+                      value={formData.loanClosedDate}
+                      onChange={(e) => handleInputChange('loanClosedDate', e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-slate-300 block mb-0.5">CIBIL பிழை விவரம்:</label>
+                    <input
+                      type="text"
+                      value={formData.cibilScoreIssue}
+                      onChange={(e) => handleInputChange('cibilScoreIssue', e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {selectedForm === 'rti_application' && (
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <label className="text-[10px] text-slate-300 block mb-0.5">முந்தைய மனு எண்:</label>
+                    <input
+                      type="text"
+                      value={formData.rtiPrevPetitionNo}
+                      onChange={(e) => handleInputChange('rtiPrevPetitionNo', e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-amber-300 font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-slate-300 block mb-0.5">கட்டண வில்லை விவரம்:</label>
+                    <input
+                      type="text"
+                      value={formData.rtiFeeStampValue}
+                      onChange={(e) => handleInputChange('rtiFeeStampValue', e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white"
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <label className="text-[10px] text-slate-300 block mb-0.5">கோரப்படும் தகவல்கள் (காலவரிசைப்படி):</label>
+                    <textarea
+                      rows={3}
+                      value={formData.rtiSpecificQuery}
+                      onChange={(e) => handleInputChange('rtiSpecificQuery', e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white text-[11px]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {selectedForm === 'collector_grievance' && (
+                <div className="space-y-2 text-xs">
+                  <div>
+                    <label className="text-[10px] text-slate-300 block mb-0.5">வார்டு / பகுதி விவரம்:</label>
+                    <input
+                      type="text"
+                      value={formData.grievanceWardNo}
+                      onChange={(e) => handleInputChange('grievanceWardNo', e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-slate-300 block mb-0.5">பொதுப் பிரச்சினை விவரம்:</label>
+                    <textarea
+                      rows={2}
+                      value={formData.grievanceNature}
+                      onChange={(e) => handleInputChange('grievanceNature', e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white text-[11px]"
                     />
                   </div>
                 </div>
@@ -519,12 +652,48 @@ export default function UniversalApplicationsHub() {
                 />
                 <input
                   type="text"
+                  placeholder="வட்டம் (Taluk)"
+                  value={formData.taluk}
+                  onChange={(e) => handleInputChange('taluk', e.target.value)}
+                  className="bg-slate-800 border border-slate-700 rounded p-1.5 text-white"
+                />
+                <input
+                  type="text"
+                  placeholder="கைபேசி எண்"
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  className="bg-slate-800 border border-slate-700 rounded p-1.5 text-white"
+                />
+                <input
+                  type="text"
                   placeholder="அதிகாரியின் பதவி"
                   value={formData.recipientDesignation}
                   onChange={(e) => handleInputChange('recipientDesignation', e.target.value)}
                   className="col-span-2 bg-slate-800 border border-slate-700 rounded p-1.5 text-white"
                 />
               </div>
+            </div>
+
+            {/* கூடுதல் AI சட்டக் குறிப்பு */}
+            <div className="bg-indigo-950/40 p-3 rounded-lg border border-indigo-500/30 space-y-2">
+              <label className="text-[11px] font-bold text-indigo-300 block">
+                ✨ கூடுதல் சூழ்நிலை (தேவைப்பட்டால் AI மூலம் தனிப்பயன் சட்ட மனு உருவாக்க):
+              </label>
+              <textarea
+                rows={2}
+                placeholder="எ.கா: 2 வருடமாக பட்டா நிலுவையில் உள்ளது, உடனடி நடவடிக்கை தேவை..."
+                value={customNote}
+                onChange={(e) => setCustomNote(e.target.value)}
+                className="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white text-xs"
+              />
+              <button
+                type="button"
+                onClick={handleAiLegalPolish}
+                disabled={isPolishing}
+                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 rounded-lg transition cursor-pointer"
+              >
+                {isPolishing ? 'AI சட்ட வாசகங்கள் தயாராகின்றன... ⚡' : '✨ AI மூலம் கூடுதல் சட்ட விளக்கம் சேர்க்க'}
+              </button>
             </div>
 
           </div>
@@ -610,6 +779,12 @@ export default function UniversalApplicationsHub() {
                     <p>
                       5. இதனால் எதிர்காலத்தில் எங்களால் எவ்வித உரிமைகளோ, இழப்பீடோ கோரப்பட மாட்டாது என்றும், இம்மாற்றத்தை முழு மனதுடன் ஏற்றுக்கொள்கிறோம் என்றும் இதன் மூலம் உறுதியளிக்கிறோம்.
                     </p>
+
+                    {aiPolishedBody && (
+                      <div className="mt-3 p-3 bg-indigo-50/70 border-l-4 border-indigo-700 rounded text-xs whitespace-pre-line text-slate-900">
+                        {aiPolishedBody}
+                      </div>
+                    )}
                   </div>
 
                   {/* வாரிசுகளின் கையொப்பப் பகுதி */}
@@ -688,7 +863,7 @@ export default function UniversalApplicationsHub() {
                         {applicationMode === 'legal_heir' ? (
                           <>
                             <p>
-                              மேற்குறிப்பிட்ட முகவரியில் வசித்து வந்த எனது தந்தை/உரிமையாளர் திரு. <strong>{formData.deceasedName}</strong> அவர்கள் கடந்த <strong>{formData.dateOfDeath}</strong> அன்று காலமானார் என்பதைத் தெரிவித்துக் கொள்கிறேன். 
+                              மேற்குறிப்பிட்ட முகவரியில் வசித்து வந்த எனது தந்தை/உரிமையாளர் திரு. <strong>{formData.deceasedName}</strong> அவர்கள் கடந்த <strong>{formData.dateOfDeath}</strong> அன்று காலமானார் என்பதைத் தெரிவித்துக் கொள்கிறேன்.
                             </p>
                             <div className="bg-slate-50 p-3 rounded border border-slate-300 font-sans text-xs my-2">
                               <p className="font-bold text-slate-900 mb-1.5 border-b border-slate-300 pb-1">சொத்து மற்றும் வாரிசுரிமை விபரங்கள்:</p>
@@ -719,6 +894,7 @@ export default function UniversalApplicationsHub() {
                                 <div>• மனை எண்: <strong className="text-slate-950">{formData.plotNumber}</strong></div>
                                 <div>• வருவாய் கிராமம்: <strong className="text-slate-950">{formData.revenueVillage}</strong></div>
                                 <div>• அளவு: <strong className="text-slate-950">{formData.landExtent}</strong></div>
+                                <div className="col-span-2">• ஆவண விவரம்: <strong className="text-slate-950">{formData.deedDetails}</strong></div>
                               </div>
                             </div>
                             <p>
@@ -732,7 +908,12 @@ export default function UniversalApplicationsHub() {
                     {selectedForm === 'eb_name_transfer' && (
                       <div className="pl-2 space-y-2.5">
                         <p>
-                          மேற்குறிப்பிட்ட முகவரியில் உள்ள மின் நுகர்வோர் எண் <strong>{formData.ebConsumerNo}</strong>-ஐ மனுதாரர் பெயருக்குப் பெயர் மாற்றம் செய்து தருமாறு பணிவுடன் கேட்டுக்கொள்கிறேன்.
+                          மேற்குறிப்பிட்ட முகவரியில் அமைந்துள்ள எமது கட்டிடத்தின் மின் நுகர்வோர் எண் (Service Connection No): <strong>{formData.ebConsumerNo}</strong> ({formData.ebTariffCategory}) தற்போது முந்தைய உரிமையாளர் பெயரில் உள்ளது.
+                        </p>
+                        <p>
+                          {applicationMode === 'legal_heir'
+                            ? `உரிமையாளர் திரு. ${formData.deceasedName} அவர்கள் ${formData.dateOfDeath} அன்று காலமானதைத் தொடர்ந்து, சட்டப்பூர்வ வாரிசுச் சான்றிதழ் (${formData.legalHeirCertNo}) மற்றும் ஏனைய வாரிசுகளின் NOC ஒப்புதல் அடிப்படையில் எனது பெயருக்கு மாற்றக் கோருகிறேன்.`
+                            : `மேற்படி சொத்தினை நான் முறையாகப் பதிவு செய்யப்பட்ட பத்திரம் மூலம் பெற்றுள்ளதால், மின் இணைப்பினை எனது பெயருக்குப் பெயர் மாற்றம் செய்து தருமாறு பணிவுடன் கேட்டுக்கொள்கிறேன்.`}
                         </p>
                       </div>
                     )}
@@ -740,8 +921,56 @@ export default function UniversalApplicationsHub() {
                     {selectedForm === 'bank_settlement' && (
                       <div className="pl-2 space-y-2.5">
                         <p>
-                          காலஞ்சென்ற <strong>{formData.deceasedName}</strong> அவர்களின் சேமிப்புக் கணக்கு எண்: <strong>{formData.bankSavingAccNo}</strong> நிலுவைத் தொகையை சட்டப்பூர்வ வாரிசுதாரருக்கு விடுவித்துத் தருமாறு பணிவுடன் வேண்டுகிறேன்.
+                          தங்களது <strong>{formData.bankName}</strong>, <strong>{formData.villageCity}</strong> கிளையில் சேமிப்புக் கணக்கு எண்: <strong>{formData.bankSavingAccNo}</strong> வைத்திருந்த எனது தந்தை/உரிமையாளர் திரு. <strong>{formData.deceasedName}</strong> அவர்கள் கடந்த <strong>{formData.dateOfDeath}</strong> அன்று காலமானார்.
                         </p>
+                        <p>
+                          அன்னாரின் இறப்புச் சான்றிதழ் ({formData.deathCertNo}), வட்டாட்சியர் வழங்கிய வாரிசுச் சான்றிதழ் ({formData.legalHeirCertNo}) மற்றும் ஏனைய அனைத்து வாரிசுகளின் ஆட்சேபனையின்மை உறுதிமொழிப் பத்திரம் (NOC) ஆகியவற்றை இத்துடன் இணைத்துள்ளேன். எனவே, மேற்படி கணக்கில் உள்ள நிலுவைத் தொகையை சட்டப்பூர்வ வாரிசுதாரரான எனது கணக்கிற்கு விடுவித்துத் தருமாறு பணிவுடன் வேண்டுகிறேன்.
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedForm === 'bank_cibil_dispute' && (
+                      <div className="pl-2 space-y-2.5">
+                        <p>
+                          நான் தங்களது <strong>{formData.bankName}</strong> கிளையில் பெற்றிருந்த கடன் கணக்கு எண்: <strong>{formData.bankLoanAccNo}</strong>-க்கான முழு அசல் மற்றும் வட்டித் தொகையையும் கடந்த <strong>{formData.loanClosedDate}</strong> அன்றே முழுமையாகச் செலுத்தி கடனை முடித்துவிட்டேன் (Loan Closed).
+                        </p>
+                        <p>
+                          ஆனால், எனது தற்போதைய <strong>CIBIL கிரெடிட் அறிக்கையில் "{formData.cibilScoreIssue}"</strong> எனத் தவறாகப் பதிவாகியுள்ளது. இதனால் எனது எதிர்கால நிதித் தேவைகள் பாதிக்கப்படுகின்றன. எனவே, வங்கிப் பதிவேடுகளைச் சரிபார்த்து CIBIL நிறுவனத்திற்கு உடனடியாகத் திருத்த அறிக்கை (Rectification Report) அனுப்பி, எனது கணக்கை "Closed / Zero Balance" என மாற்றித் தருமாறு பணிவுடன் கேட்டுக்கொள்கிறேன்.
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedForm === 'rti_application' && (
+                      <div className="pl-2 space-y-2.5">
+                        <p>
+                          <strong>தகவல் அறியும் உரிமைச் சட்டம் 2005, பிரிவு 6(1)-ன் கீழ்</strong> நான் தங்களது அலுவலகத்தில் கடந்த காலத்தில் அளித்த விண்ணப்ப மனு எண்: <strong>{formData.rtiPrevPetitionNo}</strong> தொடர்பான கீழ்க்கண்ட தகவல்களைச் சான்றொப்பமிட்ட நகல்களாக வழங்கக் கோருகிறேன்:
+                        </p>
+                        <div className="bg-slate-50 p-3 rounded border border-slate-300 font-sans text-xs whitespace-pre-line">
+                          {formData.rtiSpecificQuery}
+                        </div>
+                        <p>
+                          இம்மனுவிற்கான அரசு நிர்ணயக் கட்டணமாக <strong>{formData.rtiFeeStampValue}</strong> இத்துடன் இணைக்கப்பட்டுள்ளது. சட்டப்படி 30 நாட்களுக்குள் உரிய தகவல்களை அனுப்பி வைக்குமாறு கேட்டுக்கொள்கிறேன்.
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedForm === 'collector_grievance' && (
+                      <div className="pl-2 space-y-2.5">
+                        <p>
+                          <strong>{formData.district}</strong> மாவட்டம், <strong>{formData.taluk}</strong> வட்டம், <strong>{formData.villageCity} ({formData.grievanceWardNo})</strong> பகுதியில் வசிக்கும் பொதுமக்களாகிய நாங்கள் நீண்ட நாட்களாக சந்தித்து வரும் கீழ்க்கண்ட அத்தியாவசியப் பிரச்சினையைத் தங்களின் மேலான கவனத்திற்குக் கொண்டு வருகிறோம்:
+                        </p>
+                        <div className="bg-slate-50 p-3 rounded border border-slate-300 font-sans text-xs font-medium">
+                          {formData.grievanceNature}
+                        </div>
+                        <p>
+                          இதனால் இப்பகுதி பொதுமக்கள், பள்ளி மாணவர்கள் மற்றும் முதியவர்கள் பெரிதும் சிரமத்திற்குள்ளாகி வருகின்றனர். எனவே, சம்பந்தப்பட்ட துறை அதிகாரிகளுக்கு உரிய உத்தரவிட்டு இப்பிரச்சினைக்கு விரைந்து தீர்வு காணுமாறு பொதுமக்கள் சார்பில் பணிவுடன் வேண்டுகிறோம்.
+                        </p>
+                      </div>
+                    )}
+
+                    {aiPolishedBody && (
+                      <div className="mt-3 p-3 bg-indigo-50/70 border-l-4 border-indigo-700 rounded text-xs whitespace-pre-line text-slate-900">
+                        {aiPolishedBody}
                       </div>
                     )}
                   </div>
