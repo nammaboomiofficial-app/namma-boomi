@@ -37,6 +37,7 @@ import landsData from '../data/landsData.json';
 import ModuleAdsSection from '@/components/ModuleAdsSection';
 import PostAdModal from '@/components/PostAdModal';
 import HeroOrbitBanner from '../components/HeroOrbitBanner';
+import SuperAppHubGrid from '../components/SuperAppHubGrid';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -2673,7 +2674,10 @@ window.open(getWhatsAppUrl(msg), '_blank');
           </a>
         </div>
       </div>
-      
+      {/* 360° Pro Studios & Official Govt Portals Directory */}
+      {currentModule === 'home' && (
+        <SuperAppHubGrid onSelectModule={(mod) => setCurrentModule(mod)} />
+      )}
       {/* ₹499 லீகல் ஆடிட் முன்பதிவு பிரிவு */}
 {(currentModule === 'land' || currentModule === 'patta') && <LegalAuditPromo />}
 <div className="fixed bottom-20 md:bottom-6 right-4 z-40">
