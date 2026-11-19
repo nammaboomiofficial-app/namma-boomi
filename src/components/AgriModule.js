@@ -1,15 +1,21 @@
 import React, { useState, useMemo } from 'react';
-
 import agriData from '../data/agriData.json';
 const { AGRI_MODELS, TIMBER_MODELS } = agriData;
 import { getWhatsAppUrl } from '../config';
 
+const AGRI_GOVT_PORTALS = [
+  { label: 'தமிழ்நாடு வேளாண்மைத் துறை (TNAgrisnet)', url: 'https://www.tnagrisnet.tn.gov.in/' },
+  { label: 'தோட்டக்கலை & சொட்டுநீர் மானியம் (TN Horticulture)', url: 'https://tnhorticulture.tn.gov.in/' },
+  { label: 'தினசரி மண்டி & காய்கறி விலை (Agmarknet)', url: 'https://agmarknet.gov.in/' },
+  { label: 'பி.எம். கிசான் நிதி உதவி (PM-KISAN)', url: 'https://pmkisan.gov.in/' }
+];
+
 export default function AgriModule({ setCurrentModule }) {
-  const [activeTab, setActiveTab] = useState('crop_roi'); // 'crop_roi', 'soil_water', 'timber', 'subsidies'
+  const [activeTab, setActiveTab] = useState('crop_roi');
   const [selectedCropId, setSelectedCropId] = useState('dragon_fruit');
   const [landAcres, setLandAcres] = useState(1);
-  const [farmerCategory, setFarmerCategory] = useState('small_marginal'); // 'small_marginal' (100%), 'other' (75%)
-  
+  const [farmerCategory, setFarmerCategory] = useState('small_marginal');
+
   // மண் & நீர் TDS வடிகட்டி
   const [soilType, setSoilType] = useState('செம்மண்');
   const [waterTds, setWaterTds] = useState(650);
@@ -18,27 +24,30 @@ export default function AgriModule({ setCurrentModule }) {
   const [selectedTimberId, setSelectedTimberId] = useState('mahogany');
   const [timberAcres, setTimberAcres] = useState(1);
 
+  // உடனடி பண்ணைத் திட்ட அறிக்கை
+  const [farmPlanReport, setFarmPlanReport] = useState('');
+
   // சிஆர்எம் படிவம்
   const [leadForm, setLeadForm] = useState({
     name: '',
     phone: '',
     district: '',
-    serviceNeed: 'பயிர் திட்ட அறிக்கை & சொட்டுநீர் மானியம்'
+    serviceNeed: '100% சொட்டுநீர் மானிய விண்ணப்பம்'
   });
   const [loading, setLoading] = useState(false);
 
   const activeCrop = useMemo(() => {
-    return AGRI_MODELS.find(c => c.id === selectedCropId) || AGRI_MODELS[0];
+    return AGRI_MODELS.find((c) => c.id === selectedCropId) || AGRI_MODELS[0];
   }, [selectedCropId]);
 
   const activeTimber = useMemo(() => {
-    return TIMBER_MODELS.find(t => t.id === selectedTimberId) || TIMBER_MODELS[0];
+    return TIMBER_MODELS.find((t) => t.id === selectedTimberId) || TIMBER_MODELS[0];
   }, [selectedTimberId]);
 
   // சொட்டு நீர் மானியக் கணக்கீடு
   const dripSubsidy = useMemo(() => {
     const baseCostPerAcre = 48000;
-    const totalDripCost = baseCostPerAcre * landAcres;
+    const totalDripCost = Math.round(baseCostPerAcre * landAcres);
     const subsidyPct = farmerCategory === 'small_marginal' ? 1.0 : 0.75;
     const subsidyAmount = Math.round(totalDripCost * subsidyPct);
     const farmerShare = totalDripCost - subsidyAmount;
@@ -53,9 +62,9 @@ export default function AgriModule({ setCurrentModule }) {
 
   // மரப்பயிர் எதிர்கால மதிப்பு
   const timberProjection = useMemo(() => {
-    const totalTrees = activeTimber.treesPerAcre * timberAcres;
+    const totalTrees = Math.round(activeTimber.treesPerAcre * timberAcres);
     const futureValue = totalTrees * activeTimber.estValuePerTree;
-    const plantingCost = totalTrees * 250; // கன்று + குழி + நடவு உத்தேச செலவு
+    const plantingCost = totalTrees * 250;
 
     return {
       totalTrees,
@@ -67,15 +76,55 @@ export default function AgriModule({ setCurrentModule }) {
 
   // மண் & நீர் TDS ஆய்வு முடிவு
   const soilWaterSuitability = useMemo(() => {
-    const suitable = activeCrop.soilMatch.includes(soilType) || activeCrop.soilMatch.includes('அனைத்து மண் வகைகளும்');
+    const suitable =
+      activeCrop.soilMatch.includes(soilType) ||
+      activeCrop.soilMatch.includes('அனைத்து மண் வகைகளும்');
     const tdsOk = waterTds <= activeCrop.maxTDS;
 
     return {
       isCompatible: suitable && tdsOk,
       soilStatus: suitable ? 'பொருந்துகிறது (Optimal Soil)' : 'மிதமான வளர்ச்சி மட்டுமே இருக்கும்',
-      tdsStatus: tdsOk ? 'நீர் உப்புத்தன்மை பாசனத்திற்கு மிக நன்று' : 'எச்சரிக்கை: உப்பின் அளவு பயிர் வளர்ச்சியைப் பாதிக்கலாம்'
+      tdsStatus: tdsOk
+        ? 'நீர் உப்புத்தன்மை பாசனத்திற்கு மிக நன்று'
+        : 'எச்சரிக்கை: உப்பின் அளவு பயிர் வளர்ச்சியைப் பாதிக்கலாம்'
     };
   }, [activeCrop, soilType, waterTds]);
+
+  // 0.01 விநாடியில் விரிவான பண்ணைத் திட்ட அறிக்கை உருவாக்கம்
+  const handleGenerateFarmPlan = () => {
+    const intercropTip =
+      soilType === 'கரிசல் மண்'
+        ? 'பருத்தி, உளுந்து, பாசிப்பயறு அல்லது சின்ன வெங்காயம் ஊடுபயிராகச் சாகுபடி செய்யலாம்.'
+        : 'நிலக்கடலை, தட்டைப்பயறு, மல்லி அல்லது குறுகிய காலக் கீரை வகைகளை ஊடுபயிராகச் சாகுபடி செய்து ஆரம்ப 6 மாதப் பராமரிப்புச் செலவை ஈடுகட்டலாம்.';
+
+    const waterAdvice =
+      waterTds > 1200
+        ? `போர்வெல் நீர் ${waterTds} TDS ஆக உள்ளதால், சொட்டுநீர் குழாய்களில் உப்பு அடைப்பைத் தவிர்க்க டிஸ்க் ஃபில்டர் (Disc Filter) மற்றும் வாரம் ஒருமுறை அமில சுத்திகரிப்பு (Acid Flush) அவசியம்.`
+        : `போர்வெல் நீர் ${waterTds} TDS அளவில் மிகத் தரமாக உள்ளது. துல்லியமான சொட்டுநீர் உரப்பாசனம் (Fertigation) மூலம் 30% கூடுதல் மகசூல் பெறலாம்.`;
+
+    const reportText = `நம்ம பூமி 360° — ஒருங்கிணைந்த பண்ணை & வேளாண் திட்ட அறிக்கை
+---------------------------------------------------------------------
+1. நிலம் & பயிர் விவரம்:
+   • தேர்ந்தெடுத்த பயிர்: ${activeCrop.title} (${activeCrop.category})
+   • சாகுபடி பரப்பளவு: ${landAcres} ஏக்கர் | மண் வகை: ${soilType}
+   • நீர் தரம் (TDS): ${waterTds} PPM — ${soilWaterSuitability.tdsStatus}
+   • எதிர்பார்க்கப்படும் ஆண்டு நிகர லாபம் (1 ஏக்கர் அடிப்படை): ${activeCrop.annualNetProfit}
+
+2. பாசனம் & அரசு மானிய மதிப்பீடு:
+   • ${landAcres} ஏக்கர் சொட்டுநீர் அமைப்பு உத்தேச மதிப்பு: ₹${dripSubsidy.totalCost.toLocaleString('en-IN')}
+   • அரசு மானியம் (${dripSubsidy.subsidyPct}% - ${farmerCategory === 'small_marginal' ? 'சிறு/குறு விவசாயி' : 'இதர விவசாயி'}): ₹${dripSubsidy.subsidyAmount.toLocaleString('en-IN')}
+   • விவசாயி செலுத்த வேண்டிய பங்குத் தொகை: ₹${dripSubsidy.farmerShare.toLocaleString('en-IN')}
+
+3. வேளாண் தொழில்நுட்பப் பரிந்துரைகள்:
+   • ஊடுபயிர் மேலாண்மை: ${intercropTip}
+   • நீர் மேலாண்மை: ${waterAdvice}
+   • வரப்பு ஓர மரப்பயிர் (Agro-Forestry): நிலத்தின் எல்லை ஓரங்களில் ${activeTimber.name} நடுவதன் மூலம் நீண்டகால மூலதன பாதுகாப்பும் காற்றுத் தடுப்பும் கிடைக்கும்.
+
+4. விண்ணப்பிக்க வேண்டிய ஆவணங்கள் (TN Horticulture / Agriculture):
+   • கணினி பட்டா, சிட்டா, அடங்கல், ஆதார் அட்டை, வங்கிப் பாஸ்புக் நகல் & சிறு/குறு விவசாயி சான்று (வட்டாட்சியர் அலுவலகம்).`;
+
+    setFarmPlanReport(reportText);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -87,20 +136,23 @@ export default function AgriModule({ setCurrentModule }) {
     setLoading(true);
 
     try {
-      fetch('https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZB0YKKbWNIKD7CzSh0M0qvfkHhORCw53YMBZX1nKCB1AcSAu/exec', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: leadForm.name || 'விவசாயி / நில உரிமையாளர்',
-          phone: leadForm.phone,
-          village: leadForm.district || 'குறிப்பிடப்படவில்லை',
-          taluk: activeCrop.title,
-          surveyNo: `நிலம்: ${landAcres} ஏக்கர் | தேவை: ${leadForm.serviceNeed}`,
-          feeStatus: 'இலவச வேளாண் ஆலோசனை',
-          status: 'Agri & நவீன பண்ணை வழிகாட்டல்'
-        })
-      });
+      fetch(
+        'https://script.google.com/macros/s/AKfycbyxE0I9sjVKMTU21gHXZB0YKKbWNIKD7CzSh0M0qvfkHhORCw53YMBZX1nKCB1AcSAu/exec',
+        {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: leadForm.name || 'விவசாயி / நில உரிமையாளர்',
+            phone: leadForm.phone,
+            village: leadForm.district || 'குறிப்பிடப்படவில்லை',
+            taluk: activeCrop.title,
+            surveyNo: `நிலம்: ${landAcres} ஏக்கர் | தேவை: ${leadForm.serviceNeed}`,
+            feeStatus: 'இலவச வேளாண் ஆலோசனை',
+            status: 'Agri & நவீன பண்ணை வழிகாட்டல்'
+          })
+        }
+      );
     } catch (err) {
       console.log('CRM Syncing...');
     }
@@ -141,8 +193,9 @@ export default function AgriModule({ setCurrentModule }) {
         {/* 2. நேவிகேஷன் டேப்கள் */}
         <div className="flex flex-wrap gap-2 mt-6 border-b border-slate-800 pb-4">
           <button
+            type="button"
             onClick={() => setActiveTab('crop_roi')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'crop_roi'
                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/50'
                 : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
@@ -151,8 +204,9 @@ export default function AgriModule({ setCurrentModule }) {
             🌾 பயிர் & பண்ணை லாப ரேடார்
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('soil_water')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'soil_water'
                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/50'
                 : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
@@ -161,8 +215,9 @@ export default function AgriModule({ setCurrentModule }) {
             🧪 மண் & போர்வெல் TDS ரேடார்
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('subsidies')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'subsidies'
                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/50'
                 : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
@@ -171,8 +226,9 @@ export default function AgriModule({ setCurrentModule }) {
             💧 100% சொட்டுநீர் & சோலார் மானியம்
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('timber')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'timber'
                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/50'
                 : 'bg-slate-900 text-slate-100 hover:text-white border border-slate-800'
@@ -194,11 +250,12 @@ export default function AgriModule({ setCurrentModule }) {
                 {AGRI_MODELS.map((crop) => (
                   <button
                     key={crop.id}
+                    type="button"
                     onClick={() => setSelectedCropId(crop.id)}
-                    className={`w-full text-left p-3 rounded-xl border transition-all ${
+                    className={`w-full text-left p-3 rounded-xl border transition-all cursor-pointer ${
                       selectedCropId === crop.id
                         ? 'bg-emerald-500/15 border-emerald-500 text-white shadow-lg shadow-emerald-950/40'
-                        : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:bg-slate-850'
+                        : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:bg-slate-800'
                     }`}
                   >
                     <div className="flex justify-between items-center">
@@ -208,16 +265,17 @@ export default function AgriModule({ setCurrentModule }) {
                   </button>
                 ))}
 
-                <div className="pt-2">
-                  <label className="block text-xs font-bold text-slate-300 uppercase mb-1">
+                <div className="pt-2 space-y-2">
+                  <label className="block text-xs font-bold text-slate-300 uppercase">
                     நிலத்தின் பரப்பளவு (ஏக்கரில்):
                   </label>
                   <div className="flex items-center gap-2">
                     {[1, 2, 3, 5].map((acres) => (
                       <button
                         key={acres}
+                        type="button"
                         onClick={() => setLandAcres(acres)}
-                        className={`flex-1 py-1.5 rounded-lg text-xs font-bold border ${
+                        className={`flex-1 py-1.5 rounded-lg text-xs font-bold border cursor-pointer ${
                           landAcres === acres
                             ? 'bg-emerald-600 border-emerald-500 text-white'
                             : 'bg-slate-950 border-slate-800 text-slate-100 hover:text-white'
@@ -226,6 +284,18 @@ export default function AgriModule({ setCurrentModule }) {
                         {acres} ஏக்கர்
                       </button>
                     ))}
+                  </div>
+                  <div className="flex items-center gap-2 pt-1">
+                    <span className="text-[11px] text-slate-400">வேறு அளவு (ஏக்கர்):</span>
+                    <input
+                      type="number"
+                      min="0.5"
+                      max="100"
+                      step="0.5"
+                      value={landAcres}
+                      onChange={(e) => setLandAcres(Math.max(0.5, Number(e.target.value)))}
+                      className="w-24 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white"
+                    />
                   </div>
                 </div>
               </div>
@@ -259,6 +329,32 @@ export default function AgriModule({ setCurrentModule }) {
                     இந்த சாகுபடிக்குத் தேவையான ஆட்களை நமது <strong>Jobs Hub</strong> மூலமாகவும், அறுவடை செய்யப்படும் பொருட்களை நேரடியாக சந்தைப்படுத்த நமது <strong>B2B மொத்த விற்பனைப் பிரிவு</strong> உடனும் இணைத்துத் தருகிறோம்.
                   </p>
                 </div>
+
+                {/* உடனடி பண்ணைத் திட்ட அறிக்கை பொத்தான் */}
+                <div className="pt-2 flex flex-wrap items-center justify-between gap-2">
+                  <button
+                    type="button"
+                    onClick={handleGenerateFarmPlan}
+                    className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs shadow cursor-pointer transition"
+                  >
+                    📋 உடனடி பண்ணைத் திட்ட அறிக்கை உருவாக்கு (Instant Report)
+                  </button>
+                  {farmPlanReport && (
+                    <button
+                      type="button"
+                      onClick={() => window.print()}
+                      className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 cursor-pointer"
+                    >
+                      🖨️ A4 PDF பிரிண்ட்
+                    </button>
+                  )}
+                </div>
+
+                {farmPlanReport && (
+                  <pre className="bg-slate-900 border border-emerald-500/40 rounded-xl p-4 text-[11px] text-slate-200 whitespace-pre-wrap font-sans leading-relaxed">
+                    {farmPlanReport}
+                  </pre>
+                )}
               </div>
             </div>
           )}
@@ -317,7 +413,11 @@ export default function AgriModule({ setCurrentModule }) {
                   </div>
                   <div className="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
                     <span className="text-[10px] text-slate-100 block">தண்ணீர் TDS தகுதி:</span>
-                    <span className={`text-xs font-bold ${waterTds <= activeCrop.maxTDS ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    <span
+                      className={`text-xs font-bold ${
+                        waterTds <= activeCrop.maxTDS ? 'text-emerald-400' : 'text-amber-400'
+                      }`}
+                    >
                       {soilWaterSuitability.tdsStatus}
                     </span>
                   </div>
@@ -326,9 +426,13 @@ export default function AgriModule({ setCurrentModule }) {
                 <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-300">
                   <span className="text-white font-bold block mb-1">பரிந்துரை:</span>
                   {waterTds > 1200 ? (
-                    <span>உப்புநீர் அதிகமாக உள்ளதால் டிராகன் ஃப்ரூட் மற்றும் கொய்யா போன்ற சகிப்புத்தன்மை கொண்ட பயிர்களை நடுவது சிறந்தது. சொட்டுநீர் ஃபில்டர் கட்டாயம் பொருத்த வேண்டும்.</span>
+                    <span>
+                      உப்புநீர் அதிகமாக உள்ளதால் டிராகன் ஃப்ரூட் மற்றும் கொய்யா போன்ற சகிப்புத்தன்மை கொண்ட பயிர்களை நடுவது சிறந்தது. சொட்டுநீர் ஃபில்டர் கட்டாயம் பொருத்த வேண்டும்.
+                    </span>
                   ) : (
-                    <span>உங்கள் நிலத்தின் நீர்வளம் மிகச் சிறப்பான தரத்தில் உள்ளது. காய்கறி, மலர் சாகுபடி மற்றும் நறுமணப் பயிர்கள் மிகச் சிறப்பாக விளைச்சலைத் தரும்.</span>
+                    <span>
+                      உங்கள் நிலத்தின் நீர்வளம் மிகச் சிறப்பான தரத்தில் உள்ளது. காய்கறி, மலர் சாகுபடி மற்றும் நறுமணப் பயிர்கள் மிகச் சிறப்பாக விளைச்சலைத் தரும்.
+                    </span>
                   )}
                 </div>
               </div>
@@ -342,36 +446,51 @@ export default function AgriModule({ setCurrentModule }) {
                 <div className="bg-slate-950 p-4 rounded-xl border border-emerald-500/30">
                   <span className="text-xs font-bold text-emerald-400 block">சிறு / குறு விவசாயிகளுக்கு</span>
                   <div className="text-2xl font-black text-white mt-1">100% இலவசம்</div>
-                  <p className="text-[11px] text-slate-100 mt-1">5 ஏக்கருக்கு உட்பட்ட விவசாயிகளுக்கு முழு சொட்டுநீர் பாசனக் கட்டமைப்பு இலவசம்.</p>
+                  <p className="text-[11px] text-slate-100 mt-1">
+                    5 ஏக்கருக்கு உட்பட்ட விவசாயிகளுக்கு முழு சொட்டுநீர் பாசனக் கட்டமைப்பு இலவசம்.
+                  </p>
                 </div>
                 <div className="bg-slate-950 p-4 rounded-xl border border-blue-500/30">
                   <span className="text-xs font-bold text-blue-400 block">PM-KUSUM சோலார் பம்புசெட்</span>
                   <div className="text-2xl font-black text-white mt-1">70% வரை மானியம்</div>
-                  <p className="text-[11px] text-slate-100 mt-1">தடையில்லா பகல்நேர பாசனத்திற்கு 5HP முதல் 10HP சோலார் பம்புகளுக்கு நிதி உதவி.</p>
+                  <p className="text-[11px] text-slate-100 mt-1">
+                    தடையில்லா பகல்நேர பாசனத்திற்கு 5HP முதல் 10HP சோலார் பம்புகளுக்கு நிதி உதவி.
+                  </p>
                 </div>
                 <div className="bg-slate-950 p-4 rounded-xl border border-amber-500/30">
                   <span className="text-xs font-bold text-amber-400 block">பண்ணைக் குட்டை & வேலி</span>
                   <div className="text-2xl font-black text-white mt-1">₹1,00,000 வரை</div>
-                  <p className="text-[11px] text-slate-100 mt-1">மழைநீர் சேகரிப்பு குட்டை மற்றும் சோலார் தொங்கு வேலி அமைப்பதற்கான அரசு உதவித்தொகை.</p>
+                  <p className="text-[11px] text-slate-100 mt-1">
+                    மழைநீர் சேகரிப்பு குட்டை மற்றும் சோலார் தொங்கு வேலி அமைப்பதற்கான அரசு உதவித்தொகை.
+                  </p>
                 </div>
               </div>
 
               {/* சொட்டுநீர் கால்குலேட்டர் */}
               <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
                 <div>
-                  <span className="text-slate-100 block text-[11px]">உங்கள் {landAcres} ஏக்கர் நிலத்திற்கான உத்தேச மதிப்பீடு:</span>
-                  <span className="text-white font-bold text-sm">மொத்த கட்டமைப்பு மதிப்பு: ₹{dripSubsidy.totalCost.toLocaleString('en-IN')}</span>
+                  <span className="text-slate-100 block text-[11px]">
+                    உங்கள் {landAcres} ஏக்கர் நிலத்திற்கான உத்தேச மதிப்பீடு:
+                  </span>
+                  <span className="text-white font-bold text-sm">
+                    மொத்த கட்டமைப்பு மதிப்பு: ₹{dripSubsidy.totalCost.toLocaleString('en-IN')}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <span className="text-emerald-400 font-bold block">அரசு மானியக் கழிவு: -₹{dripSubsidy.subsidyAmount.toLocaleString('en-IN')}</span>
-                    <span className="text-white font-black text-xs">உங்கள் பங்கு: ₹{dripSubsidy.farmerShare.toLocaleString('en-IN')}</span>
+                    <span className="text-emerald-400 font-bold block">
+                      அரசு மானியக் கழிவு: -₹{dripSubsidy.subsidyAmount.toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-white font-black text-xs">
+                      உங்கள் பங்கு: ₹{dripSubsidy.farmerShare.toLocaleString('en-IN')}
+                    </span>
                   </div>
                   <button
+                    type="button"
                     onClick={() => {
                       setFarmerCategory(farmerCategory === 'small_marginal' ? 'other' : 'small_marginal');
                     }}
-                    className="px-3 py-1.5 rounded bg-slate-900 border border-slate-700 text-slate-300 text-[11px] hover:text-white"
+                    className="px-3 py-1.5 rounded bg-slate-900 border border-slate-700 text-slate-300 text-[11px] hover:text-white cursor-pointer"
                   >
                     பிரிவு: {farmerCategory === 'small_marginal' ? 'சிறு/குறு (100%)' : 'இதர (75%)'}
                   </button>
@@ -384,12 +503,15 @@ export default function AgriModule({ setCurrentModule }) {
           {activeTab === 'timber' && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-5 space-y-3">
-                <label className="block text-xs font-bold text-slate-300 uppercase">மரப்பயிரைத் தேர்ந்தெடுங்கள்:</label>
+                <label className="block text-xs font-bold text-slate-300 uppercase">
+                  மரப்பயிரைத் தேர்ந்தெடுங்கள்:
+                </label>
                 {TIMBER_MODELS.map((timber) => (
                   <button
                     key={timber.id}
+                    type="button"
                     onClick={() => setSelectedTimberId(timber.id)}
-                    className={`w-full text-left p-3 rounded-xl border transition-all ${
+                    className={`w-full text-left p-3 rounded-xl border transition-all cursor-pointer ${
                       selectedTimberId === timber.id
                         ? 'bg-emerald-500/15 border-emerald-500 text-white shadow-lg'
                         : 'bg-slate-900/60 border-slate-800 text-slate-300'
@@ -401,14 +523,19 @@ export default function AgriModule({ setCurrentModule }) {
                 ))}
 
                 <div className="pt-2">
-                  <label className="block text-xs font-bold text-slate-300 uppercase mb-1">பரப்பளவு (ஏக்கர்):</label>
+                  <label className="block text-xs font-bold text-slate-300 uppercase mb-1">
+                    பரப்பளவு (ஏக்கர்):
+                  </label>
                   <div className="flex items-center gap-2">
                     {[1, 2, 5].map((a) => (
                       <button
                         key={a}
+                        type="button"
                         onClick={() => setTimberAcres(a)}
-                        className={`flex-1 py-1.5 rounded-lg text-xs font-bold border ${
-                          timberAcres === a ? 'bg-emerald-600 border-emerald-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-100'
+                        className={`flex-1 py-1.5 rounded-lg text-xs font-bold border cursor-pointer ${
+                          timberAcres === a
+                            ? 'bg-emerald-600 border-emerald-500 text-white'
+                            : 'bg-slate-950 border-slate-800 text-slate-100'
                         }`}
                       >
                         {a} ஏக்கர்
@@ -420,7 +547,9 @@ export default function AgriModule({ setCurrentModule }) {
 
               <div className="lg:col-span-7 bg-slate-950/80 border border-slate-800 rounded-2xl p-5 space-y-4">
                 <div className="border-b border-slate-800 pb-3">
-                  <span className="text-xs font-bold text-emerald-400">பசுமை ஓய்வூதியம் & மரப்பயிர் சேமிப்பு நிதி</span>
+                  <span className="text-xs font-bold text-emerald-400">
+                    பசுமை ஓய்வூதியம் & மரப்பயிர் சேமிப்பு நிதி
+                  </span>
                   <h3 className="text-base md:text-lg font-black text-white">{activeTimber.name}</h3>
                   <p className="text-xs text-slate-100 mt-1">{activeTimber.desc}</p>
                 </div>
@@ -432,11 +561,17 @@ export default function AgriModule({ setCurrentModule }) {
                   </div>
                   <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
                     <span className="text-[10px] text-slate-100 block">ஆரம்ப நடவுச் செலவு:</span>
-                    <span className="text-xs font-bold text-amber-400">₹{timberProjection.plantingCost.toLocaleString('en-IN')}</span>
+                    <span className="text-xs font-bold text-amber-400">
+                      ₹{timberProjection.plantingCost.toLocaleString('en-IN')}
+                    </span>
                   </div>
                   <div className="bg-slate-900 p-2.5 rounded-xl border border-emerald-500/30">
-                    <span className="text-[10px] text-emerald-400 block">{activeTimber.growthYears} ஆண்டு உத்தேச அறுவடை மதிப்பு:</span>
-                    <span className="text-xs font-bold text-emerald-300">₹{timberProjection.futureValue.toLocaleString('en-IN')}</span>
+                    <span className="text-[10px] text-emerald-400 block">
+                      {activeTimber.growthYears} ஆண்டு உத்தேச அறுவடை மதிப்பு:
+                    </span>
+                    <span className="text-xs font-bold text-emerald-300">
+                      ₹{timberProjection.futureValue.toLocaleString('en-IN')}
+                    </span>
                   </div>
                 </div>
 
@@ -448,7 +583,28 @@ export default function AgriModule({ setCurrentModule }) {
           )}
         </div>
 
-        {/* 4. சிஆர்எம் & வாட்ஸ்அப் விண்ணப்பப் படிவம் */}
+        {/* 4. அரசு வேளாண் & தோட்டக்கலை அதிகாரப்பூர்வ லிங்க்குகள் */}
+        <div className="mt-6 pt-5 border-t border-slate-800 space-y-2.5">
+          <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">
+            🏛️ அரசு வேளாண் & மானிய அதிகாரப்பூர்வ இணையதளங்கள் (Direct Official Links)
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            {AGRI_GOVT_PORTALS.map((portal) => (
+              <a
+                key={portal.url}
+                href={portal.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-2 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/40 px-3 py-2.5 rounded-xl text-[11px] text-slate-200 hover:text-emerald-300 transition"
+              >
+                <span>{portal.label}</span>
+                <span className="text-emerald-400 font-bold shrink-0">↗</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* 5. சிஆர்எம் & வாட்ஸ்அப் விண்ணப்பப் படிவம் */}
         <form onSubmit={handleSubmit} className="mt-6 pt-5 border-t border-slate-800">
           <div className="text-xs font-bold text-slate-200 mb-2 flex items-center gap-2">
             <span>🚀</span> உங்கள் நிலத்திற்கான விரிவான திட்ட அறிக்கை & மானிய வழிகாட்டல் பெற:
@@ -493,7 +649,7 @@ export default function AgriModule({ setCurrentModule }) {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-950/40 transition-all flex items-center gap-1.5"
+              className="px-6 py-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-950/40 transition-all flex items-center gap-1.5 cursor-pointer"
             >
               {loading ? 'தயாராகிறது...' : 'வேளாண் திட்ட சுருக்கம் பெற (WhatsApp) ↗'}
             </button>
@@ -501,7 +657,7 @@ export default function AgriModule({ setCurrentModule }) {
         </form>
       </div>
 
-      {/* 5. நம்ம பூமி 360° எகோசிஸ்டம் பாலங்கள் (Ecosystem Links) */}
+      {/* 6. நம்ம பூமி 360° எகோசிஸ்டம் பாலங்கள் (Ecosystem Links) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
         <div
           onClick={() => {
@@ -511,11 +667,15 @@ export default function AgriModule({ setCurrentModule }) {
           className="rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-emerald-500/50 p-4 space-y-2 cursor-pointer transition-all duration-300 hover:scale-[1.02] group shadow-lg"
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🏡</span>
-          <h4 className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">விவசாய நிலம் வாங்க வேண்டுமா?</h4>
+          <h4 className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">
+            விவசாய நிலம் வாங்க வேண்டுமா?
+          </h4>
           <p className="text-xs text-slate-100">
             நீர் ஆதாரம், போர்வெல் வசதி மற்றும் ₹499 சட்ட தணிக்கை செய்யப்பட்ட விவசாய விளைநிலங்கள்.
           </p>
-          <span className="text-[11px] text-emerald-400 font-bold block pt-1 underline">பூமி & நிலப்பிரிவு செல்ல ↗</span>
+          <span className="text-[11px] text-emerald-400 font-bold block pt-1 underline">
+            பூமி & நிலப்பிரிவு செல்ல ↗
+          </span>
         </div>
 
         <div
@@ -526,11 +686,15 @@ export default function AgriModule({ setCurrentModule }) {
           className="rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-blue-500/50 p-4 space-y-2 cursor-pointer transition-all duration-300 hover:scale-[1.02] group shadow-lg"
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🚜</span>
-          <h4 className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">பண்ணை மேற்பார்வையாளர் தேவையா?</h4>
+          <h4 className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">
+            பண்ணை மேற்பார்வையாளர் தேவையா?
+          </h4>
           <p className="text-xs text-slate-100">
             சொட்டுநீர் பராமரிப்பு, இயற்கை உரம் மற்றும் பண்ணை பணிகளுக்கு அனுபவமுள்ள உள்ளூர் ஆட்கள்.
           </p>
-          <span className="text-[11px] text-blue-400 font-bold block pt-1 underline">Jobs Hub வேலைவாய்ப்பு மையம் ↗</span>
+          <span className="text-[11px] text-blue-400 font-bold block pt-1 underline">
+            Jobs Hub வேலைவாய்ப்பு மையம் ↗
+          </span>
         </div>
 
         <div
@@ -541,11 +705,15 @@ export default function AgriModule({ setCurrentModule }) {
           className="rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-amber-500/50 p-4 space-y-2 cursor-pointer transition-all duration-300 hover:scale-[1.02] group shadow-lg"
         >
           <span className="text-2xl block group-hover:scale-110 transition-transform">🏦</span>
-          <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">டிராக்டர் & வேளாண் கடன் தேவையா?</h4>
+          <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">
+            டிராக்டர் & வேளாண் கடன் தேவையா?
+          </h4>
           <p className="text-xs text-slate-100">
             பண்ணைக் கருவிகள், சோலார் பம்புசெட் அமைப்பதற்கான குறைந்த வட்டி விவசாயக் கடன்கள்.
           </p>
-          <span className="text-[11px] text-amber-400 font-bold block pt-1 underline">நிதி & கடன்கள் பிரிவு செல்ல ↗</span>
+          <span className="text-[11px] text-amber-400 font-bold block pt-1 underline">
+            நிதி & கடன்கள் பிரிவு செல்ல ↗
+          </span>
         </div>
       </div>
     </div>

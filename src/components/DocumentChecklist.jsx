@@ -2,6 +2,14 @@
 import { useState, useRef } from 'react';
 import checklistData from '../data/documentChecklistData.json';
 import { getWhatsAppUrl } from '../config';
+
+const DOC_GOVT_PORTALS = [
+  { label: 'பட்டா / சிட்டா / அ-பதிவேடு (TN e-Services)', url: 'https://eservices.tn.gov.in/' },
+  { label: 'வில்லங்கச் சான்று EC (TNREGINET)', url: 'https://tnreginet.gov.in/' },
+  { label: 'உத்யம் MSME சான்று (Udyam)', url: 'https://udyamregistration.gov.in/' },
+  { label: 'வருமானம் / சாதி / வாரிசு சான்று (e-Sevai)', url: 'https://www.tnesevai.tn.gov.in/' }
+];
+
 export default function DocumentChecklist() {
   const [selectedLoanId, setSelectedLoanId] = useState(checklistData.loanCategories[0].id);
   const [checkedDocs, setCheckedDocs] = useState({});
@@ -24,7 +32,6 @@ export default function DocumentChecklist() {
         ...prev,
         [docId]: file.name
       }));
-      // ஃபைல் அப்லோட் செய்தவுடன் தானாகவே அந்த ஆவணத்தை டிக் செய்தல்
       setCheckedDocs((prev) => ({
         ...prev,
         [docId]: true
@@ -42,6 +49,10 @@ export default function DocumentChecklist() {
   const totalDocs = activeCategory?.requiredDocs.length || 0;
   const readyDocs = activeCategory?.requiredDocs.filter((doc) => checkedDocs[doc.id]).length || 0;
   const progressPercent = totalDocs > 0 ? Math.round((readyDocs / totalDocs) * 100) : 0;
+
+  const mandatoryDocs = activeCategory?.requiredDocs.filter((doc) => doc.mandatory) || [];
+  const allMandatoryReady =
+    mandatoryDocs.length > 0 && mandatoryDocs.every((doc) => checkedDocs[doc.id]);
 
   // WhatsApp-ல் பகிரும் செயல்பாடு
   const handleShareWhatsApp = () => {
@@ -73,7 +84,6 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
 
   return (
     <div className="w-full max-w-5xl mx-auto my-8 p-6 bg-slate-900/80 border border-slate-800 rounded-3xl backdrop-blur-xl shadow-2xl text-slate-100">
-      
       {/* தலைப்பு பகுதி */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-5">
         <div>
@@ -89,10 +99,12 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
         </div>
 
         {/* முன்னேற்ற நிலை (Progress Bar) */}
-        <div className="w-full sm:w-48 bg-slate-800/80 p-3 rounded-2xl border border-slate-700/60 text-right">
+        <div className="w-full sm:w-52 bg-slate-800/80 p-3 rounded-2xl border border-slate-700/60 text-right">
           <div className="flex justify-between items-center text-xs mb-1">
             <span className="text-slate-400">தயார் நிலை:</span>
-            <span className="font-bold text-emerald-400">{readyDocs} / {totalDocs}</span>
+            <span className="font-bold text-emerald-400">
+              {readyDocs} / {totalDocs} ({progressPercent}%)
+            </span>
           </div>
           <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
             <div
@@ -100,6 +112,11 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
               style={{ width: `${progressPercent}%` }}
             />
           </div>
+          {allMandatoryReady && (
+            <span className="text-[10px] font-bold text-emerald-300 block mt-1.5">
+              🎉 கட்டாய ஆவணங்கள் அனைத்தும் தயார்!
+            </span>
+          )}
         </div>
       </div>
 
@@ -110,6 +127,7 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
           return (
             <button
               key={category.id}
+              type="button"
               onClick={() => setSelectedLoanId(category.id)}
               className={`text-left p-3.5 rounded-2xl border transition-all cursor-pointer ${
                 isActive
@@ -117,9 +135,13 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
                   : 'bg-slate-800/40 border-slate-800 text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
               }`}
             >
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border mb-1.5 inline-block ${
-                isActive ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300' : 'bg-slate-700/40 border-slate-700 text-slate-400'
-              }`}>
+              <span
+                className={`text-[10px] font-bold px-2 py-0.5 rounded-full border mb-1.5 inline-block ${
+                  isActive
+                    ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                    : 'bg-slate-700/40 border-slate-700 text-slate-400'
+                }`}
+              >
                 {category.badge}
               </span>
               <div className="font-bold text-xs sm:text-sm">{category.title}</div>
@@ -203,16 +225,44 @@ ${pendingList || 'அனைத்தும் தயாராக உள்ளன
         })}
       </div>
 
-      {/* WhatsApp பகிர்வு பொத்தான் */}
-      <div className="mt-6 pt-5 border-t border-slate-800 flex justify-end">
+      {/* அரசு ஆவண பதிவிறக்க நேரடி லிங்க்குகள் */}
+      <div className="mt-6 pt-5 border-t border-slate-800 space-y-2.5">
+        <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">
+          🏛️ ஆவணங்கள் இல்லையா? அதிகாரப்பூர்வ அரசு தளங்களில் உடனே பதிவிறக்கவும்:
+        </span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          {DOC_GOVT_PORTALS.map((portal) => (
+            <a
+              key={portal.url}
+              href={portal.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between gap-2 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/40 px-3 py-2 rounded-xl text-[11px] text-slate-200 hover:text-emerald-300 transition"
+            >
+              <span>{portal.label}</span>
+              <span className="text-emerald-400 font-bold shrink-0">↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* A4 பிரிண்ட் & WhatsApp பகிர்வு பொத்தான்கள் */}
+      <div className="mt-6 pt-5 border-t border-slate-800 flex flex-wrap items-center justify-end gap-3">
         <button
+          type="button"
+          onClick={() => window.print()}
+          className="bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-2 cursor-pointer"
+        >
+          <span>🖨️</span> A4 PDF பிரிண்ட்
+        </button>
+        <button
+          type="button"
           onClick={handleShareWhatsApp}
           className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-emerald-600/20 cursor-pointer"
         >
           <span>📲</span> வாட்ஸ்அப்பில் பட்டியலைப் பகிர்க (WhatsApp Share)
         </button>
       </div>
-
     </div>
   );
 }
