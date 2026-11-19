@@ -3,19 +3,19 @@
     "income": {
       "min": 10000,
       "max": 1000000,
-      "step": 1,
+      "step": 1000,
       "defaultValue": 35000
     },
     "existingEmi": {
       "min": 0,
       "max": 500000,
-      "step": 1,
+      "step": 500,
       "defaultValue": 0
     },
     "cibil": {
       "min": 300,
       "max": 900,
-      "step": 1,
+      "step": 5,
       "defaultValue": 750
     },
     "cibilMultipliers": [
@@ -27,7 +27,7 @@
     "defaultFoir": 0.50
   },
   "uiLabels": {
-    "schemesTitle": "🏷️ கடன் திட்டங்கள்",
+    "schemesTitle": "🏷️ 360° கடன் திட்டங்கள்",
     "calcTitle": "⚙️ கடன் தகுதி கால்குலேட்டர்",
     "resultTitle": "📊 மதிப்பீட்டு முடிவு",
     "incomeLabel": "மாத வருமானம்:",
@@ -40,52 +40,270 @@
     "approvalStatusLabel": "கடன் ஒப்புதல் நிலை:",
     "statusEligible": "✓ தகுதியானது",
     "statusReview": "மறுமதிப்பீடு தேவை",
-    "bankRatesTitle": "🏦 முன்னணி வங்கிகளின் வட்டி விகிதங்கள்:",
+    "bankRatesTitle": "🏦 வங்கிகள், NBFC & டிஜிட்டல் ஆப் கடன் ஒப்பீடு",
     "applyCtaText": "📋 ஆவணங்களைச் சரிபார்க்கவும் ↓"
   },
   "loanCards": [
     {
       "id": "personal-loan",
+      "icon": "💳",
+      "badge": "24 மணி நேர ஒப்புதல்",
+      "badgeColor": "bg-blue-500/15 text-blue-300 border-blue-500/30",
       "title": "தனிநபர் கடன் (Personal Loan)",
-      "interestRate": 10.5,
-      "maxTenureYears": 5,
-      "description": "அவசரத் தேவைகள் மற்றும் குறுகிய காலச் செலவுகளுக்கான உடனடி நிதி உதவி."
+      "desc": "அவசரத் தேவைகள், மருத்துவம் மற்றும் திருமணச் செலவுகளுக்கான அடமானமில்லா உடனடி கடன்.",
+      "description": "அவசரத் தேவைகள் மற்றும் குறுகிய காலச் செலவுகளுக்கான அடமானமில்லா உடனடி நிதி உதவி.",
+      "range": "₹25,000 – ₹40 லட்சம்",
+      "tenure": "1 முதல் 5 ஆண்டுகள்",
+      "interestRate": 10.75,
+      "maxTenureYears": 5
     },
     {
       "id": "plot-home-loan",
+      "icon": "🏡",
+      "badge": "குறைந்த வட்டி",
+      "badgeColor": "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
       "title": "வீட்டுமனை & வீட்டுக் கடன் (Plot & Home Loan)",
+      "desc": "DTCP / CMDA அங்கீகரிக்கப்பட்ட மனை வாங்க, வீடு கட்ட அல்லது கட்டிய வீடு வாங்க நீண்ட காலக் கடன்.",
+      "description": "நிலம் வாங்க, வீடு கட்ட அல்லது கட்டிய வீட்டை வாங்க நீண்ட காலக் கடன்.",
+      "range": "₹5 லட்சம் – ₹5 கோடி",
+      "tenure": "5 முதல் 25 ஆண்டுகள்",
       "interestRate": 8.5,
-      "maxTenureYears": 20,
-      "description": "நிலம் வாங்க, வீடு கட்ட அல்லது கட்டிய வீட்டை வாங்க நீண்ட காலக் கடன்."
+      "maxTenureYears": 25
     },
     {
       "id": "business-loan",
+      "icon": "🏭",
+      "badge": "MSME & மானியம்",
+      "badgeColor": "bg-amber-500/15 text-amber-300 border-amber-500/30",
       "title": "MSME & வணிகக் கடன் (Business Loan)",
-      "interestRate": 11.0,
-      "maxTenureYears": 10,
-      "description": "தொழில் விரிவாக்கம், புதிய இயந்திரங்கள் வாங்க மற்றும் நடைமுறை மூலதன உதவி."
+      "desc": "தொழில் விரிவாக்கம், புதிய இயந்திரங்கள் வாங்க மற்றும் நடைமுறை மூலதன உதவி (Mudra / CGTMSE).",
+      "description": "தொழில் விரிவாக்கம், புதிய இயந்திரங்கள் வாங்க மற்றும் நடைமுறை மூலதன உதவி.",
+      "range": "₹50,000 – ₹2 கோடி",
+      "tenure": "1 முதல் 10 ஆண்டுகள்",
+      "interestRate": 11.25,
+      "maxTenureYears": 10
+    },
+    {
+      "id": "lap-loan",
+      "icon": "🏢",
+      "badge": "அதிக கடன் தொகை",
+      "badgeColor": "bg-purple-500/15 text-purple-300 border-purple-500/30",
+      "title": "சொத்து அடமானக் கடன் (Loan Against Property)",
+      "desc": "வீடு, வணிகக் கட்டிடம் அல்லது நிலப் பத்திரத்தை அடமானமாக வைத்து பெரிய தொழில் மூலதனம் பெறுங்கள்.",
+      "description": "சொத்து பத்திரத்தின் சந்தை மதிப்பில் 70% வரை குறைந்த வட்டியில் கடன்.",
+      "range": "₹5 லட்சம் – ₹5 கோடி",
+      "tenure": "3 முதல் 15 ஆண்டுகள்",
+      "interestRate": 9.5,
+      "maxTenureYears": 15
+    },
+    {
+      "id": "agri-kcc-loan",
+      "icon": "🚜",
+      "badge": "விவசாயச் சிறப்பு",
+      "badgeColor": "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
+      "title": "விவசாயம் & டிராக்டர் கடன் (Agri / KCC)",
+      "desc": "பயிர் சாகுபடி, சொட்டுநீர் பாசனம், பண்ணைக் கருவிகள் மற்றும் டிராக்டர் வாங்க மானிய வட்டிக் கடன்.",
+      "description": "விவசாய சாகுபடி, பண்ணை மேம்பாடு மற்றும் டிராக்டர் வாங்க குறைந்த வட்டிக் கடன்.",
+      "range": "₹50,000 – ₹50 லட்சம்",
+      "tenure": "1 முதல் 7 ஆண்டுகள்",
+      "interestRate": 7.0,
+      "maxTenureYears": 7
+    },
+    {
+      "id": "gold-loan",
+      "icon": "🪙",
+      "badge": "15 நிமிடத்தில் கடன்",
+      "badgeColor": "bg-amber-500/15 text-amber-300 border-amber-500/30",
+      "title": "தங்க நகைக் கடன் (Instant Gold Loan)",
+      "desc": "CIBIL ஸ்கோர் தேவையில்லை; தங்க நகைக்கு அதிகபட்ச கிராம் மதிப்பில் உடனடி வங்கி & NBFC கடன்.",
+      "description": "CIBIL தேவையின்றி தங்க நகைக்கு உடனடி குறைந்த வட்டிக் கடன்.",
+      "range": "₹10,000 – ₹50 லட்சம்",
+      "tenure": "3 மாதம் முதல் 3 ஆண்டுகள்",
+      "interestRate": 8.9,
+      "maxTenureYears": 3
+    },
+    {
+      "id": "microfinance-jlg",
+      "icon": "🤝",
+      "badge": "மகளிர் & சுயதொழில்",
+      "badgeColor": "bg-pink-500/15 text-pink-300 border-pink-500/30",
+      "title": "மகளிர் குழு & மைக்ரோஃபைனான்ஸ் கடன் (JLG)",
+      "desc": "கிராமப்புற மற்றும் நகர்ப்புற மகளிர் சுயதொழில், கறவை மாடு, தையல் மற்றும் சிறு கடை தொடங்க எளிய கடன்.",
+      "description": "மகளிர் குழு மற்றும் சிறு தொழில் முனைவோருக்கான வாராந்திர / மாதாந்திர தவணைக் கடன்.",
+      "range": "₹30,000 – ₹1.5 லட்சம்",
+      "tenure": "1 முதல் 3 ஆண்டுகள்",
+      "interestRate": 18.0,
+      "maxTenureYears": 3
+    },
+    {
+      "id": "vehicle-loan",
+      "icon": "🚚",
+      "badge": "புதிய & பழைய வாகனம்",
+      "badgeColor": "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
+      "title": "வாகன & வணிக சரக்கு வாகனக் கடன்",
+      "desc": "இருசக்கர வாகனம், கார், மினி லாரி மற்றும் சரக்கு வாகனங்கள் வாங்க 90% வரை நிதி உதவி.",
+      "description": "இருசக்கர வாகனம், கார் மற்றும் வணிக சரக்கு வாகனங்களுக்கான எளிய கடன்.",
+      "range": "₹40,000 – ₹75 லட்சம்",
+      "tenure": "1 முதல் 7 ஆண்டுகள்",
+      "interestRate": 9.75,
+      "maxTenureYears": 7
+    },
+    {
+      "id": "education-loan",
+      "icon": "🎓",
+      "badge": "உள்நாடு & வெளிநாடு",
+      "badgeColor": "bg-indigo-500/15 text-indigo-300 border-indigo-500/30",
+      "title": "கல்விக் கடன் (Education Loan)",
+      "desc": "பொறியியல், மருத்துவம், கலை அறிவியல் மற்றும் வெளிநாட்டு உயர்கல்விக்கு அரசு மானிய வட்டிக் கடன்.",
+      "description": "உள்நாடு மற்றும் வெளிநாட்டு உயர்கல்வி கட்டணங்களுக்கான மாணவர் கடன்.",
+      "range": "₹1 லட்சம் – ₹1 கோடி",
+      "tenure": "5 முதல் 15 ஆண்டுகள்",
+      "interestRate": 8.6,
+      "maxTenureYears": 15
     }
   ],
   "bankRates": [
     {
+      "tag": "பொதுத்துறை வங்கி",
       "name": "State Bank of India (SBI)",
-      "type": "பொதுத்துறை வங்கி",
-      "rate": "8.40% - 9.15%"
+      "type": "வீடு, விவசாயம், தனிநபர் & MSME",
+      "rate": "8.40% – 11.15%"
     },
     {
-      "name": "HDFC Bank",
-      "type": "தனியார் வங்கி",
-      "rate": "8.50% - 9.40%"
+      "tag": "பொதுத்துறை வங்கி",
+      "name": "Indian Bank",
+      "type": "விவசாயம், நகை, வீடு & மகளிர் குழு",
+      "rate": "8.45% – 10.90%"
     },
     {
-      "name": "ICICI Bank",
-      "type": "தனியார் வங்கி",
-      "rate": "8.60% - 9.50%"
-    },
-    {
+      "tag": "பொதுத்துறை வங்கி",
       "name": "Canara Bank",
-      "type": "பொதுத்துறை வங்கி",
-      "rate": "8.45% - 9.25%"
+      "type": "MSME, கல்வி, வீடு & வாகனக் கடன்",
+      "rate": "8.45% – 11.25%"
+    },
+    {
+      "tag": "பொதுத்துறை வங்கி",
+      "name": "Bank of Baroda",
+      "type": "வீட்டுமனை, கார் & தொழில் கடன்",
+      "rate": "8.40% – 11.00%"
+    },
+    {
+      "tag": "தனியார் வங்கி",
+      "name": "HDFC Bank",
+      "type": "உடனடி தனிநபர், வீடு & வணிகக் கடன்",
+      "rate": "8.50% – 12.50%"
+    },
+    {
+      "tag": "தனியார் வங்கி",
+      "name": "ICICI Bank",
+      "type": "வீடு, சொத்து அடமானம் & கார் கடன்",
+      "rate": "8.60% – 12.75%"
+    },
+    {
+      "tag": "தனியார் வங்கி",
+      "name": "Axis Bank",
+      "type": "தனிநபர், MSME & வீட்டுக் கடன்",
+      "rate": "8.65% – 13.00%"
+    },
+    {
+      "tag": "தனியார் வங்கி",
+      "name": "Kotak Mahindra Bank",
+      "type": "தொழில், வாகனம் & வீட்டுக் கடன்",
+      "rate": "8.70% – 12.90%"
+    }
+  ],
+  "nbfcRates": [
+    {
+      "tag": "முன்னணி NBFC",
+      "name": "Bajaj Finserv",
+      "type": "தனிநபர், தொழில் & நுகர்வோர் கடன்",
+      "rate": "11.00% – 18.00%",
+      "highlight": "24 மணி நேரத்தில் வங்கிக் கணக்கில் பணம்"
+    },
+    {
+      "tag": "தமிழ்நாடு முன்னணி NBFC",
+      "name": "Cholamandalam Finance (Chola)",
+      "type": "வாகனம், வீடு & சொத்து அடமானக் கடன்",
+      "rate": "10.50% – 16.50%",
+      "highlight": "கிராமப்புற & வணிக வாகனக் கடனில் முதன்மை"
+    },
+    {
+      "tag": "தமிழ்நாடு பாரம்பரிய NBFC",
+      "name": "Sundaram Finance",
+      "type": "வாகனம், வீட்டுக் கடன் & இயந்திரக் கடன்",
+      "rate": "9.75% – 15.00%",
+      "highlight": "நம்பகமான விரைவு ஒப்புதல்"
+    },
+    {
+      "tag": "தங்க நகை NBFC",
+      "name": "Muthoot / Manappuram Finance",
+      "type": "உடனடி தங்க நகை & சிறு தொழில் கடன்",
+      "rate": "9.90% – 18.00%",
+      "highlight": "15 நிமிடத்தில் நகைக் கடன்"
+    },
+    {
+      "tag": "வணிக & வாகன NBFC",
+      "name": "Shriram Finance",
+      "type": "பழைய/புதிய வாகனம் & சிறு வணிகக் கடன்",
+      "rate": "12.00% – 19.00%",
+      "highlight": "சிறு வியாபாரிகளுக்கு எளிய ஆவண முறை"
+    },
+    {
+      "tag": "கிராமப்புற & வீட்டு NBFC",
+      "name": "L&T Finance",
+      "type": "டிராக்டர், மகளிர் குழு & வீட்டுக் கடன்",
+      "rate": "10.25% – 18.50%",
+      "highlight": "டிஜிட்டல் முறையில் விரைவு பரிசீலனை"
+    }
+  ],
+  "digitalLoanApps": [
+    {
+      "name": "KreditBee",
+      "rbiPartner": "RBI Registered NBFC (Krazybee Services)",
+      "loanType": "உடனடி தனிநபர் & சுயதொழில் கடன்",
+      "amountRange": "₹5,000 – ₹5 லட்சம்",
+      "interestRate": "15% – 24% p.a.",
+      "speed": "15 நிமிட டிஜிட்டல் KYC"
+    },
+    {
+      "name": "Navi App",
+      "rbiPartner": "RBI Registered NBFC (Navi Finserv)",
+      "loanType": "பேப்பர்லெஸ் தனிநபர் & வீட்டுக் கடன்",
+      "amountRange": "₹10,000 – ₹20 லட்சம்",
+      "interestRate": "9.90% – 22% p.a.",
+      "speed": "100% ஆன்லைன் உடனடி பரிமாற்றம்"
+    },
+    {
+      "name": "Moneyview",
+      "rbiPartner": "RBI Registered NBFC Partners",
+      "loanType": "சம்பளதாரர் & சுயதொழில் தனிநபர் கடன்",
+      "amountRange": "₹10,000 – ₹10 லட்சம்",
+      "interestRate": "14% – 24% p.a.",
+      "speed": "2 மணி நேரத்தில் வங்கி வரவு"
+    },
+    {
+      "name": "Fibe (EarlySalary)",
+      "rbiPartner": "RBI Registered NBFC (Social Worth)",
+      "loanType": "சம்பள முன்பணம் & அவசரத் தனிநபர் கடன்",
+      "amountRange": "₹8,000 – ₹5 லட்சம்",
+      "interestRate": "14% – 22% p.a.",
+      "speed": "10 நிமிடத்தில் உடனடி ஒப்புதல்"
+    },
+    {
+      "name": "Tata Capital (iApply)",
+      "rbiPartner": "RBI Registered NBFC (Tata Capital Ltd)",
+      "loanType": "தனிநபர், தொழில் & வாகனக் கடன்",
+      "amountRange": "₹50,000 – ₹35 லட்சம்",
+      "interestRate": "10.99% – 18% p.a.",
+      "speed": "டாட்டா குழும நம்பகத்தன்மை"
+    },
+    {
+      "name": "Lendingkart",
+      "rbiPartner": "RBI Registered NBFC (Lendingkart Finance)",
+      "loanType": "MSME & ஆன்லைன் வியாபார மூலதனக் கடன்",
+      "amountRange": "₹50,000 – ₹1 கோடி",
+      "interestRate": "15% – 24% p.a.",
+      "speed": "GST / வங்கி ஸ்டேட்மென்ட் மூலம் 48 மணி நேரத்தில்"
     }
   ]
 }
