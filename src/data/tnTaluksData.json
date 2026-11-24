@@ -1,0 +1,389 @@
+{
+  "அரியலூர்": [
+    { "ta": "அரியலூர்", "en": "Ariyalur" },
+    { "ta": "உடையார்பாளையம்", "en": "Udayarpalayam" },
+    { "ta": "செந்துறை", "en": "Sendurai" },
+    { "ta": "ஆண்டிமடம்", "en": "Andimadam" }
+  ],
+  "செங்கல்பட்டு": [
+    { "ta": "செங்கல்பட்டு", "en": "Chengalpattu" },
+    { "ta": "திருப்போரூர்", "en": "Thiruporur" },
+    { "ta": "தாம்பரம்", "en": "Tambaram" },
+    { "ta": "வண்டலூர்", "en": "Vandalur" },
+    { "ta": "பல்லாவரம்", "en": "Pallavaram" },
+    { "ta": "மதுராந்தகம்", "en": "Madhuranthakam" },
+    { "ta": "செய்யூர்", "en": "Cheyyur" },
+    { "ta": "திருக்கழுகுன்றம்", "en": "Tirukalukundram" }
+  ],
+  "சென்னை": [
+    { "ta": "சோழிங்கநல்லூர்", "en": "Sholinganallur" },
+    { "ta": "ஆலந்தூர்", "en": "Alandur" },
+    { "ta": "வேளச்சேரி", "en": "Velachery" },
+    { "ta": "மயிலாப்பூர்", "en": "Mylapore" },
+    { "ta": "கிண்டி", "en": "Guindy" },
+    { "ta": "மாம்பலம்", "en": "Mambalam" },
+    { "ta": "எழும்பூர்", "en": "Egmore" },
+    { "ta": "புரசைவாக்கம்", "en": "Purasawalkam" },
+    { "ta": "பெரம்பூர்", "en": "Perambur" },
+    { "ta": "அயனாவரம்", "en": "Ayanavaram" },
+    { "ta": "அம்பத்தூர்", "en": "Ambattur" },
+    { "ta": "மதுரவாயல்", "en": "Maduravoyal" },
+    { "ta": "மாதவரம்", "en": "Madhavaram" },
+    { "ta": "திருவொற்றியூர்", "en": "Tiruvottiyur" },
+    { "ta": "தண்டையார்பேட்டை", "en": "Tondiarpet" },
+    { "ta": "அமைந்தகரை", "en": "Aminjikarai" }
+  ],
+  "கோயம்புத்தூர்": [
+    { "ta": "கோயம்புத்தூர் வடக்கு", "en": "Coimbatore North" },
+    { "ta": "கோயம்புத்தூர் தெற்கு", "en": "Coimbatore South" },
+    { "ta": "பொள்ளாச்சி", "en": "Pollachi" },
+    { "ta": "மேட்டுப்பாளையம்", "en": "Mettupalayam" },
+    { "ta": "சூலூர்", "en": "Sulur" },
+    { "ta": "பேரூர்", "en": "Perur" },
+    { "ta": "மதுக்கரை", "en": "Madukkarai" },
+    { "ta": "வால்பாறை", "en": "Valparai" },
+    { "ta": "ஆனைமலை", "en": "Anaimalai" },
+    { "ta": "கிணத்துக்கடவு", "en": "Kinathukadavu" },
+    { "ta": "அன்னூர்", "en": "Annur" }
+  ],
+  "கடலூர்": [
+    { "ta": "கடலூர்", "en": "Cuddalore" },
+    { "ta": "பண்ருட்டி", "en": "Panruti" },
+    { "ta": "சிதம்பரம்", "en": "Chidambaram" },
+    { "ta": "விருத்தாசலம்", "en": "Virudhachalam" },
+    { "ta": "திட்டக்குடி", "en": "Tittakudi" },
+    { "ta": "காட்டுமன்னார்கோயில்", "en": "Kattumannarkoil" },
+    { "ta": "குறிஞ்சிப்பாடி", "en": "Kurinjippadi" },
+    { "ta": "வேப்பூர்", "en": "Veppur" },
+    { "ta": "ஸ்ரீமுஷ்ணம்", "en": "Srimushnam" },
+    { "ta": "புவனகிரி", "en": "Bhuvanagiri" }
+  ],
+  "தருமபுரி": [
+    { "ta": "தருமபுரி", "en": "Dharmapuri" },
+    { "ta": "பாலக்கோடு", "en": "Palakkodu" },
+    { "ta": "பென்னாகரம்", "en": "Pennagaram" },
+    { "ta": "ஹரூர்", "en": "Harur" },
+    { "ta": "பாப்பிரெட்டிப்பட்டி", "en": "Pappireddipatti" },
+    { "ta": "காரிமங்கலம்", "en": "Karimangalam" },
+    { "ta": "நல்லம்பள்ளி", "en": "Nallampalli" }
+  ],
+  "திண்டுக்கல்": [
+    { "ta": "திண்டுக்கல் கிழக்கு", "en": "Dindigul East" },
+    { "ta": "திண்டுக்கல் மேற்கு", "en": "Dindigul West" },
+    { "ta": "பழனி", "en": "Palani" },
+    { "ta": "கொடைக்கானல்", "en": "Kodaikanal" },
+    { "ta": "ஒட்டன்சத்திரம்", "en": "Oddanchatram" },
+    { "ta": "வேடசந்தூர்", "en": "Vedasandur" },
+    { "ta": "நத்தம்", "en": "Natham" },
+    { "ta": "நிலக்கோட்டை", "en": "Nilakkottai" },
+    { "ta": "ஆத்தூர்", "en": "Attur" },
+    { "ta": "குஜிலியம்பாறை", "en": "Gujiliamparai" }
+  ],
+  "ஈரோடு": [
+    { "ta": "ஈரோடு", "en": "Erode" },
+    { "ta": "பவானி", "en": "Bhavani" },
+    { "ta": "கோபிசெட்டிபாளையம்", "en": "Gobichettipalayam" },
+    { "ta": "சத்தியமங்கலம்", "en": "Sathyamangalam" },
+    { "ta": "பெருந்துறை", "en": "Perundurai" },
+    { "ta": "அந்தியூர்", "en": "Anthiyur" },
+    { "ta": "மொடக்குறிச்சி", "en": "Modakkurichi" },
+    { "ta": "கொடுமுடி", "en": "Kodumudi" },
+    { "ta": "நம்பியூர்", "en": "Nambiyur" },
+    { "ta": "தாளவாடி", "en": "Thalavadi" }
+  ],
+  "கள்ளக்குறிச்சி": [
+    { "ta": "கள்ளக்குறிச்சி", "en": "Kallakurichi" },
+    { "ta": "சங்கராபுரம்", "en": "Sankarapuram" },
+    { "ta": "திருக்கோவிலூர்", "en": "Tirukoilur" },
+    { "ta": "உளுந்தூர்பேட்டை", "en": "Ulundurpet" },
+    { "ta": "சின்னசேலம்", "en": "Chinnasalem" },
+    { "ta": "கல்வராயன்மலை", "en": "Kalvarayan Hills" }
+  ],
+  "காஞ்சிபுரம்": [
+    { "ta": "காஞ்சிபுரம்", "en": "Kanchipuram" },
+    { "ta": "ஸ்ரீபெரும்புதூர்", "en": "Sriperumbudur" },
+    { "ta": "உத்திரமேரூர்", "en": "Uthiramerur" },
+    { "ta": "வாலாஜாபாத்", "en": "Walajabad" },
+    { "ta": "குன்றத்தூர்", "en": "Kundrathur" }
+  ],
+  "கன்னியாகுமரி": [
+    { "ta": "அகத்தீஸ்வரம்", "en": "Agastheeswaram" },
+    { "ta": "தோவாளை", "en": "Thovalai" },
+    { "ta": "கல்குளம்", "en": "Kalkulam" },
+    { "ta": "விளவங்கோடு", "en": "Vilavancode" },
+    { "ta": "திருவட்டார்", "en": "Thiruvattar" },
+    { "ta": "கிள்ளியூர்", "en": "Killiyoor" }
+  ],
+  "கரூர்": [
+    { "ta": "கரூர்", "en": "Karur" },
+    { "ta": "அரவக்குறிச்சி", "en": "Aravakurichi" },
+    { "ta": "குளித்தலை", "en": "Kulithalai" },
+    { "ta": "கிருஷ்ணராயபுரம்", "en": "Krishnarayapuram" },
+    { "ta": "கடவூர்", "en": "Kadavur" },
+    { "ta": "மண்மங்கலம்", "en": "Manmangalam" },
+    { "ta": "புகழூர்", "en": "Pugalur" }
+  ],
+  "கிருஷ்ணகிரி": [
+    { "ta": "கிருஷ்ணகிரி", "en": "Krishnagiri" },
+    { "ta": "ஓசூர்", "en": "Hosur" },
+    { "ta": "போச்சம்பள்ளி", "en": "Pochampalli" },
+    { "ta": "ஊத்தங்கரை", "en": "Uthangarai" },
+    { "ta": "தேன்கனிக்கோட்டை", "en": "Denkanikottai" },
+    { "ta": "பர்கூர்", "en": "Bargur" },
+    { "ta": "சூளகிரி", "en": "Shoolagiri" },
+    { "ta": "அஞ்செட்டி", "en": "Anchetti" }
+  ],
+  "மதுரை": [
+    { "ta": "மதுரை வடக்கு", "en": "Madurai North" },
+    { "ta": "மதுரை தெற்கு", "en": "Madurai South" },
+    { "ta": "மதுரை கிழக்கு", "en": "Madurai East" },
+    { "ta": "மதுரை மேற்கு", "en": "Madurai West" },
+    { "ta": "மேலூர்", "en": "Melur" },
+    { "ta": "திருமங்கலம்", "en": "Thirumangalam" },
+    { "ta": "உசிலம்பட்டி", "en": "Usilampatti" },
+    { "ta": "வாடிப்பட்டி", "en": "Vadipatti" },
+    { "ta": "திருப்பரங்குன்றம்", "en": "Thiruparankundram" },
+    { "ta": "பேரையூர்", "en": "Peraiyur" },
+    { "ta": "கள்ளிக்குடி", "en": "Kallikudi" }
+  ],
+  "மயிலாடுதுறை": [
+    { "ta": "மயிலாடுதுறை", "en": "Mayiladuthurai" },
+    { "ta": "சீர்காழி", "en": "Sirkazhi" },
+    { "ta": "தரங்கம்பாடி", "en": "Tharangambadi" },
+    { "ta": "குத்தாலம்", "en": "Kuthalam" }
+  ],
+  "நாகப்பட்டினம்": [
+    { "ta": "நாகப்பட்டினம்", "en": "Nagapattinam" },
+    { "ta": "கீழ்வேளூர்", "en": "Kilvelur" },
+    { "ta": "வேதாரண்யம்", "en": "Vedaranyam" },
+    { "ta": "திருக்குவளை", "en": "Thirukkuvalai" }
+  ],
+  "நாமக்கல்": [
+    { "ta": "நாமக்கல்", "en": "Namakkal" },
+    { "ta": "இராசிபுரம்", "en": "Rasipuram" },
+    { "ta": "திருச்செங்கோடு", "en": "Tiruchengode" },
+    { "ta": "பரமத்தி வேலூர்", "en": "Paramathi Velur" },
+    { "ta": "கொல்லிமலை", "en": "Kolli Hills" },
+    { "ta": "சேந்தமங்கலம்", "en": "Sendamangalam" },
+    { "ta": "குமாரபாளையம்", "en": "Kumarapalayam" },
+    { "ta": "மோகனூர்", "en": "Mohanur" }
+  ],
+  "நீலகிரி": [
+    { "ta": "உதகமண்டலம் (ஊட்டி)", "en": "Udhagamandalam" },
+    { "ta": "குன்னூர்", "en": "Coonoor" },
+    { "ta": "கோத்தகிரி", "en": "Kotagiri" },
+    { "ta": "கூடலூர்", "en": "Gudalur" },
+    { "ta": "குந்தா", "en": "Kundah" },
+    { "ta": "பந்தலூர்", "en": "Pandalur" }
+  ],
+  "பெரம்பலூர்": [
+    { "ta": "பெரம்பலூர்", "en": "Perambalur" },
+    { "ta": "குன்னம்", "en": "Kunnam" },
+    { "ta": "வேப்பந்தட்டை", "en": "Veppanthattai" },
+    { "ta": "ஆலத்தூர்", "en": "Alathur" }
+  ],
+  "புதுக்கோட்டை": [
+    { "ta": "புதுக்கோட்டை", "en": "Pudukkottai" },
+    { "ta": "ஆலங்குடி", "en": "Alangudi" },
+    { "ta": "அறந்தாங்கி", "en": "Aranthangi" },
+    { "ta": "குளத்தூர்", "en": "Kulathur" },
+    { "ta": "திருமயம்", "en": "Thirumayam" },
+    { "ta": "இலுப்பூர்", "en": "Iluppur" },
+    { "ta": "கந்தர்வக்கோட்டை", "en": "Gandarvakottai" },
+    { "ta": "ஆவுடையார்கோயில்", "en": "Avudayarkoil" },
+    { "ta": "மணமேல்குடி", "en": "Manamelkudi" },
+    { "ta": "பொன்னமராவதி", "en": "Ponnamaravathi" },
+    { "ta": "விராலிமலை", "en": "Viralimalai" },
+    { "ta": "கறம்பக்குடி", "en": "Karambakkudi" }
+  ],
+  "இராமநாதபுரம்": [
+    { "ta": "இராமநாதபுரம்", "en": "Ramanathapuram" },
+    { "ta": "இராமேஸ்வரம்", "en": "Rameswaram" },
+    { "ta": "பரமக்குடி", "en": "Paramakudi" },
+    { "ta": "திருவாடானை", "en": "Tiruvadanai" },
+    { "ta": "முதுகுளத்தூர்", "en": "Mudukulathur" },
+    { "ta": "கமுதி", "en": "Kamuthi" },
+    { "ta": "கடலாடி", "en": "Kadaladi" },
+    { "ta": "கீழக்கரை", "en": "Kilakarai" },
+    { "ta": "ஆர்.எஸ்.மங்கலம்", "en": "R.S.Mangalam" }
+  ],
+  "ராணிப்பேட்டை": [
+    { "ta": "ராணிப்பேட்டை", "en": "Ranipet" },
+    { "ta": "வாலாஜா", "en": "Walajah" },
+    { "ta": "ஆற்காடு", "en": "Arcot" },
+    { "ta": "அரக்கோணம்", "en": "Arakkonam" },
+    { "ta": "நெமிலி", "en": "Nemili" },
+    { "ta": "சோளிங்கர்", "en": "Sholinghur" }
+  ],
+  "சேலம்": [
+    { "ta": "சேலம்", "en": "Salem" },
+    { "ta": "சேலம் தெற்கு", "en": "Salem South" },
+    { "ta": "சேலம் மேற்கு", "en": "Salem West" },
+    { "ta": "ஆத்தூர்", "en": "Attur" },
+    { "ta": "மேட்டூர்", "en": "Mettur" },
+    { "ta": "ஓமலூர்", "en": "Omalur" },
+    { "ta": "சங்ககிரி", "en": "Sankari" },
+    { "ta": "வாழப்பாடி", "en": "Vazhapadi" },
+    { "ta": "எடப்பாடி", "en": "Edappadi" },
+    { "ta": "கெங்கவல்லி", "en": "Gangavalli" },
+    { "ta": "ஏற்காடு", "en": "Yercaud" },
+    { "ta": "காடையாம்பட்டி", "en": "Kadayampatti" },
+    { "ta": "பெத்தநாயக்கன்பாளையம்", "en": "Pethanaickenpalayam" }
+  ],
+  "சிவகங்கை": [
+    { "ta": "சிவகங்கை", "en": "Sivaganga" },
+    { "ta": "காரைக்குடி", "en": "Karaikudi" },
+    { "ta": "தேவகோட்டை", "en": "Devakottai" },
+    { "ta": "மானாமதுரை", "en": "Manamadurai" },
+    { "ta": "இளையான்குடி", "en": "Ilayangudi" },
+    { "ta": "திருப்பத்தூர்", "en": "Tirupathur" },
+    { "ta": "சிங்கம்புணரி", "en": "Singampunari" },
+    { "ta": "காளையார்கோவில்", "en": "Kalaiyarkovil" },
+    { "ta": "திருப்புவனம்", "en": "Thiruppuvanam" }
+  ],
+  "தென்காசி": [
+    { "ta": "தென்காசி", "en": "Tenkasi" },
+    { "ta": "செங்கோட்டை", "en": "Sengottai" },
+    { "ta": "கடையநல்லூர்", "en": "Kadayanallur" },
+    { "ta": "சங்கரன்கோவில்", "en": "Sankarankovil" },
+    { "ta": "சிவகிரி", "en": "Sivagiri" },
+    { "ta": "வீரகேரளம்புதூர்", "en": "Veerakeralamputhur" },
+    { "ta": "ஆலங்குளம்", "en": "Alangulam" },
+    { "ta": "திருவேங்கடம்", "en": "Thiruvengadam" }
+  ],
+  "தஞ்சாவூர்": [
+    { "ta": "தஞ்சாவூர்", "en": "Thanjavur" },
+    { "ta": "கும்பகோணம்", "en": "Kumbakonam" },
+    { "ta": "பட்டுக்கோட்டை", "en": "Pattukkottai" },
+    { "ta": "ஒரத்தநாடு", "en": "Orathanadu" },
+    { "ta": "பாபநாசம்", "en": "Papanasam" },
+    { "ta": "திருவையாறு", "en": "Thiruvaiyaru" },
+    { "ta": "பேராவூரணி", "en": "Peravurani" },
+    { "ta": "பூதலூர்", "en": "Budalur" },
+    { "ta": "திருவிடைமருதூர்", "en": "Thiruvidaimarudur" }
+  ],
+  "தேனி": [
+    { "ta": "தேனி", "en": "Theni" },
+    { "ta": "பெரியகுளம்", "en": "Periyakulam" },
+    { "ta": "போடிநாயக்கனூர்", "en": "Bodinayakanur" },
+    { "ta": "உத்தமபாளையம்", "en": "Uthamapalayam" },
+    { "ta": "ஆண்டிபட்டி", "en": "Andipatti" }
+  ],
+  "தூத்துக்குடி": [
+    { "ta": "தூத்துக்குடி", "en": "Thoothukudi" },
+    { "ta": "திருச்செந்தூர்", "en": "Tiruchendur" },
+    { "ta": "கோவில்பட்டி", "en": "Kovilpatti" },
+    { "ta": "ஒட்டப்பிடாரம்", "en": "Ottapidaram" },
+    { "ta": "எட்டயபுரம்", "en": "Ettayapuram" },
+    { "ta": "விளாத்திகுளம்", "en": "Vilathikulam" },
+    { "ta": "ஸ்ரீவைகுண்டம்", "en": "Srivaikuntam" },
+    { "ta": "சாத்தான்குளம்", "en": "Sathankulam" },
+    { "ta": "ஏரல்", "en": "Eral" },
+    { "ta": "கயத்தாறு", "en": "Kayathar" }
+  ],
+  "திருச்சிராப்பள்ளி": [
+    { "ta": "திருச்சிராப்பள்ளி கிழக்கு", "en": "Tiruchirappalli East" },
+    { "ta": "திருச்சிராப்பள்ளி மேற்கு", "en": "Tiruchirappalli West" },
+    { "ta": "ஸ்ரீரங்கம்", "en": "Srirangam" },
+    { "ta": "இலால்குடி", "en": "Lalgudi" },
+    { "ta": "மணப்பாறை", "en": "Manapparai" },
+    { "ta": "முசிறி", "en": "Musiri" },
+    { "ta": "துறையூர்", "en": "Thuraiyur" },
+    { "ta": "தொட்டியம்", "en": "Thottiyam" },
+    { "ta": "மருங்காபுரி", "en": "Marungapuri" },
+    { "ta": "மண்ணச்சநல்லூர்", "en": "Manachanallur" },
+    { "ta": "திருவெறும்பூர்", "en": "Thiruverumbur" }
+  ],
+  "திருநெல்வேலி": [
+    { "ta": "திருநெல்வேலி", "en": "Tirunelveli" },
+    { "ta": "பாளையங்கோட்டை", "en": "Palayamkottai" },
+    { "ta": "அம்பாசமுத்திரம்", "en": "Ambasamudram" },
+    { "ta": "நாங்குநேரி", "en": "Nanguneri" },
+    { "ta": "இராதாபுரம்", "en": "Radhapuram" },
+    { "ta": "சேரன்மகாதேவி", "en": "Cheranmahadevi" },
+    { "ta": "மானூர்", "en": "Manur" },
+    { "ta": "திசையன்விளை", "en": "Tisayanvilai" }
+  ],
+  "திருப்பத்தூர்": [
+    { "ta": "திருப்பத்தூர்", "en": "Tirupathur" },
+    { "ta": "வாணியம்பாடி", "en": "Vaniyambadi" },
+    { "ta": "ஆம்பூர்", "en": "Ambur" },
+    { "ta": "நாட்ராம்பள்ளி", "en": "Natrampalli" }
+  ],
+  "திருப்பூர்": [
+    { "ta": "திருப்பூர் வடக்கு", "en": "Tiruppur North" },
+    { "ta": "திருப்பூர் தெற்கு", "en": "Tiruppur South" },
+    { "ta": "அவிநாசி", "en": "Avinashi" },
+    { "ta": "பல்லடம்", "en": "Palladam" },
+    { "ta": "தாராபுரம்", "en": "Dharapuram" },
+    { "ta": "உடுமலைப்பேட்டை", "en": "Udumalaipettai" },
+    { "ta": "காங்கேயம்", "en": "Kangeyam" },
+    { "ta": "மடத்துக்குளம்", "en": "Madathukulam" },
+    { "ta": "ஊத்துக்குளி", "en": "Uthukuli" }
+  ],
+  "திருவள்ளூர்": [
+    { "ta": "திருவள்ளூர்", "en": "Tiruvallur" },
+    { "ta": "பூந்தமல்லி", "en": "Poonamallee" },
+    { "ta": "ஆவடி", "en": "Avadi" },
+    { "ta": "பொன்னேரி", "en": "Ponneri" },
+    { "ta": "கும்மிடிப்பூண்டி", "en": "Gummidipoondi" },
+    { "ta": "திருத்தணி", "en": "Tiruttani" },
+    { "ta": "ஊத்துக்கோட்டை", "en": "Uthukkottai" },
+    { "ta": "பள்ளிப்பட்டு", "en": "Pallipattu" },
+    { "ta": "ஆர்.கே.பேட்டை", "en": "R.K.Pet" }
+  ],
+  "திருவண்ணாமலை": [
+    { "ta": "திருவண்ணாமலை", "en": "Tiruvannamalai" },
+    { "ta": "ஆரணி", "en": "Arani" },
+    { "ta": "செய்யாறு", "en": "Cheyyar" },
+    { "ta": "செங்கம்", "en": "Chengam" },
+    { "ta": "போளூர்", "en": "Polur" },
+    { "ta": "வந்தவாசி", "en": "Vandavasi" },
+    { "ta": "கலசப்பாக்கம்", "en": "Kalasapakkam" },
+    { "ta": "கீழ்பெண்ணாத்தூர்", "en": "Kilpennathur" },
+    { "ta": "செத்துப்பட்டு", "en": "Chetpet" },
+    { "ta": "வெம்பாக்கம்", "en": "Vembakkam" },
+    { "ta": "ஜமுனாமரத்தூர்", "en": "Jamunamarathur" },
+    { "ta": "தண்டராம்பட்டு", "en": "Thandarampattu" }
+  ],
+  "திருவாரூர்": [
+    { "ta": "திருவாரூர்", "en": "Tiruvarur" },
+    { "ta": "மன்னார்குடி", "en": "Mannargudi" },
+    { "ta": "நன்னிலம்", "en": "Nannilam" },
+    { "ta": "திருத்துறைப்பூண்டி", "en": "Thiruthuraipoondi" },
+    { "ta": "குடவாசல்", "en": "Kudavasal" },
+    { "ta": "நீடாமங்கலம்", "en": "Needamangalam" },
+    { "ta": "வலங்கைமான்", "en": "Valangaiman" },
+    { "ta": "கூத்தாநல்லூர்", "en": "Koothanallur" }
+  ],
+  "வேலூர்": [
+    { "ta": "வேலூர்", "en": "Vellore" },
+    { "ta": "காட்பாடி", "en": "Katpadi" },
+    { "ta": "குடியாத்தம்", "en": "Gudiyatham" },
+    { "ta": "அணைக்கட்டு", "en": "Anaicut" },
+    { "ta": "பேரணாம்பட்டு", "en": "Pernambut" },
+    { "ta": "கே.வி.குப்பம்", "en": "K.V.Kuppam" }
+  ],
+  "விழுப்புரம்": [
+    { "ta": "விழுப்புரம்", "en": "Viluppuram" },
+    { "ta": "திண்டிவனம்", "en": "Tindivanam" },
+    { "ta": "செஞ்சி", "en": "Gingee" },
+    { "ta": "வானூர்", "en": "Vanur" },
+    { "ta": "விக்கிரவாண்டி", "en": "Vikkiravandi" },
+    { "ta": "மரக்காணம்", "en": "Marakkanam" },
+    { "ta": "கண்டாச்சிபுரம்", "en": "Kandachipuram" },
+    { "ta": "திருவெண்ணெய்நல்லூர்", "en": "Thiruvennainallur" },
+    { "ta": "மேல்மலையனூர்", "en": "Melmalayanur" }
+  ],
+  "விருதுநகர்": [
+    { "ta": "விருதுநகர்", "en": "Virudhunagar" },
+    { "ta": "சிவகாசி", "en": "Sivakasi" },
+    { "ta": "சாத்தூர்", "en": "Sattur" },
+    { "ta": "அருப்புக்கோட்டை", "en": "Aruppukkottai" },
+    { "ta": "இராஜபாளையம்", "en": "Rajapalayam" },
+    { "ta": "ஸ்ரீவில்லிபுத்தூர்", "en": "Srivilliputhur" },
+    { "ta": "காரியாபட்டி", "en": "Kariapatti" },
+    { "ta": "திருச்சுழி", "en": "Tiruchuli" },
+    { "ta": "வத்தராயிருப்பு", "en": "Watrap" }
+  ]
+}

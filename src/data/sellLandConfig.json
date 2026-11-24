@@ -1,0 +1,67 @@
+{
+  "uiLabels": {
+    "badge": "🏡 சொத்து பதிவுப் படிவம்",
+    "title": "உங்கள் சொத்தை உடனடியாகப் பதிவிடுங்கள்",
+    "subtitle": "விவரங்களைப் பூர்த்தி செய்தால் உண்மையான வாங்குபவர்கள் / வாடகைதாரர்கள் நேரடியாகத் தொடர்பு கொள்வார்கள்.",
+    "submitBtn": "📲 வாட்ஸ்அப்பில் விவரங்களை அனுப்பவும்",
+    "closeBtnTitle": "மூடு"
+  },
+  "listingPurposes": [
+    { "id": "sale", "label": "விற்பனைக்கு (For Sale)" },
+    { "id": "rent", "label": "வாடகைக்கு (For Rent)" },
+    { "id": "lease", "label": "குத்தகைக்கு (For Lease)" }
+  ],
+  "propertyCategories": [
+    { "id": "land", "label": "நிலம் / மனை (Land/Plot)" },
+    { "id": "house", "label": "தனி வீடு / அடுக்குமாடி (House/Flat)" },
+    { "id": "commercial", "label": "வணிக கடை / கட்டிடம் (Shop/Office)" }
+  ],
+  "fields": {
+    "purpose": {
+      "label": "பரிவர்த்தனை வகை *"
+    },
+    "category": {
+      "label": "சொத்தின் வகை *"
+    },
+    "name": {
+      "label": "உரிமையாளர் பெயர் *",
+      "placeholder": "எ.கா. ராஜா"
+    },
+    "phone": {
+      "label": "வாட்ஸ்அப் எண் *",
+      "placeholder": "9876543210"
+    },
+    "district": {
+      "label": "மாவட்டம் *",
+      "placeholder": "எ.கா. செங்கல்பட்டு"
+    },
+    "location": {
+      "label": "ஊர் / கிராமம் *",
+      "placeholder": "எ.கா. திருப்போரூர்"
+    },
+    "area": {
+      "label": "பரப்பளவு / அளவு *",
+      "placeholder": "எ.கா. 2 ஏக்கர் / 1200 ச.அடி / 2 BHK"
+    },
+    "price": {
+      "label": "விலை / மாத வாடகை *",
+      "placeholder": "எ.கா. ₹45 லட்சம் / ₹15,000 மாதம்"
+    },
+    "mediaNote": {
+      "label": "புகைப்படம் & வீடியோ நிலை",
+      "placeholder": "நேரடி போட்டோ / வீடியோ வாட்ஸ்அப்பில் பகிரப்படும்"
+    }
+  },
+  "whatsAppTemplate": {
+    "greeting": "வணக்கம் நம்ம பூமி 360, புதிய சொத்து விவரங்களை பதிவிட விரும்புகிறேன்:",
+    "purposeLabel": "🎯 நோக்கம்:",
+    "categoryLabel": "🏢 சொத்து வகை:",
+    "nameLabel": "👤 உரிமையாளர்:",
+    "phoneLabel": "📞 தொடர்பு:",
+    "districtLabel": "📍 மாவட்டம்:",
+    "locationLabel": "📌 ஊர்/பகுதி:",
+    "areaLabel": "📐 அளவு/பரப்பு:",
+    "priceLabel": "💰 எதிர்பார்க்கும் தொகை:",
+    "mediaLabel": "📸 மீடியா விவரம்:"
+  }
+}

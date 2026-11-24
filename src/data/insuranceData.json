@@ -1,0 +1,15 @@
+{
+  "TERM_PLANS": [
+    { "age": 25, "cover1Cr": 540, "cover50L": 380, "cover2Cr": 980 },
+    { "age": 30, "cover1Cr": 720, "cover50L": 490, "cover2Cr": 1320 },
+    { "age": 35, "cover1Cr": 1050, "cover50L": 680, "cover2Cr": 1890 },
+    { "age": 40, "cover1Cr": 1580, "cover50L": 990, "cover2Cr": 2750 },
+    { "age": 45, "cover1Cr": 2450, "cover50L": 1480, "cover2Cr": 4100 }
+  ],
+  "VEHICLE_MODELS": [
+    { "id": "bike", "name": "இருசக்கர வாகனம் (Bike / Scooter)", "tpCost": "₹714 / ஆண்டு" },
+    { "id": "car", "name": "கார் / ஜீப் (Private Car)", "tpCost": "₹2,094 / ஆண்டு" },
+    { "id": "tractor", "name": "விவசாய டிராக்டர் & டிரெய்லர்", "tpCost": "அரசு சலுகை கட்டணம்" },
+    { "id": "commercial", "name": "சரக்கு வாகனம் / வேன் / லாரி", "tpCost": "எடை சார்ந்தது" }
+  ]
+}

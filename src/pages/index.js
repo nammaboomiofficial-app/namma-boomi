@@ -1,0 +1,2740 @@
+import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import {
+  SITE_CONFIG,
+  DIGITAL_STUDIOS,
+  LIFE_SERVICES_NAV,
+  LOCATION_DATA,
+  FULL_LAND_DATABASE,
+  FINANCE_CONFIG,
+  generateMockLandSurvey,
+  getWhatsAppUrl
+} from '../config';
+
+import LandGovtServices from '../components/LandGovtServices';
+import LandCalculator from '../components/LandCalculator';
+import SellLandModal from '../components/SellLandModal';
+import BuyerRequirementModal from '../components/BuyerRequirementModal';
+import contactConfig from '../data/contactConfig';
+import TamilHeritageModule from '../components/TamilHeritageModule';
+import FloatingWhatsApp from '../components/FloatingWhatsApp';
+import LegalAuditPromo from '../components/LegalAuditPromo';
+import LoanModule360 from '../components/LoanModule360';
+import FinanceAddons from '../components/FinanceAddons';
+import EducationModule from '../components/EducationModule';
+import FinanceModule from '../components/FinanceModule';
+import JobModule from '../components/JobModule';
+import BusinessModule from '../components/BusinessModule';
+import AgriModule from '../components/AgriModule';
+import InsuranceModule from '../components/InsuranceModule';
+import WholesaleModule from '../components/WholesaleModule';
+import InstantInvoiceStudio from '../components/InstantInvoiceStudio';
+import DailyLiveTicker from '../components/DailyLiveTicker';
+import BusinessMonetizationHub from '../components/BusinessMonetizationHub';
+import PwaInstallTracker from '../components/PwaInstallTracker';
+import SpiritualModule from '../components/SpiritualModule';
+import AstrologyModule from '../components/AstrologyModule';
+import TourismModule from '../components/TourismModule';
+import MediaPromoStudio from '../components/MediaPromoStudio';
+import TamilVoiceAssistant from '../components/TamilVoiceAssistant';
+import landsData from '../data/landsData.json';
+import ModuleAdsSection from '@/components/ModuleAdsSection';
+import PostAdModal from '@/components/PostAdModal';
+import HeroOrbitBanner from '../components/HeroOrbitBanner';
+import SuperAppHubGrid from '../components/SuperAppHubGrid';
+export default function Home() {
+  // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
+  const handleLoanApply = (loanTitle) => {
+    const msg = `வணக்கம் நம்ம பூமி 360, ${loanTitle} பெறுவதற்கான வழிகாட்டல் மற்றும் விண்ணப்ப உதவி தேவை.`;
+   window.open(getWhatsAppUrl(msg), '_blank');
+  };
+  // பிரதான 9 தூண்கள்
+  const [currentModule, setCurrentModule] = useState('home');
+  // பூமி மாட்யூல் சப்-டேப்கள்
+  const [activeMainTab, setActiveMainTab] = useState('marketplace'); // 'marketplace' | 'audit' | 'sell'
+
+  // வடிகட்டி & மேப்
+  const [filterDistrict, setFilterDistrict] = useState('அனைத்தும்');
+  const [quickFilter, setQuickFilter] = useState('all');
+  const [activeMapModalLand, setActiveMapModalLand] = useState(null);
+  const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+  const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
+  const [selectedLandDetail, setSelectedLandDetail] = useState(null);
+  const [selectedVisitPassLand, setSelectedVisitPassLand] = useState(null);
+  const [visitorName, setVisitorName] = useState('');
+  const [visitorPhone, setVisitorPhone] = useState('');
+  const [calcLandValue, setCalcLandValue] = useState(1000000);
+  const [selectedLoanLand, setSelectedLoanLand] = useState(null);
+  const [activeVideo, setActiveVideo] = useState(null);
+  const [filterCategory, setFilterCategory] = useState('all');
+  const [filterListingType, setFilterListingType] = useState('all');
+  const [isHeritageModalOpen, setIsHeritageModalOpen] = useState(false);
+  const [isPostAdModalOpen, setIsPostAdModalOpen] = useState(false);
+  useEffect(() => {
+    async function loadDatabaseLands() {
+      try {
+        const res = await fetch('/api/lands');
+        const data = await res.json();
+        if (data.success && data.lands && data.lands.length > 0) {
+          setListedLands(prev => [...data.lands, ...prev]);
+        }
+      } catch (err) {
+        console.error('டேட்டாபேஸ் தகவல் எடுப்பதில் பிழை:', err);
+      }
+    }
+    loadDatabaseLands();
+  }, []);
+
+  // விவசாயம் சப்-டேப்கள்
+  const [agriSubTab, setAgriSubTab] = useState('crops');
+
+  // AI ஜோதிடம் மாட்யூல் சப்-டேப்கள்
+  const [astroMethodTab, setAstroMethodTab] = useState('vedic'); // 'vedic' | 'kp' | 'nadi' | 'numerology' | 'vastu' | 'muhurtha' | 'remedies'
+  // நிதி & கடன்கள் மாடியூல் ஸ்டேட்கள்
+  const [financeSubTab, setFinanceSubTab] = useState('all');
+  const [loanIncome, setLoanIncome] = useState(50000);
+  const [loanExistingEmi, setLoanExistingEmi] = useState(0);
+  const [loanRequested, setLoanRequested] = useState(1500000);
+  const [loanCibil, setLoanCibil] = useState('good');
+  const [loanDecision, setLoanDecision] = useState(null);
+  // காப்பீடு மாடியூல் ஸ்டேட்
+  const [insuranceSubTab, setInsuranceSubTab] = useState('all');
+  // கல்வி & படிப்பு மாடியூல் ஸ்டேட்கள்
+  const [educationSubTab, setEducationSubTab] = useState('pathway');
+  const [selectedCareer, setSelectedCareer] = useState('agri_officer');
+  // வேலைவாய்ப்பு மாடியூல் ஸ்டேட்கள்
+  const [jobsSubTab, setJobsSubTab] = useState('govt');
+  // தொழில் & MSME மாடியூல் ஸ்டேட்கள்
+  const [businessSubTab, setBusinessSubTab] = useState('schemes');
+  const [bizProjectCost, setBizProjectCost] = useState(500000);
+  const [bizCategory, setBizCategory] = useState('special');
+  const [bizLocation, setBizLocation] = useState('rural');
+  // ஆன்மிகம் & பாரம்பரிய சுற்றுலா மாடியூல் ஸ்டேட்கள்
+  const [spiritualSubTab, setSpiritualSubTab] = useState('circuits');
+  const [selectedCircuit, setSelectedCircuit] = useState('navagraha');
+  // 10. A to Z மொத்த விற்பனை மாடியூல் ஸ்டேட்கள்
+  const [wholesaleCategory, setWholesaleCategory] = useState('all');
+  const [wholesaleSearch, setWholesaleSearch] = useState('');
+  // 11. கருத்து & ஃபீட்பேக் மாடல் ஸ்டேட்கள்
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [feedbackData, setFeedbackData] = useState({
+    name: '',
+    phone: '',
+    targetModule: 'அனைத்து தொகுதிகள்',
+    rating: '5',
+    comments: ''
+  });
+  // ஜோதிட இன்புட் ஸ்டேட்ஸ்
+  const [birthDetails, setBirthDetails] = useState({
+    name: 'சுந்தரம்',
+    dob: '1985-06-15',
+    tob: '10:30',
+    pob: 'சென்னை',
+    rasi: 'ரிஷபம்',
+    nakshatra: 'ரோகிணி'
+  });
+  const [astroResultReady, setAstroResultReady] = useState(false);
+
+  // நில தேடல் & தணிக்கை
+  const [selectedDistrict, setSelectedDistrict] = useState('செங்கல்பட்டு');
+  const [selectedTaluk, setSelectedTaluk] = useState('திருப்போரூர்');
+  const [selectedVillage, setSelectedVillage] = useState('திருப்போரூர்');
+  const [searchSurveyNo, setSearchSurveyNo] = useState('142/1B');
+  const [surveyResult, setSurveyResult] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [focusedLandId, setFocusedLandId] = useState(null);
+
+  // லோன் டெஸ்க் மாடல்
+  const [activeLoanLand, setActiveLoanLand] = useState(null);
+  const [loanName, setLoanName] = useState('');
+  const [loanPhone, setLoanPhone] = useState('');
+  const [loanAmount, setLoanAmount] = useState('1500000');
+  const [loanTenure, setLoanTenure] = useState('15');
+  const [loanSuccess, setLoanSuccess] = useState(false);
+
+  // விசிட் பாஸ் மாடல்
+  const [contactModalLand, setContactModalLand] = useState(null);
+  const [buyerName, setBuyerName] = useState('');
+  const [buyerPhone, setBuyerPhone] = useState('');
+  const [buyerType, setBuyerType] = useState('loan');
+  const [generatedPass, setGeneratedPass] = useState(null);
+
+  // நில விற்பனை படிவம்
+  const [sellForm, setSellForm] = useState({
+    ownerName: '',
+    phone: '',
+    district: 'செங்கல்பட்டு',
+    taluk: 'திருப்போரூர்',
+    village: 'திருப்போரூர்',
+    surveyNo: '',
+    extent: '',
+    askingPrice: ''
+  });
+  const [sellSuccessMsg, setSellSuccessMsg] = useState(false);
+
+
+  
+
+
+  
+
+  const [listedLands, setListedLands] = useState(landsData);
+
+  
+
+  const filteredLands = (listedLands || landsData).filter((l) => {
+    // 1. மாவட்ட வடிகட்டி
+    const matchesDistrict = filterDistrict === 'அனைத்தும்' || (l.district && l.district.trim() === filterDistrict.trim());
+    if (!matchesDistrict) return false;
+
+    // 2. சொத்து வகை வடிகட்டி (நிலம், வீடு, வணிக கடை)
+    const matchesCategory = filterCategory === 'all' || l.propertyType === filterCategory;
+    if (!matchesCategory) return false;
+
+    // 3. பரிவர்த்தனை வகை வடிகட்டி (விற்பனை, வாடகை, லீஸ்)
+    const matchesListing = filterListingType === 'all' || l.listingType === filterListingType;
+    if (!matchesListing) return false;
+
+    // 4. விரைவு ஃபில்டர் (Quick Filter)
+    if (quickFilter === 'all') return true;
+
+    const landInfo = `${l.title || ''} ${l.type || ''} ${l.category || ''}`;
+    if (quickFilter === 'agri') return landInfo.includes('விவசாய') || landInfo.includes('தோட்டம்');
+    if (quickFilter === 'plots') return landInfo.includes('மனை') || landInfo.includes('DTCP');
+    if (quickFilter === 'budget') return landInfo.includes('15') || landInfo.includes('முதலீடு');
+    if (quickFilter === 'urgent') return landInfo.includes('அவசர') || landInfo.includes('உடனடி');
+    if (quickFilter === 'road') return landInfo.includes('ரோடு') || landInfo.includes('சாலை');
+
+    return true;
+  });
+
+  const shareOnWhatsApp = (text) => {
+    const url = getWhatsAppUrl(text, '');
+window.open(url, '_blank');
+  };
+
+  const handleDistrictChange = (e) => {
+    const dist = e.target.value;
+    setSelectedDistrict(dist);
+    const taluks = Object.keys(LOCATION_DATA[dist] || {});
+    const firstTaluk = taluks[0] || '';
+    setSelectedTaluk(firstTaluk);
+    const villages =LOCATION_DATA[dist]?.[firstTaluk] || [];
+    setSelectedVillage(villages[0] || '');
+    setSurveyResult(null);
+  };
+
+  const handleTalukChange = (e) => {
+    const taluk = e.target.value;
+    setSelectedTaluk(taluk);
+    const villages = LOCATION_DATA[selectedDistrict]?.[taluk] || [];
+    setSelectedVillage(villages[0] || '');
+    setSurveyResult(null);
+  };
+
+  const runSurveyLookup = (village, survey) => {
+    setIsSearching(true);
+    setSurveyResult(null);
+
+    setTimeout(() => {
+      const cleanSurvey = survey.trim().toUpperCase();
+      const lookupKey = `${village}-${cleanSurvey}`;
+      const found = FULL_LAND_DATABASE[lookupKey];
+
+      if (found) {
+        setSurveyResult(found);
+      } else {
+        const mockData = generateMockLandSurvey({
+          cleanSurvey,
+          selectedDistrict,
+          selectedTaluk,
+          village
+        });
+        setSurveyResult(mockData);
+      }
+      setIsSearching(false);
+    }, 400);
+  };
+
+  const handleSurveySearch = (e) => {
+    e.preventDefault();
+    if (!searchSurveyNo.trim()) return;
+    runSurveyLookup(selectedVillage, searchSurveyNo);
+  };
+
+  const handleGeneratePass = (e) => {
+    e.preventDefault();
+    const passCode = `B360-PASS-${Math.floor(1000 + Math.random() * 9000)}`;
+    setGeneratedPass({
+      code: passCode,
+      buyerName,
+      buyerPhone,
+      buyerType,
+      land: contactModalLand
+    });
+  };
+
+  const handleSellSubmit = (e) => {
+    e.preventDefault();
+    const newLand = {
+      id: `LND-${Math.floor(104 + Math.random() * 800)}`,
+      title: `${sellForm.village} பகுதியில் புதிய நில விற்பனை`,
+      surveyNo: sellForm.surveyNo,
+      district: sellForm.district,
+      taluk: sellForm.taluk,
+      village: sellForm.village,
+      ownerName: sellForm.ownerName,
+      phone: sellForm.phone,
+      extent: sellForm.extent,
+      askingPrice: `₹${sellForm.askingPrice} / ச.அடி`,
+      approxValue: 8000000,
+      guidelineValue: '₹900 / ச.அடி',
+      trustScore: 94,
+      trustGrade: 'A',
+      waterNote: '80 அடியில் நிலத்தடி நீர்',
+      highwayDist: 'அருகில் சாலை வசதி',
+      badge: 'நேரடி உரிமையாளர்',
+      verifiedBoundary: true,
+      droneView: true,
+      image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60',
+      mapEmbedUrl: `https://maps.google.com/maps?q=${encodeURIComponent(sellForm.village + ', ' + sellForm.district)}&t=&z=14&ie=UTF8&iwloc=&output=embed`
+    };
+
+    setListedLands([newLand, ...listedLands]);
+    setSellSuccessMsg(true);
+    setTimeout(() => {
+      setSellSuccessMsg(false);
+      setActiveMainTab('marketplace');
+    }, 1800);
+  };
+
+  const calculateEMI = (principal, years) => {
+    const p = parseFloat(principal) || 0;
+    const r = (FINANCE_CONFIG.defaultHomeLoanRate || 8.5) / 12 / 100;
+    const n = (parseFloat(years) || 15) * 12;
+    if (p <= 0 || n <= 0) return 0;
+    return Math.round((p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-24">
+      {/* 1. பிரதான ஹெடர் & பிராண்டிங் */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+          <div className="flex items-center space-x-3">
+            <div style={{
+              width: '46px',
+              height: '46px',
+              borderRadius: '14px',
+              background: 'linear-gradient(145deg, #064e3b 0%, #065f46 60%, #0f172a 100%)',
+              border: '1.5px solid #d97706',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 16px rgba(217, 119, 6, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2)',
+              position: 'relative',
+              flexShrink: 0
+            }}>
+              {/* தமிழ் மரபு: நெற்கதிர் + கோபுரக் கலச வடிவம் */}
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* கோபுரக் கலச உச்சி */}
+                <path d="M12 2L13.5 5.5H10.5L12 2Z" fill="#fbbf24" />
+                <circle cx="12" cy="7" r="1.5" fill="#f59e0b" />
+                {/* தமிழரின் உழவு - நெற்கதிர் வளைவுகள் */}
+                <path d="M12 8.5C12 14.5 7.5 17 5 17.5C7 16 8 13.5 8 10C9.5 11.5 11 11.5 12 8.5Z" fill="#34d399" />
+                <path d="M12 8.5C12 14.5 16.5 17 19 17.5C17 16 16 13.5 16 10C14.5 11.5 13 11.5 12 8.5Z" fill="#fbbf24" />
+                {/* பூமி ஆதார பீடம் */}
+                <path d="M6 20C9 18.8 15 18.8 18 20C15 21.2 9 21.2 6 20Z" fill="#d97706" />
+                <path d="M12 9V20" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1
+  onClick={() => setCurrentModule('home')}
+  title="முகப்புப் பக்கத்திற்குச் செல்லவும்"
+  className="font-black text-2xl tracking-wide cursor-pointer"
+  style={{
+                  background: 'linear-gradient(to right, #34d399, #fbbf24)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  letterSpacing: '0.5px'
+                }}>
+                  நம்ம பூமி 360
+                </h1>
+                <button
+                  onClick={() => setIsSellModalOpen(true)}
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all shadow cursor-pointer ml-2"
+                >
+                  + நிலம் விற்க
+                </button>
+                <span className="bg-emerald-100 text-emerald-950 border border-emerald-500 font-black text-[10px] px-2 py-0.5 rounded">
+                  SUPER APP
+                </span>
+              </div>
+              <p className="text-[12px] text-slate-800 font-bold tracking-wide">நிலம் • விவசாயம் • AI ஜோதிடம் • நிதி வாழ்வியல் டிஜிட்டல் தளம்</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+           <a
+  href="https://tnreginet.gov.in/portal/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-xs text-slate-300 bg-slate-800/80 hover:bg-slate-700 hover:text-white px-3.5 py-1.5 rounded-full border border-slate-700 transition cursor-pointer flex items-center gap-1.5"
+>
+  <span className="text-emerald-400 font-bold">•</span> அரசு ஆவண வழிகாட்டல் & சரிபார்ப்பு மையம்
+</a>
+          </div>
+        </div>
+
+        {/* 9 பெருந்தூண்களுக்கான நேவிகேஷன் மெனு பார் */}
+        <div className="border-t border-slate-800/80 bg-slate-950/80 overflow-x-auto no-scrollbar">
+          <div className="max-w-7xl mx-auto px-2 sm:px-4 grid grid-cols-4 md:flex md:items-center gap-2 py-2">
+            <button
+  onClick={() => setCurrentModule('home')}
+  className={`flex flex-col items-center justify-center p-2 rounded-xl text-center transition-all ${
+    currentModule === 'home'
+      ? 'bg-emerald-600 text-white font-bold shadow-md border border-emerald-400'
+      : 'bg-slate-900 border border-slate-800 text-slate-200 hover:bg-slate-800'
+  }`}
+>
+  <span className="text-xl mb-1">🏠</span>
+  <span className="text-[11px] font-semibold leading-tight text-white">முகப்பு</span>
+</button>
+            {LIFE_SERVICES_NAV.map((mod) => (
+              <button
+                key={mod.id}
+                onClick={() => {
+                setCurrentModule(mod.id);
+                if (mod.id === 'land') {
+                  if (typeof setActiveMainTab === 'function') setActiveMainTab('marketplace');
+                  if (typeof setQuickFilter === 'function') setQuickFilter('all');
+                }
+              }}
+                className={`flex flex-col items-center justify-center p-2 rounded-xl text-center transition-all ${currentModule === mod.id
+                    ? 'bg-emerald-600 text-white font-bold shadow-md border border-emerald-400'
+                    : 'bg-slate-900 border border-slate-800 text-slate-200 hover:bg-slate-800'
+                  }`}
+              >
+                <span className="text-xl mb-1">{mod.icon}</span>
+                <span className="text-[11px] font-semibold leading-tight text-white">{mod.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* பிரதான பக்கம் */}
+      <main className="max-w-6xl mx-auto p-4 md:p-8 space-y-8 pb-28 md:pb-12">
+        {/* === அந்தந்த மாட்யூலுக்கு ஏற்ற தனித்துவமான விளம்பரப் பலகை === */}
+        {(() => {
+          const mod = currentModule;
+        if (!mod || mod === 'home') return null; // ஹோம் பேஜில் விளம்பரப் பலகை வராமல் தடுக்கும்
+          const config = {
+            
+            land: {
+              title: 'பூமி & நிலம் நேரடி விளம்பரங்கள்',
+              desc: 'டிடிசிபி மனைகள், விவசாய நிலங்கள், வீடுகள் & குத்தகைத் தொடர்புகள்',
+              icon: '🏡',
+              bg: 'from-amber-950/40 via-slate-900 to-slate-900',
+              border: 'border-amber-500/30',
+              accent: 'text-amber-400',
+              btn: 'bg-amber-600 hover:bg-amber-500',
+              badge: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
+              tags: ['மனைகள்', 'விவசாய பூமி', 'வீடு / வாடகை', 'வணிக இடம்']
+            },
+            finance: {
+              title: 'நிதி & கடன் சேவை விளம்பரங்கள்',
+              desc: 'வங்கி கடன்கள், தனிநபர் கடன், தொழில் நிதி & அடமானத் தீர்வுகள்',
+              icon: '💰',
+              bg: 'from-blue-950/40 via-slate-900 to-slate-900',
+              border: 'border-blue-500/30',
+              accent: 'text-blue-400',
+              btn: 'bg-blue-600 hover:bg-blue-500',
+              badge: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
+              tags: ['Mudra கடன்', 'MSME நிதி', 'வீட்டுக் கடன்', 'வாகனக் கடன்']
+            },
+            insurance: {
+              title: 'காப்பீடு & பாதுகாப்பு விளம்பரங்கள்',
+              desc: 'ஆயுள் காப்பீடு, வாகனக் காப்பீடு, பயிர்க் காப்பீடு & ஆரோக்கிய நலன்கள்',
+              icon: '🛡️',
+              bg: 'from-cyan-950/40 via-slate-900 to-slate-900',
+              border: 'border-cyan-500/30',
+              accent: 'text-cyan-400',
+              btn: 'bg-cyan-600 hover:bg-cyan-500',
+              badge: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20',
+              tags: ['ஆயுள் காப்பீடு', 'பயிர் காப்பீடு', 'வாகன பாலிசி', 'கிளைம் உதவி']
+            },
+            agri: {
+              title: 'விவசாய & பண்ணை வணிக விளம்பரங்கள்',
+              desc: 'நாட்டு விதைகள், இயற்கை உரம், டிராக்டர் வாடகை, ஆடு/மாடு விற்பனை',
+              icon: '🌾',
+              bg: 'from-emerald-950/40 via-slate-900 to-slate-900',
+              border: 'border-emerald-500/30',
+              accent: 'text-emerald-400',
+              btn: 'bg-emerald-600 hover:bg-emerald-500',
+              badge: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
+              tags: ['இயற்கை உரம்', 'டிராக்டர் வாடகை', 'விளைபொருட்கள்', 'கால்நடைகள்']
+            },
+            jobs: {
+              title: 'உள்ளூர் & நிறுவன வேலைவாய்ப்பு விளம்பரங்கள்',
+              desc: 'நிறுவன ஆள்தேர்வு, பகுதிநேரப் பணிகள், அலுவலக வேலைகள் & திறன் தேர்வுகள்',
+              icon: '💼',
+              bg: 'from-violet-950/40 via-slate-900 to-slate-900',
+              border: 'border-violet-500/30',
+              accent: 'text-violet-400',
+              btn: 'bg-violet-600 hover:bg-violet-500',
+              badge: 'bg-violet-500/10 text-violet-300 border-violet-500/20',
+              tags: ['ஆட்கள் தேவை', 'டிரைவர் பணி', 'அலுவலக வேலை', 'விற்பனை பிரதிநிதி']
+            },
+            wholesale: {
+              title: 'மொத்த விற்பனை & ஆலை நேரடி விளம்பரங்கள்',
+              desc: 'அரிசி ஆலைகள், மளிகைப் பொருட்கள், பேக்கிங் & மொத்தக் கொள்முதல் தொடர்புகள்',
+              icon: '📦',
+              bg: 'from-orange-950/40 via-slate-900 to-slate-900',
+              border: 'border-orange-500/30',
+              accent: 'text-orange-400',
+              btn: 'bg-orange-600 hover:bg-orange-500',
+              badge: 'bg-orange-500/10 text-orange-300 border-orange-500/20',
+              tags: ['ஆலை நேரடி அரிசி', 'பருப்பு வகைகள்', 'எண்ணெய் மொத்த விற்பனை', 'லாரி வாடகை']
+            },
+            business: {
+              title: 'MSME & தொழில் வணிக விளம்பரங்கள்',
+              desc: 'தொழில் கூட்டாண்மை, இயந்திரங்கள் விற்பனை, ஜிஎஸ்டி & உரிமச் சேவைகள்',
+              icon: '🏭',
+              bg: 'from-rose-950/40 via-slate-900 to-slate-900',
+              border: 'border-rose-500/30',
+              accent: 'text-rose-400',
+              btn: 'bg-rose-600 hover:bg-rose-500',
+              badge: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
+              tags: ['இயந்திரங்கள்', 'தொழில் முதலீடு', 'டிபிஆர் அறிக்கை', 'விநியோகஸ்தர் தேவை']
+            },
+            education: {
+              title: 'கல்வி, பயிற்சி & திறன் மேம்பாட்டு விளம்பரங்கள்',
+              desc: 'கணினிப் பயிற்சிகள், போட்டித் தேர்வுப் பயிற்சிகள் & பள்ளி/கல்லூரி சேர்க்கை',
+              icon: '🎓',
+              bg: 'from-teal-950/40 via-slate-900 to-slate-900',
+              border: 'border-teal-500/30',
+              accent: 'text-teal-400',
+              btn: 'bg-teal-600 hover:bg-teal-500',
+              badge: 'bg-teal-500/10 text-teal-300 border-teal-500/20',
+              tags: ['TNPSC பயிற்சி', 'கம்ப்யூட்டர் கோர்ஸ்', 'ட்யூஷன் மையம்', 'ஸ்போக்கன் இங்கிலீஷ்']
+            },
+            spiritual: {
+              title: 'ஆன்மீகம், கோவில் & வழிபாட்டு விளம்பரங்கள்',
+              desc: 'கோவில் விசேஷங்கள், பூஜைப் பொருட்கள், வாஸ்து & யாத்திரைச் சேவைகள்',
+              icon: '🛕',
+              bg: 'from-yellow-950/40 via-slate-900 to-slate-900',
+              border: 'border-yellow-500/30',
+              accent: 'text-yellow-400',
+              btn: 'bg-yellow-600 hover:bg-yellow-500 text-slate-950',
+              badge: 'bg-yellow-500/10 text-yellow-300 border-yellow-500/20',
+              tags: ['பூஜைப் பொருட்கள்', 'யாத்திரை வேன்', 'திருவிழா அறிவிப்பு', 'வாஸ்து']
+            },
+            tourism: {
+              title: 'சுற்றுலா & பயண சேவை விளம்பரங்கள்',
+              desc: 'டூர் பேக்கேஜ்கள், ரிசார்ட் முன்பதிவு, கால் டாக்ஸி & தங்குமிடங்கள்',
+              icon: '🚗',
+              bg: 'from-sky-950/40 via-slate-900 to-slate-900',
+              border: 'border-sky-500/30',
+              accent: 'text-sky-400',
+              btn: 'bg-sky-600 hover:bg-sky-500',
+              badge: 'bg-sky-500/10 text-sky-300 border-sky-500/20',
+              tags: ['டூர் பேக்கேஜ்', 'கால் டாக்ஸி', 'ஹோட்டல் ரூம்கள்', 'ஹில் ஸ்டேஷன் ட்ரிப்']
+            },
+            astro: {
+              title: 'ஜோதிடம் & பரிகார விளம்பரங்கள்',
+              desc: 'ஜாதகக் கணிப்பு, திருமணப் பொருத்தம், நவரத்தினக் கற்கள் & எண்கணிதம்',
+              icon: '🔮',
+              bg: 'from-indigo-950/40 via-slate-900 to-slate-900',
+              border: 'border-indigo-500/30',
+              accent: 'text-indigo-400',
+              btn: 'bg-indigo-600 hover:bg-indigo-500',
+              badge: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/20',
+              tags: ['ஜாதகப் பொருத்தம்', 'ராசிக் கற்கள்', 'பரிகார ஹோமம்', 'நியூமராலஜி']
+            },
+            heritage: {
+              title: 'தமிழர் மரபு & வாழ்வியல் விளம்பரங்கள்',
+              desc: 'பாரம்பரிய கைவினைப் பொருட்கள், நாட்டு மருந்துகள், மரபுச் சிற்பங்கள் & ஆடைகள்',
+              icon: '🏛️',
+              bg: 'from-amber-950/50 via-slate-900 to-slate-900',
+              border: 'border-amber-600/30',
+              accent: 'text-amber-300',
+              btn: 'bg-amber-700 hover:bg-amber-600',
+              badge: 'bg-amber-600/10 text-amber-200 border-amber-600/20',
+              tags: ['கைவினைப் பொருட்கள்', 'பாரம்பரிய நெல்', 'மண்பாண்டங்கள்', 'மரபு உணவுகள்']
+            }
+          };
+
+          const active = config[mod] || Object.values(config)[0];
+
+          return (
+            <div className="w-full mb-4">
+              <div className={`p-4 rounded-2xl bg-gradient-to-r ${active?.bg || 'from-purple-900 to-indigo-950'} border ${active?.border || 'border-purple-500/40'} shadow-xl`}>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">{active.icon}</span>
+                      <h3 className={`text-base font-extrabold ${active.accent} tracking-wide`}>
+                        {active.title}
+                      </h3>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full border ${active.badge} font-semibold hidden sm:inline-block`}>
+                        நேரடி வர்த்தகம்
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300 mt-1">
+                      {active.desc}
+                    </p>
+                    
+                    {/* துறை சார்ந்த குறிச்சொற்கள் (Tags) */}
+                    <div className="flex flex-wrap gap-1.5 mt-2.5">
+                      {active.tags.map((tag, idx) => (
+                        <span key={idx} className="text-[10px] bg-slate-800/80 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700/60">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* + விளம்பரம் சேர்க்க பட்டன் */}
+                  <button
+                    onClick={() => setIsPostAdModalOpen(true)}
+                    className={`px-4 py-2 ${active.btn} text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-lg whitespace-nowrap self-end md:self-center`}
+                  >
+                    <span>+</span> விளம்பரம் சேர்க்க
+                  </button>
+                </div>
+              </div>
+
+              {/* குறிப்பிட்ட மாட்யூலில் மட்டும் தெரியும் விளம்பர அட்டைகள் */}
+          {currentModule && currentModule !== 'home' && (
+            <div className="mt-3">
+              <ModuleAdsSection
+                selectedDistrict={filterDistrict}
+                moduleKey={
+                  currentModule === 'land' ? 'realestate' :
+                  currentModule === 'agri' ? 'agriculture' :
+                  currentModule || 'general'
+                }
+                title=""
+              />
+            </div>
+          )}
+            </div>
+          );
+        })()}
+        {/* நம்ம பூமி 360 - அல்ட்ரா பிரீமியம் சூப்பர் ஆப் ஹீரோ பிரிவு */}
+        {currentModule === 'home' && (
+          <div className="space-y-8">
+           {/* Fortune-500 ATS Resume Studio கார்டு */}
+        {/* ==================== 3-IN-1 DIGITAL STUDIOS HUB (DYNAMIC) ==================== */}
+              <div className="w-full my-4">
+                <div className="flex items-center justify-between mb-3 px-1">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <h2 className="text-sm sm:text-base font-bold text-white tracking-wide">
+                      நம்ம பூமி 360 டிஜிட்டல் ஆவண & சேவை மையங்கள் (Digital Studios Hub)
+                    </h2>
+                  </div>
+                  <span className="text-[11px] text-slate-400 hidden sm:inline-block">
+                    {DIGITAL_STUDIOS.length} முதன்மை இலவச சேவைகள்
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                  {DIGITAL_STUDIOS.map((studio) => (
+                    <div
+                      key={studio.id}
+                      className={`bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border border-slate-800 ${studio.borderHover} rounded-2xl p-4 shadow-xl transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-2.5">
+                          <div className={`w-9 h-9 rounded-xl border flex items-center justify-center text-lg ${studio.iconBg}`}>
+                            {studio.icon}
+                          </div>
+                          <span className={`text-[9.5px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${studio.badgeStyle}`}>
+                            {studio.badge}
+                          </span>
+                        </div>
+                        <h3 className="text-sm sm:text-base font-bold text-white mb-1">
+                          {studio.title}
+                        </h3>
+                        <p className="text-[11.5px] text-slate-300 leading-relaxed line-clamp-2">
+                          {studio.desc}
+                        </p>
+                      </div>
+                      <div className="mt-3.5 pt-2.5 border-t border-slate-800/80">
+                        <Link
+                          href={studio.link}
+                          className={`w-full inline-flex items-center justify-center gap-1.5 ${studio.btnBg} text-white text-xs font-bold py-2 px-3 rounded-xl shadow transition`}
+                        >
+                          <span>{studio.btnText}</span>
+                          <span>→</span>
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <DailyLiveTicker setCurrentModule={setCurrentModule} />
+           <HeroOrbitBanner
+  onSelectModule={(modName) => {
+    const moduleMap = {
+      'பூமி & நிலம்': 'land',
+      'நிதி & கடன்கள்': 'finance',
+      'காப்பீடு': 'insurance',
+      'விவசாயம்': 'agri',
+      'கல்வி & படிப்பு': 'education',
+      'வேலைவாய்ப்பு': 'jobs',
+      'தொழில் & MSME': 'business',
+      'மொத்த விற்பனை': 'wholesale',
+      'ஆன்மிகம்': 'spiritual',
+      'சுற்றுலா': 'tourism',
+      'AI ஜோதிடம்': 'astro',
+      'தமிழர் மரபு': 'heritage',
+    };
+    const targetId = moduleMap[modName];
+    if (targetId) {
+      setCurrentModule(targetId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }}
+/>
+            
+            {/* கீழே தமிழ்நாடு வணிகக் கூட்டமைப்பு கார்டு */}
+            <div className="rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/40 to-slate-900 border border-emerald-500/30 p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+              <div className="space-y-1.5 text-center md:text-left">
+                <h3 className="text-lg md:text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                  <span className="text-2xl">🤝</span> நம்ம பூமி வணிகக் கூட்டமைப்பு (Partner with Us)
+                </h3>
+                <p className="text-xs md:text-sm text-slate-300 max-w-xl">
+                  விவசாய உற்பத்தியாளர்கள், நில உரிமையாளர்கள், சுற்றுலா வாகன ஓட்டுநர்கள் மற்றும் உள்ளூர் சேவை வழங்குநர்கள் நேரடியாக மக்களுடன் இணைய கைகோருங்கள்!
+                </p>
+              </div>
+              <button
+                onClick={() => window.open(getWhatsAppUrl('வணக்கம் நம்ம பூமி 360 வணிகக் கூட்டமைப்பு (Partner with Us) பற்றி விவரம் அறிய விரும்புகிறேன்.'), '_blank')}
+                className="whitespace-nowrap px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center gap-2 border border-emerald-400/30"
+              >
+                <span>வாட்ஸ்அப் மூலம் இணைய</span>
+                <span className="text-base">💬</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* பட்டா & அரசு சேவைகள் பிரிவு */}
+{currentModule === 'govt' && (
+  <div className="mt-8 space-y-6">
+    <LandGovtServices />
+
+            {/* தமிழ்நாடு பத்திரப் பதிவு & முத்திரைத் தாள் கட்டணக் கால்குலேட்டர் */}
+            <div className="bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all rounded-2xl p-5 shadow-xl">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-2xl">🧮</span>
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                    பத்திரப் பதிவு & முத்திரைத் தாள் கால்குலேட்டர்
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">TN 2026 விதிகள்</span>
+                  </h3>
+                  <p className="text-xs text-slate-100">வழிகாட்டி மதிப்பு அல்லது விற்பனைத் தொகைக்கான துல்லிய அரசு செலவு</p>
+                </div>
+              </div>
+
+              {/* மதிப்பு உள்ளீட்டுப் பகுதி */}
+              <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3 mb-4">
+                <div className="flex justify-between items-center mb-1.5 text-xs text-slate-300">
+                  <span>நிலத்தின் மதிப்பு (வழிகாட்டி அல்லது விற்பனை):</span>
+                  <span className="text-emerald-400 font-bold text-sm">₹ {Number(calcLandValue || 0).toLocaleString('en-IN')}</span>
+                </div>
+                <input
+                  type="number"
+                  value={calcLandValue}
+                  onChange={(e) => setCalcLandValue(Number(e.target.value))}
+                  placeholder="நிலத்தின் மதிப்பை உள்ளிடவும்"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs sm:text-sm font-semibold focus:outline-none focus:border-emerald-500"
+                />
+
+                {/* Quick Value Chips */}
+                <div className="flex gap-2 mt-2.5 overflow-x-auto pb-1 scrollbar-none">
+                  {[
+                    { label: '₹10 லட்சம்', val: 1000000 },
+                    { label: '₹25 லட்சம்', val: 2500000 },
+                    { label: '₹50 லட்சம்', val: 5000000 },
+                    { label: '₹1 கோடி', val: 10000000 }
+                  ].map((chip) => (
+                    <button
+                      key={chip.val}
+                      type="button"
+                      onClick={() => setCalcLandValue(chip.val)}
+                      className="px-2.5 py-1 rounded-lg text-[11px] bg-slate-800/90 text-slate-300 border border-slate-700 hover:border-emerald-500 hover:text-white whitespace-nowrap active:scale-95 transition-all"
+                    >
+                      {chip.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* கட்டண பிரேக்டவுன் */}
+              {(() => {
+                const val = Number(calcLandValue || 0);
+                const stampDuty = Math.round(val * 0.07); // 7%
+                const regFee = Math.round(val * 0.02);    // 2%
+                const totalFee = stampDuty + regFee;       // 9%
+
+                return (
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="bg-slate-800/60 p-2.5 rounded-xl border border-slate-800">
+                        <p className="text-slate-100">📜 முத்திரைத் தாள் (7%)</p>
+                        <p className="text-white font-bold text-sm mt-0.5">₹ {stampDuty.toLocaleString('en-IN')}</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-2.5 rounded-xl border border-slate-800">
+                        <p className="text-slate-100">🏛️ பத்திரப் பதிவு (2%)</p>
+                        <p className="text-white font-bold text-sm mt-0.5">₹ {regFee.toLocaleString('en-IN')}</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-xl flex justify-between items-center">
+                      <div>
+                        <p className="text-xs text-emerald-300 font-medium">💰 மொத்த அரசு கட்டணம் (9%)</p>
+                        <p className="text-[10px] text-slate-100 mt-0.5">*கணினி கட்டணம் & முத்திரைக் கட்டணம் தவிர்த்து</p>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-base sm:text-lg font-black text-emerald-400">
+                          ₹ {totalFee.toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+        )}
+        {/* 1. பூமி & நிலம் பிரிவு (REAL ESTATE & AUDIT) */}
+        {/* ============================================================ */}
+        {currentModule === 'land' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-4 gap-3">
+              <div>
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <span>🌐</span> நம்ம பூமி நிலச் சந்தை & சரிபார்ப்பு மையம்
+                </h2>
+                <p className="text-xs text-slate-100 mt-0.5">நேரடி உரிமையாளர் தொடர்பு • விசிட் பாஸ் • வாட்ஸ்அப் பகிர்வு • லைவ் மேப்</p>
+              </div>
+
+              <div className="flex bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs">
+                <button
+                  onClick={() => setActiveMainTab('marketplace')}
+                  className={`px-3 py-1.5 rounded-lg font-bold transition ${activeMainTab === 'marketplace' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-100'
+                    }`}
+                >
+                  🏪 நிலச் சந்தை ({filteredLands.length})
+                </button>
+                <button
+                  onClick={() => setActiveMainTab('audit')}
+                  className={`px-3 py-1.5 rounded-lg font-bold transition ${activeMainTab === 'audit' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-slate-100'
+                    }`}
+                >
+                  📜 A to Z ஜாதகம்
+                </button>
+                <button
+                  onClick={() => setActiveMainTab('sell')}
+                  className={`px-3 py-1.5 rounded-lg font-bold transition ${activeMainTab === 'sell' ? 'bg-emerald-500 text-slate-950 shadow' : 'text-emerald-400'
+                    }`}
+                >
+                  + நிலத்தை விற்க
+                </button>
+                <button
+  onClick={() => setIsBuyerModalOpen(true)}
+  className="px-3 py-1.5 bg-teal-600 hover:bg-teal-500 text-white rounded-lg text-xs font-bold shadow flex items-center gap-1 transition"
+>
+  + தேவை பதிவு
+</button>
+              </div>
+            </div>
+
+            {/* நிலச் சந்தை */}
+            {activeMainTab === 'marketplace' && (
+              <div className="space-y-6">
+                {/* உலகத் தர விரைவு ஃபில்டர் சிப்ஸ் (Quick Category & Budget Chips) */}
+                <div className="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none -mt-2 mb-1">
+                  {[
+                    { id: 'all', label: '🌐 அனைத்தும்' },
+                    { id: 'agri', label: '🌾 விவசாய பூமி' },
+                    { id: 'plots', label: '🏡 DTCP மனைகள்' },
+                    { id: 'budget', label: '💰 ₹15 லட்சத்திற்குள்' },
+                    { id: 'urgent', label: '⚡ அவசர விற்பனை' },
+                    { id: 'road', label: '🛣️ மெயின் ரோடு பேசிங்' }
+                  ].map((chip) => (
+                    <button
+                      key={chip.id}
+                      type="button"
+                      onClick={() => setQuickFilter(chip.id)}
+                      className={`whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs transition-all shadow-sm active:scale-95 flex items-center gap-1.5 border ${quickFilter === chip.id
+                          ? 'bg-emerald-500 text-slate-950 font-bold border-emerald-400 shadow-emerald-500/20'
+                          : 'bg-slate-900/90 border-slate-700/80 text-slate-300 hover:border-slate-500 hover:text-white'
+                        }`}
+                    >
+                      {chip.label}
+                    </button>
+                  ))}
+                </div>
+                
+                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl overflow-hidden">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-300 overflow-x-auto whitespace-nowrap pb-1 scrollbar-none">
+                    <span className="shrink-0">🔍 மாவட்ட வடிகட்டி:</span>
+                    {['அனைத்தும்', 'செங்கல்பட்டு', 'காஞ்சிபுரம்'].map((dist) => (
+              <button
+                key={dist}
+                onClick={() => setFilterDistrict(dist)}
+                className={`shrink-0 px-3 py-1 rounded-lg transition ${
+                  filterDistrict === dist
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
+                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                {dist}
+              </button>
+            ))}
+                  </div>
+                  
+
+                  <span className="text-[11px] text-slate-100">
+                    மொத்தம் {filteredLands.length} சரிபார்க்கப்பட்ட நிலங்கள்
+                  </span>
+                  {/* புதிய சொத்து வகை & விற்பனை/வாடகை/லீஸ் வடிகட்டி */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mt-3 pt-3 border-t border-slate-800/80 w-full">
+          {/* வகை: நிலம், வீடு, வணிக கடை */}
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {[
+              { id: 'all', label: 'அனைத்து சொத்துக்கள்' },
+              { id: 'land', label: '🌾 நிலங்கள்' },
+              { id: 'house', label: '🏠 வீடுகள்' },
+              { id: 'commercial', label: '🏢 வணிக கடைகள்' },
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setFilterCategory(cat.id)}
+                className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  filterCategory === cat.id
+                    ? 'bg-emerald-500 text-slate-950 shadow-md'
+                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+            
+          </div>
+
+          {/* பரிவர்த்தனை: விற்பனை, வாடகை, லீஸ் */}
+          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
+            {[
+              { id: 'all', label: 'அனைத்தும்' },
+              { id: 'விற்பனை', label: 'விற்பனை' },
+              { id: 'வாடகை', label: 'வாடகை' },
+              { id: 'லீஸ்', label: 'லீஸ்' },
+            ].map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setFilterListingType(t.id)}
+                className={`px-2.5 py-0.5 rounded-lg text-[11px] font-medium transition-all cursor-pointer ${
+                  filterListingType === t.id
+                    ? 'bg-emerald-600 text-white font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {filteredLands.map((land) => (
+                    <div
+                      key={land.id}
+                      onClick={() => setSelectedLandDetail(land)}
+                      className="bg-slate-900 border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer shadow-lg group"
+                    >
+                      <div className="relative h-40 w-full overflow-hidden bg-slate-950">
+                        <img
+                          src={
+  (land.images && land.images[0]) || 
+  land.image || 
+  (land.category?.includes('வீடு') || land.title?.includes('வீடு')
+    ? 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80'
+    : 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=80')
+}
+                          alt={land.title}
+                          className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                        />
+                        {(land.videoUrl || land.video_url || true) && (
+  <button
+    type="button"
+    onClick={(e) => {
+      e.stopPropagation();
+      setActiveVideo({ url: land.videoUrl, title: land.title });
+    }}
+    className="absolute bottom-2 right-2 z-10 bg-red-600 hover:bg-red-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
+  >
+    <span>▶</span> நேரலை வீடியோ
+  </button>
+)}
+                        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
+                          <span className="bg-slate-950/90 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded">
+                            {land.seller_type || land.badge || 'நேரடி உரிமையாளர்'}
+                          </span>
+                          {land.verifiedBoundary && (
+                            <span className="bg-blue-950/90 text-sky-300 border border-sky-500/30 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
+                              ✓ எல்லை சரிபார்க்கப்பட்டது
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="absolute top-2.5 right-2.5 flex flex-col items-end gap-1">
+                          <span className="bg-emerald-500 text-slate-950 text-[11px] font-black px-2 py-0.5 rounded shadow">
+                            {(land.verification_score || land.trustScore || 100)}/100 {land.trustGrade || 'A+'}
+                          </span>
+                          {land.droneView && (
+                            <span className="bg-purple-950/90 text-purple-300 border border-purple-500/40 text-[9px] font-bold px-1.5 py-0.5 rounded">
+                              📹 360° பார்வை
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                          <h3 className="font-bold text-sm text-white line-clamp-1 mb-1.5">
+                            {land.title}
+                          </h3>
+
+                          <div className="text-[11px] text-slate-100 space-y-1">
+                            <div className="flex items-center gap-1">
+                              <span className="text-emerald-400">📍</span>
+                              <span>{land.district ? `${land.district}, ` : ''}{land.village || land.taluk || 'இடம் குறிப்பிடப்படவில்லை'}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span className="text-emerald-400">📜</span>
+                              <span>சர்வே எண்: <strong className="text-slate-200">#{land.survey_number || land.surveyNo || '-'}</strong></span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span className="text-sky-400">💧</span>
+                              <span>{land.waterNote}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800/80 flex items-center justify-between">
+                          <div>
+                            <div className="text-[9px] text-slate-100">கேட்கும் விலை:</div>
+                           <div className="text-base font-black text-emerald-400">{land.askingPrice || (land.total_price ? `₹${Number(land.total_price).toLocaleString('en-IN')}` : 'விலை விவரம் இல்லை')}</div>
+                          </div>
+                          <div className="flex gap-1">
+                            <button
+                              onClick={() =>
+                                shareOnWhatsApp(
+                                  `🏡 நம்ம பூமி 360 நிலப் பரிந்துரை:\n${land.title}\n📍 இடம்: ${land.village} (சர்வே #${land.surveyNo})\n💰 விலை: ${land.askingPrice}\nபார்க்க: ${typeof window !== 'undefined' ? window.location.origin : ''}`
+                                )
+                              }
+                              className="bg-emerald-950/80 hover:bg-emerald-900 text-emerald-400 text-[11px] font-bold px-2 py-1.5 rounded-lg border border-emerald-800/80 transition flex items-center gap-1"
+                              title="வாட்ஸ்அப்பில் பகிர்க"
+                            >
+                              <span>📲</span>
+                            </button>
+                            <a
+  href={
+    land.lat && land.lng
+      ? `https://www.google.com/maps/search/?api=1&query=${land.lat},${land.lng}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((land.village || '') + ', ' + (land.district || '') + ', Tamil Nadu')}`
+  }
+  target="_blank"
+  rel="noopener noreferrer"
+  onClick={(e) => e.stopPropagation()}
+  className="bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-md transition-all no-underline"
+>
+  <span>📍</span> மேப் பார்வை
+</a>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2 pt-2 border-t border-slate-800/80">
+                          <button
+                            onClick={() => setSelectedVisitPassLand(typeof land !== 'undefined' ? land : l)}
+                            className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all text-xs sm:text-sm"
+                          >
+                            <span>🎫</span> விசிட் பாஸ் & எண் பெறுக
+                          </button>
+
+                         <button
+                type="button"
+                onClick={() => setSelectedLoanLand(land)}
+                className="w-full py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer select-none active:scale-95 transition bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30"
+              >
+                <span>🏦</span> <span>கடன், EMI & ஆவண வழிகாட்டல் (DAB)</span>
+              </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+               {/* 🌟 ஒருங்கிணைந்த சேவை மையம்: கடன், EMI & சட்ட ஆவண ஆய்வு (DAB) */}
+      {/* 🌟 100% Zero-Scroll கச்சிதமான மனை சேவை மையம் */}
+      {selectedLoanLand && (() => {
+        const rawPrice = selectedLoanLand.approxValue || 4500000;
+        const loanAmount = Math.round(rawPrice * 0.8);
+        const interestRate = 8.5;
+        const monthlyRate = interestRate / 12 / 100;
+        const totalMonths = (loanTenure || 10) * 12;
+        
+        const emi = Math.round(
+          (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) /
+          (Math.pow(1 + monthlyRate, totalMonths) - 1)
+        );
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 animate-fadeIn">
+            <div className="relative w-full max-w-2xl rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-emerald-500/40 p-4 shadow-2xl text-white">
+              {/* க்ளோஸ் பட்டன் */}
+              <button
+                type="button"
+                onClick={() => setSelectedLoanLand(null)}
+                className="absolute top-2.5 right-2.5 text-slate-400 hover:text-white p-1 rounded-full hover:bg-slate-800 transition"
+              >
+                ✕
+              </button>
+
+              {/* தலைப்பு */}
+              <div className="text-center mb-3">
+                <h3 className="text-sm font-bold text-emerald-400 flex items-center justify-center gap-1.5">
+                  <span>🏛️</span> பூமி 360 - மனை சேவை மையம்
+                </h3>
+                <p className="text-[11px] text-slate-200 font-medium truncate mt-0.5">
+                  {selectedLoanLand.title} <span className="text-slate-400">({selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'})</span>
+                </p>
+              </div>
+
+              {/* இரு பக்க கிரிட் (No Scroll Layout) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* இடது பக்கம்: கடன் & EMI */}
+                <div className="bg-slate-800/60 rounded-xl p-3 border border-slate-700/50 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[11px] font-bold text-emerald-300 block mb-2">🏦 80% வங்கி கடன் & EMI</span>
+                    
+                    <div className="space-y-1 text-[11px] mb-2.5">
+                      <div className="flex justify-between text-slate-300">
+                        <span>நில மதிப்பு:</span>
+                        <span className="font-semibold text-white">₹{rawPrice.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-300">
+                        <span>80% கடன்:</span>
+                        <span className="font-bold text-emerald-400">₹{loanAmount.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="flex justify-between items-center pt-1 border-t border-slate-700/60">
+                        <span className="text-slate-200 font-medium">மாத EMI:</span>
+                        <span className="text-sm font-extrabold text-emerald-400">
+                          ₹{emi.toLocaleString('en-IN')}<span className="text-[9px] text-slate-400">/மா</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* ஸ்லைடர் */}
+                    <div className="mb-3">
+                      <div className="flex justify-between text-[10px] text-slate-400 mb-0.5">
+                        <span>கால அளவு:</span>
+                        <span className="font-bold text-emerald-300">{loanTenure || 10} ஆண்டுகள்</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="5"
+                        max="20"
+                        step="1"
+                        value={loanTenure || 10}
+                        onChange={(e) => setLoanTenure && setLoanTenure(Number(e.target.value))}
+                        className="w-full accent-emerald-500 cursor-pointer h-1 bg-slate-700 rounded-lg"
+                      />
+                      <div className="flex justify-between text-[9px] text-slate-500 mt-0.5">
+                        <span>5 வருடம்</span>
+                        <span>10 வருடம்</span>
+                        <span>20 வருடம்</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* விண்ணப்ப பட்டன் */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const message = `*🏦 பூமி 360 - 80% கடன் & EMI உதவி விண்ணப்பம்*\n\n` +
+                        `📍 *நிலம்:* ${selectedLoanLand.title}\n` +
+                        `🔢 *சர்வே எண்:* ${selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'}\n` +
+                        `💰 *மதிப்பிடப்பட்ட கடன்:* ₹${loanAmount.toLocaleString('en-IN')}\n` +
+                        `⏳ *தேர்ந்தெடுத்த காலம்:* ${loanTenure || 10} ஆண்டுகள்\n` +
+                        `📊 *மாதத் தவணை (EMI):* ₹${emi.toLocaleString('en-IN')} / மாதம்\n\n` +
+                        `✅ எனக்கு இந்த நிலத்திற்கான வங்கி கடன் ஒப்புதல் செயல்முறைக்கு வழிகாட்டவும்.`;
+                     window.open(getWhatsAppUrl(message), '_blank');
+                    }}
+                    className="w-full py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer active:scale-95 transition bg-emerald-600 hover:bg-emerald-500 text-slate-950 mt-1"
+                  >
+                    <span>💬</span> <span>இந்த EMI-யில் கடன் பெறுக</span>
+                  </button>
+                </div>
+
+                {/* வலது பக்கம்: ஆவண ஆய்வு, சர்வேயர் & அரசு சேவைகள் */}
+                <div className="flex flex-col justify-between space-y-2.5">
+                  {/* நேரடி சேவை பட்டன்கள் */}
+                  <div className="space-y-1.5">
+                    <span className="text-[11px] font-bold text-cyan-300 block">⚖️ ஆவண ஆய்வு & சர்வே சேவைகள்</span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const msg = `*⚖️ பூமி 360 - 30 ஆண்டு தாய் பத்திர சட்ட ஆய்வு கோரிக்கை*\n\n` +
+                            `📍 *நிலம்:* ${selectedLoanLand.title}\n` +
+                            `🔢 *சர்வே எண்:* ${selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'}\n` +
+                            `💰 *ஆய்வுக் கட்டணம்:* ₹1,999\n\n` +
+                            `✅ இந்த நிலத்திற்கான தாய் பத்திரங்களை ஆய்வு செய்து 48 மணிநேர சட்ட சான்றிதழ் வழிகாட்டல் தர வேண்டுகிறேன்.`;
+                          window.open(getWhatsAppUrl(msg), '_blank');
+                          setSelectedLoanLand(null);
+                        }}
+                        className="p-2 bg-slate-800 hover:bg-slate-700/80 border border-cyan-500/30 rounded-lg text-left text-cyan-300 transition"
+                      >
+                        <div className="text-[11px] font-bold leading-tight">📜 பத்திர ஆய்வு (₹1,999)</div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">48 மணிநேர அறிக்கை</div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const msg = `*📐 பூமி 360 - டிஜிட்டல் நில அளவையர் முன்பதிவு*\n\n` +
+                            `📍 *நிலம்:* ${selectedLoanLand.title}\n` +
+                            `🔢 *சர்வே எண்:* ${selectedLoanLand.surveyNo || 'சரிபார்க்கப்பட்டது'}\n` +
+                            `🛰️ *வகை:* சாட்லைட் DGPS / எல்லை நிர்ணயம்\n\n` +
+                            `✅ இந்த நிலத்தை அளவீடு செய்ய சர்வேயர் வழிகாட்டல் தர வேண்டுகிறேன்.`;
+                          window.open(getWhatsAppUrl(msg), '_blank');
+                        }}
+                        className="p-2 bg-slate-800 hover:bg-slate-700/80 border border-emerald-500/30 rounded-lg text-left text-emerald-300 transition"
+                      >
+                        <div className="text-[11px] font-bold leading-tight">📐 DGPS சர்வேயர்</div>
+                        <div className="text-[9px] text-slate-400 mt-0.5">எல்லை நிர்ணயம்</div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 4 அரசு மின்-சேவைகள் */}
+                 <div className="bg-slate-800/40 p-2 rounded-lg border border-slate-700/40">
+                    <span className="text-[10px] font-semibold text-slate-400 block mb-1">🏛️ அரசு நேரடி மின்-சேவைகள்:</span>
+                    <div className="grid grid-cols-2 gap-1 text-[10px]">
+                      <a
+                        href="https://eservices.tn.gov.in/eservicesnew/index.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
+                      >
+                        📄 பட்டா / சிட்டா ↗
+                      </a>
+                      <a
+                        href="https://tnreginet.gov.in/portal/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
+                      >
+                        📜 வில்லங்கம் (EC) ↗
+                      </a>
+                      <a
+                        href="https://eservices.tn.gov.in/eservicesnew/index.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
+                      >
+                        🗺️ வரைபடம் (FMB) ↗
+                      </a>
+                      <a
+                        href="https://eservices.tn.gov.in/eservicesnew/index.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-1 px-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-center border border-slate-700/60 block transition truncate"
+                      >
+                        🏙️ மனை (TSLR) ↗
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+                
+                <LandCalculator />
+                <SellLandModal
+                  isOpen={isSellModalOpen}
+                  onClose={() => setIsSellModalOpen(false)}
+                />
+<BuyerRequirementModal 
+  isOpen={isBuyerModalOpen} 
+  onClose={() => setIsBuyerModalOpen(false)} 
+/>
+
+
+              </div>
+            )}
+
+            {/* A to Z தணிக்கை அறிக்கை பகுதி */}
+            {activeMainTab === 'audit' && (
+              <div className="space-y-6">
+                <section className="bg-slate-900 border border-emerald-700/40 rounded-3xl p-6 md:p-8 shadow-xl">
+                  <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
+                    <span>📜</span> சர்வே எண் உடனடி A to Z நில ஜாதகம் & சட்டத் தணிக்கை
+                  </h3>
+                  <p className="text-xs text-slate-100 mb-5">
+                    அரசு வருவாய்த்துறை பொது ஆவணங்கள், நிலத்தடி நீர் மட்டம், வழிகாட்டி மதிப்பு மற்றும் 6 அடுக்கு சட்டப் பாதுகாப்புச் சோதனை.
+                  </p>
+
+                  <form onSubmit={handleSurveySearch} className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                      <div>
+                        <label className="text-[11px] text-slate-100 mb-1 block">1. மாவட்டம்</label>
+                        <select
+                          value={selectedDistrict}
+                          onChange={handleDistrictChange}
+                          className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
+                        >
+                          {Object.keys(locationData).map((d) => (
+                            <option key={d} value={d}>{d}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-[11px] text-slate-100 mb-1 block">2. வட்டம்</label>
+                        <select
+                          value={selectedTaluk}
+                          onChange={handleTalukChange}
+                          className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
+                        >
+                          {Object.keys(locationData[selectedDistrict] || {}).map((t) => (
+                            <option key={t} value={t}>{t}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-[11px] text-slate-100 mb-1 block">3. கிராமம்</label>
+                        <select
+                          value={selectedVillage}
+                          onChange={(e) => setSelectedVillage(e.target.value)}
+                          className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
+                        >
+                          {(locationData[selectedDistrict]?.[selectedTaluk] || []).map((v) => (
+                            <option key={v} value={v}>{v}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-[11px] text-slate-100 mb-1 block">4. சர்வே எண்</label>
+                        <div className="flex gap-1.5">
+                          <input
+                            type="text"
+                            required
+                            value={searchSurveyNo}
+                            onChange={(e) => setSearchSurveyNo(e.target.value)}
+                            placeholder="எ.கா. 142/1B"
+                            className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"
+                          />
+                          <button
+                            type="submit"
+                            disabled={isSearching}
+                            className="bg-emerald-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shrink-0 hover:bg-emerald-400 cursor-pointer"
+                          >
+                            {isSearching ? '...' : 'காண்க ⚡'}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </section>
+
+                {surveyResult && (
+                  <div className="bg-slate-900 border border-emerald-500/40 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-800 pb-4 gap-3">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xl">📜</span>
+                          <h4 className="font-extrabold text-lg text-white">
+                            சர்வே எண் #{surveyResult.surveyNo} - அதிகாரப்பூர்வ A to Z ஜாதகம்
+                          </h4>
+                        </div>
+                        <p className="text-xs text-slate-100 mt-0.5">
+                          {surveyResult.village}, {surveyResult.taluk}, {surveyResult.district} மாவட்டம்
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2">
+                          {/* WhatsApp / Native Share Button */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const shareText = `📜 *நம்ம பூமி 360 - A to Z நில ஜாதகம் & சட்ட தணிக்கை அறிக்கை*\n\n` +
+                                `📍 *சர்வே எண்:* #${surveyResult.surveyNo || '142/1B'}\n` +
+                                `🏛️ *இடம்:* ${surveyResult.village || 'திருப்போரூர்'}, ${surveyResult.district || 'செங்கல்பட்டு'}\n` +
+                                `🌾 *வகைப்பாடு:* ${surveyResult.classification || 'ரயத்துவாரி புஞ்சை'}\n` +
+                                `📐 *பரப்பளவு:* ${surveyResult.area || '2.50 ஏக்கர்'}\n` +
+                                `💰 *வழிகாட்டி மதிப்பு:* ${surveyResult.guidelineValue || '₹850 / ச.அடி'}\n` +
+                                `🛡️ *சட்ட தணிக்கை பாதுகாப்பு:* 98/100 (சரிபார்க்கப்பட்டது ✅)\n\n` +
+                                `முழு விவரங்களை அறிய: https://nammaboomi360.com`;
+
+                              if (navigator.share) {
+                                navigator.share({
+                                  title: `நம்ம பூமி 360 - சர்வே #${surveyResult.surveyNo || '142/1B'} ஜாதகம்`,
+                                  text: shareText,
+                                  url: window.location.href,
+                                }).catch(() => { });
+                              } else {
+                                window.open(getWhatsAppUrl(shareText, ''), '_blank');
+                              }
+                            }}
+                            className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-1 px-2.5 rounded-lg flex items-center gap-1 shadow-md active:scale-95 transition-all"
+                          >
+                            <span>📲</span> பகிர்க
+                          </button>
+
+                          {/* Instant PDF Print Button */}
+                          <button
+                            type="button"
+                            onClick={() => window.print()}
+                            className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold py-1 px-2.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all"
+                          >
+                            <span>🖨️</span> PDF
+                          </button>
+
+                          <span className="text-[11px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 rounded-md">
+                            98/100
+                          </span>
+                        </div>
+                        <div className="bg-slate-950 px-3 py-1 rounded-xl border border-emerald-500/40 text-right">
+                          <span className="text-base font-black text-emerald-400">{surveyResult.trustScore}/100</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h5 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2.5">
+                        1. அரசு வருவாய்த்துறை பொது ஆவண விவரங்கள்
+                      </h5>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                          <span className="text-slate-100 block text-[10px]">பட்டா எண்</span>
+                          <strong className="text-white text-sm">{surveyResult.pattaNo}</strong>
+                        </div>
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                          <span className="text-slate-100 block text-[10px]">உரிமையாளர்</span>
+                          <strong className="text-white text-sm">{surveyResult.ownerName}</strong>
+                        </div>
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                          <span className="text-slate-100 block text-[10px]">வகைப்பாடு</span>
+                          <strong className="text-emerald-400 text-sm">{surveyResult.landType}</strong>
+                        </div>
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                          <span className="text-slate-100 block text-[10px]">பரப்பளவு</span>
+                          <strong className="text-white text-sm">{surveyResult.extent}</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h5 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2.5">
+                        2. இரட்டை மதிப்பீடு & முதலீட்டு வளர்ச்சி கணிப்பு (ROI)
+                      </h5>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                          <span className="text-slate-100 block text-[10px]">அரசு வழிகாட்டி மதிப்பு</span>
+                          <strong className="text-amber-400 text-base">{surveyResult.guidelineValue}</strong>
+                        </div>
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                          <span className="text-slate-100 block text-[10px]">நடப்பு சந்தை மதிப்பு</span>
+                          <strong className="text-emerald-400 text-base">{surveyResult.marketValue}</strong>
+                        </div>
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                          <span className="text-slate-100 block text-[10px]">எதிர்கால வளர்ச்சி</span>
+                          <span className="text-slate-300 text-[11px] block mt-0.5">{surveyResult.futureGrowth}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h5 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2.5">
+                        3. பூமி சாஸ்திரம் - நீர் ஆதாரம் & மண் உறுதி
+                      </h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-start gap-2.5">
+                          <span className="text-xl">💧</span>
+                          <div>
+                            <strong className="text-sky-400 block mb-0.5">நிலத்தடி நீர் மட்டம்</strong>
+                            <p className="text-slate-300 text-[11px]">{surveyResult.waterLevel}</p>
+                          </div>
+                        </div>
+                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-start gap-2.5">
+                          <span className="text-xl">🧱</span>
+                          <div>
+                            <strong className="text-amber-400 block mb-0.5">மண்ணின் கட்டிடத் தாங்குதிறன்</strong>
+                            <p className="text-slate-300 text-[11px]">{surveyResult.soilType}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h5 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2.5">
+                        4. பூமி ரக்ஷா - 6 அடுக்கு சட்டப் பாதுகாப்பு தணிக்கை
+                      </h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                        {surveyResult.legalChecks.map((chk, idx) => (
+                          <div key={idx} className="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex items-center justify-between">
+                            <span className="text-slate-300 font-medium">{chk.label}</span>
+                            <span className="text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-800/80 px-2 py-0.5 rounded text-[11px]">
+                              {chk.status} ✓
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h5 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2.5">
+                        5. அமைவிடம் & நேரடி வரைபடம் (GPS Map)
+                      </h5>
+                      <div className="rounded-2xl overflow-hidden h-64 border border-slate-800">
+                        <iframe
+                          title="Audit Map View"
+                          src={surveyResult.mapEmbedUrl}
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0 }}
+                          loading="lazy"
+                        ></iframe>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* 📜 நிலம் வாங்கும் முன் சரிபார்க்க வேண்டிய 7 சட்ட ஆவணங்கள் */}
+                <div className="mt-8 space-y-4">
+                  <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-2xl p-4 shadow-xl">
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl">📜</span>
+                      <div>
+                        <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                          நிலம் வாங்கும் முன் சரிபார்க்க வேண்டிய 7 ஆவணங்கள்
+                          <span className="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">A to Z வழிகாட்டி</span>
+                        </h3>
+                        <p className="text-xs text-slate-100 mt-0.5">சட்டச் சிக்கல்கள் மற்றும் போலிப் பத்திரங்களிலிருந்து 100% பாதுகாக்கும் சரிபார்ப்புப் பட்டியல்</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 7 Audit Points Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {[
+                      {
+                        step: '01',
+                        icon: '📑',
+                        title: 'தாய் பத்திரம் (Parent Document)',
+                        desc: 'குறைந்தது கடந்த 30 ஆண்டுகளுக்கான முந்தைய விற்பனைப் பத்திரங்கள் மற்றும் உரிமையாளர் தொடர்ச்சி (Link Documents) சரியாக உள்ளதா எனப் பார்க்க வேண்டும்.'
+                      },
+                      {
+                        step: '02',
+                        icon: '🏛️',
+                        title: 'வில்லங்கச் சான்று (EC - 30 ஆண்டுகள்)',
+                        desc: 'Tnreginet தளத்தில் 30 ஆண்டுகளுக்கான வில்லங்கச் சான்று எடுத்து, நிலத்தின் மீது எந்தவொரு நீதிமன்ற வழக்கோ, வங்கிக் கடனோ அல்லது அடமானமோ இல்லை என்பதை உறுதிசெய்ய வேண்டும்.'
+                      },
+                      {
+                        step: '03',
+                        icon: '🌾',
+                        title: 'பட்டா & சிட்டா உண்மைத் தன்மை',
+                        desc: 'Anywhere Patta தளத்தில் விற்பவரின் பெயர், சர்வே எண், உட்பிரிவு மற்றும் விஸ்தீரணம் அரசு ஆவணத்தில் துல்லியமாக உள்ளதா எனச் சரிபார்க்கவும்.'
+                      },
+                      {
+                        step: '04',
+                        icon: '📐',
+                        title: 'FMB புல வரைபடம் & எல்லை அளவீடு',
+                        desc: 'அரசு நில அளவையர் (Surveyor) மூலம் நிலத்தின் சர்வே எல்லைக் கற்கள் மற்றும் FMB வரைபடத்தின் அளவுகள் களத்தில் சரியாகப் பொருந்துகிறதா என அளக்க வேண்டும்.'
+                      },
+                      {
+                        step: '05',
+                        icon: '🏢',
+                        title: 'அங்கீகாரம் (DTCP / CMDA / RERA)',
+                        desc: 'வீட்டுமனை எனில் DTCP அல்லது CMDA முறையான ஒப்புதல் எண் உள்ளதா, பஞ்சாயத்து அப்ரூவல் மட்டும் கொண்ட முறைகேடான மனை இல்லையா என உறுதி செய்யவும்.'
+                      },
+                      {
+                        step: '06',
+                        icon: '💰',
+                        title: 'வழிகாட்டி மதிப்பு (Guideline Value)',
+                        desc: 'அரசு நிர்ணயித்துள்ள வழிகாட்டி மதிப்பை அறிந்து, அதற்கேற்ப முத்திரைத் தாள் மற்றும் பதிவு கட்டணத்தைத் திட்டமிடுங்கள்.'
+                      },
+                      {
+                        step: '07',
+                        icon: '🛣️',
+                        title: 'அரசு கையகப்படுத்தல் & ரோடு விரிவாக்கம்',
+                        desc: 'நிலம் நெடுஞ்சாலை விரிவாக்கம், உயர் மின்னழுத்த கம்பிப்பாதை அல்லது நீர்நிலைப் புறம்போக்கு எல்லைக்குள் வரவில்லை என்பதைச் சரிபார்க்கவும்.'
+                      }
+                    ].map((item) => (
+                      <div key={item.step} className="bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 rounded-xl p-4 transition-all flex gap-3">
+                        <span className="text-emerald-400 font-mono font-black text-lg">{item.step}</span>
+                        <div>
+                          <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
+                            <span>{item.icon}</span> {item.title}
+                          </h4>
+                          <p className="text-xs text-slate-100 mt-1 leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Legal Help Call to Action */}
+                  <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div>
+                      <p className="text-xs text-emerald-300 font-bold">சட்ட ஆவணங்களை நிபுணர்களைக் கொண்டு சரிபார்க்க வேண்டுமா?</p>
+                      <p className="text-[11px] text-slate-100">எங்கள் சட்ட ஆலோசகர்கள் மூலம் உங்கள் ஆவணங்களை முழுமையாகத் தணிக்கை செய்து அறிக்கை பெறலாம்.</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const msg = 'வணக்கம் நம்ம பூமி 360, எனது நில ஆவணங்களை A to Z தணிக்கை (Legal Audit) செய்ய விரும்புகிறேன். வழிகாட்டவும்.';
+                       window.open(getWhatsAppUrl(msg), '_blank');
+                      }}
+                      className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 whitespace-nowrap active:scale-95 transition-all"
+                    >
+                      <span>⚖️</span> சட்ட தணிக்கை உதவி பெறுக
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* நிலத்தை விற்கப் படிவம் */}
+            {activeMainTab === 'sell' && (
+              <div className="mt-4 bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 max-w-2xl mx-auto shadow-2xl">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">📢</span>
+                  <h3 className="text-xl font-bold text-white">உங்கள் நிலத்தை நேரடி விற்பனைக்கு பட்டியலிடுங்கள்</h3>
+                </div>
+                <p className="text-xs text-slate-100 mb-6">
+                  இடைத்தரகர்கள் இன்றி, உண்மையான வாங்குபவர்களிடம் இருந்து நேரடியாக அழைப்புகள் மற்றும் விசிட் பாஸ்களைப் பெறுங்கள்.
+                </p>
+
+                {sellSuccessMsg && (
+                  <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl text-sm font-semibold">
+                    ✓ உங்கள் நிலம் வெற்றிகரமாக சந்தையில் பட்டியலிடப்பட்டது!
+                  </div>
+                )}
+
+                <form onSubmit={handleSellSubmit} className="space-y-4 text-xs">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-slate-300 font-semibold mb-1 block">உரிமையாளர் பெயர் *</label>
+                      <input
+                        type="text"
+                        required
+                        value={sellForm.ownerName}
+                        onChange={(e) => setSellForm({ ...sellForm, ownerName: e.target.value })}
+                        placeholder="முழுப் பெயர் (பட்டாப்படி)"
+                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-slate-300 font-semibold mb-1 block">தொடர்பு எண் *</label>
+                      <input
+                        type="tel"
+                        required
+                        value={sellForm.phone}
+                        onChange={(e) => setSellForm({ ...sellForm, phone: e.target.value })}
+                        placeholder="10 இலக்க மொபைல் எண்"
+                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="text-slate-300 font-semibold mb-1 block">மாவட்டம் *</label>
+                      <select
+                        value={sellForm.district}
+                        onChange={(e) => setSellForm({ ...sellForm, district: e.target.value })}
+                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none"
+                      >
+                        <option value="செங்கல்பட்டு">செங்கல்பட்டு</option>
+                        <option value="காஞ்சிபுரம்">காஞ்சிபுரம்</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-slate-300 font-semibold mb-1 block">கிராமம் / பகுதி *</label>
+                      <input
+                        type="text"
+                        required
+                        value={sellForm.village}
+                        onChange={(e) => setSellForm({ ...sellForm, village: e.target.value })}
+                        placeholder="எ.கா. திருப்போரூர்"
+                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-slate-300 font-semibold mb-1 block">சர்வே எண் *</label>
+                      <input
+                        type="text"
+                        required
+                        value={sellForm.surveyNo}
+                        onChange={(e) => setSellForm({ ...sellForm, surveyNo: e.target.value })}
+                        placeholder="எ.கா. 142/1B"
+                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-slate-300 font-semibold mb-1 block">பரப்பளவு *</label>
+                      <input
+                        type="text"
+                        required
+                        value={sellForm.extent}
+                        onChange={(e) => setSellForm({ ...sellForm, extent: e.target.value })}
+                        placeholder="எ.கா. 2,400 ச.அடி"
+                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-slate-300 font-semibold mb-1 block">எதிர்பார்க்கும் விலை (சதுர அடிக்கு ₹) *</label>
+                      <input
+                        type="text"
+                        required
+                        value={sellForm.askingPrice}
+                        onChange={(e) => setSellForm({ ...sellForm, askingPrice: e.target.value })}
+                        placeholder="எ.கா. 1,800"
+                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3.5 rounded-xl text-sm transition shadow-lg shadow-emerald-500/20 cursor-pointer"
+                  >
+                    நிலத்தை உடனடியாகப் பட்டியலிடுக ⚡
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ============================================================ */}
+        {/* 2. AI ஜோதிடம் & எளிய பரிகாரம் (UNIVERSAL AI ASTROLOGY HUB) */}
+        {/* ============================================================ */}
+        {/* 2. AI ஜோதிடம் & ஜாதக ஆய்வு (AI Astrology 360) */}
+        {currentModule === 'astro' && (
+          <div className="space-y-6">
+            <AstrologyModule setCurrentModule={setCurrentModule} />
+          </div>
+        )}
+        {/* சுற்றுலா மாடியூல் (Tourism 360) */}
+        {currentModule === 'tourism' && (
+          <div className="space-y-6">
+            <TourismModule setCurrentModule={setCurrentModule} />
+          </div>
+        )}
+
+        {/* 3. விவசாயம் (Agri 360) மாடியூல் */}
+        {currentModule === 'agri' && (
+          <div className="space-y-6">
+            <AgriModule setCurrentModule={setCurrentModule} />
+          </div>
+        )}
+        {/* 4. நிதி & கடன்கள் (Finance & All Loans Hub + Instant Decision Engine) */}
+        {currentModule === 'finance' && (
+          <div className="space-y-6">
+            <FinanceModule />
+          </div>
+        )}
+        {/* 5. காப்பீடு (Insurance 360 Hub) மாடியூல் */}
+        {currentModule === 'insurance' && (
+          <div className="space-y-6">
+            <InsuranceModule setCurrentModule={setCurrentModule} />
+          </div>
+        )}
+        {/* 6. கல்வி & படிப்பு (Education Hub) */}
+        {currentModule === 'education' && (
+          <div className="space-y-6">
+            <EducationModule />
+            {/* தலைப்பு & அரசு நலத்திட்ட பேனர் */}
+            <div className="bg-gradient-to-r from-blue-950/80 via-slate-900 to-indigo-950/80 border border-blue-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <span className="inline-block px-3 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-full mb-2 border border-blue-500/40">
+                    🎓 கல்வி & எதிர்கால வழிகாட்டி மையம்
+                  </span>
+                  <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                    <span>நம்ம பூமி கல்வி 360</span>
+                  </h2>
+                  <p className="text-sm text-slate-300 mt-1">
+                    "என்ன படித்தால் என்ன ஆகலாம்?" வழிகாட்டி • அரசு & தனியார் உதவித்தொகைகள் • இலவச விடுதிகள் & கல்விக் கடன்
+                  </p>
+                </div>
+
+                {/* சப்-டேப் பட்டன்கள் */}
+                <div className="flex flex-wrap gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-700">
+                  <button
+                    onClick={() => setEducationSubTab('pathway')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${educationSubTab === 'pathway' ? 'bg-blue-600 text-white shadow' : 'text-slate-100 hover:text-white'
+                      }`}
+                  >
+                    🎯 என்ன படித்தால் என்ன ஆகலாம்?
+                  </button>
+                  <button
+                    onClick={() => setEducationSubTab('scholarships')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${educationSubTab === 'scholarships' ? 'bg-blue-600 text-white shadow' : 'text-slate-100 hover:text-white'
+                      }`}
+                  >
+                    💰 உதவித்தொகைகள் (Scholarships)
+                  </button>
+                  <button
+                    onClick={() => setEducationSubTab('welfare')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${educationSubTab === 'welfare' ? 'bg-blue-600 text-white shadow' : 'text-slate-100 hover:text-white'
+                      }`}
+                  >
+                    🏢 மாணவர் விடுதிகள் & கல்விக் கடன்
+                  </button>
+                </div>
+              </div>
+
+              {/* முக்கிய அரசு சலுகைகள் அறிவிப்பு ஸ்ட்ரிப் */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4 pt-4 border-t border-slate-800 text-xs">
+                <div className="bg-slate-900/60 p-2.5 rounded-lg border border-blue-500/20 flex items-center gap-2">
+                  <span className="text-pink-400 font-bold">👩 புதுமைப் பெண்:</span>
+                  <span className="text-slate-300">கல்லூரி மாணவிகளுக்கு மாதம் ₹1,000</span>
+                </div>
+                <div className="bg-slate-900/60 p-2.5 rounded-lg border border-blue-500/20 flex items-center gap-2">
+                  <span className="text-blue-400 font-bold">👨 தமிழ்ப் புதல்வன்:</span>
+                  <span className="text-slate-300">கல்லூரி மாணவர்களுக்கு மாதம் ₹1,000</span>
+                </div>
+                <div className="bg-slate-900/60 p-2.5 rounded-lg border border-blue-500/20 flex items-center gap-2">
+                  <span className="text-emerald-400 font-bold">🏛️ 7.5% இடஒதுக்கீடு:</span>
+                  <span className="text-slate-300">அரசுப் பள்ளி மாணவர்களுக்கு முழுக் கட்டண விலக்கு</span>
+                </div>
+              </div>
+            </div>
+
+            {/* சப்-டேப் 1: என்ன படித்தால் என்ன ஆகலாம்? (Career Pathway) */}
+            {educationSubTab === 'pathway' && (
+              <div className="space-y-4">
+                <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4">
+                  <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                    <span>🎯 உங்கள் எதிர்காலக் கனவைத் தேர்ந்தெடுங்கள் (Select Career Goal):</span>
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                    {[
+                      { id: 'agri_officer', title: 'வேளாண் அலுவலர்', icon: '🌾' },
+                      { id: 'bank_officer', title: 'வங்கி மேனேஜர்', icon: '🏦' },
+                      { id: 'tech_ai', title: 'மென்பொருள் / AI', icon: '💻' },
+                      { id: 'civil_service', title: 'IAS / IPS / DSP', icon: '🏛️' },
+                      { id: 'doctor_nurse', title: 'மருத்துவர் / செவிலியர்', icon: '🏥' },
+                      { id: 'entrepreneur', title: 'நவீன பண்ணைத் தொழில்', icon: '🚜' }
+                    ].map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => setSelectedCareer(item.id)}
+                        className={`p-2.5 rounded-xl text-center border transition flex flex-col items-center gap-1 ${selectedCareer === item.id
+                            ? 'bg-blue-600/30 border-blue-500 text-blue-200'
+                            : 'bg-slate-800/60 border-slate-700 text-slate-300 hover:bg-slate-800'
+                          }`}
+                      >
+                        <span className="text-2xl">{item.icon}</span>
+                        <span className="text-xs font-semibold">{item.title}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* தேர்ந்தெடுக்கப்பட்ட பணிக்கான வரைபடம் (Roadmap Card) */}
+                {selectedCareer === 'agri_officer' && (
+                  <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <h4 className="text-lg font-bold text-emerald-400 flex items-center gap-2">
+                        🌾 வேளாண் அலுவலர் (Agricultural Officer / Bank AFO) ஆவதற்கான பாதை
+                      </h4>
+                      <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-semibold rounded-md border border-emerald-500/30">
+                        ஆரம்ப ஊதியம்: ₹40,000 - ₹65,000/மாதம்
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                        <p className="text-slate-300 leading-relaxed">பயாலஜி-மேக்ஸ் அல்லது தூய அறிவியல் (Pure Science) அல்லது வேளாண் தொழிற்கல்வி பிரிவு.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                        <p className="text-slate-300 leading-relaxed">B.Sc (Hons) Agriculture / Horticulture / Agricultural Engineering (TNAU & அங்கீகரிக்கப்பட்ட கல்லூரிகள்).</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">3. எழுத வேண்டிய தேர்வுகள்</p>
+                        <p className="text-slate-300 leading-relaxed">TNPSC Agricultural Officer தேர்வு, வங்கி IBPS SO (Agriculture Field Officer) தேர்வு, அல்லது ICAR JRF.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">4. பணி வாய்ப்புகள்</p>
+                        <p className="text-slate-300 leading-relaxed">தமிழக வேளாண் விரிவாக்கத் துறை, தேசியமயமாக்கப்பட்ட வங்கிகள், விதை & உரம் உற்பத்தி நிறுவனங்கள்.</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => alert("TNAU அதிகாரப்பூர்வ இணையதளம்: tnau.ac.in \nவிண்ணப்ப விவரங்கள் மற்றும் கட்-ஆப் மதிப்பெண்களை அங்கே சரிபார்க்கலாம்.")}
+                      className="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/50 text-emerald-200 rounded-xl text-xs font-semibold transition"
+                    >
+                      TNAU வேளாண் சேர்க்கை வழிகாட்டல் பார்க்க ↗
+                    </button>
+                  </div>
+                )}
+
+                {selectedCareer === 'bank_officer' && (
+                  <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <h4 className="text-lg font-bold text-blue-400 flex items-center gap-2">
+                        🏦 வங்கி மேனேஜர் (Bank PO / Manager) ஆவதற்கான பாதை
+                      </h4>
+                      <span className="px-2.5 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-md border border-blue-500/30">
+                        ஆரம்ப ஊதியம்: ₹50,000 - ₹75,000/மாதம்
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                        <p className="text-slate-300 leading-relaxed">வணிகவியல் (Commerce), கணக்கியல், கணிதம் அல்லது ஏதேனும் ஒரு விருப்பப் பாடம்.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                        <p className="text-slate-300 leading-relaxed">B.Com, BBA, B.Sc, B.E அல்லது ஏதேனும் ஒரு பட்டப்படிப்பு (Any Degree with 50-60% marks).</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">3. எழுத வேண்டிய தேர்வுகள்</p>
+                        <p className="text-slate-300 leading-relaxed">IBPS PO, SBI PO, RBI Grade B, கூட்டுறவு வங்கி உதவியாளர் தேர்வுகள்.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">4. பணி வாய்ப்புகள்</p>
+                        <p className="text-slate-300 leading-relaxed">SBI, இந்தியன் வங்கி, கனரா வங்கி, கிராமப்புற வங்கிகள் மற்றும் முன்னணி தனியார் வங்கிகள்.</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => alert("IBPS அதிகாரப்பூர்வ போர்டல்: ibps.in \nஆண்டுதோறும் ஆகஸ்ட்-அக்டோபர் மாதங்களில் PO மற்றும் Clerk தேர்வுகள் நடத்தப்படும்.")}
+                      className="w-full py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-200 rounded-xl text-xs font-semibold transition"
+                    >
+                      IBPS வங்கித் தேர்வு அறிவிப்புகளைப் பார்க்க ↗
+                    </button>
+                  </div>
+                )}
+
+                {selectedCareer === 'tech_ai' && (
+                  <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <h4 className="text-lg font-bold text-cyan-400 flex items-center gap-2">
+                        💻 மென்பொருள் & செயற்கை நுண்ணறிவு (Software / AI Engineer)
+                      </h4>
+                      <span className="px-2.5 py-1 bg-cyan-500/20 text-cyan-300 text-xs font-semibold rounded-md border border-cyan-500/30">
+                        ஆரம்ப ஊதியம்: ₹35,000 - ₹1,00,000/மாதம்
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                        <p className="text-slate-300 leading-relaxed">கணிதம் மற்றும் கணினி அறிவியல் அல்லது அறிவியல் பிரிவு (Maths mandatory).</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                        <p className="text-slate-300 leading-relaxed">B.E/B.Tech (CSE, IT, AI & Data Science) அல்லது BCA, B.Sc Computer Science.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">3. அவசியமான திறன்கள்</p>
+                        <p className="text-slate-300 leading-relaxed">Python, SQL, Web Full Stack, AI & Cloud அடிப்படைகள் மற்றும் புராஜெக்ட் போர்ட்ஃபோலியோ.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">4. பணி வாய்ப்புகள்</p>
+                        <p className="text-slate-300 leading-relaxed">சர்வதேச IT நிறுவனங்கள், ஸ்டார்ட்-அப்கள் மற்றும் வீட்டிலிருந்தே பணிபுரியும் தொலைதூர வேலைகள்.</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => alert("நான் முதல்வன் போர்டல்: naanmudhalvan.tn.gov.in \nகல்லூரி மாணவர்களுக்கான இலவச மென்பொருள் மற்றும் AI பயிற்சி வகுப்புகள்.")}
+                      className="w-full py-2 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/50 text-cyan-200 rounded-xl text-xs font-semibold transition"
+                    >
+                      நான் முதல்வன் இலவச தொழில்நுட்பப் பயிற்சிகள் ↗
+                    </button>
+                  </div>
+                )}
+
+                {selectedCareer === 'civil_service' && (
+                  <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <h4 className="text-lg font-bold text-amber-400 flex items-center gap-2">
+                        🏛️ மாவட்ட ஆட்சியர் / டி.எஸ்.பி (IAS, IPS, TNPSC Group 1)
+                      </h4>
+                      <span className="px-2.5 py-1 bg-amber-500/20 text-amber-300 text-xs font-semibold rounded-md border border-amber-500/30">
+                        அரசு குரூப் 1 நிலை அதிகாரி
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                        <p className="text-slate-300 leading-relaxed">ஏதேனும் ஒரு பிரிவு (வரலாறு, தமிழ், வணிகவியல் அல்லது அறிவியல்).</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                        <p className="text-slate-300 leading-relaxed">அங்கீகரிக்கப்பட்ட ஏதேனும் ஒரு பட்டப்படிப்பு (Any UG Degree - B.A, B.Sc, B.Com, B.E).</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">3. எழுத வேண்டிய தேர்வுகள்</p>
+                        <p className="text-slate-300 leading-relaxed">UPSC Civil Services (IAS/IPS) அல்லது TNPSC Group 1 (துணை ஆட்சியர், DSP) தேர்வுகள்.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">4. தயாரிப்பு முறை</p>
+                        <p className="text-slate-300 leading-relaxed">NCERT & சமச்சீர் கல்வி புத்தகங்கள், தினசரி நாளிதழ் வாசிப்பு, பொது அறிவு மற்றும் நடப்பு நிகழ்வுகள்.</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => alert("TNPSC அதிகாரப்பூர்வ தளம்: tnpsc.gov.in \nகுரூப் 1, 2, மற்றும் 4 தேர்வு அறிவிப்புகளுக்கு இதில் விண்ணப்பிக்கலாம்.")}
+                      className="w-full py-2 bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/50 text-amber-200 rounded-xl text-xs font-semibold transition"
+                    >
+                      TNPSC அதிகாரப்பூர்வ தேர்வு போர்டல் ↗
+                    </button>
+                  </div>
+                )}
+
+                {selectedCareer === 'doctor_nurse' && (
+                  <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <h4 className="text-lg font-bold text-rose-400 flex items-center gap-2">
+                        🏥 மருத்துவம் & துணை மருத்துவம் (MBBS, BDS, Nursing, Allied Health)
+                      </h4>
+                      <span className="px-2.5 py-1 bg-rose-500/20 text-rose-300 text-xs font-semibold rounded-md border border-rose-500/30">
+                        மக்களுக்கான மருத்துவச் சேவை
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">1. பள்ளிப் படிப்பு (11 & 12)</p>
+                        <p className="text-slate-300 leading-relaxed">இயற்பியல், வேதியியல், உயிரியல் (Biology / Maths mandatory).</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">2. கல்லூரி பட்டப்படிப்பு</p>
+                        <p className="text-slate-300 leading-relaxed">MBBS, BDS, B.Sc Nursing, B.Pharm, கார்டியாக் டெக்னாலஜி, ரேடியாலஜி.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">3. நுழைவுத் தேர்வுகள்</p>
+                        <p className="text-slate-300 leading-relaxed">மருத்துவத்திற்கு NEET UG கட்டாயம்; நர்சிங் மற்றும் பாராமெடிக்கலுக்கு 12-ஆம் வகுப்பு கட்-ஆப் மதிப்பெண்.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">4. சிறப்புச் சலுகை</p>
+                        <p className="text-slate-300 leading-relaxed">தமிழக அரசுப் பள்ளி மாணவர்களுக்கு 7.5% மருத்துவ உள்ஒதுக்கீடு மற்றும் முழு கட்டணச் சலுகை உண்டு.</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => alert("மருத்துவக் கலந்தாய்வு தேர்வுக் குழு போர்டல்: tnmedicalselection.net \nNEET மற்றும் பாராமெடிக்கல் சேர்க்கை விவரங்களை இங்கே பெறலாம்.")}
+                      className="w-full py-2 bg-rose-600/30 hover:bg-rose-600/50 border border-rose-500/50 text-rose-200 rounded-xl text-xs font-semibold transition"
+                    >
+                      TN மருத்துவக் கல்வி சேர்க்கை வழிகாட்டல் ↗
+                    </button>
+                  </div>
+                )}
+
+                {selectedCareer === 'entrepreneur' && (
+                  <div className="bg-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-xl space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <h4 className="text-lg font-bold text-lime-400 flex items-center gap-2">
+                        🚜 நவீன பண்ணை & வேளாண் மதிப்புக்கூட்டு தொழில்முனைவோர்
+                      </h4>
+                      <span className="px-2.5 py-1 bg-lime-500/20 text-lime-300 text-xs font-semibold rounded-md border border-lime-500/30">
+                        சுயதொழில் & வேலை தருபவர்
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">1. கல்வித் தகுதி</p>
+                        <p className="text-slate-300 leading-relaxed">10th, 12th, ITI, அக்ரி டிப்ளமோ அல்லது ஏதேனும் ஒரு பட்டப்படிப்பு போதுமானது.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">2. தொழில் வாய்ப்புகள்</p>
+                        <p className="text-slate-300 leading-relaxed">நாட்டுக்கோழி பண்ணை, பால் பண்ணை, சொட்டுநீர் பாசனம், இயற்கை உரம், உணவு பதப்படுத்துதல்.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">3. அரசு மானியங்கள்</p>
+                        <p className="text-slate-300 leading-relaxed">PMEGP திட்டம் (35% வரை மானியம்), அக்ரி கிளினிக் (ACABC) திட்டம், மற்றும் NEEDS திட்டம்.</p>
+                      </div>
+                      <div className="bg-slate-800/60 p-3.5 rounded-xl border border-slate-700">
+                        <p className="text-blue-400 font-bold mb-1">4. பயிற்சி மையங்கள்</p>
+                        <p className="text-slate-300 leading-relaxed">மாவட்ட வேளாண்மை அறிவியல் மையம் (KVK) மற்றும் நபார்டு (NABARD) பயிற்சி மையங்கள்.</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => alert("KVK மாவட்ட மையங்கள் மற்றும் MSME வழிகாட்டலுக்கு மாவட்ட தொழில் மையம் (DIC)-ஐ அணுகலாம்.")}
+                      className="w-full py-2 bg-lime-600/30 hover:bg-lime-600/50 border border-lime-500/50 text-lime-200 rounded-xl text-xs font-semibold transition"
+                    >
+                      வேளாண் தொழில் முனைவோர் மானியங்கள் பார்க்க ↗
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* சப்-டேப் 2: உதவித்தொகைகள் & அறக்கட்டளைகள் (Scholarships) */}
+            {educationSubTab === 'scholarships' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  {
+                    title: 'அகரம் பவுண்டேஷன் (Agaram Foundation)',
+                    badge: 'முழு கல்விக் கட்டணம் + தங்குமிடம்',
+                    desc: 'கிராமப்புற மற்றும் ஏழை எளிய குடும்பங்களைச் சேர்ந்த முதல் தலைமுறை மாணவர்களுக்கான முழு கல்விக் கட்டணம்.',
+                    target: '12-ஆம் வகுப்பில் சிறந்த மதிப்பெண் பெற்ற ஏழை மாணவர்கள்',
+                    action: () => alert("அகரம் பவுண்டேஷன் தொடர்பு எண்: 8448448948 \nஇணையதளம்: agaram.in \nவிண்ணப்பப் படிவங்களை இணையவழியாகப் பெறலாம்.")
+                  },
+                  {
+                    title: 'புதுமைப் பெண் & தமிழ்ப் புதல்வன் திட்டம்',
+                    badge: 'மாதம் ₹1,000 நேரடி வங்கி வரவு',
+                    desc: 'அரசுப் பள்ளிகளில் 6 முதல் 12 வரை படித்து கல்லூரியில் சேரும் அனைத்து மாணவிகளுக்கும் மாணவர்களுக்கும் மாதம் ₹1,000.',
+                    target: 'அரசுப் பள்ளி மாணவர்கள் (UG படிப்பு முடியும் வரை)',
+                    action: () => alert("விண்ணப்பிக்கும் முறை: நீங்கள் படிக்கும் கல்லூரி அலுவலகம் மூலமாக UMIS போர்ட்டலில் சான்றிதழ் சமர்ப்பிக்க வேண்டும்.")
+                  },
+                  {
+                    title: 'முதல் தலைமுறை பட்டதாரி சலுகை',
+                    badge: 'முழு கல்விக் கட்டண விலக்கு',
+                    desc: 'குடும்பத்தில் முதல் பட்டதாரியாக பொறியியல் மற்றும் மருத்துவக் கலந்தாய்வில் சேரும் மாணவர்களுக்கான கல்விக் கட்டண விலக்கு.',
+                    target: 'குடும்பத்தில் வேறு பட்டதாரிகள் இல்லாத மாணவர்கள்',
+                    action: () => alert("சான்றிதழ் பெறும் முறை: இ-சேவை மையம் மூலம் 'முதல் தலைமுறை பட்டதாரி சான்றிதழ்' (First Graduate Certificate) பெற்று சமர்ப்பிக்கவும்.")
+                  },
+                  {
+                    title: 'வித்யாசாரதி போர்டல் (Vidyasaarathi NSDL)',
+                    badge: 'ஆண்டுக்கு ₹20,000 முதல் ₹50,000',
+                    desc: 'டாடா, ஏசிசி, அப்பல்லோ போன்ற 50-க்கும் மேற்பட்ட கார்ப்பரேட் நிறுவனங்களின் CSR கல்வி உதவித்தொகை ஒரே தளத்தில்.',
+                    target: 'ITI, பாலிடெக்னிக், மற்றும் டிகிரி மாணவர்கள்',
+                    action: () => alert("வித்யாசாரதி இணையதளம்: vidyasaarathi.co.in \nதளத்தில் பதிவு செய்து நிறுவனங்களின் ஸ்காலர்ஷிப்களுக்கு நேரடியாக விண்ணப்பிக்கலாம்.")
+                  },
+                  {
+                    title: 'ரிலையன்ஸ் பவுண்டேஷன் உதவித்தொகை',
+                    badge: 'ஆண்டுக்கு ₹2,00,000 வரை',
+                    desc: 'இளங்கலை மற்றும் முதுகலை பயிலும் பொருளாதாரத்தில் பின்தங்கிய திறமை வாய்ந்த மாணவர்களுக்கான கல்வி உதவி நிதி.',
+                    target: 'குடும்ப ஆண்டு வருமானம் ₹15 லட்சத்திற்குள் உள்ள மாணவர்கள்',
+                    action: () => alert("ரிலையன்ஸ் பவுண்டேஷன் போர்டல்: scholarships.reliancefoundation.org \nஆண்டுதோறும் நுழைவுத் தேர்வு அடிப்படையில் தேர்வு செய்யப்படும்.")
+                  },
+                  {
+                    title: 'HDFC பரிவர்த்தன் கல்வி நிதி (ECSS)',
+                    badge: 'ஆண்டுக்கு ₹30,000 முதல் ₹75,000',
+                    desc: 'குடும்பத்தில் எதிர்பாராத நிதி நெருக்கடி அல்லது பெற்றோர் இழப்பு ஏற்பட்ட பள்ளி, கல்லூரி மாணவர்களின் தொடர் கல்விக்கான உதவி.',
+                    target: '1 முதல் 12 வகுப்பு, டிப்ளமோ, டிகிரி & PG மாணவர்கள்',
+                    action: () => alert("HDFC போர்டல்: buddy4study.com/page/hdfc-bank-parivartan-ecss-programme \nவிண்ணப்ப விவரங்களை போர்ட்டலில் காணலாம்.")
+                  }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-blue-500/50 transition">
+                    <div>
+                      <div className="flex justify-between items-start gap-2 mb-2">
+                        <h4 className="text-sm font-bold text-white leading-tight">{item.title}</h4>
+                        <span className="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded border border-blue-500/30 whitespace-nowrap">
+                          {item.badge}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed mb-3">{item.desc}</p>
+                      <div className="bg-slate-800/60 p-2 rounded-lg text-[11px] text-slate-100 mb-4 border border-slate-700/60">
+                        <strong className="text-slate-300">தகுதி: </strong>{item.target}
+                      </div>
+                    </div>
+                    <button
+                      onClick={item.action}
+                      className="w-full py-2 bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white rounded-lg text-xs font-semibold transition border border-slate-700 hover:border-blue-500"
+                    >
+                      விவரம் & தொடர்பு எண்கள் ↗
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* சப்-டேப் 3: மாணவர் விடுதிகள் & கல்விக் கடன் (Student Welfare) */}
+            {educationSubTab === 'welfare' && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">🏢</span>
+                  <h4 className="text-base font-bold text-white">இலவச அரசு மாணவர் விடுதிகள்</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    பிற்படுத்தப்பட்டோர் (BC/MBC) மற்றும் ஆதிதிராவிடர் நலத்துறை மூலமாக அனைத்து மாவட்டத் தலைநகரங்களிலும் இலவச உணவு மற்றும் தங்குமிட விடுதிகள் இயங்குகின்றன.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                    <p>✔ முற்றிலும் இலவச உணவு & தங்குமிடம்</p>
+                    <p>✔ கல்லூரி படிக்கும் வரை தங்கலாம்</p>
+                  </div>
+                  <button
+                    onClick={() => alert("விண்ணப்பிக்கும் தளம்: tnbchostels.in மற்றும் adwhostels.tn.gov.in \nமாவட்ட கலெக்டர் அலுவலக நலத்துறை மூலமும் விண்ணப்பிக்கலாம்.")}
+                    className="w-full py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    அரசு விடுதி போர்ட்டலில் விண்ணப்பிக்க ↗
+                  </button>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">💳</span>
+                  <h4 className="text-base font-bold text-white">CSIS வட்டியில்லாக் கல்விக் கடன்</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    மத்திய அரசின் CSIS திட்டத்தின் கீழ், குடும்ப ஆண்டு வருமானம் ₹4.5 லட்சத்திற்குள் உள்ள மாணவர்களுக்கு கல்லூரி படிக்கும் காலம் வரை முழுக் கடன் வட்டியை அரசே ஏற்கும்.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                    <p>✔ படிக்கும் போது வட்டி கட்ட வேண்டாம்</p>
+                    <p>✔ வேலை கிடைத்த 1 ஆண்டுக்கு பின் திருப்பிச் செலுத்தலாம்</p>
+                  </div>
+                  <button
+                    onClick={() => alert("வித்யா லக்ஷ்மி அதிகாரப்பூர்வ போர்டல்: vidyalakshmi.co.in \nஅனைத்து வங்கிகளின் கல்விக் கடன்களுக்கும் இந்த ஒரே தளத்தில் விண்ணப்பிக்கலாம்.")}
+                    className="w-full py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    வித்யா லக்ஷ்மி கல்விக் கடன் போர்டல் ↗
+                  </button>
+                </div>
+
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                  <span className="text-2xl">💼</span>
+                  <h4 className="text-base font-bold text-white">NATS படிக்கும்போதே உதவித்தொகை வேலை</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    மத்திய அரசின் தேசிய அப்ரண்டிஸ்ஷிப் (NATS) மூலம் டிப்ளமோ மற்றும் டிகிரி முடித்த/படிக்கும் மாணவர்களுக்கு முன்னணி நிறுவனங்களில் ஊக்கத்தொகையுடன் தொழிற்பயிற்சி.
+                  </p>
+                  <div className="bg-slate-800/60 p-2.5 rounded-lg text-xs text-emerald-400 space-y-1">
+                    <p>✔ மாதம் ₹9,000 முதல் ₹15,000 ஊக்கத்தொகை</p>
+                    <p>✔ அரசு அங்கீகரிக்கப்பட்ட பணி அனுபவ சான்றிதழ்</p>
+                  </div>
+                  <button
+                    onClick={() => alert("NATS அதிகாரப்பூர்வ போர்டல்: nats.education.gov.in \nபதிவு செய்து தொழிற்சாலைப் பயிற்சிக்கு நேரடியாக விண்ணப்பிக்கலாம்.")}
+                    className="w-full py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-200 rounded-lg text-xs font-semibold transition"
+                  >
+                    NATS போர்ட்டலில் பதிவு செய்ய ↗
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        {/* 7. வேலைவாய்ப்பு & வழிகாட்டல் (Jobs Hub) */}
+        {currentModule === 'jobs' && (
+          <div className="space-y-6">
+            <JobModule />
+          </div>
+        )}
+        {/* 8. தொழில் & MSME (Business Hub) */}
+        {currentModule === 'business' && (
+          <div className="space-y-6">
+            {/* MSME Bank DPR Banner */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 p-4 rounded-xl border border-indigo-500/40 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+          <div>
+            <span className="text-[11px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-0.5 rounded-full font-bold">
+              PMEGP • UYEGP • MUDRA • NEEDS
+            </span>
+            <h3 className="text-base sm:text-lg font-bold text-white mt-1.5">
+              வங்கி கடன் திட்ட அறிக்கை (Bank Project Report DPR Studio)
+            </h3>
+            <p className="text-xs text-slate-300 mt-0.5">
+              அரசு மானியத் திட்டங்களுக்குத் தகுதியான விரிவான திட்ட அறிக்கையை (DPR) நொடியில் உருவாக்குங்கள்.
+            </p>
+          </div>
+          <Link 
+            href="/msme-project" 
+            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-lg whitespace-nowrap shadow transition"
+          >
+            அறிக்கை உருவாக்க →
+          </Link>
+        </div>
+        
+            <BusinessModule setCurrentModule={setCurrentModule} />
+          </div>
+        )}
+        {/* 8(b). மொத்த விற்பனை (Wholesale B2B Hub) மாடியூல் */}
+        {currentModule === 'wholesale' && (
+          <div className="space-y-6">
+            <WholesaleModule setCurrentModule={setCurrentModule} />
+          </div>
+        )}
+
+        {/* 9. ஆன்மிகம் & சுற்றுலா (Spiritual & Heritage Hub) */}
+        {currentModule === 'spiritual' && (
+          <div className="space-y-6">
+            <SpiritualModule setCurrentModule={setCurrentModule} />
+          </div>
+        )}
+        {/* 12. தமிழர் மரபு மாட்யூல் */}
+{currentModule === 'heritage' && (
+  <div className="space-y-6">
+    <TamilHeritageModule />
+  </div>
+)}
+{/* 13. AI மீடியா & டிஜிட்டல் விளம்பர ஸ்டுடியோ */}
+            {currentModule === 'media_studio' && (
+              <div className="space-y-6">
+                <MediaPromoStudio setCurrentModule={setCurrentModule} />
+                <InstantInvoiceStudio />
+              </div>
+            )}
+       {/* 360 சொத்து முழு விவர மாடல் */}
+      {selectedLandDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black bg-opacity-80 backdrop-blur-sm">
+          <div className="relative w-full max-w-4xl max-h-[94vh] bg-slate-900 border border-slate-700/80 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+            
+            {/* மூடும் பொத்தான் */}
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setSelectedLandDetail(null)}
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-950/80 hover:bg-slate-800 text-white flex items-center justify-center transition shadow z-20 border border-slate-700 cursor-pointer"
+            >
+              ✕
+            </div>
+
+            {/* பிரதான 2-நெடுவரிசை அமைப்பு */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
+              
+              {/* இடதுபுறம்: படம், விலை & உரிமையாளர் அட்டை */}
+              <div className="md:col-span-5 bg-slate-950/60 p-4 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800">
+                <div className="space-y-3">
+                  <div className="relative h-44 w-full rounded-xl overflow-hidden border border-slate-800 shadow">
+                    <img
+                      src={selectedLandDetail.image || '/placeholder-land.jpg'}
+                      alt={selectedLandDetail.title || 'நில விவரம்'}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
+                    <div className="absolute bottom-2 left-2 right-2">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                        {selectedLandDetail.category || selectedLandDetail.type || 'மனை / நிலம்'}
+                      </span>
+                      <p className="text-xs text-slate-300 mt-1 truncate">
+                        📍 {selectedLandDetail.village ? `${selectedLandDetail.village}, ` : ''}{selectedLandDetail.district || ''}
+                      </p>
+                    </div>
+                  </div>
+
+                  <h3 className="text-sm font-bold text-white line-clamp-2 leading-snug">
+                    {selectedLandDetail.title}
+                  </h3>
+
+                  {/* விலை & பரப்பளவு */}
+                  <div className="grid grid-cols-2 gap-2 bg-slate-900 p-2.5 rounded-xl border border-slate-800 text-xs">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block">மதிப்பு / விலை</span>
+                      <span className="text-sm font-extrabold text-emerald-400">
+                        {selectedLandDetail.askingPrice || selectedLandDetail.price || 'விவரம் இல்லை'}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[10px] text-slate-400 block">பரப்பளவு</span>
+                      <span className="text-xs font-bold text-white">
+                        {selectedLandDetail.extent || selectedLandDetail.area || 'விவரம் இல்லை'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* நேரடி உரிமையாளர் தொடர்பு அட்டை */}
+                {selectedLandDetail.ownerName && (
+                  <div className="bg-slate-900 border border-emerald-500/40 rounded-xl p-2.5 mt-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-300 font-bold text-xs">
+                          {selectedLandDetail.ownerName[0]}
+                        </div>
+                        <div>
+                          <p className="font-bold text-white text-[11px] leading-tight">
+                            {selectedLandDetail.ownerName}
+                          </p>
+                          <span className="text-emerald-400 text-[9px] font-semibold">
+                            {selectedLandDetail.badge || 'நேரடி உரிமையாளர்'} ✓
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        {selectedLandDetail.phone && (
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => window.open(`tel:${selectedLandDetail.phone.replace(/\s+/g, '')}`, '_self')}
+                            className="px-2.5 py-1.5 rounded-lg font-bold text-[10px] flex items-center gap-1 shadow cursor-pointer active:scale-95"
+                            style={{ backgroundColor: '#059669', color: '#ffffff' }}
+                          >
+                            <span>📞</span> <span>அழை</span>
+                          </div>
+                        )}
+                        {selectedLandDetail.phone && (
+                          <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => window.open(getWhatsAppUrl('', selectedLandDetail.phone), '_blank')}
+                            className="px-2.5 py-1.5 rounded-lg font-bold text-[10px] flex items-center gap-1 shadow cursor-pointer active:scale-95"
+                            style={{ backgroundColor: '#16a34a', color: '#ffffff' }}
+                          >
+                            <span>💬</span> <span>WA</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* வலதுபுறம்: கள விவரங்கள், ஆவணங்கள் & சைட் விசிட் */}
+              <div className="md:col-span-7 p-4 flex flex-col justify-between space-y-2.5 bg-slate-900">
+                <div className="space-y-2">
+                  
+                  {/* கள விவரங்கள் */}
+                  <div className="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 space-y-1.5">
+                    <div className="text-[11px] font-bold text-slate-200 flex items-center gap-1.5">
+                      <span>📐</span> கள விவரங்கள் (Physical 360)
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
+                        <span className="text-slate-400 block text-[10px]">சர்வே எண்:</span>
+                        <span className="font-semibold text-slate-200 text-[11px]">
+                          {selectedLandDetail.surveyNo || 'சரிபார்க்கப்படுகிறது'}
+                        </span>
+                      </div>
+                      <div className="p-2 rounded-lg bg-slate-900 border border-slate-800/80">
+                        <span className="text-slate-400 block text-[10px]">வழிகாட்டி மதிப்பு:</span>
+                        <span className="font-semibold text-emerald-400 text-[11px]">
+                          {selectedLandDetail.guidelineValue || 'விவரம் இல்லை'}
+                        </span>
+                      </div>
+                      <div className="col-span-2 p-2 rounded-lg bg-slate-900 border border-slate-800/80">
+                        <span className="text-slate-400 block text-[10px]">நிலத்தடி நீர் ஆதாரம்:</span>
+                        <span className="font-semibold text-slate-200 text-[11px]">
+                          {selectedLandDetail.waterSource || selectedLandDetail.water || 'சரிபார்க்கப்படுகிறது'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* கடன் உதவி & ஆவண நிலை */}
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="bg-slate-950/70 p-2 rounded-xl border border-slate-800 flex justify-between items-center">
+                      <span className="text-slate-400 text-[10px]">கடன் வசதி:</span>
+                      <span className="font-bold text-white text-[11px]">
+                        {selectedLandDetail.loanEligible || '80% வங்கி கடன் வசதி'}
+                      </span>
+                    </div>
+                    <div className="bg-slate-950/70 p-2 rounded-xl border border-slate-800 flex justify-between items-center">
+                      <span className="text-slate-400 text-[10px]">ஆவண நிலை:</span>
+                      <span className="font-bold text-emerald-400 text-[11px]">சுத்தமான பட்டா ✓</span>
+                    </div>
+                  </div>
+
+                  {/* நம்பிக்கை குறியீடு */}
+                  {selectedLandDetail.trustScore && (
+                    <div className="bg-slate-950/70 p-2 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
+                      <span className="text-slate-400 text-[10px]">நம்பிக்கை குறியீடு (Trust Score):</span>
+                      <span className="font-extrabold text-emerald-400 text-[11px]">
+                        ⭐ {selectedLandDetail.trustScore} / 100 (சரிபார்க்கப்பட்டது)
+                      </span>
+                    </div>
+                  )}
+
+                </div>
+
+                {/* கீழே உள்ள செயல் பொத்தான்கள் */}
+                <div className="pt-2 border-t border-slate-800 flex items-center gap-2">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => {
+                      const msg = `வணக்கம்! நான் இந்த இடத்தை நேரில் பார்க்க (Site Visit) விரும்புகிறேன்.`;
+window.open(getWhatsAppUrl(msg), '_blank');
+                    }}
+                    className="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer active:scale-95"
+                    style={{ backgroundColor: '#059669', color: '#ffffff' }}
+                  >
+                    <span>📅</span> <span>நேரில் பார்க்க முன்பதிவு (Site Visit)</span>
+                  </div>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setSelectedLandDetail(null)}
+                    className="py-2.5 px-4 rounded-xl font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition cursor-pointer"
+                  >
+                    மூடு
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
+        
+      {/* VIP விசிட் பாஸ் மாடல் (VIP Site Visit Pass Modal - 100% Dynamic & Fast) */}
+      {selectedVisitPassLand && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm">
+          <div className="relative w-full max-w-md bg-slate-900 border border-emerald-500/50 rounded-2xl p-4 sm:p-5 shadow-2xl overflow-hidden flex flex-col">
+            
+            {/* Top Golden Accent */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-amber-400 to-emerald-500" />
+
+            {/* Close Button */}
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setSelectedVisitPassLand(null)}
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer z-10 border border-slate-700 select-none"
+            >
+              ✕
+            </div>
+
+            {/* Header */}
+            <div className="text-center mb-3 mt-1">
+              <span className="text-2xl">🎫</span>
+              <h3 className="text-base font-bold text-white mt-0.5">VIP விசிட் பாஸ் & நேரடி வழிகாட்டல்</h3>
+              <p className="text-[11px] text-emerald-400 font-medium">நேரடி உரிமையாளர் எண் & GPS நேரடி வரைபடம்</p>
+            </div>
+
+            {/* Selected Land Summary Card */}
+            <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 mb-3 text-xs">
+              <p className="text-slate-400 text-[10px] font-medium">தேர்ந்தெடுக்கப்பட்ட நிலம்:</p>
+              <p className="text-white font-bold text-xs line-clamp-1 mt-0.5">
+                {selectedVisitPassLand.title || 'பிரீமியம் நிலம்'}
+              </p>
+              
+              <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-800 text-[11px]">
+                <div>
+                  <span className="text-slate-400 block text-[9px]">அமைவிடம்</span>
+                  <span className="text-slate-200 font-semibold truncate block">
+                    📍 {selectedVisitPassLand.village ? `${selectedVisitPassLand.village}, ` : ''}{selectedVisitPassLand.district || 'தமிழ்நாடு'}
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="text-slate-400 block text-[9px]">மதிப்பு / விலை</span>
+                  <span className="text-emerald-400 font-extrabold text-xs block">
+                    {selectedVisitPassLand.askingPrice || selectedVisitPassLand.price || 'நேரடி பேச்சுவார்த்தை'}
+                  </span>
+                </div>
+              </div>
+
+              {selectedVisitPassLand.surveyNo && (
+                <div className="mt-1.5 pt-1.5 border-t border-slate-800/60 flex justify-between items-center text-[10px]">
+                  <span className="text-slate-400">சர்வே எண்:</span>
+                  <span className="text-amber-300 font-bold">{selectedVisitPassLand.surveyNo}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Inputs */}
+            <div className="space-y-2.5 mb-3.5">
+              <div>
+                <label className="block text-[11px] text-slate-300 mb-1 font-medium">உங்கள் பெயர்:</label>
+                <input
+                  type="text"
+                  placeholder="எ.கா: குமார்"
+                  value={visitorName}
+                  onChange={(e) => setVisitorName(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-800/90 border border-slate-700 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] text-slate-300 mb-1 font-medium">வாட்ஸ்அப் எண்:</label>
+                <input
+                  type="tel"
+                  placeholder="10 இலக்க வாட்ஸ்அப் எண்"
+                  value={visitorPhone}
+                  onChange={(e) => setVisitorPhone(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-800/90 border border-slate-700 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+            </div>
+
+            {/* Action Buttons: WhatsApp Pass & Direct Live Google Maps */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
+              {/* WhatsApp Pass Button */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  if (!visitorPhone || visitorPhone.trim().length < 10) {
+                    alert('தயவுசெய்து சரியான 10 இலக்க வாட்ஸ்அப் எண்ணை உள்ளிடவும்');
+                    return;
+                  }
+
+                  const land = selectedVisitPassLand;
+                  const lat = land?.lat || (land?.location_coords && land.location_coords[0]) || 12.6939;
+                  const lng = land?.lng || (land?.location_coords && land.location_coords[1]) || 79.9757;
+                  const mapLink = `https://maps.google.com/?q=${lat},${lng}`;
+
+                  const message = `*🎫 நம்ம பூமி 360 - VIP களப்பார்வை பாஸ் (Site Visit Pass)*%0A%0A` +
+                    `👤 *பார்வையாளர்:* ${visitorName || 'நேரடி பார்வையாளர்'}%0A` +
+                    `📞 *எண்:* ${visitorPhone}%0A` +
+                    `🏷️ *வகை:* ${land?.category || land?.type || 'நிலம்'}%0A` +
+                    `📍 *நிலம்:* ${land?.title || 'பிரீமியம் நிலம்'}%0A` +
+                    `📌 *அமைவிடம்:* ${land?.village ? land.village + ', ' : ''}${land?.district || 'தமிழ்நாடு'}%0A` +
+                    `🔢 *சர்வே எண்:* ${land?.surveyNo || 'சரிபார்க்கப்படுகிறது'}%0A` +
+                    `💰 *விலை:* ${land?.askingPrice || land?.price || 'நேரடி பேச்சுவார்த்தை'}%0A` +
+                    `🗺️ *மேப் லொகேஷன்:* ${mapLink}%0A%0A` +
+                    `✅ இந்த விசிட் பாஸ் மூலம் நேரடி களப்பார்வை மேற்கொள்ள அனுமதி கோரப்படுகிறது.`;
+
+                 window.open(getWhatsAppUrl(message), '_blank');
+                  setSelectedVisitPassLand(null);
+                  setVisitorPhone('');
+                  if (typeof setVisitorName === 'function') setVisitorName('');
+                }}
+                className="w-full py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer select-none active:scale-95 transition text-center"
+                style={{ background: '#047857', color: '#ffffff' }}
+              >
+                <span>🎫</span> <span>வாட்ஸ்அப் பாஸ்</span>
+              </div>
+
+              {/* Direct Live Google Maps Navigation Button */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  const land = selectedVisitPassLand;
+                  const lat = land?.lat || (land?.location_coords && land.location_coords[0]) || 12.6939;
+                  const lng = land?.lng || (land?.location_coords && land.location_coords[1]) || 79.9757;
+                  window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
+                }}
+                className="w-full py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow cursor-pointer select-none active:scale-95 transition text-center border border-blue-500/40"
+                style={{ background: '#1d4ed8', color: '#ffffff' }}
+              >
+                <span>🗺️</span> <span>நேரடி மேப் வழித்தடம்</span>
+              </div>
+            </div>
+
+            <p className="text-[10px] text-center text-slate-400 mt-2">
+              🔒 100% பாதுகாப்பானது • நேரடி உரிமையாளர் தொடர்பு
+            </p>
+
+          </div>
+        </div>
+      )}  
+      </main>
+      {/* விளம்பரம் சேர்க்கும் பாப்-அப் படிவம் */}
+      <PostAdModal
+        isOpen={isPostAdModalOpen}
+        onClose={() => setIsPostAdModalOpen(false)}
+        currentDistrict={filterDistrict}
+        defaultModule={
+          (currentModule === 'home' || currentModule === 'land') ? 'realestate' :
+          currentModule === 'agri' ? 'agriculture' :
+          currentModule || 'general'
+        }
+      />
+
+      {/* மொபைல் பாட்டம் நேவிகேஷன் பார் - Full Width Fix */}
+<div className="fixed bottom-0 inset-x-0 w-full z-50 md:hidden bg-[#080e1a]/95 backdrop-blur-md border-t border-slate-800/80 shadow-2xl">
+        <div className="flex items-center justify-around w-full max-w-md mx-auto px-2">
+          {/* 1. நிலங்கள் */}
+          <button
+            onClick={() => setCurrentModule('land')}
+            className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all ${currentModule === 'land'
+                ? 'text-emerald-400 font-bold scale-105'
+                : 'text-slate-100 hover:text-slate-200'
+              }`}
+          >
+            <span className="text-lg">🏡</span>
+            <span className="text-[10px] mt-0.5">நிலங்கள்</span>
+          </button>
+
+          {/* 2. விவசாயம் */}
+          <button
+            onClick={() => setCurrentModule('agri')}
+            className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all ${currentModule === 'agri'
+                ? 'text-emerald-400 font-bold scale-105'
+                : 'text-slate-100 hover:text-slate-200'
+              }`}
+          >
+            <span className="text-lg">🌾</span>
+            <span className="text-[10px] mt-0.5">விவசாயம்</span>
+          </button>
+
+          {/* 3. கடன்கள் */}
+          <button
+            onClick={() => setCurrentModule('finance')}
+            className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all ${currentModule === 'finance'
+                ? 'text-emerald-400 font-bold scale-105'
+                : 'text-slate-100 hover:text-slate-200'
+              }`}
+          >
+            <span className="text-lg">🏦</span>
+            <span className="text-[10px] mt-0.5">கடன்கள்</span>
+          </button>
+
+          {/* 4. காப்பீடு */}
+          <button
+            onClick={() => setCurrentModule('insurance')}
+            className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all ${currentModule === 'insurance'
+                ? 'text-emerald-400 font-bold scale-105'
+                : 'text-slate-100 hover:text-slate-200'
+              }`}
+          >
+            <span className="text-lg">🛡️</span>
+            <span className="text-[10px] mt-0.5">காப்பீடு</span>
+          </button>
+
+          {/* 5. வாட்ஸ்அப் உதவி */}
+          <a
+            href={getWhatsAppUrl("வணக்கம் நம்ம பூமி 360, எனக்கு உடனடி வழிகாட்டல் தேவைப்படுகிறது.", contactConfig.whatsappNumber)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center justify-center py-1 px-2 text-emerald-400 active:scale-95 transition-all"
+          >
+            <span className="text-lg p-1 bg-emerald-500/20 rounded-full">💬</span>
+            <span className="text-[10px] font-bold mt-0.5">உதவி</span>
+          </a>
+        </div>
+      </div>
+      {/* 360° Pro Studios & Official Govt Portals Directory */}
+      {currentModule === 'home' && (
+        <SuperAppHubGrid onSelectModule={(mod) => setCurrentModule(mod)} />
+      )}
+      {/* ₹499 லீகல் ஆடிட் முன்பதிவு பிரிவு */}
+{(currentModule === 'land' || currentModule === 'patta') && <LegalAuditPromo />}
+<div className="fixed bottom-20 md:bottom-6 right-4 z-40">
+        <FloatingWhatsApp />
+      </div>
+      <TamilVoiceAssistant onSelectModule={(mod) => setCurrentModule(mod)} />
+{/* நேரலை வீடியோ பாப்-அப் பிளேயர் */}
+        {activeVideo && (
+          <div
+            onClick={() => setActiveVideo(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md cursor-pointer"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-2xl bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl"
+            >
+              <div className="flex items-center justify-between p-3.5 border-b border-slate-800 bg-slate-900">
+                <div className="flex items-center gap-2 text-white text-xs font-bold truncate">
+                  <span className="text-red-500">🎥</span>
+                  <span className="truncate">{activeVideo.title}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveVideo(null)}
+                  className="text-slate-400 hover:text-white font-bold text-base px-2 cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="aspect-video w-full bg-black flex items-center justify-center">
+                <video
+                  src={activeVideo.url}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain"
+                >
+                  வீடியோவை ஆதரிக்கவில்லை.
+                </video>
+              </div>
+            </div>
+          </div>
+        )}
+      <BusinessMonetizationHub/>
+      <PwaInstallTracker/>  
+    </div>
+  );
+}
