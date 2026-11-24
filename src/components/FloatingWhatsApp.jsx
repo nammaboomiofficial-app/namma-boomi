@@ -9,7 +9,7 @@ export default function FloatingWhatsApp() {
 
   return (
     /* மொபைலில் bottom-24 ஆக உயர்த்தி, வலதுபுறம் right-3 என வைத்துள்ளோம் */
-    <div className="fixed bottom-24 right-3 sm:bottom-8 sm:right-8 z-40 flex items-center group">
+    <div className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center group">
       {/* ஹோவர் செய்யும்போது வரும் சிறிய தகவல் */}
       <span className="hidden sm:inline-block mr-2 px-3 py-1.5 bg-slate-900/90 text-slate-200 text-xs font-medium rounded-full border border-emerald-500/30 shadow-lg backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         வாட்ஸ்அப்பில் பேசலாம்

@@ -100,7 +100,7 @@ export default function TamilVoiceAssistant({ onSelectModule }) {
   };
 
   return (
-    <div className="fixed bottom-44 md:bottom-44 right-4 z-40 flex flex-col items-end gap-2">
+    <div className="fixed bottom-52 sm:bottom-40 right-4 sm:right-6 z-40 flex flex-col items-end gap-2">
       {(isListening || statusMsg) && (
         <div className="max-w-xs bg-slate-900/95 border border-purple-500/50 text-white p-3 rounded-2xl shadow-2xl text-xs space-y-1 backdrop-blur-md">
           <div className="flex items-center justify-between gap-2">
