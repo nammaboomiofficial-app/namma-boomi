@@ -43,6 +43,7 @@ import ModuleAdsSection from '@/components/ModuleAdsSection';
 import PostAdModal from '@/components/PostAdModal';
 import HeroOrbitBanner from '../components/HeroOrbitBanner';
 import SuperAppHubGrid from '../components/SuperAppHubGrid';
+import FooterTrustHub from '../components/FooterTrustHub';
 export default function Home() {
   // கடன் விண்ணப்பத்திற்கான வாட்ஸ்அப் இணைப்பு
   const handleLoanApply = (loanTitle) => {
@@ -2734,7 +2735,8 @@ window.open(getWhatsAppUrl(msg), '_blank');
           </div>
         )}
       <BusinessMonetizationHub/>
-      <PwaInstallTracker/>  
+      <PwaInstallTracker/>
+      <FooterTrustHub />  
     </div>
   );
 }
