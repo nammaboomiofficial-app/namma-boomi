@@ -10,7 +10,7 @@ export default function TamilVoiceAssistant({ onSelectModule }) {
   const [manualQuery, setManualQuery] = useState('');
   const recognitionRef = useRef(null);
 
-  const startRecognition = (langCode = 'ta-IN') => {
+  const startRecognition = async (langCode = 'ta-IN') => {
     const SpeechRecognition =
       typeof window !== 'undefined' &&
       (window.SpeechRecognition || window.webkitSpeechRecognition);
@@ -18,6 +18,18 @@ export default function TamilVoiceAssistant({ onSelectModule }) {
     if (!SpeechRecognition) {
       setShowBox(true);
       setStatusMsg('⚠️ இந்த பிரவுசரில் குரல் வசதி இல்லை. கீழே டைப் செய்து தேடுங்கள்:');
+      return;
+    }
+
+    // முதலில் பிரவுசரிடம் நேரடியாக Mic Permission பாப்-அப் கேட்கும்
+    try {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    } catch (permErr) {
+      setShowBox(true);
+      setStatusMsg('🚫 மைக்ரோஃபோன் அனுமதி மறுக்கப்பட்டுள்ளது. பிரவுசர் அட்ரஸ் பாரில் Allow கொடுக்கவும்.');
       return;
     }
 
