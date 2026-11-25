@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
-  // 1 மணி நேரத்திற்கு Vercel Edge-ல் Cache ஆகும் (பூஜ்ஜிய செலவு, அதிவேக பதில்)
-  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=60');
+  // 6 மணி நேரத்திற்கு Vercel Edge-ல் Cache ஆகும் (மாதம் 100 இலவச API வரம்பிற்குள் பாதுகாப்பாக இயங்கும்)
+  res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=43200');
 
   // இந்திய நேரப்படி (IST) இன்றைய தேதி & கிழமை கணக்கிடுதல்
   const now = new Date();
@@ -26,11 +26,10 @@ export default async function handler(req, res) {
     6: { nallaNeram: 'காலை 07:45 - 08:45 • மாலை 04:45 - 05:45', rahuKalam: 'காலை 09:00 - 10:30' },
   };
 
-  // அடிப்படை சந்தை நிலவரம் (சர்வர் வழியாக)
-  let gold22k = '₹11,715 / கிராம்';
+  // அடிப்படை சந்தை நிலவரம் (Fallback)
+  let gold22k = '₹11,420 / கிராம்';
   let mandiRate = 'தக்காளி ₹28 • சின்ன வெங்காயம் ₹54';
 
-  // ஒருவேளை உங்களிடம் இலவச GOLD_API_KEY இருந்தால் தானாகவே எடுக்கும் (விருப்பத் தேர்வு)
   if (process.env.GOLD_API_KEY) {
     try {
       const response = await fetch('https://www.goldapi.io/api/XAU/INR', {
@@ -39,7 +38,8 @@ export default async function handler(req, res) {
       if (response.ok) {
         const data = await response.json();
         if (data.price_gram_22k) {
-          const chennaiPrice = Math.round(data.price_gram_22k * 1.06); // சுங்க வரி + GST சரிசெய்தல்
+          // சர்வதேச Spot விலையுடன் இந்திய இறக்குமதி வரி, 3% GST & சென்னை சந்தை பிரீமியம் (21.24%) சரிசெய்தல்
+          const chennaiPrice = Math.round(data.price_gram_22k * 1.2124);
           gold22k = `₹${chennaiPrice.toLocaleString('en-IN')} / கிராம்`;
         }
       }
