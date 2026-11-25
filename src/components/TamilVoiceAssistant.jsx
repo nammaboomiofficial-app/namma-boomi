@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 
 export default function TamilVoiceAssistant({ onSelectModule }) {
@@ -6,25 +6,38 @@ export default function TamilVoiceAssistant({ onSelectModule }) {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [statusMsg, setStatusMsg] = useState('');
+  const [showBox, setShowBox] = useState(false);
+  const [manualQuery, setManualQuery] = useState('');
+  const recognitionRef = useRef(null);
 
-  const handleVoiceCommand = () => {
+  const startRecognition = (langCode = 'ta-IN') => {
     const SpeechRecognition =
       typeof window !== 'undefined' &&
       (window.SpeechRecognition || window.webkitSpeechRecognition);
 
     if (!SpeechRecognition) {
-      alert('உங்கள் பிரவுசர் தமிழ் குரல் தேடலை ஆதரிக்கவில்லை. Google Chrome பயன்படுத்தவும்.');
+      setShowBox(true);
+      setStatusMsg('⚠️ இந்த பிரவுசரில் குரல் வசதி இல்லை. கீழே டைப் செய்து தேடுங்கள்:');
       return;
     }
 
+    // ஏற்கனவே ஓடிக்கொண்டிருந்தால் நிறுத்தவும்
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.abort();
+      } catch (e) {}
+    }
+
     const recognition = new SpeechRecognition();
-    recognition.lang = 'ta-IN';
+    recognitionRef.current = recognition;
+    recognition.lang = langCode;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
+    setShowBox(true);
     setIsListening(true);
     setTranscript('');
-    setStatusMsg('🎙️ தமிழில் பேசுங்கள்... (எ.கா: "நிலம்", "மண்டி விலை", "போஸ்டர்", "கடன்")');
+    setStatusMsg('🎙️ தமிழில் பேசுங்கள்... (எ.கா: "நிலம்", "மண்டி", "பட்டா", "கடன்")');
 
     recognition.onresult = (event) => {
       const spokenText = event.results[0][0].transcript;
@@ -32,21 +45,44 @@ export default function TamilVoiceAssistant({ onSelectModule }) {
       routeByTamilSpeech(spokenText.toLowerCase());
     };
 
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
       setIsListening(false);
-      setStatusMsg('⚠️ குரல் தெளிவாகக் கேட்கவில்லை. மீண்டும் மைக் பட்டனை அழுத்திப் பேசவும்.');
+      if (event.error === 'not-allowed') {
+        setStatusMsg('🚫 மைக்ரோஃபோன் அனுமதி (Mic Permission) மறுக்கப்பட்டுள்ளது. பிரவுசர் அட்ரஸ் பாரில் Allow கொடுக்கவும்.');
+      } else if (event.error === 'language-not-supported' && langCode === 'ta-IN') {
+        // தமிழ் சப்போர்ட் இல்லையென்றால் தானாக en-IN முயற்சி செய்யும்
+        startRecognition('en-IN');
+      } else if (event.error === 'no-speech') {
+        setStatusMsg('🔇 குரல் எதுவும் கேட்கவில்லை. மைக் அருகில் மீண்டும் பேசவும் அல்லது கீழே டைப் செய்யவும்.');
+      } else {
+        setStatusMsg(`⚠️ பிழை (${event.error}): கீழே டைப் செய்தும் தேடலாம்.`);
+      }
     };
 
     recognition.onend = () => {
       setIsListening(false);
     };
 
-    recognition.start();
+    try {
+      recognition.start();
+    } catch (err) {
+      setIsListening(false);
+      setStatusMsg('⚠️ மைக் தொடங்க முடியவில்லை. மீண்டும் அழுத்தவும்.');
+    }
+  };
+
+  const handleVoiceCommand = () => {
+    if (isListening && recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+      return;
+    }
+    startRecognition('ta-IN');
   };
 
   const routeByTamilSpeech = (text) => {
     // 1. தனிப் பக்கங்கள் (Pages)
-    if (text.includes('மண்டி') || text.includes('மொத்த') || text.includes('காய்கறி') || text.includes('wholesale')) {
+    if (text.includes('மண்டி') || text.includes('மொத்த') || text.includes('காய்கறி') || text.includes('wholesale') || text.includes('mandi')) {
       setStatusMsg('✅ A-Z மொத்த மண்டி & B2B பிரிவிற்குச் செல்கிறது...');
       router.push('/wholesale');
       return;
@@ -64,28 +100,28 @@ export default function TamilVoiceAssistant({ onSelectModule }) {
     if (text.includes('நிலம்') || text.includes('மனை') || text.includes('ரியல்') || text.includes('வீடு') || text.includes('land')) {
       targetModule = 'land';
       moduleLabel = 'ரியல் எஸ்டேட் & நிலம் பிரிவு';
-    } else if (text.includes('பட்டா') || text.includes('சிட்டா') || text.includes('வில்லங்க') || text.includes('அரசு')) {
+    } else if (text.includes('பட்டா') || text.includes('சிட்டா') || text.includes('வில்லங்க') || text.includes('அரசு') || text.includes('patta')) {
       targetModule = 'patta';
       moduleLabel = 'பட்டா / சிட்டா & அரசு சேவைகள்';
-    } else if (text.includes('விவசாய') || text.includes('பயிர்') || text.includes('தோட்ட')) {
+    } else if (text.includes('விவசாய') || text.includes('பயிர்') || text.includes('தோட்ட') || text.includes('agri')) {
       targetModule = 'agri';
       moduleLabel = 'விவசாயம் & தோட்டக்கலை பிரிவு';
-    } else if (text.includes('கடன்') || text.includes('வங்கி') || text.includes('லோன்') || text.includes('finance')) {
+    } else if (text.includes('கடன்') || text.includes('வங்கி') || text.includes('லோன்') || text.includes('finance') || text.includes('loan')) {
       targetModule = 'finance';
       moduleLabel = 'வங்கிக் கடன் & நிதி ஆலோசனை';
     } else if (text.includes('வேலை') || text.includes('பணி') || text.includes('job')) {
       targetModule = 'jobs';
       moduleLabel = 'வேலைவாய்ப்புப் பிரிவு';
-    } else if (text.includes('ஜோதிட') || text.includes('பஞ்சாங்க') || text.includes('ஜாதக')) {
+    } else if (text.includes('ஜோதிட') || text.includes('பஞ்சாங்க') || text.includes('ஜாதக') || text.includes('astro')) {
       targetModule = 'astro';
       moduleLabel = 'திருக்கணித AI ஜோதிடம்';
-    } else if (text.includes('போஸ்டர்') || text.includes('விளம்பர') || text.includes('கார்டு') || text.includes('வீடியோ')) {
+    } else if (text.includes('போஸ்டர்') || text.includes('விளம்பர') || text.includes('கார்டு') || text.includes('வீடியோ') || text.includes('poster')) {
       targetModule = 'media_studio';
       moduleLabel = 'AI விளம்பர போஸ்டர் & மீடியா ஸ்டுடியோ';
-    } else if (text.includes('தொழில்') || text.includes('வணிக') || text.includes('கடை')) {
+    } else if (text.includes('தொழில்') || text.includes('வணிக') || text.includes('கடை') || text.includes('business')) {
       targetModule = 'business';
       moduleLabel = 'வணிகம் & தொழில் பிரிவு';
-    } else if (text.includes('சுற்றுலா') || text.includes('கோவில்') || text.includes('ஆன்மீக')) {
+    } else if (text.includes('சுற்றுலா') || text.includes('கோவில்') || text.includes('ஆன்மீக') || text.includes('temple')) {
       targetModule = 'spiritual';
       moduleLabel = 'ஆன்மீகம் & சுற்றுலா பிரிவு';
     }
@@ -95,23 +131,35 @@ export default function TamilVoiceAssistant({ onSelectModule }) {
       onSelectModule(targetModule);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      setStatusMsg(`🗣️ நீங்கள் சொன்னது: "${text}" — கீழே உள்ள பிரிவுகளில் ஒன்றைத் தேர்ந்தெடுக்கவும்.`);
+      setStatusMsg(`🗣️ தேடல்: "${text}" — கீழே உள்ள பிரிவுகளில் ஒன்றைத் தேர்ந்தெடுக்கவும்.`);
     }
   };
 
+  const handleManualSubmit = (e) => {
+    e.preventDefault();
+    if (!manualQuery.trim()) return;
+    setTranscript(manualQuery);
+    routeByTamilSpeech(manualQuery.toLowerCase());
+    setManualQuery('');
+  };
+
   return (
-    <div className="fixed bottom-52 sm:bottom-40 right-4 sm:right-6 z-40 flex flex-col items-end gap-2">
-      {(isListening || statusMsg) && (
-        <div className="max-w-xs bg-slate-900/95 border border-purple-500/50 text-white p-3 rounded-2xl shadow-2xl text-xs space-y-1 backdrop-blur-md">
+    <div className="fixed bottom-52 sm:bottom-40 right-4 sm:right-6 z-50 flex flex-col items-end gap-2">
+      {showBox && (
+        <div className="w-72 bg-slate-900/95 border border-purple-500/50 text-white p-3.5 rounded-2xl shadow-2xl text-xs space-y-2 backdrop-blur-md">
           <div className="flex items-center justify-between gap-2">
             <span className="font-bold text-purple-300">🎙️ தமிழ் குரல் உதவியாளர்</span>
             <button
               type="button"
               onClick={() => {
+                setShowBox(false);
                 setStatusMsg('');
                 setTranscript('');
+                if (isListening && recognitionRef.current) {
+                  recognitionRef.current.stop();
+                }
               }}
-              className="text-slate-400 hover:text-white font-bold cursor-pointer"
+              className="text-slate-400 hover:text-white font-bold cursor-pointer px-1"
             >
               ✕
             </button>
@@ -120,6 +168,23 @@ export default function TamilVoiceAssistant({ onSelectModule }) {
             <p className="text-amber-300 font-semibold">"{transcript}"</p>
           )}
           <p className="text-slate-200 leading-snug">{statusMsg}</p>
+
+          {/* மைக் வேலை செய்யாத போன்களிலும் டைப் செய்து தேடும் வசதி */}
+          <form onSubmit={handleManualSubmit} className="flex gap-1.5 pt-1">
+            <input
+              type="text"
+              value={manualQuery}
+              onChange={(e) => setManualQuery(e.target.value)}
+              placeholder="எ.கா: நிலம், பட்டா, கடன்..."
+              className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none focus:border-purple-400"
+            />
+            <button
+              type="submit"
+              className="bg-purple-600 hover:bg-purple-500 text-white font-bold px-2.5 py-1.5 rounded-lg cursor-pointer"
+            >
+              தேடு
+            </button>
+          </form>
         </div>
       )}
 
@@ -134,7 +199,7 @@ export default function TamilVoiceAssistant({ onSelectModule }) {
         }`}
       >
         <span className="text-base">{isListening ? '🛑' : '🎙️'}</span>
-        <span className="hidden sm:inline">{isListening ? 'கேட்கிறது...' : 'தமிழில் பேசுக'}</span>
+        <span>{isListening ? 'கேட்கிறது...' : 'தமிழில் பேசுக'}</span>
       </button>
     </div>
   );

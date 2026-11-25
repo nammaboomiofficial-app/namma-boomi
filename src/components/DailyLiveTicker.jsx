@@ -35,7 +35,7 @@ export default function DailyLiveTicker() {
   const [rates, setRates] = useState(getTodayTamilInfo);
 
   useEffect(() => {
-    fetch(`/api/live-rates?t=${Date.now()}`)
+    fetch('/api/live-rates')
       .then((res) => res.json())
       .then((data) => {
         if (data && data.date) setRates(data);
