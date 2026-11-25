@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   // 1 மணி நேரத்திற்கு Vercel Edge-ல் Cache ஆகும் (பூஜ்ஜிய செலவு, அதிவேக பதில்)
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=7200');
+  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=60');
 
   // இந்திய நேரப்படி (IST) இன்றைய தேதி & கிழமை கணக்கிடுதல்
   const now = new Date();

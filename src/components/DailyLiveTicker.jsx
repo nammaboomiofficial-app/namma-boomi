@@ -1,17 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, TrendingUp, Sprout, Sun, Clock, Radio } from 'lucide-react';
 
-export default function DailyLiveTicker() {
-  const [rates, setRates] = useState({
-    date: 'புதன், 25 நவம்பர் 2026',
+function getTodayTamilInfo() {
+  const now = new Date();
+  const istTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const dayIndex = istTime.getDay();
+
+  const tamilDays = ['ஞாயிறு', 'திங்கள்', 'செவ்வாய்', 'புதன்', 'வியாழன்', 'வெள்ளி', 'சனி'];
+  const tamilMonths = [
+    'ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்', 'மே', 'ஜூன்',
+    'ஜூலை', 'ஆகஸ்ட்', 'செப்டம்பர்', 'அக்டோபர்', 'நவம்பர்', 'டிசம்பர்'
+  ];
+
+  const panchangamByDay = {
+    0: { nallaNeram: 'காலை 07:45 - 08:45 • மாலை 03:15 - 04:15', rahuKalam: 'மாலை 04:30 - 06:00' },
+    1: { nallaNeram: 'காலை 06:15 - 07:15 • மாலை 04:45 - 05:45', rahuKalam: 'காலை 07:30 - 09:00' },
+    2: { nallaNeram: 'காலை 07:45 - 08:45 • மாலை 04:45 - 05:45', rahuKalam: 'மதியம் 03:00 - 04:30' },
+    3: { nallaNeram: 'காலை 09:15 - 10:15 • மாலை 04:45 - 05:45', rahuKalam: 'மதியம் 12:00 - 01:30' },
+    4: { nallaNeram: 'காலை 10:30 - 11:30 • மாலை 04:45 - 05:45', rahuKalam: 'மதியம் 01:30 - 03:00' },
+    5: { nallaNeram: 'காலை 09:15 - 10:15 • மாலை 04:45 - 05:45', rahuKalam: 'காலை 10:30 - 12:00' },
+    6: { nallaNeram: 'காலை 07:45 - 08:45 • மாலை 04:45 - 05:45', rahuKalam: 'காலை 09:00 - 10:30' },
+  };
+
+  return {
+    date: `${tamilDays[dayIndex]}, ${istTime.getDate()} ${tamilMonths[istTime.getMonth()]} ${istTime.getFullYear()}`,
     gold22k: '₹11,715 / கிராம்',
     mandiRate: 'தக்காளி ₹28 • சின்ன வெங்காயம் ₹54',
-    nallaNeram: 'காலை 09:15 - 10:15 • மாலை 04:45 - 05:45',
-    rahuKalam: 'மதியம் 12:00 - 01:30'
-  });
+    nallaNeram: panchangamByDay[dayIndex].nallaNeram,
+    rahuKalam: panchangamByDay[dayIndex].rahuKalam,
+  };
+}
+
+export default function DailyLiveTicker() {
+  const [rates, setRates] = useState(getTodayTamilInfo);
 
   useEffect(() => {
-    fetch('/api/live-rates')
+    fetch(`/api/live-rates?t=${Date.now()}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && data.date) setRates(data);
