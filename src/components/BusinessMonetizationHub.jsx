@@ -39,16 +39,16 @@ export default function BusinessMonetizationHub() {
     {
       id: 'franchise',
       icon: <MapPin className="w-6 h-6 text-sky-400" />,
-      badge: 'DISTRICT PARTNER',
-      title: '🏢 38 மாவட்ட பூமி பார்ட்னர் உரிமம்',
-      price: '₹4,999 / வாழ்நாள்',
-      desc: 'உங்கள் மாவட்டத்தின் அதிகாரப்பூர்வ "நம்ம பூமி 360°" பிரதிநிதியாகி 50% வருமானப் பங்கு பெறுங்கள்.',
+      badge: 'TALUK PARTNER',
+      title: '🏢 Founding தாலுகா பார்ட்னர் உரிமம்',
+      price: '₹2,999 / வாழ்நாள்',
+      desc: 'உங்கள் தாலுகாவின் அதிகாரப்பூர்வ "நம்ம பூமி 360°" பிரதிநிதியாகி முதல் மாதம் 75% & தொடர் 50% வருமானப் பங்கு பெறுங்கள்.',
       features: [
-        'மாவட்ட பிரதிநிதி அங்கீகாரச் சான்றிதழ் & ID',
-        'உங்கள் மாவட்ட விளம்பர வருமானத்தில் 50% பங்கு',
-        'ரியல் எஸ்டேட் & கடன் லீட்களில் 1%–2% கமிஷன்'
+        'ஒரு தாலுகாவுக்கு ஒருவர் மட்டுமே Exclusive உரிமம் & ID',
+        'உங்கள் தாலுகா விளம்பர வருமானத்தில் 50%–75% பங்கு',
+        'ரியல் எஸ்டேட் & கடன் லீட்களில் 1%–2% நேரடி கமிஷன்'
       ],
-      cta: 'மாவட்ட பார்ட்னராக விண்ணப்பிக்க'
+      cta: 'தாலுகா பார்ட்னராக விண்ணப்பிக்க'
     }
   ];
 
@@ -70,7 +70,7 @@ export default function BusinessMonetizationHub() {
           உங்கள் தொழிலை 38 மாவட்டங்களுக்கும் கொண்டு செல்லுங்கள்
         </h2>
         <p className="text-slate-300 text-xs md:text-sm mt-2">
-          விளம்பரம், Pro வணிகக் கருவிகள், ரியல் எஸ்டேட் ரெஃபரல் மற்றும் மாவட்ட பார்ட்னர் உரிமம் மூலம் நிலையான வருமானம் ஈட்டுங்கள்.
+          விளம்பரம், Pro வணிகக் கருவிகள், ரியல் எஸ்டேட் ரெஃபரல் மற்றும் தாலுகா பார்ட்னர் உரிமம் மூலம் நிலையான வருமானம் ஈட்டுங்கள்.
         </p>
       </div>
 
@@ -81,7 +81,13 @@ export default function BusinessMonetizationHub() {
           return (
             <div
               key={plan.id}
-              onClick={() => setSelectedPlan(plan.id)}
+              onClick={() => {
+                if (plan.id === 'franchise') {
+                  window.location.href = '/partner-apply';
+                } else {
+                  setSelectedPlan(plan.id);
+                }
+              }}
               className={`cursor-pointer rounded-2xl p-5 border transition-all flex flex-col justify-between ${
                 isSelected
                   ? 'bg-emerald-900/40 border-amber-400 shadow-lg shadow-amber-500/10 scale-[1.01]'
@@ -111,9 +117,18 @@ export default function BusinessMonetizationHub() {
 
               <button
                 type="button"
-                onClick={() => setSelectedPlan(plan.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (plan.id === 'franchise') {
+                    window.location.href = '/partner-apply';
+                  } else {
+                    setSelectedPlan(plan.id);
+                  }
+                }}
                 className={`mt-5 w-full py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 transition ${
-                  isSelected
+                  plan.id === 'franchise'
+                    ? 'bg-gradient-to-r from-sky-400 to-emerald-400 text-slate-950 hover:opacity-95 shadow-md'
+                    : isSelected
                     ? 'bg-amber-400 text-slate-900'
                     : 'bg-white/10 text-white hover:bg-white/20'
                 }`}
